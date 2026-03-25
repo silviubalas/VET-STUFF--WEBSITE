@@ -183,6 +183,25 @@
     .mob-link { font-size: 1.4rem; font-weight: 700; color: var(--navy); padding: 12px 0; border-bottom: 1px solid var(--border); transition: color 0.15s, padding-left 0.15s; }
     .mob-link:hover { color: var(--red); padding-left: 8px; }
 
+    .nav-urgenta {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 7px 16px; border-radius: 20px;
+      border: 1.5px solid var(--red); color: var(--red);
+      font-size: 0.88rem; font-weight: 700;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-urgenta:hover { background: var(--red); color: #fff; border-color: var(--red); }
+    .pulse-red {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--red);
+      display: inline-block; flex-shrink: 0;
+      animation: pulse-red-anim 1.4s ease-in-out infinite;
+    }
+    .nav-urgenta:hover .pulse-red { background: #fff; }
+    @keyframes pulse-red-anim {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 0.6; }
+    }
+
     /* ── SCROLL TOP ── */
     #scroll-top { position: fixed; bottom: 24px; right: 24px; width: 44px; height: 44px; background: var(--navy); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 990; opacity: 0; pointer-events: none; transform: translateY(10px); transition: opacity 0.25s, transform 0.25s, background 0.15s; box-shadow: 0 4px 16px rgba(0,0,0,0.18); }
     #scroll-top.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
@@ -229,6 +248,10 @@
       <a href="echipa.html"           class="nav-link active">Echipa medicală</a>
       <a href="index.html#programare" class="nav-link">Programare</a>
       <a href="index.html#contact"    class="nav-link">Contact</a>
+      <a href="index.html#urgenta" class="nav-urgenta">
+        <span class="pulse-red"></span>
+        Urgență
+      </a>
     </div>
     <div class="flex items-center gap-3">
       <a href="index.html#programare" class="btn-red">
@@ -250,6 +273,8 @@
   <a href="echipa.html"           class="mob-link" onclick="closeMenu()">Echipa medicală</a>
   <a href="index.html#programare" class="mob-link" onclick="closeMenu()">Programare</a>
   <a href="index.html#contact"    class="mob-link" onclick="closeMenu()">Contact</a>
+  <a href="feedback.html"         class="mob-link" onclick="closeMenu()">Feedback</a>
+  <a href="index.html#urgenta"    class="mob-link" onclick="closeMenu()" style="color:var(--red);">🚨 Urgență</a>
   <div class="mt-6">
     <a href="index.html#programare" onclick="closeMenu()" class="btn-red w-full justify-center">Programare online</a>
   </div>
