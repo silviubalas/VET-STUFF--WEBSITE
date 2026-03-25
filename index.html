@@ -3,7 +3,79 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VET STUFF — Medicul tău de familie extinsă</title>
+  <title>VET STUFF — Clinică Veterinară Bacău | Consultații, Vaccinări, Chirurgie</title>
+
+  <!-- SEO Meta -->
+  <meta name="description" content="Clinică veterinară în Bacău. Consultații, vaccinări, chirurgie și analize pentru câini și pisici. Medici cu experiență, echipamente moderne. Programează online!" />
+  <meta name="keywords" content="clinică veterinară Bacău, medic veterinar Bacău, cabinet veterinar Bacău, veterinar Bacău, vaccinare câini pisici Bacău, consultații veterinare Bacău, chirurgie veterinară Bacău, VET STUFF" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://vet-stuff.ro" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://vet-stuff.ro" />
+  <meta property="og:title" content="VET STUFF — Clinică Veterinară Bacău" />
+  <meta property="og:description" content="Consultații, vaccinări, chirurgie și analize veterinare în Bacău. Programează online sau contactează-ne pe Messenger." />
+  <meta property="og:image" content="https://vet-stuff.ro/imagini/hero3.webp" />
+  <meta property="og:locale" content="ro_RO" />
+  <meta property="og:site_name" content="VET STUFF" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="VET STUFF — Clinică Veterinară Bacău" />
+  <meta name="twitter:description" content="Consultații, vaccinări, chirurgie și analize veterinare în Bacău." />
+  <meta name="twitter:image" content="https://vet-stuff.ro/imagini/hero3.webp" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="logo.PNG" />
+  <link rel="apple-touch-icon" href="logo.PNG" />
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VeterinaryCare",
+    "name": "VET STUFF",
+    "description": "Clinică veterinară în Bacău oferind consultații, vaccinări, chirurgie și analize pentru câini și pisici.",
+    "url": "https://vet-stuff.ro",
+    "telephone": "+40742870000",
+    "email": "vet.stuff@yahoo.com",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Str. Mioriței nr. 10",
+      "addressLocality": "Bacău",
+      "addressRegion": "Bacău",
+      "postalCode": "600000",
+      "addressCountry": "RO"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 46.5670,
+      "longitude": 26.9146
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+        "opens": "09:00",
+        "closes": "20:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Saturday",
+        "opens": "09:00",
+        "closes": "14:00"
+      }
+    ],
+    "sameAs": [
+      "https://www.facebook.com/vetstuff",
+      "https://www.instagram.com/vet_stuff_",
+      "https://www.tiktok.com/@vet.stuff"
+    ],
+    "areaServed": ["Bacău", "Moinești", "Onești", "Comănești", "Adjud"],
+    "priceRange": "$$"
+  }
+  </script>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -611,13 +683,13 @@
         </h2>
         <p class="text-sm mb-4 reveal reveal-d2" style="color:#555; line-height:1.75;">
           VET STUFF s-a născut dintr-o convingere simplă: animalele de companie sunt membri
-          ai familiei și merită îngrijire la cel mai înalt standard. Ne propunem să fim
-          clinica de referință din Bacău — locul în care proprietarii vin cu încredere,
-          iar pacienții pleacă mai bine.
+          ai familiei și merită îngrijire la cel mai înalt standard. Clinica noastră veterinară
+          din Bacău își propune să fie locul de referință pentru proprietarii din Bacău, Moinești,
+          Onești, Comănești și zonele limitrofe — locul în care vii cu încredere și pleci liniștit.
         </p>
         <p class="text-sm mb-8 reveal reveal-d3" style="color:#555; line-height:1.75;">
-          Echipa noastră de medici și asistenți lucrează zilnic pentru a oferi diagnostice precise,
-          tratamente eficiente și o experiență cât mai confortabilă pentru pacienți și stăpânii lor.
+          Echipa noastră de medici veterinari și asistenți lucrează zilnic pentru diagnostice precise,
+          tratamente eficiente și o experiență cât mai confortabilă — pentru pacienți și stăpânii lor.
         </p>
 
         <div class="reveal reveal-d3">
@@ -741,16 +813,20 @@
       <div class="bg-white rounded-2xl p-8 reveal reveal-d1" style="box-shadow:0 4px 24px rgba(0,0,0,0.08); border:1.5px solid var(--border);">
         <h3 class="text-xl font-bold mb-6" style="color:var(--navy);">Completează formularul</h3>
 
+        <!-- FORMSPREE: înlocuiește YOUR_FORM_ID cu ID-ul tău de pe formspree.io -->
         <form id="booking-form" novalidate>
+          <input type="hidden" name="_subject" value="Programare nouă — VET STUFF" />
+          <input type="hidden" name="_language" value="ro" />
+
           <div class="grid sm:grid-cols-2 gap-4 mb-4">
             <div>
               <label class="f-label" for="owner-name">Numele tău *</label>
-              <input id="owner-name" type="text" class="f-input" placeholder="Ion Popescu" autocomplete="name" />
+              <input id="owner-name" name="Nume proprietar" type="text" class="f-input" placeholder="Ion Popescu" autocomplete="name" />
               <div class="f-error"></div>
             </div>
             <div>
               <label class="f-label" for="phone">Telefon *</label>
-              <input id="phone" type="tel" class="f-input" placeholder="07XX XXX XXX" autocomplete="tel" />
+              <input id="phone" name="Telefon" type="tel" class="f-input" placeholder="07XX XXX XXX" autocomplete="tel" />
               <div class="f-error"></div>
             </div>
           </div>
@@ -758,12 +834,12 @@
           <div class="grid sm:grid-cols-2 gap-4 mb-4">
             <div>
               <label class="f-label" for="email">Email</label>
-              <input id="email" type="email" class="f-input" placeholder="email@exemplu.ro" autocomplete="email" />
+              <input id="email" name="Email" type="email" class="f-input" placeholder="email@exemplu.ro" autocomplete="email" />
               <div class="f-error"></div>
             </div>
             <div>
               <label class="f-label" for="pet-name">Numele animalului *</label>
-              <input id="pet-name" type="text" class="f-input" placeholder="Azor, Mițu..." />
+              <input id="pet-name" name="Nume animal" type="text" class="f-input" placeholder="Azor, Mițu..." />
               <div class="f-error"></div>
             </div>
           </div>
@@ -771,7 +847,7 @@
           <div class="grid sm:grid-cols-2 gap-4 mb-4">
             <div>
               <label class="f-label" for="pet-type">Tipul animalului *</label>
-              <select id="pet-type" class="f-input">
+              <select id="pet-type" name="Tip animal" class="f-input">
                 <option value="">Selectează...</option>
                 <option value="caine">Câine</option>
                 <option value="pisica">Pisică</option>
@@ -784,7 +860,7 @@
             </div>
             <div>
               <label class="f-label" for="service">Serviciul dorit *</label>
-              <select id="service" class="f-input">
+              <select id="service" name="Serviciu" class="f-input">
                 <option value="">Selectează...</option>
                 <option value="consultatie">Consultație generală</option>
                 <option value="vaccinare">Vaccinare</option>
@@ -799,19 +875,19 @@
 
           <div class="mb-4">
             <label class="f-label" for="preferred-date">Data preferată</label>
-            <input id="preferred-date" type="date" class="f-input" />
+            <input id="preferred-date" name="Data preferată" type="date" class="f-input" />
           </div>
 
           <div class="mb-5">
             <label class="f-label" for="message">Descrierea problemei</label>
-            <textarea id="message" rows="3" class="f-input" placeholder="Descrieți pe scurt motivul vizitei..." style="resize:vertical;"></textarea>
+            <textarea id="message" name="Descriere problemă" rows="3" class="f-input" placeholder="Descrieți pe scurt motivul vizitei..." style="resize:vertical;"></textarea>
           </div>
 
           <div class="flex items-start gap-3 mb-5">
             <input type="checkbox" id="gdpr" class="mt-0.5 w-4 h-4 flex-shrink-0" style="accent-color:var(--red); cursor:pointer;" />
             <label for="gdpr" class="text-xs cursor-pointer" style="color:#666; font-weight:400;">
               Sunt de acord cu prelucrarea datelor personale conform
-              <a href="#" style="color:var(--red);">Politicii de confidențialitate</a> VET STUFF *
+              <a href="privacy.html" style="color:var(--red);">Politicii de confidențialitate</a> VET STUFF *
             </label>
           </div>
           <div id="gdpr-error" class="text-xs mb-4" style="color:var(--red); display:none;">Te rugăm să accepți politica de confidențialitate.</div>
@@ -901,9 +977,13 @@
     </div>
 
     <!-- Map -->
-    <div class="mt-8 rounded-2xl overflow-hidden reveal" style="height:260px; border:1.5px solid var(--border);">
-      <img src="https://placehold.co/1200x260/E8EDF5/1B3A6B?text=Str.+Mioriței+nr.10%2C+Bacău"
-           alt="Hartă VET STUFF" class="w-full h-full object-cover" />
+    <div class="mt-8 rounded-2xl overflow-hidden reveal" style="height:280px; border:1.5px solid var(--border);">
+      <iframe
+        src="https://maps.google.com/maps?q=Str.+Mioriței+nr.+10,+Bacău,+Romania&z=16&output=embed"
+        width="100%" height="280" style="border:0; display:block;"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        title="Locație VET STUFF — Str. Mioriței nr. 10, Bacău">
+      </iframe>
     </div>
 
   </div>
@@ -1000,9 +1080,9 @@
     <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs" style="color:rgba(255,255,255,0.5);">
       <div>© 2026 VET STUFF · Toate drepturile rezervate</div>
       <div class="flex gap-4">
-        <a href="#" class="hover:text-white transition-colors">Politica de confidențialitate</a>
-        <a href="#" class="hover:text-white transition-colors">Termeni și condiții</a>
-        <a href="#" class="hover:text-white transition-colors">GDPR</a>
+        <a href="privacy.html" class="hover:text-white transition-colors">Politica de confidențialitate</a>
+        <a href="terms.html" class="hover:text-white transition-colors">Termeni și condiții</a>
+        <a href="gdpr.html" class="hover:text-white transition-colors">GDPR</a>
         <a href="#contact" class="hover:text-white transition-colors flex items-center gap-1">
           Înapoi sus ↑
         </a>
@@ -1123,9 +1203,30 @@ form.addEventListener('submit', e => {
   if (!gdpr) ok = false;
 
   if (ok) {
-    document.getElementById('form-success').classList.remove('hidden');
-    form.querySelectorAll('input,select,textarea,button').forEach(el => { el.disabled = true; el.style.opacity = '0.5'; });
-    document.getElementById('form-success').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = 'Se trimite...';
+
+    const data = new FormData(form);
+    fetch('https://formspree.io/f/YOUR_FORM_ID', {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    }).then(res => {
+      if (res.ok) {
+        document.getElementById('form-success').classList.remove('hidden');
+        form.querySelectorAll('input,select,textarea,button').forEach(el => { el.disabled = true; el.style.opacity = '0.5'; });
+        document.getElementById('form-success').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        btn.disabled = false;
+        btn.textContent = 'Trimite programarea';
+        alert('A apărut o eroare. Te rugăm să ne contactezi telefonic la +40 742 870 000.');
+      }
+    }).catch(() => {
+      btn.disabled = false;
+      btn.textContent = 'Trimite programarea';
+      alert('A apărut o eroare de rețea. Te rugăm să ne contactezi telefonic la +40 742 870 000.');
+    });
   }
 });
 </script>

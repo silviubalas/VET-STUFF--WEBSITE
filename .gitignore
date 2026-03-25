@@ -1,0 +1,13 @@
+.DS_Store
+*.DS_Store
+Captură*
+front-end skill.md
+chatbot-veterinar.html
+temporary screenshots/
+imagini/*.HEIC
+imagini/*-raw.*
+imagini/analize.*
+imagini/pacient-consultatie.jpg
+imagini/pacient-vaccinare.jpg
+serve.py
+CLAUDE.md
