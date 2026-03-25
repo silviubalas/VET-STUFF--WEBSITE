@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feedback — VET STUFF Bacău</title>
+  <meta name="description" content="Spune-ne cum a fost experiența ta la VET STUFF. Feedback-ul tău ne ajută să ne îmbunătățim." />
+  <link rel="canonical" href="https://vet-stuff.ro/feedback.html" />
+  <link rel="icon" type="image/png" href="logo.PNG" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; color: #1a1a1a; background: #f8f7f4; overflow-x: hidden; }
+    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
+
+    :root { --red:#D42B2B; --navy:#1B3A6B; --gray:#7A8BA0; --light:#F8F7F4; --border:#e5e7eb; }
+
+    /* TOPBAR */
+    #topbar { background: var(--navy); font-size: 0.78rem; color: rgba(255,255,255,0.85); padding: 7px 0; }
+    #topbar a { color: rgba(255,255,255,0.85); transition: color 0.15s; }
+    #topbar a:hover { color: #fff; }
+
+    /* HEADER */
+    #site-header { position: sticky; top: 0; z-index: 999; }
+    #navbar { background: #fff; border-bottom: 1px solid var(--border); transition: box-shadow 0.2s; }
+    #navbar.scrolled { box-shadow: 0 2px 16px rgba(0,0,0,0.08); }
+    .nav-link { font-size: 0.9rem; font-weight: 500; color: #222; white-space: nowrap; transition: color 0.15s; }
+    .nav-link:hover { color: var(--red); }
+    .btn-red { display: inline-flex; align-items: center; gap: 6px; background: var(--red); color: #fff; font-size: 0.85rem; font-weight: 600; padding: 9px 18px; border-radius: 6px; white-space: nowrap; transition: background 0.2s, transform 0.15s; }
+    .btn-red:hover { background: #16a34a; transform: translateY(-1px); }
+
+    /* MOBILE MENU */
+    #mobile-menu { display: none; position: fixed; inset: 0; background: #fff; z-index: 998; flex-direction: column; padding: 80px 24px 24px; gap: 4px; }
+    #mobile-menu.open { display: flex; }
+    .mob-link { font-size: 1.4rem; font-weight: 700; color: var(--navy); padding: 12px 0; border-bottom: 1px solid var(--border); transition: color 0.15s; }
+    .mob-link:hover { color: var(--red); }
+
+    /* SCROLL TOP */
+    #scroll-top { position: fixed; bottom: 24px; right: 24px; width: 44px; height: 44px; background: var(--navy); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 990; opacity: 0; pointer-events: none; transform: translateY(10px); transition: opacity 0.25s, transform 0.25s, background 0.15s; box-shadow: 0 4px 16px rgba(0,0,0,0.18); }
+    #scroll-top.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    #scroll-top:hover { background: var(--red); }
+
+    /* FEEDBACK FORM */
+    .fb-card {
+      background: #fff;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 2px;
+    }
+    .fb-section-header {
+      background: var(--navy);
+      padding: 18px 28px;
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+    .fb-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 24px;
+      padding: 22px 28px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .fb-row:last-child { border-bottom: none; }
+    .fb-question {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #1a1a1a;
+      line-height: 1.5;
+    }
+    .fb-rating {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .fb-rating input[type="radio"] { display: none; }
+    .fb-rating label {
+      padding: 7px 14px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      transition: all 0.15s;
+      white-space: nowrap;
+      background: #f3f4f6;
+      color: #555;
+    }
+    .fb-rating input[value="Excelent"] + label:hover,
+    .fb-rating input[value="Excelent"]:checked + label { background: #dcfce7; color: #15803d; border-color: #86efac; }
+    .fb-rating input[value="Bun"] + label:hover,
+    .fb-rating input[value="Bun"]:checked + label { background: #dbeafe; color: #1d4ed8; border-color: #93c5fd; }
+    .fb-rating input[value="Satisfăcător"] + label:hover,
+    .fb-rating input[value="Satisfăcător"]:checked + label { background: #fef9c3; color: #a16207; border-color: #fde047; }
+    .fb-rating input[value="Deficitar"] + label:hover,
+    .fb-rating input[value="Deficitar"]:checked + label { background: #fee2e2; color: #b91c1c; border-color: #fca5a5; }
+
+    .fb-recommend { display: flex; gap: 10px; flex-wrap: wrap; }
+    .fb-recommend input[type="radio"] { display: none; }
+    .fb-recommend label {
+      padding: 8px 16px; border-radius: 20px; font-size: 0.83rem; font-weight: 600;
+      cursor: pointer; border: 1.5px solid var(--border); color: #555; background: #f3f4f6;
+      transition: all 0.15s; white-space: nowrap;
+    }
+    .fb-recommend input:checked + label { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .fb-recommend label:hover { border-color: var(--navy); color: var(--navy); }
+
+    .f-input {
+      width: 100%; padding: 10px 13px; border: 1.5px solid var(--border); border-radius: 7px;
+      font-size: 0.9rem; font-family: 'DM Sans', sans-serif; color: #222; background: #fff;
+      outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .f-input:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(212,43,43,0.1); }
+    .f-label { display: block; font-size: 0.82rem; font-weight: 600; color: #333; margin-bottom: 5px; }
+
+    /* FOOTER */
+    #footer { background: #fff; border-top: 1px solid var(--border); }
+    #footer-bottom { background: #f3f4f6; border-top: 1px solid var(--border); }
+    .footer-link { font-size: 0.85rem; color: #555; transition: color 0.15s; }
+    .footer-link:hover { color: var(--red); }
+    .footer-heading { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); margin-bottom: 14px; }
+    .social-btn { width: 38px; height: 38px; background: #f3f4f6; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #555; transition: background 0.15s, color 0.15s; }
+    .social-btn:hover { background: var(--red); color: #fff; }
+    .footer-cta-btn { display: flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 0.88rem; border: 1.5px solid var(--border); color: #333; background: #fff; transition: border-color 0.2s, color 0.2s, background 0.2s; white-space: nowrap; }
+    .footer-cta-btn:hover { border-color: var(--red); color: #fff; background: var(--red); }
+
+    @media (max-width: 640px) {
+      .fb-row { grid-template-columns: 1fr; gap: 12px; }
+      .fb-section-header { padding: 14px 18px; }
+      .fb-row { padding: 16px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="site-header">
+<div id="topbar">
+  <div class="max-w-5xl mx-auto px-4 flex items-center justify-between">
+    <a href="tel:+40742870000" class="flex items-center gap-1.5 font-medium">
+      <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+      CALL CENTER +40 742 870 000
+    </a>
+    <a href="index.html#contact" class="flex items-center gap-1.5 font-medium">
+      <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+      CONTACT
+    </a>
+  </div>
+</div>
+<nav id="navbar">
+  <div class="max-w-5xl mx-auto px-4 flex items-center justify-between" style="height:88px;">
+    <a href="index.html"><img src="logo.PNG" alt="VET STUFF" style="height:58px;width:auto;" /></a>
+    <div class="hidden md:flex items-center gap-6">
+      <a href="index.html#despre"     class="nav-link">Despre noi</a>
+      <a href="index.html#servicii"   class="nav-link">Servicii</a>
+      <a href="echipa.html"           class="nav-link">Echipa medicală</a>
+      <a href="index.html#programare" class="nav-link">Programare</a>
+      <a href="index.html#contact"    class="nav-link">Contact</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="index.html#programare" class="btn-red hidden md:inline-flex">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+        Programare
+      </a>
+      <button id="hamburger" class="md:hidden p-1 flex flex-col gap-1.5" aria-label="Meniu">
+        <span id="hb1" class="block w-6 h-0.5" style="background:#222;transition:transform 0.3s;"></span>
+        <span id="hb2" class="block w-6 h-0.5" style="background:#222;transition:opacity 0.3s;"></span>
+        <span id="hb3" class="block w-6 h-0.5" style="background:#222;transition:transform 0.3s;"></span>
+      </button>
+    </div>
+  </div>
+</nav>
+<div id="mobile-menu">
+  <a href="index.html#despre"     class="mob-link" onclick="closeMenu()">Despre noi</a>
+  <a href="index.html#servicii"   class="mob-link" onclick="closeMenu()">Servicii</a>
+  <a href="echipa.html"           class="mob-link" onclick="closeMenu()">Echipa medicală</a>
+  <a href="index.html#programare" class="mob-link" onclick="closeMenu()">Programare</a>
+  <a href="index.html#contact"    class="mob-link" onclick="closeMenu()">Contact</a>
+</div>
+</header>
+
+<!-- MAIN -->
+<main style="padding: 56px 16px 80px;">
+  <div class="max-w-5xl mx-auto">
+
+    <!-- Intro -->
+    <div style="background:var(--navy);border-radius:16px;padding:36px 36px 32px;margin-bottom:32px;position:relative;overflow:hidden;">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 90% 50%,rgba(212,43,43,0.15) 0%,transparent 60%);pointer-events:none;"></div>
+      <div style="position:relative;">
+        <img src="logo.PNG" alt="VET STUFF" style="height:44px;width:auto;margin-bottom:20px;filter:brightness(0) invert(1);" />
+        <h1 style="font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;color:#fff;margin-bottom:10px;letter-spacing:-0.02em;">Feedback</h1>
+        <p style="color:rgba(255,255,255,0.7);font-size:0.95rem;line-height:1.7;max-width:520px;">
+          Ai ales serviciile medicale veterinare VET STUFF. Îți mulțumim!<br/>
+          Feedback-ul tău ne ajută să oferim cea mai bună îngrijire pentru animalele de companie din Bacău și din toată țara.
+        </p>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <form id="feedback-form" action="https://formspree.io/f/mzdkbdzb" method="POST" novalidate>
+      <input type="hidden" name="_subject" value="Feedback nou — VET STUFF" />
+
+      <!-- 1. Info proprietar -->
+      <div class="fb-card" style="margin-bottom:16px;">
+        <div class="fb-section-header">Informații despre proprietarul animalului de companie</div>
+
+        <div style="padding:24px 28px;display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div>
+            <label class="f-label" for="fb-nume">Nume *</label>
+            <input id="fb-nume" name="Nume" type="text" class="f-input" placeholder="Ion Popescu" required />
+          </div>
+          <div>
+            <label class="f-label" for="fb-email">Email *</label>
+            <input id="fb-email" name="Email" type="email" class="f-input" placeholder="email@exemplu.ro" required />
+          </div>
+          <div>
+            <label class="f-label" for="fb-telefon">Telefon</label>
+            <input id="fb-telefon" name="Telefon" type="tel" class="f-input" placeholder="07XX XXX XXX" />
+          </div>
+          <div>
+            <label class="f-label" for="fb-animal">Numele animalului de companie</label>
+            <input id="fb-animal" name="Nume animal" type="text" class="f-input" placeholder="Azor, Mițu..." />
+          </div>
+          <div>
+            <label class="f-label">Tip de animal de companie *</label>
+            <div style="display:flex;gap:10px;margin-top:6px;">
+              <label style="display:flex;align-items:center;gap:6px;font-size:0.88rem;cursor:pointer;">
+                <input type="radio" name="Tip animal" value="Câine" style="accent-color:var(--red);" /> Câine
+              </label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:0.88rem;cursor:pointer;">
+                <input type="radio" name="Tip animal" value="Pisică" style="accent-color:var(--red);" /> Pisică
+              </label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:0.88rem;cursor:pointer;">
+                <input type="radio" name="Tip animal" value="Altul" style="accent-color:var(--red);" /> Altul
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Detalii programare -->
+      <div class="fb-card" style="margin-bottom:16px;">
+        <div class="fb-section-header">Detalii despre programare</div>
+        <div style="padding:24px 28px;display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div>
+            <label class="f-label" for="fb-data">Data vizitei *</label>
+            <input id="fb-data" name="Data vizitei" type="date" class="f-input" required />
+          </div>
+          <div>
+            <label class="f-label" for="fb-motiv">Motivul vizitei *</label>
+            <input id="fb-motiv" name="Motivul vizitei" type="text" class="f-input" placeholder="ex: consultație, vaccinare..." required />
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Întrebări rating -->
+      <div class="fb-card" style="margin-bottom:16px;">
+        <div class="fb-section-header">Evaluarea experienței tale la VET STUFF</div>
+
+        <div class="fb-row">
+          <div class="fb-question">Cum ai evaluat experiența ta generală cu clinica veterinară VET STUFF?</div>
+          <div class="fb-rating">
+            <input type="radio" name="Experiență generală" value="Excelent" id="eg-ex" /><label for="eg-ex">Excelent</label>
+            <input type="radio" name="Experiență generală" value="Bun" id="eg-bun" /><label for="eg-bun">Bun</label>
+            <input type="radio" name="Experiență generală" value="Satisfăcător" id="eg-sat" /><label for="eg-sat">Satisfăcător</label>
+            <input type="radio" name="Experiență generală" value="Deficitar" id="eg-def" /><label for="eg-def">Deficitar</label>
+          </div>
+        </div>
+
+        <div class="fb-row">
+          <div class="fb-question">Cum apreciezi profesionalismul și amabilitatea echipei medicale VET STUFF?</div>
+          <div class="fb-rating">
+            <input type="radio" name="Profesionalism echipă" value="Excelent" id="pe-ex" /><label for="pe-ex">Excelent</label>
+            <input type="radio" name="Profesionalism echipă" value="Bun" id="pe-bun" /><label for="pe-bun">Bun</label>
+            <input type="radio" name="Profesionalism echipă" value="Satisfăcător" id="pe-sat" /><label for="pe-sat">Satisfăcător</label>
+            <input type="radio" name="Profesionalism echipă" value="Deficitar" id="pe-def" /><label for="pe-def">Deficitar</label>
+          </div>
+        </div>
+
+        <div class="fb-row">
+          <div class="fb-question">Ai fost mulțumit de serviciile medicale primite la VET STUFF?</div>
+          <div class="fb-rating">
+            <input type="radio" name="Satisfacție servicii" value="Excelent" id="ss-ex" /><label for="ss-ex">Excelent</label>
+            <input type="radio" name="Satisfacție servicii" value="Bun" id="ss-bun" /><label for="ss-bun">Bun</label>
+            <input type="radio" name="Satisfacție servicii" value="Satisfăcător" id="ss-sat" /><label for="ss-sat">Satisfăcător</label>
+            <input type="radio" name="Satisfacție servicii" value="Deficitar" id="ss-def" /><label for="ss-def">Deficitar</label>
+          </div>
+        </div>
+
+        <div class="fb-row">
+          <div class="fb-question">Cum ai descrie interacțiunea cu echipa medicală din cadrul VET STUFF?</div>
+          <div class="fb-rating">
+            <input type="radio" name="Interacțiune echipă" value="Excelent" id="ie-ex" /><label for="ie-ex">Excelent</label>
+            <input type="radio" name="Interacțiune echipă" value="Bun" id="ie-bun" /><label for="ie-bun">Bun</label>
+            <input type="radio" name="Interacțiune echipă" value="Satisfăcător" id="ie-sat" /><label for="ie-sat">Satisfăcător</label>
+            <input type="radio" name="Interacțiune echipă" value="Deficitar" id="ie-def" /><label for="ie-def">Deficitar</label>
+          </div>
+        </div>
+
+        <div class="fb-row">
+          <div class="fb-question">Cum ai evaluat timpul de așteptare pentru programare la VET STUFF?</div>
+          <div class="fb-rating">
+            <input type="radio" name="Timp așteptare" value="Excelent" id="ta-ex" /><label for="ta-ex">Excelent</label>
+            <input type="radio" name="Timp așteptare" value="Bun" id="ta-bun" /><label for="ta-bun">Bun</label>
+            <input type="radio" name="Timp așteptare" value="Satisfăcător" id="ta-sat" /><label for="ta-sat">Satisfăcător</label>
+            <input type="radio" name="Timp așteptare" value="Deficitar" id="ta-def" /><label for="ta-def">Deficitar</label>
+          </div>
+        </div>
+
+        <div class="fb-row">
+          <div class="fb-question">Cum ai aprecia curățenia și ambianța clinicii VET STUFF?</div>
+          <div class="fb-rating">
+            <input type="radio" name="Curățenie" value="Excelent" id="cu-ex" /><label for="cu-ex">Excelent</label>
+            <input type="radio" name="Curățenie" value="Bun" id="cu-bun" /><label for="cu-bun">Bun</label>
+            <input type="radio" name="Curățenie" value="Satisfăcător" id="cu-sat" /><label for="cu-sat">Satisfăcător</label>
+            <input type="radio" name="Curățenie" value="Deficitar" id="cu-def" /><label for="cu-def">Deficitar</label>
+          </div>
+        </div>
+
+        <div class="fb-row">
+          <div class="fb-question">Cum ai evaluat eficiența comunicării cu personalul VET STUFF?</div>
+          <div class="fb-rating">
+            <input type="radio" name="Comunicare personal" value="Excelent" id="cp-ex" /><label for="cp-ex">Excelent</label>
+            <input type="radio" name="Comunicare personal" value="Bun" id="cp-bun" /><label for="cp-bun">Bun</label>
+            <input type="radio" name="Comunicare personal" value="Satisfăcător" id="cp-sat" /><label for="cp-sat">Satisfăcător</label>
+            <input type="radio" name="Comunicare personal" value="Deficitar" id="cp-def" /><label for="cp-def">Deficitar</label>
+          </div>
+        </div>
+
+        <div class="fb-row">
+          <div class="fb-question">Cum ai evaluat experiența ta cu personalul de la recepția VET STUFF?</div>
+          <div class="fb-rating">
+            <input type="radio" name="Recepție" value="Excelent" id="re-ex" /><label for="re-ex">Excelent</label>
+            <input type="radio" name="Recepție" value="Bun" id="re-bun" /><label for="re-bun">Bun</label>
+            <input type="radio" name="Recepție" value="Satisfăcător" id="re-sat" /><label for="re-sat">Satisfăcător</label>
+            <input type="radio" name="Recepție" value="Deficitar" id="re-def" /><label for="re-def">Deficitar</label>
+          </div>
+        </div>
+
+        <div class="fb-row">
+          <div class="fb-question">Cum ai evaluat îngrijirea acordată animalului tău la VET STUFF?</div>
+          <div class="fb-rating">
+            <input type="radio" name="Îngrijire animal" value="Excelent" id="ia-ex" /><label for="ia-ex">Excelent</label>
+            <input type="radio" name="Îngrijire animal" value="Bun" id="ia-bun" /><label for="ia-bun">Bun</label>
+            <input type="radio" name="Îngrijire animal" value="Satisfăcător" id="ia-sat" /><label for="ia-sat">Satisfăcător</label>
+            <input type="radio" name="Îngrijire animal" value="Deficitar" id="ia-def" /><label for="ia-def">Deficitar</label>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 4. Recomandare -->
+      <div class="fb-card" style="margin-bottom:16px;">
+        <div class="fb-section-header">Recomandare</div>
+        <div class="fb-row" style="border-bottom:none;">
+          <div class="fb-question">Ai recomanda clinica veterinară VET STUFF altor proprietari de animale de companie?</div>
+          <div class="fb-recommend">
+            <input type="radio" name="Recomandare" value="Da, cu siguranță" id="rec-1" /><label for="rec-1">Da, cu siguranță</label>
+            <input type="radio" name="Recomandare" value="Da, probabil" id="rec-2" /><label for="rec-2">Da, probabil</label>
+            <input type="radio" name="Recomandare" value="Nu, probabil nu" id="rec-3" /><label for="rec-3">Nu, probabil nu</label>
+            <input type="radio" name="Recomandare" value="Nu, cu siguranță nu" id="rec-4" /><label for="rec-4">Nu, cu siguranță nu</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Sugestii -->
+      <div class="fb-card" style="margin-bottom:28px;">
+        <div class="fb-section-header">Sugestii</div>
+        <div style="padding:24px 28px;">
+          <label class="f-label" for="fb-sugestii" style="font-size:0.95rem;font-weight:500;color:#1a1a1a;margin-bottom:10px;">
+            Te rugăm să ne oferi sugestii suplimentare pentru îmbunătățire:
+          </label>
+          <textarea id="fb-sugestii" name="Sugestii" rows="5" class="f-input" placeholder="Scrie aici orice gând, sugestie sau observație..." style="resize:vertical;"></textarea>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" id="fb-submit"
+              style="width:100%;padding:16px;background:var(--red);color:#fff;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;border:none;border-radius:10px;cursor:pointer;transition:background 0.2s,transform 0.15s;letter-spacing:0.01em;"
+              onmouseover="this.style.background='#16a34a'" onmouseout="this.style.background='var(--red)'"
+              onmousedown="this.style.transform='translateY(0)'" onmouseup="this.style.transform='translateY(-1px)'">
+        Trimite feedback-ul
+      </button>
+
+      <!-- Success -->
+      <div id="fb-success" style="display:none;margin-top:24px;background:#dcfce7;border:1px solid #86efac;border-radius:12px;padding:28px;text-align:center;">
+        <div style="font-size:2rem;margin-bottom:10px;">✅</div>
+        <div style="font-size:1.1rem;font-weight:800;color:#15803d;margin-bottom:6px;">Mulțumim pentru feedback!</div>
+        <div style="font-size:0.88rem;color:#166534;">Opinia ta contează enorm pentru echipa VET STUFF.</div>
+      </div>
+
+    </form>
+
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div style="border-bottom:1px solid var(--border);padding:22px 0;">
+    <div class="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <img src="logo.PNG" alt="VET STUFF" style="height:40px;width:auto;" />
+      <div class="flex flex-wrap gap-3">
+        <a href="index.html#programare" class="footer-cta-btn">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+          Programează o vizită
+        </a>
+        <a href="tel:+40742870000" class="footer-cta-btn">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+          +40 742 870 000
+        </a>
+      </div>
+    </div>
+  </div>
+  <div style="padding:40px 0 32px;">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-10">
+        <div>
+          <img src="logo.PNG" alt="VET STUFF" style="height:36px;width:auto;margin-bottom:14px;" />
+          <p style="font-size:0.85rem;color:#555;line-height:1.75;">Str. Mioriței nr. 10<br/>Bacău, România</p>
+          <a href="mailto:vet.stuff@yahoo.com" class="footer-link" style="display:block;margin-top:10px;">vet.stuff@yahoo.com</a>
+          <a href="tel:+40742870000" class="footer-link" style="display:block;margin-top:4px;">+40 742 870 000</a>
+        </div>
+        <div>
+          <div class="footer-heading">Navigare</div>
+          <ul style="display:flex;flex-direction:column;gap:10px;">
+            <li><a href="index.html#despre"     class="footer-link">Despre noi</a></li>
+            <li><a href="index.html#servicii"   class="footer-link">Servicii</a></li>
+            <li><a href="echipa.html"           class="footer-link">Echipa medicală</a></li>
+            <li><a href="index.html#programare" class="footer-link">Programare online</a></li>
+            <li><a href="index.html#contact"    class="footer-link">Contact</a></li>
+            <li><a href="feedback.html"         class="footer-link">Feedback</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-heading">Urmărește-ne</div>
+          <div style="display:grid;grid-template-columns:repeat(2,38px);gap:8px;">
+            <a href="https://www.facebook.com/vetstuff" target="_blank" rel="noopener" aria-label="Facebook" class="social-btn">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/vet_stuff_" target="_blank" rel="noopener" aria-label="Instagram" class="social-btn">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </a>
+            <a href="https://www.tiktok.com/@vet.stuff" target="_blank" rel="noopener" aria-label="TikTok" class="social-btn">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/vetstuff" target="_blank" rel="noopener" aria-label="Messenger" class="social-btn">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 4.975 0 11.111c0 3.498 1.744 6.614 4.469 8.652V24l4.088-2.242c1.092.3 2.246.464 3.443.464 6.626 0 12-4.974 12-11.111C24 4.975 18.626 0 12 0zm1.191 14.963l-3.055-3.26-5.963 3.26L10.732 8l3.131 3.259L19.752 8l-6.561 6.963z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="footer-bottom" class="py-4">
+    <div class="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3" style="font-size:0.78rem;color:#888;">
+      <div>© 2026 VET STUFF · Toate drepturile rezervate</div>
+      <div style="display:flex;flex-wrap:wrap;gap:16px;">
+        <a href="terms.html"   style="color:#888;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='#888'">Termeni și condiții</a>
+        <a href="privacy.html" style="color:#888;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='#888'">Politica de confidențialitate</a>
+        <a href="gdpr.html"    style="color:#888;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='#888'">GDPR</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Sus">
+  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+</button>
+
+<script>
+/* Navbar */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 8);
+  document.getElementById('scroll-top').classList.toggle('show', window.scrollY > 400);
+}, { passive: true });
+
+/* Mobile menu */
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+let menuOpen = false;
+hamburger.addEventListener('click', () => {
+  menuOpen = !menuOpen;
+  mobileMenu.classList.toggle('open', menuOpen);
+  document.body.style.overflow = menuOpen ? 'hidden' : '';
+  document.getElementById('hb1').style.transform = menuOpen ? 'translateY(8px) rotate(45deg)' : '';
+  document.getElementById('hb2').style.opacity   = menuOpen ? '0' : '';
+  document.getElementById('hb3').style.transform = menuOpen ? 'translateY(-8px) rotate(-45deg)' : '';
+});
+function closeMenu() {
+  menuOpen = false; mobileMenu.classList.remove('open');
+  document.body.style.overflow = '';
+  document.getElementById('hb1').style.transform = '';
+  document.getElementById('hb2').style.opacity   = '';
+  document.getElementById('hb3').style.transform = '';
+}
+
+/* Form submit */
+document.getElementById('feedback-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('fb-submit');
+  btn.disabled = true;
+  btn.textContent = 'Se trimite...';
+  btn.style.background = '#888';
+
+  const data = new FormData(this);
+  try {
+    const res = await fetch('https://formspree.io/f/mzdkbdzb', { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
+    if (res.ok) {
+      document.getElementById('fb-success').style.display = 'block';
+      document.getElementById('fb-success').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      btn.style.display = 'none';
+    } else {
+      btn.disabled = false;
+      btn.textContent = 'Trimite feedback-ul';
+      btn.style.background = 'var(--red)';
+      alert('Eroare. Te rugăm să ne contactezi la +40 742 870 000.');
+    }
+  } catch {
+    btn.disabled = false;
+    btn.textContent = 'Trimite feedback-ul';
+    btn.style.background = 'var(--red)';
+    alert('Eroare de rețea. Te rugăm să ne contactezi la +40 742 870 000.');
+  }
+});
+</script>
+</body>
+</html>
