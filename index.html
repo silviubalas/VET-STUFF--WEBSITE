@@ -80,7 +80,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
 
   <script>
     tailwind.config = {
@@ -99,13 +99,14 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', sans-serif; color: #1a1a1a; background: #fff; overflow-x: hidden; }
+    body { font-family: 'DM Sans', sans-serif; color: #1a1a1a; background: #fff; overflow-x: hidden; }
+    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
 
     :root {
       --red:    #D42B2B;
       --navy:   #1B3A6B;
       --gray:   #7A8BA0;
-      --light:  #f5f5f5;
+      --light:  #F8F7F4;
       --border: #e5e7eb;
     }
 
@@ -160,10 +161,19 @@
     #hero {
       position: relative;
       width: 100%;
-      height: 72vh;
-      min-height: 420px;
+      height: 82vh;
+      min-height: 480px;
       overflow: hidden;
       background: #1B3A6B;
+    }
+    /* Grain texture overlay */
+    #hero::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.035;
+      pointer-events: none;
+      z-index: 4;
     }
     .hero-slide {
       position: absolute; inset: 0;
@@ -179,27 +189,34 @@
     }
     .hero-overlay {
       position: absolute; inset: 0;
-      background: linear-gradient(to right, rgba(17,39,71,0.72) 0%, rgba(17,39,71,0.3) 55%, transparent 100%);
+      background:
+        linear-gradient(to right, rgba(12,28,56,0.82) 0%, rgba(12,28,56,0.45) 50%, rgba(12,28,56,0.1) 100%),
+        linear-gradient(to top, rgba(12,28,56,0.35) 0%, transparent 40%);
     }
     .hero-content {
       position: absolute;
       top: 50%; left: 6%;
       transform: translateY(-50%);
       color: #fff;
-      max-width: 500px;
+      max-width: 540px;
     }
     .hero-content h1 {
-      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2rem, 4.2vw, 3.4rem);
       font-weight: 800;
-      line-height: 1.15;
-      margin-bottom: 12px;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.25);
     }
     .hero-content p {
-      font-size: 1rem;
-      line-height: 1.6;
-      color: rgba(255,255,255,0.85);
-      margin-bottom: 24px;
-      max-width: 380px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.88);
+      margin-bottom: 28px;
+      max-width: 400px;
+      font-weight: 300;
     }
     .hero-btn {
       display: inline-flex; align-items: center; gap: 8px;
@@ -254,10 +271,34 @@
     /* ── SECTION TITLE ─────────────────────────────────────── */
     .section-title {
       text-align: center;
-      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.8rem, 3.2vw, 2.6rem);
       font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+    .section-title-wrap {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .section-title-wrap .section-subtitle {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
       color: var(--red);
-      margin-bottom: 32px;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .section-title-wrap::after {
+      content: '';
+      display: block;
+      width: 44px;
+      height: 3px;
+      background: var(--red);
+      border-radius: 2px;
+      margin: 14px auto 0;
     }
 
     /* ── SERVICE CARDS (coloured, horizontal) ──────────────── */
@@ -285,6 +326,7 @@
       font-size: 1.6rem;
     }
     .service-card h3 {
+      font-family: 'DM Sans', sans-serif;
       font-size: 1rem;
       font-weight: 700;
       color: #fff;
@@ -345,10 +387,24 @@
     .team-card-spec { font-size: 0.82rem; color: var(--gray); margin-top: 3px; }
 
     /* ── STATS BAND ────────────────────────────────────────── */
-    #stats { background: var(--navy); }
-    .stat-val { font-size: 2.8rem; font-weight: 800; color: #fff; line-height: 1; }
+    #stats { background: var(--navy); position: relative; overflow: hidden; }
+    #stats::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 20% 50%, rgba(212,43,43,0.12) 0%, transparent 60%),
+                  radial-gradient(ellipse at 80% 50%, rgba(255,255,255,0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .stat-val {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 3.4rem;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
     .stat-suf { color: var(--red); }
-    .stat-lbl { font-size: 0.75rem; font-weight: 600; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 6px; }
+    .stat-lbl { font-size: 0.72rem; font-weight: 600; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 8px; }
 
     /* ── FORM ──────────────────────────────────────────────── */
     .f-label { display: block; font-size: 0.82rem; font-weight: 600; color: #333; margin-bottom: 5px; }
@@ -358,7 +414,7 @@
       border: 1.5px solid var(--border);
       border-radius: 7px;
       font-size: 0.9rem;
-      font-family: 'Inter', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       color: #222;
       background: #fff;
       outline: none;
@@ -371,12 +427,17 @@
     /* ── CONTACT ───────────────────────────────────────────── */
     .contact-box {
       border: 1.5px solid var(--border);
-      border-radius: 12px;
+      border-radius: 14px;
       padding: 24px;
       background: #fff;
-      transition: border-color 0.15s, box-shadow 0.15s;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03), 0 6px 16px rgba(27,58,107,0.05);
     }
-    .contact-box:hover { border-color: rgba(212,43,43,0.3); box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+    .contact-box:hover {
+      border-color: rgba(212,43,43,0.25);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.04), 0 16px 32px rgba(27,58,107,0.1);
+      transform: translateY(-2px);
+    }
     .schedule-row {
       display: flex; justify-content: space-between;
       padding: 10px 0;
@@ -584,10 +645,13 @@
 <!-- ═══════════════════════════════════════════════════
      SERVICII
 ═══════════════════════════════════════════════════ -->
-<section id="servicii" class="py-14 px-4" style="background:#fff;">
+<section id="servicii" class="py-20 px-4" style="background:#fff;">
   <div class="max-w-6xl mx-auto">
 
-    <h2 class="section-title reveal">Serviciile noastre</h2>
+    <div class="section-title-wrap reveal">
+      <span class="section-subtitle">Ce oferim</span>
+      <h2 class="section-title">Serviciile noastre</h2>
+    </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 
@@ -651,11 +715,15 @@
 <!-- ═══════════════════════════════════════════════════
      TAGLINE BAND
 ═══════════════════════════════════════════════════ -->
-<section style="background:var(--navy); padding:56px 16px; text-align:center;">
-  <div class="max-w-3xl mx-auto">
-    <p class="reveal" style="font-size:clamp(1.3rem,2.8vw,2rem); font-weight:700; color:#fff; line-height:1.4; font-style:italic;">
-      „Îngrijire medicală completă și integrată,<br/>
-      într-un mediu cald și fără stres."
+<section style="background:var(--navy); padding:72px 16px; text-align:center; position:relative; overflow:hidden;">
+  <!-- Decorative radial glow -->
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%, rgba(212,43,43,0.15) 0%, transparent 70%);pointer-events:none;"></div>
+  <div class="max-w-3xl mx-auto" style="position:relative;">
+    <!-- Big decorative quote -->
+    <div class="reveal" style="font-family:'Playfair Display',Georgia,serif; font-size:7rem; line-height:0.6; color:rgba(255,255,255,0.1); font-weight:900; margin-bottom:8px; user-select:none;">"</div>
+    <p class="reveal reveal-d1" style="font-family:'Playfair Display',Georgia,serif; font-size:clamp(1.35rem,2.8vw,2rem); font-weight:700; color:#fff; line-height:1.5; font-style:italic; letter-spacing:-0.01em;">
+      Îngrijire medicală completă și integrată,<br/>
+      într-un mediu cald și fără stres.
     </p>
   </div>
 </section>
@@ -663,15 +731,15 @@
 <!-- ═══════════════════════════════════════════════════
      DESPRE NOI
 ═══════════════════════════════════════════════════ -->
-<section id="despre" class="py-16" style="background:var(--light);">
+<section id="despre" class="py-24" style="background:var(--light);">
   <div class="max-w-6xl mx-auto px-4">
     <div class="grid md:grid-cols-2 gap-12 items-center">
 
       <!-- Image -->
       <div class="reveal">
-        <div class="rounded-2xl overflow-hidden" style="box-shadow:0 8px 32px rgba(0,0,0,0.12);">
+        <div class="rounded-2xl overflow-hidden" style="box-shadow:0 8px 16px rgba(0,0,0,0.07), 0 32px 64px rgba(27,58,107,0.14); aspect-ratio:4/5;">
           <img src="imagini/medic.webp"
-               alt="Medic VET STUFF" class="w-full object-cover" style="object-position:center 15%;" />
+               alt="Medic VET STUFF" class="w-full h-full object-cover" style="object-position:center 15%;" />
         </div>
       </div>
 
@@ -724,23 +792,23 @@
 <!-- ═══════════════════════════════════════════════════
      STATS BAND
 ═══════════════════════════════════════════════════ -->
-<section id="stats" class="py-12 px-4">
+<section id="stats" class="py-16 px-4">
   <div class="max-w-6xl mx-auto">
     <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
       <div class="reveal">
-        <div class="stat-val">5000<span class="stat-suf">+</span></div>
+        <div class="stat-val" data-val="5000" data-suf="+">5000<span class="stat-suf">+</span></div>
         <div class="stat-lbl">Animale tratate</div>
       </div>
       <div class="reveal reveal-d1">
-        <div class="stat-val">10<span class="stat-suf">+</span></div>
+        <div class="stat-val" data-val="10" data-suf="+">10<span class="stat-suf">+</span></div>
         <div class="stat-lbl">Medici colaboratori</div>
       </div>
       <div class="reveal reveal-d2">
-        <div class="stat-val">98<span class="stat-suf">%</span></div>
+        <div class="stat-val" data-val="98" data-suf="%">98<span class="stat-suf">%</span></div>
         <div class="stat-lbl">Clienți mulțumiți</div>
       </div>
       <div class="reveal reveal-d3">
-        <div class="stat-val">5</div>
+        <div class="stat-val" data-val="5" data-suf="">5</div>
         <div class="stat-lbl">Ani de activitate</div>
       </div>
     </div>
@@ -750,10 +818,13 @@
 <!-- ═══════════════════════════════════════════════════
      ECHIPA MEDICALĂ
 ═══════════════════════════════════════════════════ -->
-<section id="echipa" class="py-16 px-4" style="background:#fff;">
+<section id="echipa" class="py-20 px-4" style="background:#fff;">
   <div class="max-w-6xl mx-auto">
 
-    <h2 class="section-title reveal">Echipa medicală</h2>
+    <div class="section-title-wrap reveal">
+      <span class="section-subtitle">Specialiști VET STUFF</span>
+      <h2 class="section-title">Echipa medicală</h2>
+    </div>
 
     <!-- Placeholder -->
     <div class="reveal reveal-d1" style="border:2px dashed var(--border); border-radius:12px; padding:56px 24px; text-align:center; background:var(--light);">
@@ -768,7 +839,7 @@
 <!-- ═══════════════════════════════════════════════════
      PROGRAMARE ONLINE
 ═══════════════════════════════════════════════════ -->
-<section id="programare" class="py-16 px-4" style="background:var(--light);">
+<section id="programare" class="py-20 px-4" style="background:var(--light);">
   <div class="max-w-6xl mx-auto">
     <div class="grid md:grid-cols-2 gap-12 items-start">
 
@@ -810,7 +881,7 @@
       </div>
 
       <!-- Form -->
-      <div class="bg-white rounded-2xl p-8 reveal reveal-d1" style="box-shadow:0 4px 24px rgba(0,0,0,0.08); border:1.5px solid var(--border);">
+      <div class="bg-white rounded-2xl p-8 reveal reveal-d1" style="box-shadow:0 4px 8px rgba(0,0,0,0.04), 0 24px 48px rgba(27,58,107,0.1); border:1.5px solid var(--border);">
         <h3 class="text-xl font-bold mb-6" style="color:var(--navy);">Completează formularul</h3>
 
         <!-- FORMSPREE: mzdkbdzb -->
@@ -912,10 +983,13 @@
 <!-- ═══════════════════════════════════════════════════
      CONTACT & PROGRAM
 ═══════════════════════════════════════════════════ -->
-<section id="contact" class="py-16 px-4" style="background:#fff;">
+<section id="contact" class="py-20 px-4" style="background:#fff;">
   <div class="max-w-6xl mx-auto">
 
-    <h2 class="section-title reveal">Contact & Program</h2>
+    <div class="section-title-wrap reveal">
+      <span class="section-subtitle">Găsește-ne</span>
+      <h2 class="section-title">Contact & Program</h2>
+    </div>
 
     <div class="grid md:grid-cols-3 gap-6">
 
@@ -1153,6 +1227,30 @@ const revealObs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
 }, { threshold: 0.1, rootMargin: '0px 0px -32px 0px' });
 document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+/* ── Stats count-up ──────────────────────────────── */
+function countUp(el, target, suffix, duration) {
+  const start = performance.now();
+  const isFloat = target % 1 !== 0;
+  function tick(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - p, 3); // ease-out cubic
+    const val = Math.round(target * ease);
+    el.innerHTML = val + '<span class="stat-suf">' + suffix + '</span>';
+    if (p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+const statsObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    const data = el.dataset;
+    countUp(el, parseInt(data.val), data.suf || '', 1800);
+    statsObs.unobserve(el);
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.stat-val[data-val]').forEach(el => statsObs.observe(el));
 
 /* ── Form validation ─────────────────────────────── */
 const form = document.getElementById('booking-form');
