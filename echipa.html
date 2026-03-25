@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Echipa medicală — VET STUFF Bacău</title>
+  <meta name="description" content="Cunoaște echipa de medici veterinari VET STUFF din Bacău și rețeaua noastră de medici colaboratori din toată țara." />
+  <link rel="canonical" href="https://vet-stuff.ro/echipa.html" />
+  <link rel="icon" type="image/png" href="logo.PNG" />
+  <link rel="apple-touch-icon" href="logo.PNG" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { brand: '#D42B2B', navy: '#1B3A6B', muted: '#7A8BA0' } } }
+    }
+  </script>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; color: #1a1a1a; background: #fff; overflow-x: hidden; }
+    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
+
+    :root {
+      --red:    #D42B2B;
+      --navy:   #1B3A6B;
+      --gray:   #7A8BA0;
+      --light:  #F8F7F4;
+      --border: #e5e7eb;
+    }
+
+    /* ── TOP BAR ── */
+    #topbar { background: var(--navy); font-size: 0.78rem; color: rgba(255,255,255,0.85); padding: 7px 0; }
+    #topbar a { color: rgba(255,255,255,0.85); transition: color 0.15s; }
+    #topbar a:hover { color: #fff; }
+
+    /* ── HEADER ── */
+    #site-header { position: sticky; top: 0; z-index: 999; }
+    #navbar { background: #fff; border-bottom: 1px solid var(--border); transition: box-shadow 0.2s; }
+    #navbar.scrolled { box-shadow: 0 2px 16px rgba(0,0,0,0.08); }
+
+    .nav-link { font-size: 0.9rem; font-weight: 500; color: #222; white-space: nowrap; transition: color 0.15s; }
+    .nav-link:hover { color: var(--red); }
+    .nav-link.active { color: var(--red); }
+
+    .btn-red {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--red); color: #fff; font-size: 0.85rem; font-weight: 600;
+      padding: 9px 18px; border-radius: 6px; white-space: nowrap;
+      transition: background 0.15s, transform 0.15s;
+    }
+    .btn-red:hover { background: #b52020; transform: translateY(-1px); }
+
+    /* ── PAGE BANNER ── */
+    .page-banner {
+      background: var(--navy);
+      padding: 52px 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-banner::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 80% 50%, rgba(212,43,43,0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .page-banner h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+    .page-banner p {
+      color: rgba(255,255,255,0.65);
+      font-size: 1rem;
+      margin-top: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+    }
+    .breadcrumb { font-size: 0.78rem; color: rgba(255,255,255,0.45); margin-bottom: 12px; }
+    .breadcrumb a { color: rgba(255,255,255,0.55); transition: color 0.15s; }
+    .breadcrumb a:hover { color: #fff; }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--red); margin-bottom: 14px;
+    }
+    .section-label::before {
+      content: ''; display: block; width: 24px; height: 2px; background: var(--red);
+    }
+
+    /* ── DOCTOR CARD (ArcadiaVet style) ── */
+    .doctor-card {
+      display: flex; gap: 0;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .doctor-card:hover {
+      box-shadow: 0 8px 32px rgba(27,58,107,0.12);
+      transform: translateY(-3px);
+    }
+    .doctor-photo {
+      width: 180px;
+      min-height: 220px;
+      flex-shrink: 0;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+    .doctor-photo-placeholder {
+      width: 180px;
+      min-height: 220px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, #e8edf5 0%, #d4dce8 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem;
+      color: var(--gray);
+    }
+    .doctor-info {
+      padding: 24px 24px;
+      display: flex; flex-direction: column; justify-content: center;
+      flex: 1;
+    }
+    .doctor-clinic {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--gray); margin-bottom: 6px;
+    }
+    .doctor-name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.4rem; font-weight: 800; color: var(--red);
+      margin-bottom: 6px; letter-spacing: -0.01em;
+    }
+    .doctor-title {
+      font-size: 0.88rem; font-weight: 700; color: var(--navy);
+      line-height: 1.4; margin-bottom: 2px;
+    }
+    .doctor-spec {
+      font-size: 0.88rem; font-weight: 700; color: var(--navy);
+      line-height: 1.4; margin-bottom: 12px;
+    }
+    .doctor-desc {
+      font-size: 0.83rem; color: #555; line-height: 1.7;
+    }
+    .doctor-tag {
+      display: inline-block; margin-top: 12px;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
+    }
+    .doctor-tag.tag-own { background: #e8f0fe; color: var(--navy); }
+    .doctor-tag.tag-collab { background: #fef3e8; color: #b35a00; }
+
+    /* ── SEPARATOR ── */
+    .section-divider {
+      height: 1px; background: var(--border); margin: 56px 0;
+    }
+
+    /* ── FOOTER ── */
+    #footer { background: #fff; border-top: 1px solid var(--border); }
+    #footer-bottom { background: #f3f4f6; border-top: 1px solid var(--border); }
+    .footer-link { font-size: 0.85rem; color: #555; transition: color 0.15s; }
+    .footer-link:hover { color: var(--red); }
+    .footer-heading { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); margin-bottom: 14px; }
+    .social-btn { width: 38px; height: 38px; background: #f3f4f6; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #555; transition: background 0.15s, color 0.15s; }
+    .social-btn:hover { background: var(--red); color: #fff; }
+    .footer-cta-btn { display: flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 0.88rem; border: 1.5px solid var(--border); color: #333; background: #fff; transition: border-color 0.2s, color 0.2s, background 0.2s; white-space: nowrap; }
+    .footer-cta-btn:hover { border-color: var(--red); color: #fff; background: var(--red); }
+
+    /* ── MOBILE MENU ── */
+    #mobile-menu { display: none; position: fixed; inset: 0; background: #fff; z-index: 998; flex-direction: column; padding: 80px 24px 24px; gap: 4px; }
+    #mobile-menu.open { display: flex; }
+    .mob-link { font-size: 1.4rem; font-weight: 700; color: var(--navy); padding: 12px 0; border-bottom: 1px solid var(--border); transition: color 0.15s, padding-left 0.15s; }
+    .mob-link:hover { color: var(--red); padding-left: 8px; }
+
+    /* ── SCROLL TOP ── */
+    #scroll-top { position: fixed; bottom: 24px; right: 24px; width: 44px; height: 44px; background: var(--navy); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 990; opacity: 0; pointer-events: none; transform: translateY(10px); transition: opacity 0.25s, transform 0.25s, background 0.15s; box-shadow: 0 4px 16px rgba(0,0,0,0.18); }
+    #scroll-top.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    #scroll-top:hover { background: var(--red); }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: 0.07s; }
+    .reveal-d2 { transition-delay: 0.14s; }
+    .reveal-d3 { transition-delay: 0.21s; }
+
+    @media (max-width: 640px) {
+      .doctor-card { flex-direction: column; }
+      .doctor-photo, .doctor-photo-placeholder { width: 100%; min-height: 200px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="site-header">
+<div id="topbar">
+  <div class="max-w-6xl mx-auto px-4 flex items-center justify-between">
+    <a href="tel:+40742870000" class="flex items-center gap-1.5 font-medium">
+      <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+      CALL CENTER +40 742 870 000
+    </a>
+    <a href="index.html#contact" class="flex items-center gap-1.5 font-medium">
+      <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+      CONTACT
+    </a>
+  </div>
+</div>
+
+<nav id="navbar">
+  <div class="max-w-6xl mx-auto px-4 flex items-center justify-between" style="height:88px;">
+    <a href="index.html" class="flex-shrink-0">
+      <img src="logo.PNG" alt="VET STUFF" style="height:58px; width:auto;" />
+    </a>
+    <div class="hidden md:flex items-center gap-7">
+      <a href="index.html#despre"     class="nav-link">Despre noi</a>
+      <a href="index.html#servicii"   class="nav-link">Servicii</a>
+      <a href="echipa.html"           class="nav-link active">Echipa medicală</a>
+      <a href="index.html#programare" class="nav-link">Programare</a>
+      <a href="index.html#contact"    class="nav-link">Contact</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="index.html#programare" class="btn-red">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+        Programare
+      </a>
+      <button id="hamburger" class="md:hidden p-1 flex flex-col gap-1.5" aria-label="Meniu">
+        <span id="hb1" class="block w-6 h-0.5" style="background:#222; transition:transform 0.3s;"></span>
+        <span id="hb2" class="block w-6 h-0.5" style="background:#222; transition:opacity 0.3s;"></span>
+        <span id="hb3" class="block w-6 h-0.5" style="background:#222; transition:transform 0.3s;"></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div id="mobile-menu">
+  <a href="index.html#despre"     class="mob-link" onclick="closeMenu()">Despre noi</a>
+  <a href="index.html#servicii"   class="mob-link" onclick="closeMenu()">Servicii</a>
+  <a href="echipa.html"           class="mob-link" onclick="closeMenu()">Echipa medicală</a>
+  <a href="index.html#programare" class="mob-link" onclick="closeMenu()">Programare</a>
+  <a href="index.html#contact"    class="mob-link" onclick="closeMenu()">Contact</a>
+  <div class="mt-6">
+    <a href="index.html#programare" onclick="closeMenu()" class="btn-red w-full justify-center">Programare online</a>
+  </div>
+</div>
+</header>
+
+<!-- PAGE BANNER -->
+<div class="page-banner">
+  <div class="max-w-6xl mx-auto px-4" style="position:relative;">
+    <div class="breadcrumb">
+      <a href="index.html">Acasă</a> / Echipa medicală
+    </div>
+    <h1>Echipa medicală</h1>
+    <p>Medicii noștri și rețeaua națională de colaboratori — alături de tine și animalul tău</p>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<main style="padding: 64px 16px 80px;">
+  <div class="max-w-6xl mx-auto">
+
+    <!-- ── SECȚIUNEA 1: Echipa VET STUFF ── -->
+    <div class="reveal">
+      <div class="section-label">Clinica VET STUFF · Bacău</div>
+      <h2 style="font-size:clamp(1.6rem,3vw,2.2rem); font-weight:800; color:var(--navy); letter-spacing:-0.02em; margin-bottom:8px;">
+        Medicii noștri
+      </h2>
+      <p style="color:#555; font-size:0.95rem; line-height:1.7; max-width:600px; margin-bottom:40px;">
+        Echipa VET STUFF este formată din medici dedicați, cu pregătire continuă și pasiune pentru îngrijirea animalelor.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+
+      <!-- Placeholder doctor 1 -->
+      <div class="doctor-card reveal reveal-d1">
+        <div class="doctor-photo-placeholder">🩺</div>
+        <div class="doctor-info">
+          <div class="doctor-clinic">VET STUFF · Bacău</div>
+          <div class="doctor-name">Dr. Prenume Nume</div>
+          <div class="doctor-title">Doctor Medic Veterinar</div>
+          <div class="doctor-spec">Specialitate — în curând</div>
+          <div class="doctor-desc">Informațiile despre acest medic vor fi completate în curând.</div>
+          <span class="doctor-tag tag-own">Echipa VET STUFF</span>
+        </div>
+      </div>
+
+      <!-- Placeholder doctor 2 -->
+      <div class="doctor-card reveal reveal-d2">
+        <div class="doctor-photo-placeholder">🩺</div>
+        <div class="doctor-info">
+          <div class="doctor-clinic">VET STUFF · Bacău</div>
+          <div class="doctor-name">Dr. Prenume Nume</div>
+          <div class="doctor-title">Doctor Medic Veterinar</div>
+          <div class="doctor-spec">Specialitate — în curând</div>
+          <div class="doctor-desc">Informațiile despre acest medic vor fi completate în curând.</div>
+          <span class="doctor-tag tag-own">Echipa VET STUFF</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- ── SECȚIUNEA 2: Medici colaboratori ── -->
+    <div class="reveal">
+      <div class="section-label">Rețea națională</div>
+      <h2 style="font-size:clamp(1.6rem,3vw,2.2rem); font-weight:800; color:var(--navy); letter-spacing:-0.02em; margin-bottom:8px;">
+        Medici colaboratori
+      </h2>
+      <p style="color:#555; font-size:0.95rem; line-height:1.7; max-width:600px; margin-bottom:40px;">
+        Prin partenerii și colaboratorii noștri din toată țara, granițele îngrijirii VET STUFF se extind dincolo de Bacău — pentru cazuri complexe care necesită specialiști dedicați.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- Colaborator 1 -->
+      <div class="doctor-card reveal reveal-d1">
+        <div class="doctor-photo-placeholder">👨‍⚕️</div>
+        <div class="doctor-info">
+          <div class="doctor-clinic">Clinica X · Oraș</div>
+          <div class="doctor-name">Dr. Prenume Nume</div>
+          <div class="doctor-title">Doctor Medic Veterinar</div>
+          <div class="doctor-spec">Specialitate — în curând</div>
+          <div class="doctor-desc">Informațiile despre acest colaborator vor fi completate în curând.</div>
+          <span class="doctor-tag tag-collab">Medic colaborator</span>
+        </div>
+      </div>
+
+      <!-- Colaborator 2 -->
+      <div class="doctor-card reveal reveal-d2">
+        <div class="doctor-photo-placeholder">👩‍⚕️</div>
+        <div class="doctor-info">
+          <div class="doctor-clinic">Clinica Y · Oraș</div>
+          <div class="doctor-name">Dr. Prenume Nume</div>
+          <div class="doctor-title">Doctor Medic Veterinar</div>
+          <div class="doctor-spec">Specialitate — în curând</div>
+          <div class="doctor-desc">Informațiile despre acest colaborator vor fi completate în curând.</div>
+          <span class="doctor-tag tag-collab">Medic colaborator</span>
+        </div>
+      </div>
+
+      <!-- Colaborator 3 -->
+      <div class="doctor-card reveal reveal-d3">
+        <div class="doctor-photo-placeholder">👨‍⚕️</div>
+        <div class="doctor-info">
+          <div class="doctor-clinic">Clinica Z · Oraș</div>
+          <div class="doctor-name">Dr. Prenume Nume</div>
+          <div class="doctor-title">Doctor Medic Veterinar</div>
+          <div class="doctor-spec">Specialitate — în curând</div>
+          <div class="doctor-desc">Informațiile despre acest colaborator vor fi completate în curând.</div>
+          <span class="doctor-tag tag-collab">Medic colaborator</span>
+        </div>
+      </div>
+
+      <!-- Colaborator 4 -->
+      <div class="doctor-card reveal reveal-d1">
+        <div class="doctor-photo-placeholder">👩‍⚕️</div>
+        <div class="doctor-info">
+          <div class="doctor-clinic">Clinica W · Oraș</div>
+          <div class="doctor-name">Dr. Prenume Nume</div>
+          <div class="doctor-title">Doctor Medic Veterinar</div>
+          <div class="doctor-spec">Specialitate — în curând</div>
+          <div class="doctor-desc">Informațiile despre acest colaborator vor fi completate în curând.</div>
+          <span class="doctor-tag tag-collab">Medic colaborator</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div style="border-bottom:1px solid var(--border); padding:22px 0;">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <img src="logo.PNG" alt="VET STUFF" style="height:40px; width:auto;" />
+      <div class="flex flex-wrap gap-3">
+        <a href="index.html#programare" class="footer-cta-btn">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+          Programează o vizită
+        </a>
+        <a href="tel:+40742870000" class="footer-cta-btn">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+          +40 742 870 000
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding:48px 0 40px;">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div>
+          <img src="logo.PNG" alt="VET STUFF" style="height:36px; width:auto; margin-bottom:14px;" />
+          <p style="font-size:0.85rem; color:#555; line-height:1.75;">Str. Mioriței nr. 10<br/>Bacău, România</p>
+          <a href="mailto:vet.stuff@yahoo.com" class="footer-link" style="display:block; margin-top:10px;">vet.stuff@yahoo.com</a>
+          <a href="tel:+40742870000" class="footer-link" style="display:block; margin-top:4px;">+40 742 870 000</a>
+        </div>
+        <div>
+          <div class="footer-heading">Navigare</div>
+          <ul style="display:flex; flex-direction:column; gap:10px;">
+            <li><a href="index.html#despre"     class="footer-link">Despre noi</a></li>
+            <li><a href="index.html#servicii"   class="footer-link">Servicii</a></li>
+            <li><a href="echipa.html"           class="footer-link">Echipa medicală</a></li>
+            <li><a href="index.html#programare" class="footer-link">Programare online</a></li>
+            <li><a href="index.html#contact"    class="footer-link">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-heading">Urmărește-ne</div>
+          <div style="display:grid; grid-template-columns:repeat(2,38px); gap:8px;">
+            <a href="https://www.facebook.com/vetstuff" target="_blank" rel="noopener" aria-label="Facebook" class="social-btn">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/vet_stuff_" target="_blank" rel="noopener" aria-label="Instagram" class="social-btn">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </a>
+            <a href="https://www.tiktok.com/@vet.stuff" target="_blank" rel="noopener" aria-label="TikTok" class="social-btn">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/vetstuff" target="_blank" rel="noopener" aria-label="Messenger" class="social-btn">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 4.975 0 11.111c0 3.498 1.744 6.614 4.469 8.652V24l4.088-2.242c1.092.3 2.246.464 3.443.464 6.626 0 12-4.974 12-11.111C24 4.975 18.626 0 12 0zm1.191 14.963l-3.055-3.26-5.963 3.26L10.732 8l3.131 3.259L19.752 8l-6.561 6.963z"/></svg>
+            </a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-heading">Newsletter</div>
+          <p style="font-size:0.82rem; color:#666; margin-bottom:12px; line-height:1.6;">Noutăți, sfaturi veterinare și oferte direct în inbox.</p>
+          <div style="display:flex; gap:8px;">
+            <input type="email" placeholder="Emailul tău *" style="flex:1; min-width:0; padding:9px 12px; border:1.5px solid var(--border); border-radius:7px; font-size:0.83rem; outline:none; font-family:inherit;" />
+            <button class="btn-red" style="padding:9px 16px; font-size:0.83rem; flex-shrink:0;">Trimite</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-bottom" class="py-4">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3" style="font-size:0.78rem; color:#888;">
+      <div>© 2026 VET STUFF · Toate drepturile rezervate</div>
+      <div style="display:flex; flex-wrap:wrap; gap:16px; align-items:center;">
+        <a href="terms.html"   style="color:#888; transition:color 0.15s;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='#888'">Termeni și condiții</a>
+        <a href="privacy.html" style="color:#888; transition:color 0.15s;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='#888'">Politica de confidențialitate</a>
+        <a href="gdpr.html"    style="color:#888; transition:color 0.15s;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='#888'">GDPR</a>
+        <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" style="color:#888;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='#888'">Înapoi sus ↑</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Sus">
+  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+</button>
+
+<script>
+/* Navbar scroll */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 8);
+  document.getElementById('scroll-top').classList.toggle('show', window.scrollY > 400);
+}, { passive: true });
+
+/* Mobile menu */
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+let menuOpen = false;
+hamburger.addEventListener('click', () => {
+  menuOpen = !menuOpen;
+  mobileMenu.classList.toggle('open', menuOpen);
+  document.body.style.overflow = menuOpen ? 'hidden' : '';
+  document.getElementById('hb1').style.transform = menuOpen ? 'translateY(8px) rotate(45deg)' : '';
+  document.getElementById('hb2').style.opacity   = menuOpen ? '0' : '';
+  document.getElementById('hb3').style.transform = menuOpen ? 'translateY(-8px) rotate(-45deg)' : '';
+});
+function closeMenu() {
+  menuOpen = false;
+  mobileMenu.classList.remove('open');
+  document.body.style.overflow = '';
+  document.getElementById('hb1').style.transform = '';
+  document.getElementById('hb2').style.opacity   = '';
+  document.getElementById('hb3').style.transform = '';
+}
+
+/* Reveal on scroll */
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
