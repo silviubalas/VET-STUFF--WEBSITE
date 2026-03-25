@@ -520,6 +520,66 @@
     /* Pulse dot */
     .pulse { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; display: inline-block; animation: pulse-anim 1.6s ease-in-out infinite; }
     @keyframes pulse-anim { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.5; transform:scale(0.7); } }
+
+    /* ── URGENȚĂ ────────────────────────────────────────────── */
+    .nav-urgenta {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.85rem; font-weight: 700;
+      color: var(--red);
+      padding: 6px 14px;
+      border: 1.5px solid rgba(212,43,43,0.3);
+      border-radius: 20px;
+      white-space: nowrap;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .nav-urgenta:hover { background: var(--red); color: #fff; border-color: var(--red); }
+    .nav-urgenta .pulse-red {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--red);
+      display: inline-block; flex-shrink: 0;
+      animation: pulse-red-anim 1.4s ease-in-out infinite;
+    }
+    .nav-urgenta:hover .pulse-red { background: #fff; }
+    @keyframes pulse-red-anim { 0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.6);} }
+
+    #urgenta {
+      background: var(--navy);
+      position: relative;
+      overflow: hidden;
+    }
+    #urgenta::before {
+      content:'';
+      position:absolute; inset:0;
+      background:
+        radial-gradient(ellipse at 0% 50%, rgba(212,43,43,0.18) 0%, transparent 55%),
+        radial-gradient(ellipse at 100% 50%, rgba(212,43,43,0.08) 0%, transparent 55%);
+      pointer-events:none;
+    }
+    .urgenta-sign {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .urgenta-sign:last-child { border-bottom: none; }
+    .urgenta-sign-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--red); flex-shrink: 0; margin-top: 6px;
+    }
+    .urgenta-action-card {
+      border-radius: 16px;
+      padding: 28px 24px;
+      display: flex; flex-direction: column;
+      gap: 16px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .urgenta-action-card:hover { transform: translateY(-4px); }
+    .urgenta-action-card .action-btn {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 14px 20px; border-radius: 10px;
+      font-weight: 700; font-size: 0.95rem;
+      transition: filter 0.15s, transform 0.15s;
+      text-align: center;
+    }
+    .urgenta-action-card .action-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
   </style>
 </head>
 <body>
@@ -553,12 +613,16 @@
     </a>
 
     <!-- Desktop links -->
-    <div class="hidden md:flex items-center gap-7">
+    <div class="hidden md:flex items-center gap-6">
       <a href="#despre" class="nav-link">Despre noi</a>
       <a href="#servicii" class="nav-link">Servicii</a>
       <a href="echipa.html" class="nav-link">Echipa medicală</a>
       <a href="#programare" class="nav-link">Programare</a>
       <a href="#contact" class="nav-link">Contact</a>
+      <a href="#urgenta" class="nav-urgenta">
+        <span class="pulse-red"></span>
+        Urgență
+      </a>
     </div>
 
     <div class="flex items-center gap-3">
@@ -584,6 +648,7 @@
   <a href="echipa.html" class="mob-link" onclick="closeMenu()">Echipa medicală</a>
   <a href="#programare" class="mob-link" onclick="closeMenu()">Programare</a>
   <a href="#contact"    class="mob-link" onclick="closeMenu()">Contact</a>
+  <a href="#urgenta"    class="mob-link" onclick="closeMenu()" style="color:var(--red);">🚨 Urgență</a>
   <div class="mt-6">
     <a href="#programare" onclick="closeMenu()" class="btn-red w-full justify-center">Programare online</a>
   </div>
@@ -936,6 +1001,106 @@
       </a>
     </div>
 
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     URGENȚĂ
+═══════════════════════════════════════════════════ -->
+<section id="urgenta" style="padding:80px 16px;">
+  <div class="max-w-6xl mx-auto" style="position:relative;">
+
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+
+      <!-- Stânga: info + semne de urgență -->
+      <div>
+        <div class="reveal" style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+          <span style="width:10px;height:10px;border-radius:50%;background:var(--red);display:inline-block;animation:pulse-red-anim 1.4s ease-in-out infinite;flex-shrink:0;"></span>
+          <span style="font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5);">Disponibil prin Messenger</span>
+        </div>
+
+        <h2 class="reveal reveal-d1" style="font-family:'Playfair Display',Georgia,serif; font-size:clamp(2rem,4vw,3rem); font-weight:900; color:#fff; line-height:1.05; letter-spacing:-0.02em; margin-bottom:16px;">
+          Urgența nu<br/>așteaptă.
+        </h2>
+        <p class="reveal reveal-d2" style="font-size:0.95rem; color:rgba(255,255,255,0.6); line-height:1.75; margin-bottom:32px; max-width:440px;">
+          Dacă animalul tău are nevoie de ajutor imediat, contactează-ne pe Messenger. STUFFIE, agentul nostru AI, evaluează situația non-stop și te conectează cu medicul disponibil.
+        </p>
+
+        <div class="reveal reveal-d3">
+          <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:14px;">Semne care necesită urgență</div>
+          <div class="urgenta-sign">
+            <div class="urgenta-sign-dot"></div>
+            <span style="font-size:0.88rem;color:rgba(255,255,255,0.75);">Dificultăți respiratorii sau respirație zgomotoasă</span>
+          </div>
+          <div class="urgenta-sign">
+            <div class="urgenta-sign-dot"></div>
+            <span style="font-size:0.88rem;color:rgba(255,255,255,0.75);">Convulsii, paralizie sau pierderea cunoștinței</span>
+          </div>
+          <div class="urgenta-sign">
+            <div class="urgenta-sign-dot"></div>
+            <span style="font-size:0.88rem;color:rgba(255,255,255,0.75);">Sângerare abundentă sau traumatisme severe</span>
+          </div>
+          <div class="urgenta-sign">
+            <div class="urgenta-sign-dot"></div>
+            <span style="font-size:0.88rem;color:rgba(255,255,255,0.75);">Imposibilitate de a urina, balonare bruscă abdominală</span>
+          </div>
+          <div class="urgenta-sign">
+            <div class="urgenta-sign-dot"></div>
+            <span style="font-size:0.88rem;color:rgba(255,255,255,0.75);">Ingestie de substanțe toxice sau medicamente</span>
+          </div>
+          <div class="urgenta-sign">
+            <div class="urgenta-sign-dot"></div>
+            <span style="font-size:0.88rem;color:rgba(255,255,255,0.75);">Vomă sau diaree cu sânge, letargie extremă</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dreapta: carduri de acțiune -->
+      <div class="reveal reveal-d2" style="display:flex;flex-direction:column;gap:16px;">
+
+        <!-- Card STUFFIE -->
+        <div class="urgenta-action-card" style="background:rgba(212,43,43,0.15);border:1.5px solid rgba(212,43,43,0.35);">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div style="width:52px;height:52px;background:var(--red);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;">💬</div>
+            <div>
+              <div style="font-weight:800;font-size:1.1rem;color:#fff;margin-bottom:3px;">STUFFIE — AI pe Messenger</div>
+              <div style="font-size:0.82rem;color:rgba(255,255,255,0.55);">Răspunde non-stop · Evaluare imediată · Conectare cu medicul</div>
+            </div>
+          </div>
+          <a href="https://www.facebook.com/vetstuff" target="_blank" rel="noopener"
+             class="action-btn"
+             style="background:var(--red);color:#fff;">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 4.975 0 11.111c0 3.498 1.744 6.614 4.469 8.652V24l4.088-2.242c1.092.3 2.246.464 3.443.464 6.626 0 12-4.974 12-11.111C24 4.975 18.626 0 12 0zm1.191 14.963l-3.055-3.26-5.963 3.26L10.732 8l3.131 3.259L19.752 8l-6.561 6.963z"/></svg>
+            Scrie-ne pe Messenger
+          </a>
+        </div>
+
+        <!-- Card Telefon -->
+        <div class="urgenta-action-card" style="background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.12);">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div style="width:52px;height:52px;background:rgba(255,255,255,0.1);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;">📞</div>
+            <div>
+              <div style="font-weight:800;font-size:1.1rem;color:#fff;margin-bottom:3px;">Sună direct la clinică</div>
+              <div style="font-size:0.82rem;color:rgba(255,255,255,0.55);">Luni–Vineri 09–20 · Sâmbătă 09–14</div>
+            </div>
+          </div>
+          <a href="tel:+40742870000"
+             class="action-btn"
+             style="background:rgba(255,255,255,0.12);color:#fff;border:1.5px solid rgba(255,255,255,0.2);">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+            +40 742 870 000
+          </a>
+        </div>
+
+        <!-- Notă -->
+        <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:16px 18px;border:1px solid rgba(255,255,255,0.08);">
+          <p style="font-size:0.8rem;color:rgba(255,255,255,0.4);line-height:1.65;">
+            <strong style="color:rgba(255,255,255,0.6);">În afara programului:</strong> Scrie pe Messenger oricând. STUFFIE evaluează situația și te ghidează către cea mai bună soluție disponibilă.
+          </p>
+        </div>
+
+      </div>
+    </div>
   </div>
 </section>
 
