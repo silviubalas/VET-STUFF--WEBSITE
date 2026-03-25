@@ -120,13 +120,17 @@
     #topbar a { color: rgba(255,255,255,0.85); transition: color 0.15s; }
     #topbar a:hover { color: #fff; }
 
+    /* ── HEADER WRAPPER (sticky) ───────────────────────────── */
+    #site-header {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
     /* ── NAVBAR ────────────────────────────────────────────── */
     #navbar {
       background: #fff;
       border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 999;
       transition: box-shadow 0.2s;
     }
     #navbar.scrolled { box-shadow: 0 2px 16px rgba(0,0,0,0.08); }
@@ -449,18 +453,27 @@
 
     /* ── FOOTER ────────────────────────────────────────────── */
     #footer { background: #fff; border-top: 1px solid var(--border); }
-    #footer-bottom { background: var(--navy); }
+    #footer-bottom { background: #f3f4f6; border-top: 1px solid var(--border); }
     .footer-link { font-size: 0.85rem; color: #555; transition: color 0.15s; }
     .footer-link:hover { color: var(--red); }
+    .footer-heading { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); margin-bottom: 14px; }
     .social-btn {
-      width: 36px; height: 36px;
-      border: 1.5px solid var(--border);
+      width: 38px; height: 38px;
+      background: #f3f4f6;
       border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
       color: #555;
-      transition: border-color 0.15s, color 0.15s, background 0.15s;
+      transition: background 0.15s, color 0.15s;
     }
-    .social-btn:hover { border-color: var(--red); color: var(--red); background: #fff5f5; }
+    .social-btn:hover { background: var(--red); color: #fff; }
+    .footer-cta-btn {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 0.88rem;
+      border: 1.5px solid var(--border); color: #333; background: #fff;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+      white-space: nowrap;
+    }
+    .footer-cta-btn:hover { border-color: var(--red); color: #fff; background: var(--red); }
 
     /* ── REVEAL ────────────────────────────────────────────── */
     .reveal {
@@ -512,8 +525,10 @@
 <body>
 
 <!-- ═══════════════════════════════════════════════════
-     TOP BAR
+     SITE HEADER (sticky wrapper)
 ═══════════════════════════════════════════════════ -->
+<header id="site-header">
+
 <div id="topbar">
   <div class="max-w-6xl mx-auto px-4 flex items-center justify-between">
     <a href="tel:+40742870000" class="flex items-center gap-1.5 font-medium">
@@ -573,6 +588,8 @@
     <a href="#programare" onclick="closeMenu()" class="btn-red w-full justify-center">Programare online</a>
   </div>
 </div>
+
+</header>
 
 <!-- ═══════════════════════════════════════════════════
      HERO — full-width carousel
@@ -693,6 +710,70 @@
         <div>
           <h3>Stomatologie veterinară</h3>
           <p>Detartraj, extracții și tratamente parodontale pentru animale</p>
+        </div>
+      </div>
+
+      <div class="service-card reveal reveal-d1" style="background:#6b4a2a;">
+        <div class="service-icon-box">🦴</div>
+        <div>
+          <h3>Ortopedie veterinară</h3>
+          <p>Diagnostic și tratament al afecțiunilor osoase și articulare, fracturi, displazii</p>
+        </div>
+      </div>
+
+      <div class="service-card reveal reveal-d2" style="background:#4a3a7a;">
+        <div class="service-icon-box">🔭</div>
+        <div>
+          <h3>Imagistică veterinară</h3>
+          <p>Ecografie, dermatoscopie, otoscopie, radiografie, CT și RMN — interpretare și evaluare completă</p>
+        </div>
+      </div>
+
+      <div class="service-card reveal reveal-d3" style="background:#3d6b3a;">
+        <div class="service-icon-box">🛡️</div>
+        <div>
+          <h3>Prevenție și profilaxie</h3>
+          <p>Deparazitări interne și externe, programe de prevenție adaptate fiecărui animal</p>
+        </div>
+      </div>
+
+      <div class="service-card reveal reveal-d1" style="background:#7a5a1a;">
+        <div class="service-icon-box">🥗</div>
+        <div>
+          <h3>Nutriție și comportament</h3>
+          <p>Planuri nutriționale personalizate și consiliere comportamentală pentru un animal sănătos și echilibrat</p>
+        </div>
+      </div>
+
+      <div class="service-card reveal reveal-d2" style="background:#6b2a5a;">
+        <div class="service-icon-box">🩹</div>
+        <div>
+          <h3>Dermatologie veterinară</h3>
+          <p>Diagnostic și tratament al afecțiunilor pielii, blănii și unghiilor — alergii, infecții, parazitoze</p>
+        </div>
+      </div>
+
+      <div class="service-card reveal reveal-d3" style="background:#8a2a2a;">
+        <div class="service-icon-box">❤️</div>
+        <div>
+          <h3>Cardiologie veterinară</h3>
+          <p>Ecocardiografie, electrocardiogramă și monitorizare pentru afecțiuni cardiace la câini și pisici</p>
+        </div>
+      </div>
+
+      <div class="service-card reveal reveal-d1" style="background:#2a4a72;">
+        <div class="service-icon-box">📋</div>
+        <div>
+          <h3>Microcipare & pașaport</h3>
+          <p>Microcipare conformă UE, eliberare pașaport de călătorie și carnet de sănătate animal</p>
+        </div>
+      </div>
+
+      <div class="service-card reveal reveal-d2" style="background:#2a6b7a;">
+        <div class="service-icon-box">👁️</div>
+        <div>
+          <h3>Oftalmologie veterinară</h3>
+          <p>Examinare oculară, tratament cataractă, conjunctivite și afecțiuni ale corneei</p>
         </div>
       </div>
 
@@ -936,8 +1017,17 @@
                 <option value="">Selectează...</option>
                 <option value="consultatie">Consultație generală</option>
                 <option value="vaccinare">Vaccinare</option>
-                <option value="chirurgie">Chirurgie</option>
-                <option value="stomatologie">Stomatologie</option>
+                <option value="analize">Analize de laborator</option>
+                <option value="chirurgie">Chirurgie veterinară</option>
+                <option value="stomatologie">Stomatologie veterinară</option>
+                <option value="ortopedie">Ortopedie veterinară</option>
+                <option value="imagistica">Imagistică veterinară</option>
+                <option value="preventie">Prevenție și profilaxie</option>
+                <option value="nutritie">Nutriție și comportament</option>
+                <option value="dermatologie">Dermatologie veterinară</option>
+                <option value="cardiologie">Cardiologie veterinară</option>
+                <option value="microchip">Microcipare & pașaport</option>
+                <option value="oftalmologie">Oftalmologie veterinară</option>
                 <option value="urgenta">Urgență</option>
                 <option value="altul">Altul</option>
               </select>
@@ -1065,52 +1155,46 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════
-     FOOTER — layout fidel referinței
+     FOOTER
 ═══════════════════════════════════════════════════ -->
 <footer id="footer">
 
-  <!-- CTA strip -->
-  <div style="border-bottom:1px solid var(--border); padding:20px 0;">
+  <!-- CTA strip: logo + butoane acțiune -->
+  <div style="border-bottom:1px solid var(--border); padding:22px 0;">
     <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <img src="logo.PNG" alt="VET STUFF" class="h-10 w-auto" />
-      <div class="flex flex-col sm:flex-row gap-3">
-        <a href="#programare"
-           class="flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm transition-colors"
-           style="border:1.5px solid var(--border); color:#333; background:#fff;"
-           onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'"
-           onmouseout="this.style.borderColor='var(--border)';this.style.color='#333'">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+      <img src="logo.PNG" alt="VET STUFF" style="height:40px; width:auto;" />
+      <div class="flex flex-wrap gap-3">
+        <a href="#programare" class="footer-cta-btn">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
           Programează o vizită
         </a>
-        <a href="tel:+40742870000"
-           class="flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm transition-colors"
-           style="border:1.5px solid var(--border); color:#333; background:#fff;"
-           onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'"
-           onmouseout="this.style.borderColor='var(--border)';this.style.color='#333'">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+        <a href="tel:+40742870000" class="footer-cta-btn">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
           +40 742 870 000
         </a>
       </div>
     </div>
   </div>
 
-  <!-- Main footer: 3 coloane ca în referință -->
-  <div class="py-10">
+  <!-- Body footer: 4 coloane -->
+  <div style="padding:48px 0 40px;">
     <div class="max-w-6xl mx-auto px-4">
-      <div class="grid sm:grid-cols-3 gap-10">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
 
-        <!-- Col 1: Adresă + contact -->
+        <!-- Col 1: Brand + adresă -->
         <div>
-          <div class="font-bold text-sm mb-3" style="color:var(--navy);">VET STUFF</div>
-          <p class="text-sm mb-1" style="color:#555; line-height:1.7;">Str. Mioriței nr. 10<br/>Bacău</p>
-          <a href="mailto:vet.stuff@yahoo.com" class="footer-link block text-sm mt-2">vet.stuff@yahoo.com</a>
-          <a href="tel:+40742870000" class="footer-link block text-sm mt-1">+40 742 870 000</a>
+          <img src="logo.PNG" alt="VET STUFF" style="height:36px; width:auto; margin-bottom:14px;" />
+          <p style="font-size:0.85rem; color:#555; line-height:1.75;">
+            Str. Mioriței nr. 10<br/>Bacău, România
+          </p>
+          <a href="mailto:vet.stuff@yahoo.com" class="footer-link" style="display:block; margin-top:10px;">vet.stuff@yahoo.com</a>
+          <a href="tel:+40742870000" class="footer-link" style="display:block; margin-top:4px;">+40 742 870 000</a>
         </div>
 
-        <!-- Col 2: Linkuri -->
+        <!-- Col 2: Navigare -->
         <div>
-          <div class="font-bold text-sm mb-3" style="color:var(--navy);">Pagini</div>
-          <ul class="flex flex-col gap-2.5">
+          <div class="footer-heading">Navigare</div>
+          <ul style="display:flex; flex-direction:column; gap:10px;">
             <li><a href="#despre"     class="footer-link">Despre noi</a></li>
             <li><a href="#servicii"   class="footer-link">Servicii</a></li>
             <li><a href="#echipa"     class="footer-link">Echipa medicală</a></li>
@@ -1119,30 +1203,33 @@
           </ul>
         </div>
 
-        <!-- Col 3: Social (2x2 grid) + Newsletter — exact ca referința -->
+        <!-- Col 3: Social media -->
         <div>
-          <!-- Social icons în grid 2×2 -->
-          <div class="grid grid-cols-2 gap-2 mb-5" style="max-width:88px;">
+          <div class="footer-heading">Urmărește-ne</div>
+          <div style="display:grid; grid-template-columns:repeat(2,38px); gap:8px;">
             <a href="https://www.facebook.com/vetstuff" target="_blank" rel="noopener" aria-label="Facebook" class="social-btn">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
             </a>
             <a href="https://www.instagram.com/vet_stuff_" target="_blank" rel="noopener" aria-label="Instagram" class="social-btn">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
             </a>
             <a href="https://www.tiktok.com/@vet.stuff" target="_blank" rel="noopener" aria-label="TikTok" class="social-btn">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
             </a>
             <a href="https://www.facebook.com/vetstuff" target="_blank" rel="noopener" aria-label="Messenger" class="social-btn">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 4.975 0 11.111c0 3.498 1.744 6.614 4.469 8.652V24l4.088-2.242c1.092.3 2.246.464 3.443.464 6.626 0 12-4.974 12-11.111C24 4.975 18.626 0 12 0zm1.191 14.963l-3.055-3.26-5.963 3.26L10.732 8l3.131 3.259L19.752 8l-6.561 6.963z"/></svg>
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 4.975 0 11.111c0 3.498 1.744 6.614 4.469 8.652V24l4.088-2.242c1.092.3 2.246.464 3.443.464 6.626 0 12-4.974 12-11.111C24 4.975 18.626 0 12 0zm1.191 14.963l-3.055-3.26-5.963 3.26L10.732 8l3.131 3.259L19.752 8l-6.561 6.963z"/></svg>
             </a>
           </div>
+        </div>
 
-          <!-- Newsletter -->
-          <div class="text-sm font-semibold mb-2" style="color:var(--navy);">Newsletter</div>
-          <div class="flex gap-2">
-            <input type="email" placeholder="Adresa ta de email *"
-                   class="f-input text-sm" style="border-radius:6px; flex:1; min-width:0;" />
-            <button class="btn-red flex-shrink-0" style="padding:10px 14px; font-size:0.82rem;">Trimite</button>
+        <!-- Col 4: Newsletter -->
+        <div>
+          <div class="footer-heading">Newsletter</div>
+          <p style="font-size:0.82rem; color:#666; margin-bottom:12px; line-height:1.6;">Noutăți, sfaturi veterinare și oferte direct în inbox.</p>
+          <div style="display:flex; gap:8px;">
+            <input type="email" placeholder="Emailul tău *"
+                   style="flex:1; min-width:0; padding:9px 12px; border:1.5px solid var(--border); border-radius:7px; font-size:0.83rem; outline:none; font-family:inherit;" />
+            <button class="btn-red" style="padding:9px 16px; font-size:0.83rem; flex-shrink:0;">Trimite</button>
           </div>
         </div>
 
@@ -1152,13 +1239,13 @@
 
   <!-- Bottom bar -->
   <div id="footer-bottom" class="py-4">
-    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs" style="color:rgba(255,255,255,0.5);">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3" style="font-size:0.78rem; color:#888;">
       <div>© 2026 VET STUFF · Toate drepturile rezervate</div>
-      <div class="flex gap-4">
-        <a href="privacy.html" class="hover:text-white transition-colors">Politica de confidențialitate</a>
-        <a href="terms.html" class="hover:text-white transition-colors">Termeni și condiții</a>
-        <a href="gdpr.html" class="hover:text-white transition-colors">GDPR</a>
-        <a href="#contact" class="hover:text-white transition-colors flex items-center gap-1">
+      <div style="display:flex; flex-wrap:wrap; gap:16px; align-items:center;">
+        <a href="terms.html"   style="color:#888; transition:color 0.15s;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='#888'">Termeni și condiții</a>
+        <a href="privacy.html" style="color:#888; transition:color 0.15s;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='#888'">Politica de confidențialitate</a>
+        <a href="gdpr.html"    style="color:#888; transition:color 0.15s;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='#888'">GDPR</a>
+        <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" style="color:#888; transition:color 0.15s; display:flex; align-items:center; gap:4px;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='#888'">
           Înapoi sus ↑
         </a>
       </div>
