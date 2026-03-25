@@ -351,10 +351,11 @@
       color: #333;
       background: #fff;
       cursor: pointer;
-      transition: border-color 0.15s, color 0.15s, background 0.15s;
+      transition: border-color 0.2s, color 0.2s, background 0.2s, box-shadow 0.2s, transform 0.15s;
       margin-top: 24px;
     }
-    .discover-btn:hover { border-color: var(--red); color: var(--red); background: #fff8f8; }
+    .discover-btn:hover { border-color: var(--red); color: #fff; background: var(--red); box-shadow: 0 4px 20px rgba(212,43,43,0.28); transform: translateY(-2px); }
+    .discover-btn:active { transform: translateY(0); box-shadow: 0 2px 8px rgba(212,43,43,0.18); }
 
     /* ── ABOUT ─────────────────────────────────────────────── */
     .about-value {
