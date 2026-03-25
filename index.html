@@ -1359,11 +1359,36 @@
 
     <div class="plans-cta reveal">
       <p>În curând disponibile. Vrei să fii printre primii care află?</p>
-      <a href="#programare" class="btn-red">
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-        Notifică-mă la lansare
-      </a>
+      <form id="notify-form" action="https://formspree.io/f/mzdkbdzb" method="POST"
+            style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%;max-width:420px;">
+        <input type="hidden" name="_subject" value="Notificare lansare abonamente — VET STUFF" />
+        <input type="hidden" name="Tip" value="Notificare abonamente" />
+        <input type="email" name="Email" required placeholder="Emailul tău"
+               style="flex:1;min-width:200px;padding:11px 16px;border:1.5px solid var(--border);border-radius:8px;font-size:0.88rem;font-family:inherit;outline:none;transition:border-color 0.2s;"
+               onfocus="this.style.borderColor='var(--red)'" onblur="this.style.borderColor='var(--border)'" />
+        <button type="submit" class="btn-red" style="flex-shrink:0;">
+          Notifică-mă →
+        </button>
+      </form>
+      <div id="notify-success" style="display:none;align-items:center;gap:8px;background:#DCFCE7;border:1px solid #86EFAC;border-radius:10px;padding:12px 20px;font-size:0.88rem;color:#166534;font-weight:600;">
+        ✅ Înregistrat! Te anunțăm la lansare.
+      </div>
     </div>
+
+    <script>
+      document.getElementById('notify-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const form = e.target;
+        const data = new FormData(form);
+        try {
+          const res = await fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
+          if (res.ok) {
+            form.style.display = 'none';
+            document.getElementById('notify-success').style.display = 'flex';
+          }
+        } catch(err) {}
+      });
+    </script>
 
   </div>
 </section>
