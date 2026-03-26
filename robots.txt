@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
-Disallow:
+
+Disallow: /feedback.html
+Disallow: /chatbot-veterinar.html
 
 Sitemap: https://vet-stuff.ro/sitemap.xml
