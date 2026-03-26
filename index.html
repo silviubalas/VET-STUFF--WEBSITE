@@ -2078,5 +2078,34 @@ form.addEventListener('submit', e => {
 });
 </script>
 
+<!-- ═══════════════════════════════════════════════════
+     COOKIE BANNER
+═══════════════════════════════════════════════════ -->
+<div id="cookie-banner" style="display:none; position:fixed; bottom:0; left:0; right:0; z-index:9999; background:#fff; border-top:1.5px solid var(--border); padding:16px 24px; box-shadow:0 -4px 24px rgba(0,0,0,0.08);">
+  <div class="max-w-6xl mx-auto" style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+    <p style="font-size:0.83rem; color:#555; line-height:1.6; margin:0; flex:1; min-width:200px;">
+      Folosim cookies pentru funcționarea corectă a site-ului (Google Maps, formulare). Nu folosim cookies de tracking sau publicitate.
+      <a href="privacy.html" style="color:var(--red); font-weight:600; margin-left:4px;">Politica de confidențialitate →</a>
+    </p>
+    <div style="display:flex; gap:10px; flex-shrink:0;">
+      <button id="cookie-accept" class="btn-red" style="padding:9px 20px; font-size:0.85rem;">
+        Înțeleg, acceptă
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    if (!localStorage.getItem('cookie-consent')) {
+      document.getElementById('cookie-banner').style.display = 'block';
+    }
+    document.getElementById('cookie-accept').addEventListener('click', function() {
+      localStorage.setItem('cookie-consent', '1');
+      document.getElementById('cookie-banner').style.display = 'none';
+    });
+  })();
+</script>
+
 </body>
 </html>
