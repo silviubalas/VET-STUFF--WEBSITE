@@ -187,6 +187,17 @@
     }
     .anchor-pill:hover { border-color: var(--red); color: var(--red); background: rgba(212,43,43,0.04); }
 
+    /* Scroll hint wrapper */
+    .anchor-nav-wrap { position: relative; }
+    .anchor-nav-wrap::after {
+      content: '';
+      position: absolute; top: 0; right: 0; bottom: 0; width: 60px;
+      background: linear-gradient(to right, transparent, #fff);
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .anchor-nav-wrap.scrolled-end::after { opacity: 0; }
+
     /* Footer */
     #footer { background: #fff; border-top: 1px solid var(--border); }
     #footer-bottom { background: #f3f4f6; border-top: 1px solid var(--border); }
@@ -254,7 +265,8 @@
 <!-- ANCHOR NAV — parte din header sticky -->
 <div style="background:#fff; border-bottom:1px solid var(--border); padding:10px 0;">
   <div class="max-w-6xl mx-auto px-4">
-    <div class="anchor-nav">
+    <div class="anchor-nav-wrap" id="anchor-wrap">
+    <div class="anchor-nav" id="anchor-scroll">
       <a href="#diagnostic" class="anchor-pill">🩺 Diagnostic</a>
       <a href="#chirurgie" class="anchor-pill">⚕️ Chirurgie</a>
       <a href="#cardiologie" class="anchor-pill">❤️ Cardiologie</a>
@@ -264,6 +276,7 @@
       <a href="#dermatologie" class="anchor-pill">🩹 Dermatologie</a>
       <a href="#preventie" class="anchor-pill">🛡️ Prevenție</a>
       <a href="#altele" class="anchor-pill">🐾 Altele</a>
+    </div>
     </div>
   </div>
 </div>
@@ -756,6 +769,25 @@ const revealObs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
 }, { threshold: 0.08, rootMargin: '0px 0px -24px 0px' });
 document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// Anchor nav scroll hint
+const anchorScroll = document.getElementById('anchor-scroll');
+const anchorWrap   = document.getElementById('anchor-wrap');
+if (anchorScroll && anchorWrap) {
+  // Fade out gradient when user reached the end
+  anchorScroll.addEventListener('scroll', () => {
+    const atEnd = anchorScroll.scrollLeft + anchorScroll.clientWidth >= anchorScroll.scrollWidth - 8;
+    anchorWrap.classList.toggle('scrolled-end', atEnd);
+  }, { passive: true });
+
+  // Peek animation on mobile only (after 600ms)
+  if (window.innerWidth < 768) {
+    setTimeout(() => {
+      anchorScroll.scrollTo({ left: 80, behavior: 'smooth' });
+      setTimeout(() => anchorScroll.scrollTo({ left: 0, behavior: 'smooth' }), 600);
+    }, 700);
+  }
+}
 </script>
 
 </body>
