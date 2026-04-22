@@ -584,6 +584,26 @@
     #scroll-top.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
     #scroll-top:hover { background: var(--red); }
 
+    /* Quick nav scroll hint */
+    #quick-nav-scroll::-webkit-scrollbar { display: none; }
+    #quick-nav-wrap::after {
+      content: '';
+      position: absolute; top: 0; right: 0; bottom: 0; width: 60px;
+      background: linear-gradient(to right, transparent, #fff);
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    #quick-nav-wrap.scrolled-end::after { opacity: 0; }
+    @media (min-width: 768px) { #quick-nav-wrap::after { display: none; } }
+
+    /* Buton programare — animatie atentie */
+    @keyframes btn-attention {
+      0%   { transform: scale(1); box-shadow: 0 0 0 0 rgba(212,43,43,0.5); }
+      40%  { transform: scale(1.04); box-shadow: 0 0 0 10px rgba(212,43,43,0); }
+      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212,43,43,0); }
+    }
+    .btn-attention { animation: btn-attention 0.7s ease-out; }
+
     /* ── MOBILE MENU ───────────────────────────────────────── */
     #mobile-menu {
       display: none; position: fixed; inset: 0;
@@ -924,7 +944,8 @@
 ═══════════════════════════════════════════════════ -->
 <section style="background:#fff; border-bottom:1px solid var(--border); padding:20px 16px;">
   <div class="max-w-6xl mx-auto">
-    <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:center;">
+    <div id="quick-nav-wrap" style="position:relative;">
+    <div id="quick-nav-scroll" style="display:flex; flex-wrap:nowrap; gap:8px; align-items:center; overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none; justify-content:flex-start;" class="md:flex-wrap md:justify-center">
       <a href="servicii.html" style="display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:30px;font-size:0.85rem;font-weight:600;background:var(--navy);color:#fff;transition:background 0.2s;white-space:nowrap;" onmouseover="this.style.background='var(--red)'" onmouseout="this.style.background='var(--navy)'">
         ⚕️ Servicii veterinare
       </a>
@@ -940,6 +961,7 @@
       <a href="#contact" style="display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:30px;font-size:0.85rem;font-weight:600;border:1.5px solid var(--border);color:#444;background:#fff;transition:border-color 0.2s,color 0.2s;white-space:nowrap;" onmouseover="this.style.borderColor='var(--navy)';this.style.color='var(--navy)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='#444'">
         📍 Contact & Program
       </a>
+    </div>
     </div>
   </div>
 </section>
@@ -1605,7 +1627,7 @@
           </div>
           <div id="gdpr-error" class="text-xs mb-4" style="color:var(--red); display:none;">Te rugăm să accepți politica de confidențialitate.</div>
 
-          <button type="submit" class="btn-red w-full justify-center" style="font-size:0.95rem; padding:12px;">
+          <button id="submit-btn" type="submit" class="btn-red w-full justify-center" style="font-size:0.95rem; padding:12px;">
             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
             Trimite programarea
           </button>
@@ -1982,6 +2004,59 @@ form.addEventListener('submit', e => {
     });
   }
 });
+
+/* ── Quick nav scroll hint ───────────────────────── */
+const quickNav  = document.getElementById('quick-nav-scroll');
+const quickWrap = document.getElementById('quick-nav-wrap');
+if (quickNav && quickWrap && window.innerWidth < 768) {
+  quickNav.addEventListener('scroll', () => {
+    const atEnd = quickNav.scrollLeft + quickNav.clientWidth >= quickNav.scrollWidth - 8;
+    quickWrap.classList.toggle('scrolled-end', atEnd);
+  }, { passive: true });
+
+  let quickUserScrolled = false;
+  function doQuickPeek() {
+    if (quickUserScrolled) return;
+    quickNav.scrollTo({ left: 70, behavior: 'smooth' });
+    setTimeout(() => { if (!quickUserScrolled) quickNav.scrollTo({ left: 0, behavior: 'smooth' }); }, 600);
+  }
+  quickNav.addEventListener('touchstart', () => { quickUserScrolled = true; clearInterval(quickPeekInterval); }, { once: true, passive: true });
+  quickNav.addEventListener('touchmove',  () => { quickUserScrolled = true; clearInterval(quickPeekInterval); }, { once: true, passive: true });
+  setTimeout(doQuickPeek, 1200);
+  var quickPeekInterval = setInterval(doQuickPeek, 3000);
+}
+
+/* ── Buton programare — animatie atentie ─────────── */
+const submitBtn = document.getElementById('submit-btn');
+const programareSection = document.getElementById('programare');
+if (submitBtn && programareSection) {
+  let btnUserActed = false;
+  let btnInterval  = null;
+
+  function triggerBtnAttention() {
+    if (btnUserActed) return;
+    submitBtn.classList.remove('btn-attention');
+    void submitBtn.offsetWidth; // reflow ca sa reporneasca animatia
+    submitBtn.classList.add('btn-attention');
+  }
+
+  const btnObs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting && !btnUserActed) {
+      setTimeout(triggerBtnAttention, 8000);
+      btnInterval = setInterval(triggerBtnAttention, 8000);
+    } else {
+      clearInterval(btnInterval);
+    }
+  }, { threshold: 0.5 });
+  btnObs.observe(programareSection);
+
+  ['click', 'focus', 'input'].forEach(ev =>
+    document.getElementById('booking-form')?.addEventListener(ev, () => {
+      btnUserActed = true;
+      clearInterval(btnInterval);
+    }, { once: true })
+  );
+}
 </script>
 
 <!-- ═══════════════════════════════════════════════════
