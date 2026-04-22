@@ -94,9 +94,9 @@
     #topbar a { color: rgba(255,255,255,0.85); transition: color 0.15s; }
     #topbar a:hover { color: #fff; }
     #site-header { position: sticky; top: 0; z-index: 999; }
-    #diagnostic, #chirurgie, #ortopedie, #cardiologie, #oncologie, #stomatologie, #dermatologie, #preventie, #altele { scroll-margin-top: 340px; }
+    #diagnostic, #chirurgie, #ortopedie, #cardiologie, #oncologie, #stomatologie, #dermatologie, #preventie, #altele { scroll-margin-top: 200px; }
     @media (min-width: 768px) {
-      #diagnostic, #chirurgie, #ortopedie, #cardiologie, #oncologie, #stomatologie, #dermatologie, #preventie, #altele { scroll-margin-top: 230px; }
+      #diagnostic, #chirurgie, #ortopedie, #cardiologie, #oncologie, #stomatologie, #dermatologie, #preventie, #altele { scroll-margin-top: 190px; }
     }
     #navbar { background: #fff; border-bottom: 1px solid var(--border); transition: box-shadow 0.2s; }
     #navbar.scrolled { box-shadow: 0 2px 16px rgba(0,0,0,0.08); }
@@ -179,7 +179,8 @@
     .service-cta:hover { gap: 10px; }
 
     /* Quick anchor nav */
-    .anchor-nav { display: flex; flex-wrap: wrap; gap: 8px; }
+    .anchor-nav { display: flex; flex-wrap: nowrap; gap: 8px; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+    .anchor-nav::-webkit-scrollbar { display: none; }
     .anchor-pill {
       display: inline-flex; align-items: center; gap: 6px;
       padding: 7px 16px; border-radius: 30px; font-size: 0.82rem; font-weight: 600;
