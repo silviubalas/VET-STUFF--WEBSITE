@@ -780,11 +780,31 @@ if (anchorScroll && anchorWrap) {
     anchorWrap.classList.toggle('scrolled-end', atEnd);
   }, { passive: true });
 
-  // Peek animation on mobile only (after 600ms)
+  // Peek animation repeating on mobile until user interacts
   if (window.innerWidth < 768) {
-    setTimeout(() => {
+    let peekInterval = null;
+    let userScrolled = false;
+
+    function doPeek() {
+      if (userScrolled) return;
       anchorScroll.scrollTo({ left: 80, behavior: 'smooth' });
-      setTimeout(() => anchorScroll.scrollTo({ left: 0, behavior: 'smooth' }), 600);
+      setTimeout(() => {
+        if (!userScrolled) anchorScroll.scrollTo({ left: 0, behavior: 'smooth' });
+      }, 600);
+    }
+
+    function stopPeek() {
+      userScrolled = true;
+      clearInterval(peekInterval);
+    }
+
+    anchorScroll.addEventListener('touchstart', stopPeek, { once: true, passive: true });
+    anchorScroll.addEventListener('touchmove',  stopPeek, { once: true, passive: true });
+
+    // First peek after 700ms, then repeat every 3s
+    setTimeout(() => {
+      doPeek();
+      peekInterval = setInterval(doPeek, 3000);
     }, 700);
   }
 }
