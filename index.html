@@ -821,6 +821,7 @@
       <a href="#despre" class="nav-link">Despre noi</a>
       <a href="servicii.html" class="nav-link">Servicii</a>
       <a href="echipa.html" class="nav-link">Echipa medicală</a>
+      <a href="abonamente.html" class="nav-link">Abonamente</a>
       <a href="#programare" class="nav-link">Programare</a>
       <a href="#contact" class="nav-link">Contact</a>
       <a href="#urgenta" class="nav-urgenta">
@@ -855,6 +856,7 @@
   <a href="#despre"     class="mob-link" onclick="closeMenu()">Despre noi</a>
   <a href="servicii.html" class="mob-link" onclick="closeMenu()">Servicii</a>
   <a href="echipa.html" class="mob-link" onclick="closeMenu()">Echipa medicală</a>
+  <a href="abonamente.html" class="mob-link" onclick="closeMenu()">Abonamente</a>
   <a href="#programare" class="mob-link" onclick="closeMenu()">Programare</a>
   <a href="#contact"    class="mob-link" onclick="closeMenu()">Contact</a>
   <a href="#urgenta"    class="mob-link" onclick="closeMenu()" style="color:var(--red);">🚨 Urgență</a>
@@ -1730,6 +1732,24 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════
+     NEWSLETTER
+═══════════════════════════════════════════════════ -->
+<section id="newsletter" style="background:var(--navy); padding:64px 16px;">
+  <div class="max-w-2xl mx-auto text-center">
+    <span style="display:inline-block;font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:12px;">Newsletter VET STUFF</span>
+    <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:12px;">Sfaturi veterinare direct în inbox</h2>
+    <p style="font-size:0.95rem;color:rgba(255,255,255,0.6);line-height:1.75;margin-bottom:32px;">Articole despre sănătatea animalelor, oferte sezoniere și noutăți de la VET STUFF — fără spam, oricând te poți dezabona.</p>
+    <form id="newsletter-form" novalidate style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
+      <input type="text" id="nl-name" placeholder="Numele tău (opțional)" style="flex:1;min-width:180px;max-width:220px;padding:12px 16px;border-radius:8px;border:1.5px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:#fff;font-size:0.9rem;outline:none;" />
+      <input type="email" id="nl-email" placeholder="Adresa ta de email *" required style="flex:1;min-width:220px;max-width:280px;padding:12px 16px;border-radius:8px;border:1.5px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:#fff;font-size:0.9rem;outline:none;" />
+      <button type="submit" style="padding:12px 28px;background:var(--red);color:#fff;border:none;border-radius:8px;font-size:0.9rem;font-weight:700;cursor:pointer;transition:background 0.15s;white-space:nowrap;">Abonează-mă →</button>
+    </form>
+    <div id="nl-success" style="display:none;margin-top:20px;color:#86efac;font-weight:600;">✅ Te-ai abonat cu succes! Îți mulțumim.</div>
+    <div id="nl-error" style="display:none;margin-top:12px;color:#fca5a5;font-size:0.85rem;">Te rugăm să introduci o adresă de email validă.</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
      FOOTER
 ═══════════════════════════════════════════════════ -->
 <footer id="footer">
@@ -2017,6 +2037,22 @@ form.addEventListener('submit', e => {
       alert('A apărut o eroare de rețea. Te rugăm să ne contactezi telefonic la +40 742 870 000.');
     });
   }
+});
+
+/* ── Newsletter form ─────────────────────────────── */
+document.getElementById('newsletter-form')?.addEventListener('submit', function(e) {
+  e.preventDefault();
+  const email = document.getElementById('nl-email').value.trim();
+  const name  = document.getElementById('nl-name').value.trim();
+  if (!email || !/\S+@\S+\.\S+/.test(email)) {
+    document.getElementById('nl-error').style.display = 'block';
+    return;
+  }
+  document.getElementById('nl-error').style.display = 'none';
+  const params = new URLSearchParams({ type: 'newsletter', Email: email, Nume: name });
+  fetch('https://script.google.com/macros/s/AKfycbzrAGjPWVoyj9unfoR0MsPxkZ2rv_XveFuxt5FzIcv62oTT_zK7ijRE3vw_wmW3i5XW/exec?' + params.toString(), { method: 'GET', mode: 'no-cors' });
+  document.getElementById('nl-success').style.display = 'block';
+  this.reset();
 });
 
 /* ── Quick nav scroll hint ───────────────────────── */

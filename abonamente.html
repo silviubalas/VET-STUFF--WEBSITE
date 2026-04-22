@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Feedback | VET STUFF Bacău</title>
-  <meta name="description" content="Spune-ne ce ai trăit la VET STUFF. Feedback-ul tău ne ajută să oferim îngrijire veterinară mai bună în Bacău." />
+  <title>Planuri de Sănătate & Abonamente Veterinare Bacău | VET STUFF</title>
+  <meta name="description" content="Planuri de sănătate veterinare pentru câini și pisici în Bacău. Abonamente lunare VET STUFF — consultații, vaccinări, deparazitare și mai mult, la prețuri avantajoase." />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://vet-stuff.ro/feedback.html" />
+  <link rel="canonical" href="https://vet-stuff.ro/abonamente.html" />
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -27,7 +27,7 @@
     #navbar { background: #fff; border-bottom: 1px solid var(--border); transition: box-shadow 0.2s; }
     #navbar.scrolled { box-shadow: 0 2px 16px rgba(0,0,0,0.08); }
     .nav-link { font-size: 0.9rem; font-weight: 500; color: #222; white-space: nowrap; transition: color 0.15s; }
-    .nav-link:hover { color: var(--red); }
+    .nav-link:hover, .nav-link.active { color: var(--red); }
     .btn-red { display: inline-flex; align-items: center; gap: 6px; background: var(--red); color: #fff; font-size: 0.85rem; font-weight: 600; padding: 9px 18px; border-radius: 6px; white-space: nowrap; transition: background 0.15s, transform 0.15s; border: none; cursor: pointer; }
     .btn-red:hover { background: #b52020; transform: translateY(-1px); }
     .nav-urgenta { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 20px; border: 1.5px solid rgba(212,43,43,0.35); font-size: 0.82rem; font-weight: 700; color: var(--red); transition: background 0.15s, color 0.15s; white-space: nowrap; }
@@ -38,13 +38,25 @@
     #mobile-menu.open { display: flex; }
     .mob-link { font-size: 1.4rem; font-weight: 700; color: var(--navy); padding: 12px 0; border-bottom: 1px solid var(--border); transition: color 0.15s; }
     .mob-link:hover { color: var(--red); }
-    .star { font-size: 2.8rem; cursor: pointer; transition: transform 0.15s; color: #d1d5db; line-height: 1; }
-    .star.active { color: #f59e0b; }
-    .star:hover { transform: scale(1.15); }
+
+    /* Plan cards */
+    .plan-card { background: #fff; border: 2px solid var(--border); border-radius: 16px; padding: 32px 28px; display: flex; flex-direction: column; gap: 0; transition: border-color 0.2s, box-shadow 0.2s; position: relative; }
+    .plan-card:hover { border-color: var(--navy); box-shadow: 0 8px 32px rgba(27,58,107,0.1); }
+    .plan-card.featured { border-color: var(--navy); box-shadow: 0 8px 40px rgba(27,58,107,0.14); }
+    .plan-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--navy); color: #fff; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 14px; border-radius: 20px; white-space: nowrap; }
+    .plan-price { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; color: var(--navy); line-height: 1; }
+    .plan-price span { font-size: 1rem; font-weight: 500; color: var(--gray); }
+    .plan-feature { display: flex; align-items: flex-start; gap: 10px; font-size: 0.88rem; color: #444; line-height: 1.5; }
+    .plan-feature::before { content: '✓'; color: #22c55e; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .plan-feature.no::before { content: '–'; color: #d1d5db; }
+    .plan-feature.no { color: #aaa; }
+
+    /* Form */
     .form-field { display: flex; flex-direction: column; gap: 6px; }
     .form-field label { font-size: 0.85rem; font-weight: 600; color: #333; }
     .form-field input, .form-field textarea, .form-field select { padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 0.9rem; font-family: 'DM Sans', sans-serif; color: #1a1a1a; transition: border-color 0.2s; outline: none; background: #fff; }
     .form-field input:focus, .form-field textarea:focus, .form-field select:focus { border-color: var(--navy); }
+
     #footer { background: #fff; border-top: 1px solid var(--border); }
     #footer-bottom { background: #f3f4f6; border-top: 1px solid var(--border); }
     .footer-link { font-size: 0.85rem; color: #555; transition: color 0.15s; }
@@ -79,7 +91,7 @@
         <a href="index.html#despre" class="nav-link">Despre noi</a>
         <a href="servicii.html" class="nav-link">Servicii</a>
         <a href="echipa.html" class="nav-link">Echipa medicală</a>
-        <a href="abonamente.html" class="nav-link">Abonamente</a>
+        <a href="abonamente.html" class="nav-link active">Abonamente</a>
         <a href="index.html#programare" class="nav-link">Programare</a>
         <a href="index.html#contact" class="nav-link">Contact</a>
         <a href="index.html#urgenta" class="nav-urgenta"><span class="pulse-red"></span>Urgență</a>
@@ -104,7 +116,7 @@
     <a href="index.html#despre" class="mob-link" onclick="closeMenu()">Despre noi</a>
     <a href="servicii.html" class="mob-link" onclick="closeMenu()">Servicii</a>
     <a href="echipa.html" class="mob-link" onclick="closeMenu()">Echipa medicală</a>
-    <a href="abonamente.html" class="mob-link" onclick="closeMenu()">Abonamente</a>
+    <a href="abonamente.html" class="mob-link" onclick="closeMenu()" style="color:var(--red);">Abonamente</a>
     <a href="index.html#programare" class="mob-link" onclick="closeMenu()">Programare</a>
     <a href="index.html#contact" class="mob-link" onclick="closeMenu()">Contact</a>
     <a href="index.html#urgenta" class="mob-link" onclick="closeMenu()" style="color:var(--red);">🚨 Urgență</a>
@@ -112,73 +124,151 @@
   </div>
 </header>
 
-<section style="background:var(--navy);padding:64px 16px 56px;position:relative;overflow:hidden;">
-  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 20% 60%,rgba(212,43,43,0.12) 0%,transparent 55%);pointer-events:none;"></div>
-  <div class="max-w-2xl mx-auto text-center" style="position:relative;">
-    <span style="display:inline-block;font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:12px;">Opinia ta contează</span>
-    <h1 style="font-size:clamp(2rem,4vw,3rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:16px;">Cum a fost experiența ta la VET STUFF?</h1>
-    <p style="font-size:0.95rem;color:rgba(255,255,255,0.65);line-height:1.75;">Feedback-ul tău sincer ne ajută să îmbunătățim constant serviciile pentru tine și companionul tău.</p>
+<!-- HERO -->
+<section style="background:var(--navy);padding:72px 16px 64px;position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 80% 30%,rgba(212,43,43,0.15) 0%,transparent 55%),radial-gradient(ellipse at 20% 70%,rgba(255,255,255,0.04) 0%,transparent 55%);pointer-events:none;"></div>
+  <div class="max-w-3xl mx-auto text-center" style="position:relative;">
+    <span style="display:inline-block;font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:12px;">Planuri de sănătate</span>
+    <h1 style="font-size:clamp(2.2rem,4.5vw,3.4rem);font-weight:900;color:#fff;line-height:1.08;margin-bottom:16px;">Îngrijire preventivă,<br/>tot anul, fără surprize</h1>
+    <p style="font-size:1rem;color:rgba(255,255,255,0.7);line-height:1.75;max-width:560px;margin:0 auto 36px;">Abonamentele VET STUFF îți oferă acces la consultații, vaccinări și deparazitare la un preț lunar fix — mai ieftin, mai simplu, mai liniștit.</p>
+    <a href="#planuri" style="display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:var(--red);color:#fff;border-radius:8px;font-size:0.95rem;font-weight:700;transition:background 0.15s;" onmouseover="this.style.background='#b52020'" onmouseout="this.style.background='var(--red)'">
+      Alege planul tău →
+    </a>
   </div>
 </section>
 
-<section style="padding:64px 16px 80px;background:var(--light);">
-  <div class="max-w-xl mx-auto">
-    <div style="background:#fff;border-radius:16px;padding:40px 32px;box-shadow:0 4px 24px rgba(0,0,0,0.07);">
-      <form id="feedback-form" novalidate>
+<!-- PLANURI -->
+<section id="planuri" style="padding:72px 16px 64px;background:var(--light);">
+  <div class="max-w-6xl mx-auto">
+    <div style="text-align:center;margin-bottom:48px;">
+      <span style="font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--red);">3 opțiuni</span>
+      <h2 style="font-size:clamp(1.8rem,3vw,2.6rem);font-weight:900;color:var(--navy);margin-top:8px;">Alege ce se potrivește animalului tău</h2>
+    </div>
 
-        <div style="text-align:center;margin-bottom:8px;">
-          <div style="font-size:0.85rem;font-weight:600;color:#333;margin-bottom:8px;">Nota generală *</div>
-          <div id="stars" style="display:flex;gap:6px;justify-content:center;">
-            <span class="star" data-val="1">★</span>
-            <span class="star" data-val="2">★</span>
-            <span class="star" data-val="3">★</span>
-            <span class="star" data-val="4">★</span>
-            <span class="star" data-val="5">★</span>
-          </div>
-          <div id="star-label" style="font-size:0.82rem;color:var(--gray);margin-top:6px;min-height:20px;"></div>
+    <div class="grid md:grid-cols-3 gap-8 items-start">
+
+      <!-- BASIC -->
+      <div class="plan-card">
+        <div style="margin-bottom:20px;">
+          <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray);margin-bottom:8px;">Basic</div>
+          <div class="plan-price">199 <span>lei/lună</span></div>
+          <div style="font-size:0.82rem;color:var(--gray);margin-top:6px;">Per animal</div>
         </div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px;padding-top:20px;border-top:1px solid var(--border);">
+          <div class="plan-feature">2 consultații generale/an</div>
+          <div class="plan-feature">Vaccinare anuală inclusă</div>
+          <div class="plan-feature">Deparazitare internă 2x/an</div>
+          <div class="plan-feature">10% reducere la analize</div>
+          <div class="plan-feature no">Deparazitare externă</div>
+          <div class="plan-feature no">Consultații nelimitate</div>
+          <div class="plan-feature no">Prioritate programări</div>
+        </div>
+        <button class="btn-red w-full justify-center" onclick="selectPlan('Basic — 199 lei/lună')" style="margin-top:auto;">Mă înscriu →</button>
+      </div>
 
-        <div style="display:flex;flex-direction:column;gap:16px;margin-top:24px;">
+      <!-- STANDARD (featured) -->
+      <div class="plan-card featured">
+        <div class="plan-badge">Cel mai popular</div>
+        <div style="margin-bottom:20px;">
+          <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--navy);margin-bottom:8px;">Standard</div>
+          <div class="plan-price" style="color:var(--red);">349 <span style="color:var(--gray);">lei/lună</span></div>
+          <div style="font-size:0.82rem;color:var(--gray);margin-top:6px;">Per animal</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px;padding-top:20px;border-top:1px solid var(--border);">
+          <div class="plan-feature">4 consultații generale/an</div>
+          <div class="plan-feature">Vaccinare anuală inclusă</div>
+          <div class="plan-feature">Deparazitare internă 4x/an</div>
+          <div class="plan-feature">Deparazitare externă 4x/an</div>
+          <div class="plan-feature">15% reducere la analize</div>
+          <div class="plan-feature">Prioritate la programări</div>
+          <div class="plan-feature no">Consultații nelimitate</div>
+        </div>
+        <button class="btn-red w-full justify-center" onclick="selectPlan('Standard — 349 lei/lună')" style="margin-top:auto;background:var(--navy);" onmouseover="this.style.background='#122a52'" onmouseout="this.style.background='var(--navy)'">Mă înscriu →</button>
+      </div>
+
+      <!-- PREMIUM -->
+      <div class="plan-card">
+        <div style="margin-bottom:20px;">
+          <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray);margin-bottom:8px;">Premium</div>
+          <div class="plan-price">549 <span>lei/lună</span></div>
+          <div style="font-size:0.82rem;color:var(--gray);margin-top:6px;">Per animal</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px;padding-top:20px;border-top:1px solid var(--border);">
+          <div class="plan-feature">Consultații generale nelimitate</div>
+          <div class="plan-feature">Vaccinare anuală inclusă</div>
+          <div class="plan-feature">Deparazitare internă & externă</div>
+          <div class="plan-feature">20% reducere la toate serviciile</div>
+          <div class="plan-feature">Prioritate maximă programări</div>
+          <div class="plan-feature">Dosar medical digital</div>
+          <div class="plan-feature">Consultații telefonice incluse</div>
+        </div>
+        <button class="btn-red w-full justify-center" onclick="selectPlan('Premium — 549 lei/lună')" style="margin-top:auto;">Mă înscriu →</button>
+      </div>
+
+    </div>
+
+    <p style="text-align:center;font-size:0.82rem;color:var(--gray);margin-top:28px;">Prețurile sunt per animal. Reduceri disponibile pentru mai multe animale din aceeași familie. Contactează-ne pentru detalii.</p>
+  </div>
+</section>
+
+<!-- FORMULAR ÎNSCRIERE -->
+<section id="inscriere" style="padding:64px 16px 80px;background:#fff;">
+  <div class="max-w-xl mx-auto">
+    <div style="text-align:center;margin-bottom:36px;">
+      <span style="font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--red);">Înscrie-te acum</span>
+      <h2 style="font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;color:var(--navy);margin-top:8px;">Completează formularul</h2>
+      <p style="font-size:0.9rem;color:#666;margin-top:8px;line-height:1.7;">Te contactăm în maxim 24 de ore pentru a finaliza înscrierea.</p>
+    </div>
+
+    <div style="background:var(--light);border-radius:16px;padding:36px 28px;">
+      <form id="abonament-form" novalidate>
+        <div style="display:flex;flex-direction:column;gap:16px;">
           <div class="form-field">
-            <label>Numele tău</label>
-            <input type="text" id="fb-name" placeholder="ex. Maria Ionescu" />
-          </div>
-          <div class="form-field">
-            <label>Email (opțional)</label>
-            <input type="email" id="fb-email" placeholder="ex. maria@email.com" />
-          </div>
-          <div class="form-field">
-            <label>Ce serviciu ai folosit?</label>
-            <select id="fb-serviciu">
-              <option value="">-- Selectează --</option>
-              <option>Consultație generală</option>
-              <option>Analize de laborator</option>
-              <option>Chirurgie</option>
-              <option>Cardiologie</option>
-              <option>Ortopedie</option>
-              <option>Stomatologie</option>
-              <option>Dermatologie</option>
-              <option>Imagistică</option>
-              <option>Vaccinare / Deparazitare</option>
-              <option>Alt serviciu</option>
+            <label>Plan selectat *</label>
+            <select id="ab-plan" required>
+              <option value="">-- Alege un plan --</option>
+              <option>Basic — 199 lei/lună</option>
+              <option>Standard — 349 lei/lună</option>
+              <option>Premium — 549 lei/lună</option>
             </select>
           </div>
           <div class="form-field">
-            <label>Mesajul tău *</label>
-            <textarea id="fb-mesaj" rows="5" placeholder="Spune-ne ce ți-a plăcut sau ce am putea îmbunătăți..."></textarea>
+            <label>Nume proprietar *</label>
+            <input type="text" id="ab-nume" placeholder="ex. Ion Popescu" required />
+          </div>
+          <div class="form-field">
+            <label>Telefon *</label>
+            <input type="tel" id="ab-telefon" placeholder="ex. 0742 000 000" required />
+          </div>
+          <div class="form-field">
+            <label>Email</label>
+            <input type="email" id="ab-email" placeholder="ex. ion@email.com" />
+          </div>
+          <div class="form-field">
+            <label>Nume animal *</label>
+            <input type="text" id="ab-animal" placeholder="ex. Max" required />
+          </div>
+          <div class="form-field">
+            <label>Specie și rasă</label>
+            <input type="text" id="ab-rasa" placeholder="ex. Câine, Golden Retriever" />
+          </div>
+          <div class="form-field">
+            <label>Mesaj (opțional)</label>
+            <textarea id="ab-mesaj" rows="3" placeholder="Orice detaliu relevant despre animalul tău..."></textarea>
           </div>
         </div>
 
-        <div id="fb-error" style="display:none;color:var(--red);font-size:0.83rem;margin-top:12px;">Te rugăm să acorzi o notă și să scrii un mesaj.</div>
+        <div id="ab-error" style="display:none;color:var(--red);font-size:0.83rem;margin-top:12px;">Te rugăm să completezi câmpurile obligatorii.</div>
 
         <button type="submit" class="btn-red w-full justify-center" style="margin-top:24px;padding:13px;font-size:0.95rem;">
-          Trimite feedback-ul →
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+          Trimite cererea de înscriere
         </button>
 
-        <div id="fb-success" style="display:none;margin-top:20px;background:#DCFCE7;border:1px solid #86EFAC;border-radius:10px;padding:16px;text-align:center;">
-          <div style="font-size:1.4rem;margin-bottom:6px;">🐾</div>
-          <div style="font-weight:700;color:#166534;">Îți mulțumim pentru feedback!</div>
-          <div style="font-size:0.85rem;color:#166534;margin-top:4px;">Opinia ta ne ajută să fim mai buni în fiecare zi.</div>
+        <div id="ab-success" style="display:none;margin-top:20px;background:#DCFCE7;border:1px solid #86EFAC;border-radius:10px;padding:16px;text-align:center;">
+          <div style="font-size:1.4rem;margin-bottom:6px;">✅</div>
+          <div style="font-weight:700;color:#166534;">Cerere trimisă cu succes!</div>
+          <div style="font-size:0.85rem;color:#166534;margin-top:4px;">Te contactăm în maxim 24 de ore pentru a finaliza înscrierea.</div>
         </div>
       </form>
     </div>
@@ -204,7 +294,7 @@
           <li><a href="servicii.html" class="footer-link">Servicii</a></li>
           <li><a href="echipa.html" class="footer-link">Echipa medicală</a></li>
           <li><a href="abonamente.html" class="footer-link">Abonamente</a></li>
-          <li><a href="index.html#programare" class="footer-link">Programare</a></li>
+          <li><a href="feedback.html" class="footer-link">Feedback</a></li>
         </ul>
       </div>
       <div>
@@ -254,38 +344,30 @@ function closeMenu() {
   document.getElementById('hb2').style.opacity   = '';
   document.getElementById('hb3').style.transform = '';
 }
-const starLabels = ['','Nesatisfăcător','Slab','Acceptabil','Bine','Excelent!'];
-let selectedStar = 0;
-document.querySelectorAll('.star').forEach(star => {
-  star.addEventListener('mouseenter', () => {
-    const v = +star.dataset.val;
-    document.querySelectorAll('.star').forEach(s => s.classList.toggle('active', +s.dataset.val <= v));
-    document.getElementById('star-label').textContent = starLabels[v];
-  });
-  star.addEventListener('click', () => {
-    selectedStar = +star.dataset.val;
-    document.querySelectorAll('.star').forEach(s => s.classList.toggle('active', +s.dataset.val <= selectedStar));
-    document.getElementById('star-label').textContent = starLabels[selectedStar];
-  });
-});
-document.getElementById('stars').addEventListener('mouseleave', () => {
-  document.querySelectorAll('.star').forEach(s => s.classList.toggle('active', +s.dataset.val <= selectedStar));
-  document.getElementById('star-label').textContent = selectedStar ? starLabels[selectedStar] : '';
-});
-document.getElementById('feedback-form').addEventListener('submit', function(e) {
+function selectPlan(plan) {
+  document.getElementById('ab-plan').value = plan;
+  document.getElementById('inscriere').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+document.getElementById('abonament-form').addEventListener('submit', function(e) {
   e.preventDefault();
-  const mesaj = document.getElementById('fb-mesaj').value.trim();
-  if (!selectedStar || !mesaj) { document.getElementById('fb-error').style.display = 'block'; return; }
-  document.getElementById('fb-error').style.display = 'none';
-  const params = new URLSearchParams({ type: 'feedback', Nota: selectedStar,
-    Nume: document.getElementById('fb-name').value.trim(),
-    Email: document.getElementById('fb-email').value.trim(),
-    Serviciu: document.getElementById('fb-serviciu').value,
-    Mesaj: mesaj });
+  const plan   = document.getElementById('ab-plan').value;
+  const nume   = document.getElementById('ab-nume').value.trim();
+  const tel    = document.getElementById('ab-telefon').value.trim();
+  const animal = document.getElementById('ab-animal').value.trim();
+  if (!plan || !nume || !tel || !animal) { document.getElementById('ab-error').style.display = 'block'; return; }
+  document.getElementById('ab-error').style.display = 'none';
+  const params = new URLSearchParams({
+    type: 'abonamente',
+    'Tip plan': plan,
+    'Nume proprietar': nume,
+    Telefon: tel,
+    Email: document.getElementById('ab-email').value.trim(),
+    'Nume animal': animal,
+    Mesaj: document.getElementById('ab-rasa').value.trim() + ' ' + document.getElementById('ab-mesaj').value.trim()
+  });
   fetch(SHEETS_URL + '?' + params.toString(), { method: 'GET', mode: 'no-cors' });
-  document.getElementById('fb-success').style.display = 'block';
-  this.reset(); selectedStar = 0;
-  document.querySelectorAll('.star').forEach(s => s.classList.remove('active'));
+  document.getElementById('ab-success').style.display = 'block';
+  this.reset();
 });
 </script>
 </body>
