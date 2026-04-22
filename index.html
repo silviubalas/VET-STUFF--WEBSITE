@@ -797,7 +797,7 @@
     <!-- Desktop links -->
     <div class="hidden md:flex items-center gap-6">
       <a href="#despre" class="nav-link">Despre noi</a>
-      <a href="#servicii" class="nav-link">Servicii</a>
+      <a href="servicii.html" class="nav-link">Servicii</a>
       <a href="echipa.html" class="nav-link">Echipa medicală</a>
       <a href="#programare" class="nav-link">Programare</a>
       <a href="#contact" class="nav-link">Contact</a>
@@ -831,7 +831,7 @@
     </svg>
   </button>
   <a href="#despre"     class="mob-link" onclick="closeMenu()">Despre noi</a>
-  <a href="#servicii"   class="mob-link" onclick="closeMenu()">Servicii</a>
+  <a href="servicii.html" class="mob-link" onclick="closeMenu()">Servicii</a>
   <a href="echipa.html" class="mob-link" onclick="closeMenu()">Echipa medicală</a>
   <a href="#programare" class="mob-link" onclick="closeMenu()">Programare</a>
   <a href="#contact"    class="mob-link" onclick="closeMenu()">Contact</a>
@@ -920,9 +920,34 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════
+     CUPRINS RAPID
+═══════════════════════════════════════════════════ -->
+<section style="background:#fff; border-bottom:1px solid var(--border); padding:20px 16px;">
+  <div class="max-w-6xl mx-auto">
+    <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:center;">
+      <a href="servicii.html" style="display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:30px;font-size:0.85rem;font-weight:600;background:var(--navy);color:#fff;transition:background 0.2s;white-space:nowrap;" onmouseover="this.style.background='var(--red)'" onmouseout="this.style.background='var(--navy)'">
+        ⚕️ Servicii veterinare
+      </a>
+      <a href="echipa.html" style="display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:30px;font-size:0.85rem;font-weight:600;border:1.5px solid var(--border);color:#444;background:#fff;transition:border-color 0.2s,color 0.2s;white-space:nowrap;" onmouseover="this.style.borderColor='var(--navy)';this.style.color='var(--navy)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='#444'">
+        🩺 Echipa medicală
+      </a>
+      <a href="#programare" style="display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:30px;font-size:0.85rem;font-weight:600;border:1.5px solid var(--border);color:#444;background:#fff;transition:border-color 0.2s,color 0.2s;white-space:nowrap;" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='#444'">
+        📅 Programare online
+      </a>
+      <a href="#urgenta" style="display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:30px;font-size:0.85rem;font-weight:600;border:1.5px solid rgba(212,43,43,0.25);color:var(--red);background:#fff;transition:background 0.2s,color 0.2s;white-space:nowrap;" onmouseover="this.style.background='var(--red)';this.style.color='#fff'" onmouseout="this.style.background='#fff';this.style.color='var(--red)'">
+        🚨 Urgențe
+      </a>
+      <a href="#contact" style="display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:30px;font-size:0.85rem;font-weight:600;border:1.5px solid var(--border);color:#444;background:#fff;transition:border-color 0.2s,color 0.2s;white-space:nowrap;" onmouseover="this.style.borderColor='var(--navy)';this.style.color='var(--navy)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='#444'">
+        📍 Contact & Program
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
      CE NE FACE DIFERIȚI
 ═══════════════════════════════════════════════════ -->
-<section id="diferentiatori" style="padding:80px 16px 72px; background:var(--light);">
+<section id="diferentiatori" style="padding:72px 16px 64px; background:var(--light);">
   <div class="max-w-6xl mx-auto">
 
     <div class="section-title-wrap reveal">
@@ -961,77 +986,13 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════
-     CUM FUNCȚIONEAZĂ
-═══════════════════════════════════════════════════ -->
-<section style="padding:80px 16px; background:#fff;">
-  <div class="max-w-5xl mx-auto">
-
-    <div class="section-title-wrap reveal">
-      <span class="section-subtitle">Simplu și clar</span>
-      <h2 class="section-title">Cum funcționează</h2>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 mt-12" style="position:relative;">
-
-      <!-- Linie de conectare pe desktop -->
-      <div class="hidden lg:block" style="position:absolute;top:36px;left:12.5%;right:12.5%;height:2px;background:linear-gradient(to right,var(--red),rgba(212,43,43,0.15));z-index:0;"></div>
-
-      <div class="reveal reveal-d1" style="text-align:center;padding:0 20px;position:relative;z-index:1;">
-        <div style="width:72px;height:72px;background:var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 4px 16px rgba(212,43,43,0.3);">
-          <svg width="28" height="28" fill="#fff" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
-        </div>
-        <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin-bottom:8px;">Pasul 1</div>
-        <h3 style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:8px;">Programezi</h3>
-        <p style="font-size:0.83rem;color:#666;line-height:1.65;">Online, telefonic sau pe Messenger — în câteva minute, la ora care ți se potrivește.</p>
-      </div>
-
-      <div class="reveal reveal-d2" style="text-align:center;padding:0 20px;position:relative;z-index:1;">
-        <div style="width:72px;height:72px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 4px 16px rgba(27,58,107,0.3);">
-          <svg width="28" height="28" fill="#fff" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-        </div>
-        <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin-bottom:8px;">Pasul 2</div>
-        <h3 style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:8px;">Evaluăm pacientul</h3>
-        <p style="font-size:0.83rem;color:#666;line-height:1.65;">Consultație completă, analize dacă e nevoie și un diagnostic clar — fără grabă, fără compromisuri.</p>
-      </div>
-
-      <div class="reveal reveal-d3" style="text-align:center;padding:0 20px;position:relative;z-index:1;">
-        <div style="width:72px;height:72px;background:var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 4px 16px rgba(212,43,43,0.3);">
-          <svg width="28" height="28" fill="#fff" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
-        </div>
-        <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin-bottom:8px;">Pasul 3</div>
-        <h3 style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:8px;">Plan de îngrijire</h3>
-        <p style="font-size:0.83rem;color:#666;line-height:1.65;">Stabilim împreună tratamentul, planul de sănătate și pașii următori — adaptat specific companionului tău.</p>
-      </div>
-
-      <div class="reveal reveal-d4" style="text-align:center;padding:0 20px;position:relative;z-index:1;">
-        <div style="width:72px;height:72px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 4px 16px rgba(27,58,107,0.3);">
-          <svg width="28" height="28" fill="#fff" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
-        </div>
-        <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin-bottom:8px;">Pasul 4</div>
-        <h3 style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:8px;">Monitorizăm împreună</h3>
-        <p style="font-size:0.83rem;color:#666;line-height:1.65;">Urmărim evoluția, ajustăm planul dacă e nevoie și rămânem alături de tine pe termen lung.</p>
-      </div>
-
-    </div>
-
-    <div class="reveal" style="text-align:center;margin-top:52px;">
-      <a href="#programare" class="btn-red" style="font-size:1rem;padding:14px 32px;">
-        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
-        Începe cu o consultație
-      </a>
-    </div>
-
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════
-     SERVICII
+     SERVICII (preview compact)
 ═══════════════════════════════════════════════════ -->
 <section id="servicii" class="py-20 px-4" style="background:var(--light);">
   <div class="max-w-6xl mx-auto">
 
     <div class="section-title-wrap reveal">
-      <span class="section-subtitle">Servicii complete</span>
+      <span class="section-subtitle">16 specialități veterinare</span>
       <h2 class="section-title">Tot ce are nevoie companionul tău</h2>
     </div>
     <p class="reveal reveal-d1" style="text-align:center; color:#555; font-size:0.95rem; line-height:1.8; max-width:580px; margin:0 auto 40px;">
@@ -1048,75 +1009,11 @@
         </div>
       </div>
 
-      <div class="service-card reveal reveal-d2" style="background:#3a7a5a;">
-        <div class="service-icon-box">💉</div>
-        <div>
-          <h3>Vaccinări</h3>
-          <p>Schema completă de vaccinare pentru câini, pisici și animale exotice</p>
-        </div>
-      </div>
-
-      <div class="service-card teal-card reveal reveal-d3">
-        <div class="service-icon-box">🔬</div>
-        <div>
-          <h3>Analize de laborator</h3>
-          <p>Laborator propriu cu rezultate rapide pentru diagnostic precis</p>
-        </div>
-      </div>
-
-      <div class="service-card slate-card reveal reveal-d1">
+      <div class="service-card slate-card reveal reveal-d2">
         <div class="service-icon-box">⚕️</div>
         <div>
           <h3>Chirurgie veterinară</h3>
-          <p>Sală de operații echipată modern, chirurgi cu experiență internațională</p>
-        </div>
-      </div>
-
-      <div class="service-card dark-card reveal reveal-d2">
-        <div class="service-icon-box">🦷</div>
-        <div>
-          <h3>Stomatologie veterinară</h3>
-          <p>Planuri de sănătate, periaj și detartraj, tratamente dentare, extracții dentare</p>
-        </div>
-      </div>
-
-      <div class="service-card reveal reveal-d1" style="background:#6b4a2a;">
-        <div class="service-icon-box">🦴</div>
-        <div>
-          <h3>Ortopedie veterinară</h3>
-          <p>Diagnostic și tratament al afecțiunilor osoase și articulare, fracturi, displazii</p>
-        </div>
-      </div>
-
-      <div class="service-card reveal reveal-d2" style="background:#4a3a7a;">
-        <div class="service-icon-box">🔭</div>
-        <div>
-          <h3>Imagistică veterinară</h3>
-          <p>Ecografie proprie. Dermatoscopie, otoscopie, radiografie, CT și RMN — disponibile prin medicii colaboratori și clinicile partenere</p>
-        </div>
-      </div>
-
-      <div class="service-card reveal reveal-d3" style="background:#3d6b3a;">
-        <div class="service-icon-box">🛡️</div>
-        <div>
-          <h3>Prevenție și profilaxie</h3>
-          <p>Planuri de sănătate, documente de călătorie, vaccinări, deparazitări, consiliere adopție, medicină de comportament și nutriție</p>
-        </div>
-      </div>
-
-      <div class="service-card reveal reveal-d1" style="background:#5a3a72;">
-        <div class="service-icon-box">🫀</div>
-        <div>
-          <h3>Medicină internă</h3>
-          <p>Gastroenterologie, endocrinologie, boli metabolice și de nutriție, uronefrologie</p>
-        </div>
-      </div>
-
-      <div class="service-card reveal reveal-d2" style="background:#6b2a5a;">
-        <div class="service-icon-box">🩹</div>
-        <div>
-          <h3>Dermatologie veterinară</h3>
-          <p>Diagnostic și tratament al afecțiunilor pielii, blănii și unghiilor — alergii, infecții, parazitoze</p>
+          <p>Sală de operații modernă, chirurgi cu experiență internațională</p>
         </div>
       </div>
 
@@ -1124,55 +1021,41 @@
         <div class="service-icon-box">❤️</div>
         <div>
           <h3>Cardiologie veterinară</h3>
-          <p>Ecocardiografie, electrocardiogramă și monitorizare pentru afecțiuni cardiace la câini și pisici</p>
+          <p>Ecocardiografie, ECG și monitorizare pentru afecțiuni cardiace</p>
         </div>
       </div>
 
-      <div class="service-card reveal reveal-d1" style="background:#2a6b7a;">
-        <div class="service-icon-box">👁️</div>
+      <div class="service-card reveal reveal-d1" style="background:#6b4a2a;">
+        <div class="service-icon-box">🦴</div>
         <div>
-          <h3>Oftalmologie veterinară</h3>
-          <p>Examinare oculară, tratament cataractă, conjunctivite și afecțiuni ale corneei</p>
+          <h3>Ortopedie veterinară</h3>
+          <p>Fracturi, displazii, rupturi ligamentare — diagnostic și tratament</p>
         </div>
       </div>
 
-      <div class="service-card reveal reveal-d2" style="background:#3a5a2a;">
-        <div class="service-icon-box">🏃</div>
-        <div>
-          <h3>Fizioterapie și kinetoterapie</h3>
-          <p>Recuperare postoperatorie, terapie fizică și kinetoterapie pentru mobilitate optimă</p>
-        </div>
-      </div>
-
-      <div class="service-card reveal reveal-d3" style="background:#4a5a6a;">
-        <div class="service-icon-box">🐾</div>
-        <div>
-          <h3>Geriatrie veterinară</h3>
-          <p>Îngrijire specializată pentru animale vârstnice — monitorizare, confort și calitate a vieții</p>
-        </div>
-      </div>
-
-      <div class="service-card reveal reveal-d1" style="background:#6a2a3a;">
+      <div class="service-card reveal reveal-d2" style="background:#6a2a3a;">
         <div class="service-icon-box">🎗️</div>
         <div>
           <h3>Oncologie veterinară</h3>
-          <p>Citologie formațiuni, limfonoduri și diferite organe, histopatologie, protocoale personalizate de chimioterapie și paliație</p>
+          <p>Citologie, histopatologie, chimioterapie și îngrijire paliativă</p>
         </div>
       </div>
 
       <div class="service-card red-card reveal reveal-d3">
         <div class="service-icon-box">🚨</div>
         <div>
-          <h3>Urgențe</h3>
-          <p>Scrie-ne pe Messenger — STUFFIE, agentul nostru AI, evaluează situația și te conectează cu medicul disponibil</p>
+          <h3>Urgențe · STUFFIE</h3>
+          <p>Agentul nostru AI pe Messenger — disponibil non-stop pentru evaluare și ghidare</p>
         </div>
       </div>
 
     </div>
 
-    <a href="#programare" class="discover-btn reveal">
-      Programează o consultație →
-    </a>
+    <div class="reveal" style="margin-top:24px; text-align:center;">
+      <a href="servicii.html" class="discover-btn" style="display:inline-flex; max-width:400px; margin:0 auto;">
+        Vezi toate cele 16 servicii veterinare →
+      </a>
+    </div>
 
   </div>
 </section>
@@ -1864,7 +1747,7 @@
           <div class="footer-heading">Navigare</div>
           <ul style="display:flex; flex-direction:column; gap:10px;">
             <li><a href="#despre"     class="footer-link">Despre noi</a></li>
-            <li><a href="#servicii"   class="footer-link">Servicii</a></li>
+            <li><a href="servicii.html" class="footer-link">Servicii</a></li>
             <li><a href="echipa.html" class="footer-link">Echipa medicală</a></li>
             <li><a href="#programare" class="footer-link">Programare online</a></li>
             <li><a href="#contact"      class="footer-link">Contact</a></li>
