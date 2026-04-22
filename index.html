@@ -1959,6 +1959,7 @@ form.addEventListener('submit', e => {
     // Trimite simultan la Google Sheets + Formspree
     const sheetsRequest = fetch('https://script.google.com/macros/s/AKfycbx3x3H3WfbPENXWKxUPQpDGyKlLQaSuSz3tO5uWaZ9ofPG_fQQaSXwLTcYuP_CDaisx-A/exec', {
       method: 'POST',
+      mode: 'no-cors',
       body: JSON.stringify(payload)
     });
 
