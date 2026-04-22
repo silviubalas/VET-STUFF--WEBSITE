@@ -340,6 +340,7 @@
     .hero-arrow:hover { background: rgba(255,255,255,0.3); }
     .hero-arrow-left  { left: 16px; }
     .hero-arrow-right { right: 16px; }
+    @media (max-width: 767px) { .hero-arrow { display: none; } }
 
     /* dots */
     .hero-dots {
@@ -1854,6 +1855,17 @@ function goSlide(n) {
 function heroSlide(dir) { goSlide(current + dir); }
 function resetTimer() { clearInterval(timer); timer = setInterval(() => heroSlide(1), 5000); }
 resetTimer();
+
+/* Swipe pe mobil */
+const heroSection = document.getElementById('hero');
+if (heroSection) {
+  let touchStartX = 0;
+  heroSection.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  heroSection.addEventListener('touchend', e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) heroSlide(diff > 0 ? 1 : -1);
+  }, { passive: true });
+}
 
 /* ── Navbar scroll ───────────────────────────────── */
 const navbar = document.getElementById('navbar');
