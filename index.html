@@ -1945,21 +1945,34 @@ form.addEventListener('submit', e => {
     btn.disabled = true;
     btn.textContent = 'Se trimite...';
 
-    const data = new FormData(form);
-    fetch('https://formspree.io/f/mzdkbdzb', {
+    const payload = {
+      'Nume proprietar': document.getElementById('owner-name').value.trim(),
+      'Telefon':         document.getElementById('phone').value.trim(),
+      'Email':           document.getElementById('email').value.trim(),
+      'Nume animal':     document.getElementById('pet-name').value.trim(),
+      'Tip animal':      document.getElementById('pet-type').value,
+      'Serviciu':        document.getElementById('service').value,
+      'Data preferată':  document.getElementById('preferred-date').value,
+      'Descriere problemă': document.getElementById('message').value.trim()
+    };
+
+    // Trimite simultan la Google Sheets + Formspree
+    const sheetsRequest = fetch('https://script.google.com/macros/s/AKfycbx3x3H3WfbPENXWKxUPQpDGyKlLQaSuSz3tO5uWaZ9ofPG_fQQaSXwLTcYuP_CDaisx-A/exec', {
       method: 'POST',
-      body: data,
+      body: JSON.stringify(payload)
+    });
+
+    const formspreeData = new FormData(form);
+    const formspreeRequest = fetch('https://formspree.io/f/mzdkbdzb', {
+      method: 'POST',
+      body: formspreeData,
       headers: { 'Accept': 'application/json' }
-    }).then(res => {
-      if (res.ok) {
-        document.getElementById('form-success').classList.remove('hidden');
-        form.querySelectorAll('input,select,textarea,button').forEach(el => { el.disabled = true; el.style.opacity = '0.5'; });
-        document.getElementById('form-success').scrollIntoView({ behavior: 'smooth', block: 'center' });
-      } else {
-        btn.disabled = false;
-        btn.textContent = 'Trimite programarea';
-        alert('A apărut o eroare. Te rugăm să ne contactezi telefonic la +40 742 870 000.');
-      }
+    });
+
+    Promise.allSettled([sheetsRequest, formspreeRequest]).then(() => {
+      document.getElementById('form-success').classList.remove('hidden');
+      form.querySelectorAll('input,select,textarea,button').forEach(el => { el.disabled = true; el.style.opacity = '0.5'; });
+      document.getElementById('form-success').scrollIntoView({ behavior: 'smooth', block: 'center' });
     }).catch(() => {
       btn.disabled = false;
       btn.textContent = 'Trimite programarea';
