@@ -2015,7 +2015,15 @@ form.addEventListener('submit', e => {
     const sheetsParams = new URLSearchParams();
     sheetsParams.append('type', 'programari');
     Object.entries(payload).forEach(([k,v]) => sheetsParams.append(k, v));
-    (new Image()).src = 'https://script.google.com/macros/s/AKfycbzrAGjPWVoyj9unfoR0MsPxkZ2rv_XveFuxt5FzIcv62oTT_zK7ijRE3vw_wmW3i5XW/exec?' + sheetsParams.toString();
+    (function(url, p) {
+      const fn = 'sf-' + Date.now(), ifr = document.createElement('iframe');
+      ifr.name = fn; ifr.style.display = 'none'; document.body.appendChild(ifr);
+      const frm = document.createElement('form');
+      frm.method = 'GET'; frm.action = url; frm.target = fn; frm.style.display = 'none';
+      p.forEach((v,k) => { const i = document.createElement('input'); i.type='hidden'; i.name=k; i.value=v; frm.appendChild(i); });
+      document.body.appendChild(frm); frm.submit();
+      setTimeout(() => { frm.remove(); ifr.remove(); }, 5000);
+    })('https://script.google.com/macros/s/AKfycbzrAGjPWVoyj9unfoR0MsPxkZ2rv_XveFuxt5FzIcv62oTT_zK7ijRE3vw_wmW3i5XW/exec', sheetsParams);
     const sheetsRequest = Promise.resolve();
 
     const formspreeData = new FormData(form);
