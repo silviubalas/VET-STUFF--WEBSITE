@@ -1993,8 +1993,9 @@ form.addEventListener('submit', e => {
 
     // Trimite simultan la Google Sheets + Formspree
     const sheetsParams = new URLSearchParams();
+    sheetsParams.append('type', 'programari');
     Object.entries(payload).forEach(([k,v]) => sheetsParams.append(k, v));
-    const sheetsRequest = fetch('https://script.google.com/macros/s/AKfycbx3x3H3WfbPENXWKxUPQpDGyKlLQaSuSz3tO5uWaZ9ofPG_fQQaSXwLTcYuP_CDaisx-A/exec?' + sheetsParams.toString(), {
+    const sheetsRequest = fetch('https://script.google.com/macros/s/AKfycbzrAGjPWVoyj9unfoR0MsPxkZ2rv_XveFuxt5FzIcv62oTT_zK7ijRE3vw_wmW3i5XW/exec?' + sheetsParams.toString(), {
       method: 'GET',
       mode: 'no-cors'
     });
