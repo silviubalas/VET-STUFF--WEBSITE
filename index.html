@@ -598,11 +598,12 @@
 
     /* Buton programare — animatie atentie */
     @keyframes btn-attention {
-      0%   { transform: scale(1); box-shadow: 0 0 0 0 rgba(212,43,43,0.5); }
-      40%  { transform: scale(1.04); box-shadow: 0 0 0 10px rgba(212,43,43,0); }
-      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212,43,43,0); }
+      0%   { transform: scale(1);    box-shadow: 0 0 0 0   rgba(212,43,43,0.7); }
+      30%  { transform: scale(1.06); box-shadow: 0 0 0 14px rgba(212,43,43,0.2); }
+      60%  { transform: scale(0.97); box-shadow: 0 0 0 18px rgba(212,43,43,0); }
+      100% { transform: scale(1);    box-shadow: 0 0 0 0   rgba(212,43,43,0); }
     }
-    .btn-attention { animation: btn-attention 0.7s ease-out; }
+    .btn-attention { animation: btn-attention 0.9s ease-out; }
 
     /* ── MOBILE MENU ───────────────────────────────────────── */
     #mobile-menu {
@@ -2042,12 +2043,14 @@ if (submitBtn && programareSection) {
 
   const btnObs = new IntersectionObserver(entries => {
     if (entries[0].isIntersecting && !btnUserActed) {
-      setTimeout(triggerBtnAttention, 8000);
-      btnInterval = setInterval(triggerBtnAttention, 8000);
+      setTimeout(() => {
+        triggerBtnAttention();
+        btnInterval = setInterval(triggerBtnAttention, 5000);
+      }, 4000);
     } else {
       clearInterval(btnInterval);
     }
-  }, { threshold: 0.5 });
+  }, { threshold: 0.1 });
   btnObs.observe(programareSection);
 
   ['click', 'focus', 'input'].forEach(ev =>
