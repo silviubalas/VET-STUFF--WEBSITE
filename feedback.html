@@ -599,6 +599,11 @@ function closeMenu() {
 
 const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzrAGjPWVoyj9unfoR0MsPxkZ2rv_XveFuxt5FzIcv62oTT_zK7ijRE3vw_wmW3i5XW/exec';
 
+function sendToSheets(params) {
+  const img = new Image();
+  img.src = SHEETS_URL + '?' + params.toString();
+}
+
 /* Tab switching */
 function switchTab(tab) {
   const isRapid = tab === 'rapid';
@@ -627,12 +632,10 @@ document.getElementById('feedback-rapid-form').addEventListener('submit', async 
   const params = new URLSearchParams({ type: 'feedback', Tip: 'Rapid' });
   fd.forEach((v, k) => params.append(k, v));
 
+  sendToSheets(params);
   try {
-    const [res] = await Promise.allSettled([
-      fetch('https://formspree.io/f/mzdkbdzb', { method: 'POST', body: fd, headers: { 'Accept': 'application/json' } }),
-      fetch(SHEETS_URL + '?' + params.toString(), { method: 'GET', mode: 'no-cors' })
-    ]);
-    if (res.status === 'fulfilled' && res.value.ok) {
+    const res = await fetch('https://formspree.io/f/mzdkbdzb', { method: 'POST', body: fd, headers: { 'Accept': 'application/json' } });
+    if (res.ok) {
       document.getElementById('rr-success').style.display = 'block';
       document.getElementById('rr-success').scrollIntoView({ behavior: 'smooth', block: 'center' });
       btn.style.display = 'none';
@@ -713,12 +716,10 @@ document.getElementById('feedback-form').addEventListener('submit', async functi
   const params = new URLSearchParams({ type: 'feedback', Tip: 'Detaliat' });
   data.forEach((v, k) => params.append(k, v));
 
+  sendToSheets(params);
   try {
-    const [res] = await Promise.allSettled([
-      fetch('https://formspree.io/f/mzdkbdzb', { method: 'POST', body: data, headers: { 'Accept': 'application/json' } }),
-      fetch(SHEETS_URL + '?' + params.toString(), { method: 'GET', mode: 'no-cors' })
-    ]);
-    if (res.status === 'fulfilled' && res.value.ok) {
+    const res = await fetch('https://formspree.io/f/mzdkbdzb', { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
+    if (res.ok) {
       document.getElementById('fb-success').style.display = 'block';
       document.getElementById('fb-success').scrollIntoView({ behavior: 'smooth', block: 'center' });
       btn.style.display = 'none';

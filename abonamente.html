@@ -362,7 +362,7 @@ document.getElementById('abonament-form').addEventListener('submit', function(e)
     'Nume animal': animal,
     Mesaj: document.getElementById('ab-rasa').value.trim() + ' ' + document.getElementById('ab-mesaj').value.trim()
   });
-  fetch(SHEETS_URL + '?' + params.toString(), { method: 'GET', mode: 'no-cors' });
+  (new Image()).src = SHEETS_URL + '?' + params.toString();
   document.getElementById('ab-success').style.display = 'block';
   this.reset();
 });

@@ -2015,10 +2015,8 @@ form.addEventListener('submit', e => {
     const sheetsParams = new URLSearchParams();
     sheetsParams.append('type', 'programari');
     Object.entries(payload).forEach(([k,v]) => sheetsParams.append(k, v));
-    const sheetsRequest = fetch('https://script.google.com/macros/s/AKfycbzrAGjPWVoyj9unfoR0MsPxkZ2rv_XveFuxt5FzIcv62oTT_zK7ijRE3vw_wmW3i5XW/exec?' + sheetsParams.toString(), {
-      method: 'GET',
-      mode: 'no-cors'
-    });
+    (new Image()).src = 'https://script.google.com/macros/s/AKfycbzrAGjPWVoyj9unfoR0MsPxkZ2rv_XveFuxt5FzIcv62oTT_zK7ijRE3vw_wmW3i5XW/exec?' + sheetsParams.toString();
+    const sheetsRequest = Promise.resolve();
 
     const formspreeData = new FormData(form);
     const formspreeRequest = fetch('https://formspree.io/f/mzdkbdzb', {
@@ -2050,7 +2048,7 @@ document.getElementById('newsletter-form')?.addEventListener('submit', function(
   }
   document.getElementById('nl-error').style.display = 'none';
   const params = new URLSearchParams({ type: 'newsletter', Email: email, Nume: name });
-  fetch('https://script.google.com/macros/s/AKfycbzrAGjPWVoyj9unfoR0MsPxkZ2rv_XveFuxt5FzIcv62oTT_zK7ijRE3vw_wmW3i5XW/exec?' + params.toString(), { method: 'GET', mode: 'no-cors' });
+  (new Image()).src = 'https://script.google.com/macros/s/AKfycbzrAGjPWVoyj9unfoR0MsPxkZ2rv_XveFuxt5FzIcv62oTT_zK7ijRE3vw_wmW3i5XW/exec?' + params.toString();
   document.getElementById('nl-success').style.display = 'block';
   this.reset();
 });
