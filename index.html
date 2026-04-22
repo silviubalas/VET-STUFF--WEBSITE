@@ -1957,13 +1957,11 @@ form.addEventListener('submit', e => {
     };
 
     // Trimite simultan la Google Sheets + Formspree
-    const sheetsForm = new URLSearchParams();
-    Object.entries(payload).forEach(([k,v]) => sheetsForm.append(k, v));
-    const sheetsRequest = fetch('https://script.google.com/macros/s/AKfycbx3x3H3WfbPENXWKxUPQpDGyKlLQaSuSz3tO5uWaZ9ofPG_fQQaSXwLTcYuP_CDaisx-A/exec', {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: sheetsForm.toString()
+    const sheetsParams = new URLSearchParams();
+    Object.entries(payload).forEach(([k,v]) => sheetsParams.append(k, v));
+    const sheetsRequest = fetch('https://script.google.com/macros/s/AKfycbx3x3H3WfbPENXWKxUPQpDGyKlLQaSuSz3tO5uWaZ9ofPG_fQQaSXwLTcYuP_CDaisx-A/exec?' + sheetsParams.toString(), {
+      method: 'GET',
+      mode: 'no-cors'
     });
 
     const formspreeData = new FormData(form);
