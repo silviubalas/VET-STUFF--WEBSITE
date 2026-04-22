@@ -94,10 +94,7 @@
     #topbar a { color: rgba(255,255,255,0.85); transition: color 0.15s; }
     #topbar a:hover { color: #fff; }
     #site-header { position: sticky; top: 0; z-index: 999; }
-    #diagnostic, #chirurgie, #ortopedie, #cardiologie, #oncologie, #stomatologie, #dermatologie, #preventie, #altele { scroll-margin-top: 200px; }
-    @media (min-width: 768px) {
-      #diagnostic, #chirurgie, #ortopedie, #cardiologie, #oncologie, #stomatologie, #dermatologie, #preventie, #altele { scroll-margin-top: 190px; }
-    }
+    #diagnostic, #chirurgie, #ortopedie, #cardiologie, #oncologie, #stomatologie, #dermatologie, #preventie, #altele { scroll-margin-top: 230px; }
     #navbar { background: #fff; border-bottom: 1px solid var(--border); transition: box-shadow 0.2s; }
     #navbar.scrolled { box-shadow: 0 2px 16px rgba(0,0,0,0.08); }
 
@@ -254,6 +251,23 @@
   </div>
 </nav>
 
+<!-- ANCHOR NAV — parte din header sticky -->
+<div style="background:#fff; border-bottom:1px solid var(--border); padding:10px 0;">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="anchor-nav">
+      <a href="#diagnostic" class="anchor-pill">🩺 Diagnostic</a>
+      <a href="#chirurgie" class="anchor-pill">⚕️ Chirurgie</a>
+      <a href="#cardiologie" class="anchor-pill">❤️ Cardiologie</a>
+      <a href="#ortopedie" class="anchor-pill">🦴 Ortopedie</a>
+      <a href="#stomatologie" class="anchor-pill">🦷 Stomatologie</a>
+      <a href="#oncologie" class="anchor-pill">🎗️ Oncologie</a>
+      <a href="#dermatologie" class="anchor-pill">🩹 Dermatologie</a>
+      <a href="#preventie" class="anchor-pill">🛡️ Prevenție</a>
+      <a href="#altele" class="anchor-pill">🐾 Altele</a>
+    </div>
+  </div>
+</div>
+
 <div id="mobile-menu">
   <button onclick="closeMenu()" aria-label="Închide meniu" style="position:absolute;top:20px;right:20px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:none;background:transparent;cursor:pointer;color:var(--navy);border-radius:50%;transition:background 0.2s;">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
@@ -299,23 +313,6 @@
     </div>
   </div>
 </section>
-
-<!-- ANCHOR NAV -->
-<div style="background:#fff; border-bottom:1px solid var(--border); padding:16px 0; position:sticky; top:110px; z-index:90;">
-  <div class="max-w-6xl mx-auto px-4">
-    <div class="anchor-nav">
-      <a href="#diagnostic" class="anchor-pill">🩺 Diagnostic</a>
-      <a href="#chirurgie" class="anchor-pill">⚕️ Chirurgie</a>
-      <a href="#cardiologie" class="anchor-pill">❤️ Cardiologie</a>
-      <a href="#ortopedie" class="anchor-pill">🦴 Ortopedie</a>
-      <a href="#stomatologie" class="anchor-pill">🦷 Stomatologie</a>
-      <a href="#oncologie" class="anchor-pill">🎗️ Oncologie</a>
-      <a href="#dermatologie" class="anchor-pill">🩹 Dermatologie</a>
-      <a href="#preventie" class="anchor-pill">🛡️ Prevenție</a>
-      <a href="#altele" class="anchor-pill">🐾 Altele</a>
-    </div>
-  </div>
-</div>
 
 <!-- ═══ GRUP 1: DIAGNOSTIC & INVESTIGAȚII ═══ -->
 <section style="padding:80px 16px 40px; background:var(--light);">
