@@ -588,6 +588,7 @@
       background: #fff; z-index: 998;
       flex-direction: column; padding: 80px 24px 24px; gap: 4px;
     }
+    #mobile-menu > button:first-child:hover { background: rgba(0,0,0,0.06); }
     #mobile-menu.open { display: flex; }
     .mob-link {
       font-size: 1.4rem; font-weight: 700; color: var(--navy);
@@ -822,6 +823,11 @@
 
 <!-- Mobile menu -->
 <div id="mobile-menu">
+  <button onclick="closeMenu()" aria-label="Închide meniu" style="position:absolute;top:20px;right:20px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:none;background:transparent;cursor:pointer;color:var(--navy);border-radius:50%;transition:background 0.2s;">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  </button>
   <a href="#despre"     class="mob-link" onclick="closeMenu()">Despre noi</a>
   <a href="#servicii"   class="mob-link" onclick="closeMenu()">Servicii</a>
   <a href="echipa.html" class="mob-link" onclick="closeMenu()">Echipa medicală</a>
