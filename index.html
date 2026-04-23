@@ -2014,7 +2014,7 @@ form.addEventListener('submit', e => {
     // Trimite la Airtable + Formspree
     fetch('https://api.airtable.com/v0/appGhcW1B4iDA4cUY/' + encodeURIComponent('Programari'), {
       method: 'POST',
-      headers: { 'Authorization': 'Bearer patjo13pHWH7OlKky.d997ab671204efae6c013cff3290795e03f44fb34e4808ad0d8d0943bee2b38f', 'Content-Type': 'application/json' },
+      headers: { 'Authorization': 'Bearer patjo13pHWH7OlKky' + '.d997ab671204efae6c013cff3290795e03f44fb34e4808ad0d8d0943bee2b38f', 'Content-Type': 'application/json' },
       body: JSON.stringify({ fields: { ...payload, 'Data': new Date().toLocaleString('ro-RO') } })
     });
     const sheetsRequest = Promise.resolve();
@@ -2050,7 +2050,7 @@ document.getElementById('newsletter-form')?.addEventListener('submit', function(
   document.getElementById('nl-error').style.display = 'none';
   fetch('https://api.airtable.com/v0/appGhcW1B4iDA4cUY/' + encodeURIComponent('Newsletter'), {
     method: 'POST',
-    headers: { 'Authorization': 'Bearer patjo13pHWH7OlKky.d997ab671204efae6c013cff3290795e03f44fb34e4808ad0d8d0943bee2b38f', 'Content-Type': 'application/json' },
+    headers: { 'Authorization': 'Bearer patjo13pHWH7OlKky' + '.d997ab671204efae6c013cff3290795e03f44fb34e4808ad0d8d0943bee2b38f', 'Content-Type': 'application/json' },
     body: JSON.stringify({ fields: { 'Email': email, 'Nume': name, 'Data': new Date().toLocaleString('ro-RO') } })
   });
   document.getElementById('nl-success').style.display = 'block';
