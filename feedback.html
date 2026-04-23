@@ -597,28 +597,15 @@ function closeMenu() {
   document.getElementById('hb3').style.transform = '';
 }
 
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzrAGjPWVoyj9unfoR0MsPxkZ2rv_XveFuxt5FzIcv62oTT_zK7ijRE3vw_wmW3i5XW/exec';
+const AT_TOKEN  = 'patjo13pHWH7OlKky.d997ab671204efae6c013cff3290795e03f44fb34e4808ad0d8d0943bee2b38f';
+const AT_BASE   = 'appGhcW1B4iDA4cUY';
 
-function sendToSheets(params) {
-  const iframeName = 'sheets-frame-' + Date.now();
-  const iframe = document.createElement('iframe');
-  iframe.name = iframeName;
-  iframe.style.display = 'none';
-  document.body.appendChild(iframe);
-
-  const form = document.createElement('form');
-  form.method = 'GET';
-  form.action = SHEETS_URL;
-  form.target = iframeName;
-  form.style.display = 'none';
-  params.forEach((v, k) => {
-    const inp = document.createElement('input');
-    inp.type = 'hidden'; inp.name = k; inp.value = v;
-    form.appendChild(inp);
+function sendToAirtable(table, fields) {
+  fetch('https://api.airtable.com/v0/' + AT_BASE + '/' + encodeURIComponent(table), {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + AT_TOKEN, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fields })
   });
-  document.body.appendChild(form);
-  form.submit();
-  setTimeout(() => { form.remove(); iframe.remove(); }, 5000);
 }
 
 /* Tab switching */
@@ -646,10 +633,14 @@ document.getElementById('feedback-rapid-form').addEventListener('submit', async 
   btn.disabled = true; btn.textContent = 'Se trimite...'; btn.style.background = '#888';
 
   const fd = new FormData(this);
-  const params = new URLSearchParams({ type: 'feedback', Tip: 'Rapid' });
-  fd.forEach((v, k) => params.append(k, v));
-
-  sendToSheets(params);
+  sendToAirtable('Feedback', {
+    'Tip': 'Rapid',
+    'Evaluare': fd.get('Evaluare') || '',
+    'Nume': fd.get('Nume') || '',
+    'Email': fd.get('Email') || '',
+    'Mesaj': fd.get('Mesaj') || '',
+    'Data': new Date().toLocaleString('ro-RO')
+  });
   try {
     const res = await fetch('https://formspree.io/f/mzdkbdzb', { method: 'POST', body: fd, headers: { 'Accept': 'application/json' } });
     if (res.ok) {
@@ -730,10 +721,28 @@ document.getElementById('feedback-form').addEventListener('submit', async functi
 
   const data = new FormData(this);
   data.set('Telefon', phone);
-  const params = new URLSearchParams({ type: 'feedback', Tip: 'Detaliat' });
-  data.forEach((v, k) => params.append(k, v));
-
-  sendToSheets(params);
+  sendToAirtable('Feedback', {
+    'Tip': 'Detaliat',
+    'Nume': data.get('Nume') || '',
+    'Email': data.get('Email') || '',
+    'Telefon': phone,
+    'Nume animal': data.get('Nume animal') || '',
+    'Tip animal': data.get('Tip animal') || '',
+    'Data vizitei': data.get('Data vizitei') || '',
+    'Motivul vizitei': data.get('Motivul vizitei') || '',
+    'Experienta generala': data.get('Experiență generală') || '',
+    'Profesionalism echipa': data.get('Profesionalism echipă') || '',
+    'Satisfactie servicii': data.get('Satisfacție servicii') || '',
+    'Interactiune echipa': data.get('Interacțiune echipă') || '',
+    'Timp asteptare': data.get('Timp așteptare') || '',
+    'Curatenie': data.get('Curățenie') || '',
+    'Comunicare personal': data.get('Comunicare personal') || '',
+    'Receptie': data.get('Recepție') || '',
+    'Ingrijire animal': data.get('Îngrijire animal') || '',
+    'Recomandare': data.get('Recomandare') || '',
+    'Sugestii': data.get('Sugestii') || '',
+    'Data': new Date().toLocaleString('ro-RO')
+  });
   try {
     const res = await fetch('https://formspree.io/f/mzdkbdzb', { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
     if (res.ok) {

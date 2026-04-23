@@ -2011,19 +2011,12 @@ form.addEventListener('submit', e => {
       'Descriere problemă': document.getElementById('message').value.trim()
     };
 
-    // Trimite simultan la Google Sheets + Formspree
-    const sheetsParams = new URLSearchParams();
-    sheetsParams.append('type', 'programari');
-    Object.entries(payload).forEach(([k,v]) => sheetsParams.append(k, v));
-    (function(url, p) {
-      const fn = 'sf-' + Date.now(), ifr = document.createElement('iframe');
-      ifr.name = fn; ifr.style.display = 'none'; document.body.appendChild(ifr);
-      const frm = document.createElement('form');
-      frm.method = 'GET'; frm.action = url; frm.target = fn; frm.style.display = 'none';
-      p.forEach((v,k) => { const i = document.createElement('input'); i.type='hidden'; i.name=k; i.value=v; frm.appendChild(i); });
-      document.body.appendChild(frm); frm.submit();
-      setTimeout(() => { frm.remove(); ifr.remove(); }, 5000);
-    })('https://script.google.com/macros/s/AKfycbzrAGjPWVoyj9unfoR0MsPxkZ2rv_XveFuxt5FzIcv62oTT_zK7ijRE3vw_wmW3i5XW/exec', sheetsParams);
+    // Trimite la Airtable + Formspree
+    fetch('https://api.airtable.com/v0/appGhcW1B4iDA4cUY/' + encodeURIComponent('Programari'), {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer patjo13pHWH7OlKky.d997ab671204efae6c013cff3290795e03f44fb34e4808ad0d8d0943bee2b38f', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fields: { ...payload, 'Data': new Date().toLocaleString('ro-RO') } })
+    });
     const sheetsRequest = Promise.resolve();
 
     const formspreeData = new FormData(form);
@@ -2055,8 +2048,11 @@ document.getElementById('newsletter-form')?.addEventListener('submit', function(
     return;
   }
   document.getElementById('nl-error').style.display = 'none';
-  const params = new URLSearchParams({ type: 'newsletter', Email: email, Nume: name });
-  (new Image()).src = 'https://script.google.com/macros/s/AKfycbzrAGjPWVoyj9unfoR0MsPxkZ2rv_XveFuxt5FzIcv62oTT_zK7ijRE3vw_wmW3i5XW/exec?' + params.toString();
+  fetch('https://api.airtable.com/v0/appGhcW1B4iDA4cUY/' + encodeURIComponent('Newsletter'), {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer patjo13pHWH7OlKky.d997ab671204efae6c013cff3290795e03f44fb34e4808ad0d8d0943bee2b38f', 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fields: { 'Email': email, 'Nume': name, 'Data': new Date().toLocaleString('ro-RO') } })
+  });
   document.getElementById('nl-success').style.display = 'block';
   this.reset();
 });

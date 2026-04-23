@@ -362,15 +362,18 @@ document.getElementById('abonament-form').addEventListener('submit', function(e)
     'Nume animal': animal,
     Mesaj: document.getElementById('ab-rasa').value.trim() + ' ' + document.getElementById('ab-mesaj').value.trim()
   });
-  (function(url, p) {
-    const fn = 'sf-' + Date.now(), ifr = document.createElement('iframe');
-    ifr.name = fn; ifr.style.display = 'none'; document.body.appendChild(ifr);
-    const frm = document.createElement('form');
-    frm.method = 'GET'; frm.action = url; frm.target = fn; frm.style.display = 'none';
-    p.forEach((v,k) => { const i = document.createElement('input'); i.type='hidden'; i.name=k; i.value=v; frm.appendChild(i); });
-    document.body.appendChild(frm); frm.submit();
-    setTimeout(() => { frm.remove(); ifr.remove(); }, 5000);
-  })(SHEETS_URL, params);
+  fetch('https://api.airtable.com/v0/appGhcW1B4iDA4cUY/' + encodeURIComponent('Abonamente'), {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer patjo13pHWH7OlKky.d997ab671204efae6c013cff3290795e03f44fb34e4808ad0d8d0943bee2b38f', 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fields: {
+      'Tip plan': plan, 'Nume proprietar': nume, 'Telefon': tel,
+      'Email': document.getElementById('ab-email').value.trim(),
+      'Nume animal': animal,
+      'Rasa': document.getElementById('ab-rasa').value.trim(),
+      'Mesaj': document.getElementById('ab-mesaj').value.trim(),
+      'Data': new Date().toLocaleString('ro-RO')
+    }})
+  });
   document.getElementById('ab-success').style.display = 'block';
   this.reset();
 });
