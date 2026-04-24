@@ -2015,7 +2015,7 @@ form.addEventListener('submit', e => {
     fetch('https://api.airtable.com/v0/appGhcW1B4iDA4cUY/' + encodeURIComponent('Programari'), {
       method: 'POST',
       headers: { 'Authorization': 'Bearer patjo13pHWH7OlKky' + '.d997ab671204efae6c013cff3290795e03f44fb34e4808ad0d8d0943bee2b38f', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fields: { ...payload, 'Data': new Date().toLocaleString('ro-RO') } })
+      body: JSON.stringify({ fields: { 'Name': `${new Date().toLocaleString('ro-RO')} | ${payload['Nume proprietar']} | ${payload['Telefon']} | ${payload['Email']} | Animal: ${payload['Nume animal']} (${payload['Tip animal']}) | Serviciu: ${payload['Serviciu']} | Data preferata: ${payload['Data preferată']} | ${payload['Descriere problemă']}` } })
     });
     const sheetsRequest = Promise.resolve();
 
@@ -2051,7 +2051,7 @@ document.getElementById('newsletter-form')?.addEventListener('submit', function(
   fetch('https://api.airtable.com/v0/appGhcW1B4iDA4cUY/' + encodeURIComponent('Newsletter'), {
     method: 'POST',
     headers: { 'Authorization': 'Bearer patjo13pHWH7OlKky' + '.d997ab671204efae6c013cff3290795e03f44fb34e4808ad0d8d0943bee2b38f', 'Content-Type': 'application/json' },
-    body: JSON.stringify({ fields: { 'Email': email, 'Nume': name, 'Data': new Date().toLocaleString('ro-RO') } })
+    body: JSON.stringify({ fields: { 'Name': `${new Date().toLocaleString('ro-RO')} | ${name} | ${email}` } })
   });
   document.getElementById('nl-success').style.display = 'block';
   this.reset();

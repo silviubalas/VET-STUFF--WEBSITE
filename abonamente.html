@@ -365,14 +365,7 @@ document.getElementById('abonament-form').addEventListener('submit', function(e)
   fetch('https://api.airtable.com/v0/appGhcW1B4iDA4cUY/' + encodeURIComponent('Abonamente'), {
     method: 'POST',
     headers: { 'Authorization': 'Bearer patjo13pHWH7OlKky' + '.d997ab671204efae6c013cff3290795e03f44fb34e4808ad0d8d0943bee2b38f', 'Content-Type': 'application/json' },
-    body: JSON.stringify({ fields: {
-      'Tip plan': plan, 'Nume proprietar': nume, 'Telefon': tel,
-      'Email': document.getElementById('ab-email').value.trim(),
-      'Nume animal': animal,
-      'Rasa': document.getElementById('ab-rasa').value.trim(),
-      'Mesaj': document.getElementById('ab-mesaj').value.trim(),
-      'Data': new Date().toLocaleString('ro-RO')
-    }})
+    body: JSON.stringify({ fields: { 'Name': `${new Date().toLocaleString('ro-RO')} | Plan: ${plan} | ${nume} | ${tel} | ${document.getElementById('ab-email').value.trim()} | Animal: ${animal} | Rasa: ${document.getElementById('ab-rasa').value.trim()} | ${document.getElementById('ab-mesaj').value.trim()}` } })
   });
   document.getElementById('ab-success').style.display = 'block';
   this.reset();
