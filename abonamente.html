@@ -369,7 +369,15 @@ document.getElementById('abonament-form').addEventListener('submit', function(e)
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       table: 'Abonamente',
-      fields: { 'Name': `${new Date().toLocaleString('ro-RO')} | Plan: ${plan} | ${nume} | ${tel} | ${email} | Animal: ${animal} | Rasa: ${rasa} | ${mesaj}` }
+      fields: {
+        'Name':           nume,
+        'Plan':           plan,
+        'Telefon':        tel,
+        'Email':          email,
+        'Nume animal':    animal,
+        'Specie si rasa': rasa,
+        'Mesaj':          mesaj
+      }
     })
   });
 
