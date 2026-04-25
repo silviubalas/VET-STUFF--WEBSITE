@@ -364,10 +364,13 @@ document.getElementById('abonament-form').addEventListener('submit', async funct
   btn.textContent = 'Se trimite...';
 
   try {
-    const res = await fetch('https://api.airtable.com/v0/appGhcW1B4iDA4cUY/' + encodeURIComponent('Abonamente'), {
+    const res = await fetch('/api/airtable', {
       method: 'POST',
-      headers: { 'Authorization': 'Bearer patjo13pHWH7OlKky' + '.d997ab671204efae6c013cff3290795e03f44fb34e4808ad0d8d0943bee2b38f', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fields: { 'Name': `${new Date().toLocaleString('ro-RO')} | Plan: ${plan} | ${nume} | ${tel} | ${email} | Animal: ${animal} | Rasa: ${rasa} | ${mesaj}` } })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        table: 'Abonamente',
+        fields: { 'Name': `${new Date().toLocaleString('ro-RO')} | Plan: ${plan} | ${nume} | ${tel} | ${email} | Animal: ${animal} | Rasa: ${rasa} | ${mesaj}` }
+      })
     });
     if (!res.ok) throw new Error('Airtable error');
     document.getElementById('ab-success').style.display = 'block';

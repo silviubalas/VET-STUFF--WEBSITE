@@ -2011,11 +2011,14 @@ form.addEventListener('submit', e => {
       'Descriere problemă': document.getElementById('message').value.trim()
     };
 
-    // Trimite la Airtable + Formspree
-    const airtableRequest = fetch('https://api.airtable.com/v0/appGhcW1B4iDA4cUY/' + encodeURIComponent('Programari'), {
+    // Trimite la Airtable (prin proxy Vercel) + Formspree
+    const airtableRequest = fetch('/api/airtable', {
       method: 'POST',
-      headers: { 'Authorization': 'Bearer patjo13pHWH7OlKky' + '.d997ab671204efae6c013cff3290795e03f44fb34e4808ad0d8d0943bee2b38f', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fields: { 'Name': `${new Date().toLocaleString('ro-RO')} | ${payload['Nume proprietar']} | ${payload['Telefon']} | ${payload['Email']} | Animal: ${payload['Nume animal']} (${payload['Tip animal']}) | Serviciu: ${payload['Serviciu']} | Data preferata: ${payload['Data preferată']} | ${payload['Descriere problemă']}` } })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        table: 'Programari',
+        fields: { 'Name': `${new Date().toLocaleString('ro-RO')} | ${payload['Nume proprietar']} | ${payload['Telefon']} | ${payload['Email']} | Animal: ${payload['Nume animal']} (${payload['Tip animal']}) | Serviciu: ${payload['Serviciu']} | Data preferata: ${payload['Data preferată']} | ${payload['Descriere problemă']}` }
+      })
     });
 
     const formspreeData = new FormData(form);
@@ -2056,10 +2059,13 @@ document.getElementById('newsletter-form')?.addEventListener('submit', async fun
   btn.disabled = true;
   btn.textContent = 'Se trimite...';
   try {
-    const res = await fetch('https://api.airtable.com/v0/appGhcW1B4iDA4cUY/' + encodeURIComponent('Newsletter'), {
+    const res = await fetch('/api/airtable', {
       method: 'POST',
-      headers: { 'Authorization': 'Bearer patjo13pHWH7OlKky' + '.d997ab671204efae6c013cff3290795e03f44fb34e4808ad0d8d0943bee2b38f', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fields: { 'Name': `${new Date().toLocaleString('ro-RO')} | ${name} | ${email}` } })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        table: 'Newsletter',
+        fields: { 'Name': `${new Date().toLocaleString('ro-RO')} | ${name} | ${email}` }
+      })
     });
     if (!res.ok) throw new Error('Airtable error');
     document.getElementById('nl-success').style.display = 'block';
