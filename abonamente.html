@@ -345,7 +345,7 @@ function selectPlan(plan) {
   document.getElementById('ab-plan').value = plan;
   document.getElementById('inscriere').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-document.getElementById('abonament-form').addEventListener('submit', async function(e) {
+document.getElementById('abonament-form').addEventListener('submit', function(e) {
   e.preventDefault();
   const plan   = document.getElementById('ab-plan').value;
   const nume   = document.getElementById('ab-nume').value.trim();
@@ -358,28 +358,47 @@ document.getElementById('abonament-form').addEventListener('submit', async funct
   const rasa  = document.getElementById('ab-rasa').value.trim();
   const mesaj = document.getElementById('ab-mesaj').value.trim();
 
-  const btn = this.querySelector('button[type="submit"]');
+  const form = this;
+  const btn = form.querySelector('button[type="submit"]');
   const originalLabel = btn.innerHTML;
   btn.disabled = true;
   btn.textContent = 'Se trimite...';
 
-  try {
-    const res = await fetch('/api/airtable', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        table: 'Abonamente',
-        fields: { 'Name': `${new Date().toLocaleString('ro-RO')} | Plan: ${plan} | ${nume} | ${tel} | ${email} | Animal: ${animal} | Rasa: ${rasa} | ${mesaj}` }
-      })
-    });
-    if (!res.ok) throw new Error('Airtable error');
-    document.getElementById('ab-success').style.display = 'block';
-    this.reset();
-  } catch (err) {
-    btn.disabled = false;
-    btn.innerHTML = originalLabel;
-    alert('A apărut o eroare la trimitere. Te rugăm să ne contactezi telefonic la +40 742 870 000.');
-  }
+  const airtableRequest = fetch('/api/airtable', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      table: 'Abonamente',
+      fields: { 'Name': `${new Date().toLocaleString('ro-RO')} | Plan: ${plan} | ${nume} | ${tel} | ${email} | Animal: ${animal} | Rasa: ${rasa} | ${mesaj}` }
+    })
+  });
+
+  const fd = new FormData();
+  fd.append('_subject', 'Abonament — cerere nouă');
+  fd.append('Plan', plan);
+  fd.append('Nume', nume);
+  fd.append('Telefon', tel);
+  fd.append('Email', email);
+  fd.append('Animal', animal);
+  fd.append('Rasă', rasa);
+  fd.append('Mesaj', mesaj);
+  const formspreeRequest = fetch('https://formspree.io/f/mzdkbdzb', {
+    method: 'POST',
+    body: fd,
+    headers: { 'Accept': 'application/json' }
+  });
+
+  Promise.allSettled([airtableRequest, formspreeRequest]).then(results => {
+    const anyOk = results.some(r => r.status === 'fulfilled' && r.value && r.value.ok);
+    if (anyOk) {
+      document.getElementById('ab-success').style.display = 'block';
+      form.reset();
+    } else {
+      btn.disabled = false;
+      btn.innerHTML = originalLabel;
+      alert('A apărut o eroare la trimitere. Te rugăm să ne contactezi telefonic la +40 742 870 000.');
+    }
+  });
 });
 </script>
 </body>
