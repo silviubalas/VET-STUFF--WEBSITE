@@ -268,7 +268,7 @@
 
         <button type="submit" id="rr-submit"
                 style="width:100%;padding:16px;background:var(--red);color:#fff;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;border:none;border-radius:10px;cursor:pointer;transition:background 0.2s,transform 0.15s;letter-spacing:0.01em;"
-                onmouseover="this.style.background='#16a34a'" onmouseout="this.style.background='var(--red)'"
+                onmouseover="this.style.background='#b52020'" onmouseout="this.style.background='var(--red)'"
                 onmousedown="this.style.transform='translateY(0)'" onmouseup="this.style.transform='translateY(-1px)'">
           Trimite feedback-ul
         </button>
@@ -478,7 +478,7 @@
       <!-- Submit -->
       <button type="submit" id="fb-submit"
               style="width:100%;padding:16px;background:var(--red);color:#fff;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;border:none;border-radius:10px;cursor:pointer;transition:background 0.2s,transform 0.15s;letter-spacing:0.01em;"
-              onmouseover="this.style.background='#16a34a'" onmouseout="this.style.background='var(--red)'"
+              onmouseover="this.style.background='#b52020'" onmouseout="this.style.background='var(--red)'"
               onmousedown="this.style.transform='translateY(0)'" onmouseup="this.style.transform='translateY(-1px)'">
         Trimite feedback-ul
       </button>
@@ -683,8 +683,7 @@ function validateAndGetPhone(inputId, prefixId, errId) {
   const valid = digits.length >= min && digits.length <= max;
   err.style.display = valid ? 'none' : 'block';
   if (valid) {
-    const local = digits.startsWith('0') && code === '+40' ? digits : digits;
-    return code + ' ' + local;
+    return code + ' ' + digits;
   }
   input.focus();
   return null;
