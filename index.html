@@ -2042,7 +2042,7 @@ form.addEventListener('submit', e => {
 });
 
 /* ── Newsletter form ─────────────────────────────── */
-document.getElementById('newsletter-form')?.addEventListener('submit', function(e) {
+document.getElementById('newsletter-form')?.addEventListener('submit', async function(e) {
   e.preventDefault();
   const email = document.getElementById('nl-email').value.trim();
   const name  = document.getElementById('nl-name').value.trim();
@@ -2051,13 +2051,25 @@ document.getElementById('newsletter-form')?.addEventListener('submit', function(
     return;
   }
   document.getElementById('nl-error').style.display = 'none';
-  fetch('https://api.airtable.com/v0/appGhcW1B4iDA4cUY/' + encodeURIComponent('Newsletter'), {
-    method: 'POST',
-    headers: { 'Authorization': 'Bearer patjo13pHWH7OlKky' + '.d997ab671204efae6c013cff3290795e03f44fb34e4808ad0d8d0943bee2b38f', 'Content-Type': 'application/json' },
-    body: JSON.stringify({ fields: { 'Name': `${new Date().toLocaleString('ro-RO')} | ${name} | ${email}` } })
-  });
-  document.getElementById('nl-success').style.display = 'block';
-  this.reset();
+  const btn = this.querySelector('button[type="submit"]');
+  const originalLabel = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Se trimite...';
+  try {
+    const res = await fetch('https://api.airtable.com/v0/appGhcW1B4iDA4cUY/' + encodeURIComponent('Newsletter'), {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer patjo13pHWH7OlKky' + '.d997ab671204efae6c013cff3290795e03f44fb34e4808ad0d8d0943bee2b38f', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fields: { 'Name': `${new Date().toLocaleString('ro-RO')} | ${name} | ${email}` } })
+    });
+    if (!res.ok) throw new Error('Airtable error');
+    document.getElementById('nl-success').style.display = 'block';
+    this.reset();
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = originalLabel;
+    document.getElementById('nl-error').textContent = 'Eroare la abonare. Încearcă din nou sau scrie-ne pe Messenger.';
+    document.getElementById('nl-error').style.display = 'block';
+  }
 });
 
 /* ── Quick nav scroll hint ───────────────────────── */

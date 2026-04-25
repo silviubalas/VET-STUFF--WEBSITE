@@ -305,7 +305,8 @@
   <div id="footer-bottom" class="py-4">
     <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3" style="font-size:0.78rem;color:#888;">
       <div>© 2026 VET STUFF · Toate drepturile rezervate</div>
-      <div style="display:flex;gap:16px;">
+      <div style="display:flex;gap:16px;flex-wrap:wrap;">
+        <a href="terms.html" style="color:#888;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='#888'">Termeni și condiții</a>
         <a href="privacy.html" style="color:#888;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='#888'">Confidențialitate</a>
         <a href="gdpr.html" style="color:#888;" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='#888'">GDPR</a>
       </div>
@@ -344,7 +345,7 @@ function selectPlan(plan) {
   document.getElementById('ab-plan').value = plan;
   document.getElementById('inscriere').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-document.getElementById('abonament-form').addEventListener('submit', function(e) {
+document.getElementById('abonament-form').addEventListener('submit', async function(e) {
   e.preventDefault();
   const plan   = document.getElementById('ab-plan').value;
   const nume   = document.getElementById('ab-nume').value.trim();
@@ -352,22 +353,30 @@ document.getElementById('abonament-form').addEventListener('submit', function(e)
   const animal = document.getElementById('ab-animal').value.trim();
   if (!plan || !nume || !tel || !animal) { document.getElementById('ab-error').style.display = 'block'; return; }
   document.getElementById('ab-error').style.display = 'none';
-  const params = new URLSearchParams({
-    type: 'abonamente',
-    'Tip plan': plan,
-    'Nume proprietar': nume,
-    Telefon: tel,
-    Email: document.getElementById('ab-email').value.trim(),
-    'Nume animal': animal,
-    Mesaj: document.getElementById('ab-rasa').value.trim() + ' ' + document.getElementById('ab-mesaj').value.trim()
-  });
-  fetch('https://api.airtable.com/v0/appGhcW1B4iDA4cUY/' + encodeURIComponent('Abonamente'), {
-    method: 'POST',
-    headers: { 'Authorization': 'Bearer patjo13pHWH7OlKky' + '.d997ab671204efae6c013cff3290795e03f44fb34e4808ad0d8d0943bee2b38f', 'Content-Type': 'application/json' },
-    body: JSON.stringify({ fields: { 'Name': `${new Date().toLocaleString('ro-RO')} | Plan: ${plan} | ${nume} | ${tel} | ${document.getElementById('ab-email').value.trim()} | Animal: ${animal} | Rasa: ${document.getElementById('ab-rasa').value.trim()} | ${document.getElementById('ab-mesaj').value.trim()}` } })
-  });
-  document.getElementById('ab-success').style.display = 'block';
-  this.reset();
+
+  const email = document.getElementById('ab-email').value.trim();
+  const rasa  = document.getElementById('ab-rasa').value.trim();
+  const mesaj = document.getElementById('ab-mesaj').value.trim();
+
+  const btn = this.querySelector('button[type="submit"]');
+  const originalLabel = btn.innerHTML;
+  btn.disabled = true;
+  btn.textContent = 'Se trimite...';
+
+  try {
+    const res = await fetch('https://api.airtable.com/v0/appGhcW1B4iDA4cUY/' + encodeURIComponent('Abonamente'), {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer patjo13pHWH7OlKky' + '.d997ab671204efae6c013cff3290795e03f44fb34e4808ad0d8d0943bee2b38f', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fields: { 'Name': `${new Date().toLocaleString('ro-RO')} | Plan: ${plan} | ${nume} | ${tel} | ${email} | Animal: ${animal} | Rasa: ${rasa} | ${mesaj}` } })
+    });
+    if (!res.ok) throw new Error('Airtable error');
+    document.getElementById('ab-success').style.display = 'block';
+    this.reset();
+  } catch (err) {
+    btn.disabled = false;
+    btn.innerHTML = originalLabel;
+    alert('A apărut o eroare la trimitere. Te rugăm să ne contactezi telefonic la +40 742 870 000.');
+  }
 });
 </script>
 </body>
