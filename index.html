@@ -2045,7 +2045,7 @@ form.addEventListener('submit', e => {
 });
 
 /* ── Newsletter form ─────────────────────────────── */
-document.getElementById('newsletter-form')?.addEventListener('submit', async function(e) {
+document.getElementById('newsletter-form')?.addEventListener('submit', function(e) {
   e.preventDefault();
   const email = document.getElementById('nl-email').value.trim();
   const name  = document.getElementById('nl-name').value.trim();
@@ -2054,28 +2054,43 @@ document.getElementById('newsletter-form')?.addEventListener('submit', async fun
     return;
   }
   document.getElementById('nl-error').style.display = 'none';
-  const btn = this.querySelector('button[type="submit"]');
+  const form = this;
+  const btn = form.querySelector('button[type="submit"]');
   const originalLabel = btn.textContent;
   btn.disabled = true;
   btn.textContent = 'Se trimite...';
-  try {
-    const res = await fetch('/api/airtable', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        table: 'Newsletter',
-        fields: { 'Name': name, 'Email': email }
-      })
-    });
-    if (!res.ok) throw new Error('Airtable error');
-    document.getElementById('nl-success').style.display = 'block';
-    this.reset();
-  } catch (err) {
-    btn.disabled = false;
-    btn.textContent = originalLabel;
-    document.getElementById('nl-error').textContent = 'Eroare la abonare. Încearcă din nou sau scrie-ne pe Messenger.';
-    document.getElementById('nl-error').style.display = 'block';
-  }
+
+  const airtableRequest = fetch('/api/airtable', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      table: 'Newsletter',
+      fields: { 'Name': name, 'Email': email }
+    })
+  });
+
+  const fd = new FormData();
+  fd.append('_subject', 'Newsletter — abonare nouă');
+  fd.append('Nume', name);
+  fd.append('Email', email);
+  const formspreeRequest = fetch('https://formspree.io/f/mzdkbdzb', {
+    method: 'POST',
+    body: fd,
+    headers: { 'Accept': 'application/json' }
+  });
+
+  Promise.allSettled([airtableRequest, formspreeRequest]).then(results => {
+    const anyOk = results.some(r => r.status === 'fulfilled' && r.value && r.value.ok);
+    if (anyOk) {
+      document.getElementById('nl-success').style.display = 'block';
+      form.reset();
+    } else {
+      btn.disabled = false;
+      btn.textContent = originalLabel;
+      document.getElementById('nl-error').textContent = 'Eroare la abonare. Încearcă din nou sau scrie-ne pe Messenger.';
+      document.getElementById('nl-error').style.display = 'block';
+    }
+  });
 });
 
 /* ── Quick nav scroll hint ───────────────────────── */
