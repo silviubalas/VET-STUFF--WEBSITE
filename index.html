@@ -2064,7 +2064,7 @@ document.getElementById('newsletter-form')?.addEventListener('submit', async fun
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         table: 'Newsletter',
-        fields: { 'Name': `${new Date().toLocaleString('ro-RO')} | ${name} | ${email}` }
+        fields: { 'Name': name, 'Email': email }
       })
     });
     if (!res.ok) throw new Error('Airtable error');
