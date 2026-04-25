@@ -2017,7 +2017,16 @@ form.addEventListener('submit', e => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         table: 'Programari',
-        fields: { 'Name': `${new Date().toLocaleString('ro-RO')} | ${payload['Nume proprietar']} | ${payload['Telefon']} | ${payload['Email']} | Animal: ${payload['Nume animal']} (${payload['Tip animal']}) | Serviciu: ${payload['Serviciu']} | Data preferata: ${payload['Data preferată']} | ${payload['Descriere problemă']}` }
+        fields: {
+          'Name':           payload['Nume proprietar'],
+          'Telefon':        payload['Telefon'],
+          'Email':          payload['Email'],
+          'Nume animal':    payload['Nume animal'],
+          'Tip animal':     payload['Tip animal'],
+          'Serviciu':       payload['Serviciu'],
+          'Data preferată': payload['Data preferată'],
+          'Descriere':      payload['Descriere problemă']
+        }
       })
     });
 
