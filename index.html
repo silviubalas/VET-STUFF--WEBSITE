@@ -238,7 +238,7 @@
       white-space: nowrap;
       transition: background 0.15s, transform 0.15s;
     }
-    .btn-red:hover { background: #16a34a; transform: translateY(-1px); }
+    .btn-red:hover { background: #b52020; transform: translateY(-1px); }
     .btn-red:active { transform: translateY(0); }
     .btn-red:focus-visible { outline: 3px solid rgba(212,43,43,0.4); outline-offset: 2px; }
 
@@ -2012,12 +2012,11 @@ form.addEventListener('submit', e => {
     };
 
     // Trimite la Airtable + Formspree
-    fetch('https://api.airtable.com/v0/appGhcW1B4iDA4cUY/' + encodeURIComponent('Programari'), {
+    const airtableRequest = fetch('https://api.airtable.com/v0/appGhcW1B4iDA4cUY/' + encodeURIComponent('Programari'), {
       method: 'POST',
       headers: { 'Authorization': 'Bearer patjo13pHWH7OlKky' + '.d997ab671204efae6c013cff3290795e03f44fb34e4808ad0d8d0943bee2b38f', 'Content-Type': 'application/json' },
       body: JSON.stringify({ fields: { 'Name': `${new Date().toLocaleString('ro-RO')} | ${payload['Nume proprietar']} | ${payload['Telefon']} | ${payload['Email']} | Animal: ${payload['Nume animal']} (${payload['Tip animal']}) | Serviciu: ${payload['Serviciu']} | Data preferata: ${payload['Data preferată']} | ${payload['Descriere problemă']}` } })
     });
-    const sheetsRequest = Promise.resolve();
 
     const formspreeData = new FormData(form);
     const formspreeRequest = fetch('https://formspree.io/f/mzdkbdzb', {
@@ -2026,14 +2025,18 @@ form.addEventListener('submit', e => {
       headers: { 'Accept': 'application/json' }
     });
 
-    Promise.allSettled([sheetsRequest, formspreeRequest]).then(() => {
-      document.getElementById('form-success').classList.remove('hidden');
-      form.querySelectorAll('input,select,textarea,button').forEach(el => { el.disabled = true; el.style.opacity = '0.5'; });
-      document.getElementById('form-success').scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }).catch(() => {
-      btn.disabled = false;
-      btn.textContent = 'Trimite programarea';
-      alert('A apărut o eroare de rețea. Te rugăm să ne contactezi telefonic la +40 742 870 000.');
+    Promise.allSettled([airtableRequest, formspreeRequest]).then(results => {
+      // Considerăm succes dacă cel puțin una dintre cereri a reușit
+      const anyOk = results.some(r => r.status === 'fulfilled' && r.value && r.value.ok);
+      if (anyOk) {
+        document.getElementById('form-success').classList.remove('hidden');
+        form.querySelectorAll('input,select,textarea,button').forEach(el => { el.disabled = true; el.style.opacity = '0.5'; });
+        document.getElementById('form-success').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        btn.disabled = false;
+        btn.textContent = 'Trimite programarea';
+        alert('A apărut o eroare de rețea. Te rugăm să ne contactezi telefonic la +40 742 870 000.');
+      }
     });
   }
 });
