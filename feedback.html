@@ -630,8 +630,12 @@ document.getElementById('feedback-rapid-form').addEventListener('submit', async 
   btn.disabled = true; btn.textContent = 'Se trimite...'; btn.style.background = '#888';
 
   const fd = new FormData(this);
-  sendToAirtable('Feedback', { 'Name':
-    `[RAPID] ${new Date().toLocaleString('ro-RO')} | ${fd.get('Evaluare')} | ${fd.get('Nume')} | ${fd.get('Email')} | ${fd.get('Mesaj')}`
+  sendToAirtable('Feedback', {
+    'Name':             fd.get('Nume') || '',
+    'Tip feedback':     'RAPID',
+    'Evaluare':         fd.get('Evaluare') || '',
+    'Email':            fd.get('Email') || '',
+    'Mesaj / Sugestii': fd.get('Mesaj') || ''
   });
   try {
     const res = await fetch('https://formspree.io/f/mzdkbdzb', { method: 'POST', body: fd, headers: { 'Accept': 'application/json' } });
@@ -712,8 +716,29 @@ document.getElementById('feedback-form').addEventListener('submit', async functi
 
   const data = new FormData(this);
   data.set('Telefon', phone);
-  sendToAirtable('Feedback', { 'Name':
-    `[DETALIAT] ${new Date().toLocaleString('ro-RO')} | ${data.get('Nume')} | ${data.get('Email')} | ${phone} | Animal: ${data.get('Nume animal')} (${data.get('Tip animal')}) | Vizita: ${data.get('Data vizitei')} - ${data.get('Motivul vizitei')} | Gen: ${data.get('Experiență generală')} | Prof: ${data.get('Profesionalism echipă')} | Servicii: ${data.get('Satisfacție servicii')} | Interactiune: ${data.get('Interacțiune echipă')} | Asteptare: ${data.get('Timp așteptare')} | Curatenie: ${data.get('Curățenie')} | Comunicare: ${data.get('Comunicare personal')} | Receptie: ${data.get('Recepție')} | Ingrijire: ${data.get('Îngrijire animal')} | Recomanda: ${data.get('Recomandare')} | Sugestii: ${data.get('Sugestii')}`
+  const evaluariDetaliate = [
+    `Experiență generală: ${data.get('Experiență generală') || '-'}`,
+    `Profesionalism echipă: ${data.get('Profesionalism echipă') || '-'}`,
+    `Satisfacție servicii: ${data.get('Satisfacție servicii') || '-'}`,
+    `Interacțiune echipă: ${data.get('Interacțiune echipă') || '-'}`,
+    `Timp așteptare: ${data.get('Timp așteptare') || '-'}`,
+    `Curățenie: ${data.get('Curățenie') || '-'}`,
+    `Comunicare personal: ${data.get('Comunicare personal') || '-'}`,
+    `Recepție: ${data.get('Recepție') || '-'}`,
+    `Îngrijire animal: ${data.get('Îngrijire animal') || '-'}`,
+    `Recomandare: ${data.get('Recomandare') || '-'}`
+  ].join('\n');
+  sendToAirtable('Feedback', {
+    'Name':                data.get('Nume') || '',
+    'Tip feedback':        'DETALIAT',
+    'Email':               data.get('Email') || '',
+    'Telefon':             phone,
+    'Nume animal':         data.get('Nume animal') || '',
+    'Tip animal':          data.get('Tip animal') || '',
+    'Data vizitei':        data.get('Data vizitei') || '',
+    'Motivul vizitei':     data.get('Motivul vizitei') || '',
+    'Mesaj / Sugestii':    data.get('Sugestii') || '',
+    'Evaluări detaliate':  evaluariDetaliate
   });
   try {
     const res = await fetch('https://formspree.io/f/mzdkbdzb', { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
