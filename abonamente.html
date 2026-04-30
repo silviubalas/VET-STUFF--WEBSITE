@@ -53,9 +53,12 @@
     .plan-feature::before { content: '✓'; color: #22c55e; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
     .plan-feature.no::before { content: '–'; color: #d1d5db; }
     .plan-feature.no { color: #aaa; }
-    .plan-feature .old-price { text-decoration: line-through; color: #aaa; font-weight: 500; margin-right: 4px; }
-    .plan-feature .new-price { color: var(--red); font-weight: 700; }
-    .plan-feature .save { display: inline-block; background: #fee2e2; color: #991b1b; font-size: 0.72rem; font-weight: 700; padding: 1px 6px; border-radius: 4px; margin-left: 4px; }
+    .plan-feature > .feat-body { flex: 1; min-width: 0; overflow-wrap: anywhere; word-break: normal; }
+    .plan-feature .old-price { text-decoration: line-through; color: #aaa; font-weight: 500; margin-right: 4px; white-space: nowrap; }
+    .plan-feature .new-price { color: var(--red); font-weight: 700; white-space: nowrap; }
+    .plan-feature .save { display: inline-block; background: #fee2e2; color: #991b1b; font-size: 0.72rem; font-weight: 700; padding: 1px 6px; border-radius: 4px; margin-left: 4px; white-space: nowrap; }
+    .plan-feature .feat-note { display: block; font-size: 0.78rem; color: var(--gray); margin-top: 3px; line-height: 1.5; }
+    .plan-feature .feat-prices { display: block; margin-top: 2px; }
     .plan-section-title { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); margin-top: 18px; margin-bottom: 10px; }
 
     /* Form */
@@ -155,7 +158,7 @@
       <h2 style="font-size:clamp(1.8rem,3vw,2.6rem);font-weight:900;color:var(--navy);margin-top:8px;">Alege ce se potrivește animalului tău</h2>
     </div>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 items-start">
+    <div class="grid md:grid-cols-2 gap-8 items-start">
 
       <!-- SILVER CÂINE -->
       <div class="plan-card">
@@ -170,22 +173,22 @@
 
         <div class="plan-section-title">În pachet ai</div>
         <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px;">
-          <div class="plan-feature"><strong>1</strong> consultație generală</div>
-          <div class="plan-feature"><strong>1</strong> vaccin polivalent + antirabic</div>
-          <div class="plan-feature"><strong>4</strong> deparazitări interne / an</div>
-          <div class="plan-feature"><strong>4</strong> deparazitări externe / an</div>
-          <div class="plan-feature"><strong>1</strong> consultație de urgență cu reducere</div>
-          <div class="plan-feature">Reducere la toate produsele</div>
+          <div class="plan-feature"><span class="feat-body"><strong>1</strong> consultație generală</span></div>
+          <div class="plan-feature"><span class="feat-body"><strong>1</strong> vaccin polivalent + antirabic</span></div>
+          <div class="plan-feature"><span class="feat-body"><strong>4</strong> deparazitări interne / an</span></div>
+          <div class="plan-feature"><span class="feat-body"><strong>4</strong> deparazitări externe / an</span></div>
+          <div class="plan-feature"><span class="feat-body"><strong>1</strong> consultație de urgență cu reducere</span></div>
+          <div class="plan-feature"><span class="feat-body">Reducere la toate produsele</span></div>
         </div>
 
         <div class="plan-section-title">Detalii prețuri</div>
         <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:8px;">
-          <div class="plan-feature">Consultație generală: <span class="old-price">150 lei</span><span class="new-price">80 lei</span><span class="save">−70 lei</span></div>
-          <div class="plan-feature">Vaccin polivalent + antirabic: <span class="old-price">200 lei</span><span class="new-price">120 lei</span><span class="save">−80 lei</span></div>
-          <div class="plan-feature">Deparazitări interne: <strong>−10%</strong> la produsul ales<br/><span style="font-size:0.78rem;color:var(--gray);">Prețuri orientative: de la 8 lei (10 kg) până la 60 lei (25 kg).</span></div>
-          <div class="plan-feature">Deparazitări externe: <strong>−10%</strong> la produsul ales<br/><span style="font-size:0.78rem;color:var(--gray);">Prețuri orientative: între 40 și 150 lei (pipete sau comprimate).</span></div>
-          <div class="plan-feature">Consultație de urgență: <span class="old-price">350 lei</span><span class="new-price">175 lei</span><span class="save">−50%</span></div>
-          <div class="plan-feature"><strong>−5%</strong> la toate produsele din clinică</div>
+          <div class="plan-feature"><span class="feat-body">Consultație generală: <span class="feat-prices"><span class="old-price">150 lei</span><span class="new-price">80 lei</span><span class="save">−70 lei</span></span></span></div>
+          <div class="plan-feature"><span class="feat-body">Vaccin polivalent + antirabic: <span class="feat-prices"><span class="old-price">200 lei</span><span class="new-price">120 lei</span><span class="save">−80 lei</span></span></span></div>
+          <div class="plan-feature"><span class="feat-body">Deparazitări interne: <strong>−10%</strong> la produsul ales<span class="feat-note">Prețuri orientative: de la 8 lei (10 kg) până la 60 lei (25 kg).</span></span></div>
+          <div class="plan-feature"><span class="feat-body">Deparazitări externe: <strong>−10%</strong> la produsul ales<span class="feat-note">Prețuri orientative: între 40 și 150 lei (pipete sau comprimate).</span></span></div>
+          <div class="plan-feature"><span class="feat-body">Consultație de urgență: <span class="feat-prices"><span class="old-price">350 lei</span><span class="new-price">175 lei</span><span class="save">−50%</span></span></span></div>
+          <div class="plan-feature"><span class="feat-body"><strong>−5%</strong> la toate produsele din clinică</span></div>
         </div>
 
         <button class="btn-red w-full justify-center" onclick="selectPlan('Silver Câine')" style="margin-top:auto;">Mă înscriu →</button>
@@ -204,24 +207,24 @@
 
         <div class="plan-section-title">În pachet ai</div>
         <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px;">
-          <div class="plan-feature"><strong>1</strong> consultație generală</div>
-          <div class="plan-feature"><strong>1</strong> vaccin polivalent + antirabic</div>
-          <div class="plan-feature">Opțional: fracție leucemică</div>
-          <div class="plan-feature"><strong>4</strong> deparazitări interne / an</div>
-          <div class="plan-feature"><strong>4</strong> deparazitări externe / an</div>
-          <div class="plan-feature"><strong>1</strong> consultație de urgență cu reducere</div>
-          <div class="plan-feature">Reducere la toate produsele</div>
+          <div class="plan-feature"><span class="feat-body"><strong>1</strong> consultație generală</span></div>
+          <div class="plan-feature"><span class="feat-body"><strong>1</strong> vaccin polivalent + antirabic</span></div>
+          <div class="plan-feature"><span class="feat-body">Opțional: fracție leucemică</span></div>
+          <div class="plan-feature"><span class="feat-body"><strong>4</strong> deparazitări interne / an</span></div>
+          <div class="plan-feature"><span class="feat-body"><strong>4</strong> deparazitări externe / an</span></div>
+          <div class="plan-feature"><span class="feat-body"><strong>1</strong> consultație de urgență cu reducere</span></div>
+          <div class="plan-feature"><span class="feat-body">Reducere la toate produsele</span></div>
         </div>
 
         <div class="plan-section-title">Detalii prețuri</div>
         <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:8px;">
-          <div class="plan-feature">Consultație generală: <span class="old-price">150 lei</span><span class="new-price">80 lei</span><span class="save">−70 lei</span></div>
-          <div class="plan-feature">Vaccin polivalent + antirabic: <span class="old-price">200 lei</span><span class="new-price">120 lei</span><span class="save">−80 lei</span></div>
-          <div class="plan-feature">Opțional: fracție leucemică <span class="new-price">+30 lei</span> la vaccin</div>
-          <div class="plan-feature">Deparazitări interne: <strong>−10%</strong> la produsul ales<br/><span style="font-size:0.78rem;color:var(--gray);">Prețuri orientative: de la 8 lei (10 kg) până la 60 lei (25 kg).</span></div>
-          <div class="plan-feature">Deparazitări externe: <strong>−10%</strong> la produsul ales<br/><span style="font-size:0.78rem;color:var(--gray);">Prețuri orientative: între 40 și 150 lei (pipete sau comprimate).</span></div>
-          <div class="plan-feature">Consultație de urgență: <span class="old-price">350 lei</span><span class="new-price">175 lei</span><span class="save">−50%</span></div>
-          <div class="plan-feature"><strong>−5%</strong> la toate produsele din clinică</div>
+          <div class="plan-feature"><span class="feat-body">Consultație generală: <span class="feat-prices"><span class="old-price">150 lei</span><span class="new-price">80 lei</span><span class="save">−70 lei</span></span></span></div>
+          <div class="plan-feature"><span class="feat-body">Vaccin polivalent + antirabic: <span class="feat-prices"><span class="old-price">200 lei</span><span class="new-price">120 lei</span><span class="save">−80 lei</span></span></span></div>
+          <div class="plan-feature"><span class="feat-body">Opțional: fracție leucemică <span class="new-price">+30 lei</span> la vaccin</span></div>
+          <div class="plan-feature"><span class="feat-body">Deparazitări interne: <strong>−10%</strong> la produsul ales<span class="feat-note">Prețuri orientative: de la 8 lei (10 kg) până la 60 lei (25 kg).</span></span></div>
+          <div class="plan-feature"><span class="feat-body">Deparazitări externe: <strong>−10%</strong> la produsul ales<span class="feat-note">Prețuri orientative: între 40 și 150 lei (pipete sau comprimate).</span></span></div>
+          <div class="plan-feature"><span class="feat-body">Consultație de urgență: <span class="feat-prices"><span class="old-price">350 lei</span><span class="new-price">175 lei</span><span class="save">−50%</span></span></span></div>
+          <div class="plan-feature"><span class="feat-body"><strong>−5%</strong> la toate produsele din clinică</span></div>
         </div>
 
         <button class="btn-red w-full justify-center" onclick="selectPlan('Silver Pisică')" style="margin-top:auto;">Mă înscriu →</button>
