@@ -43,13 +43,20 @@
     .plan-card { background: #fff; border: 2px solid var(--border); border-radius: 16px; padding: 32px 28px; display: flex; flex-direction: column; gap: 0; transition: border-color 0.2s, box-shadow 0.2s; position: relative; }
     .plan-card:hover { border-color: var(--navy); box-shadow: 0 8px 32px rgba(27,58,107,0.1); }
     .plan-card.featured { border-color: var(--navy); box-shadow: 0 8px 40px rgba(27,58,107,0.14); }
+    .plan-card.coming-soon { opacity: 0.6; background: #fafafa; }
     .plan-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--navy); color: #fff; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 14px; border-radius: 20px; white-space: nowrap; }
-    .plan-price { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; color: var(--navy); line-height: 1; }
+    .plan-badge.soon { background: var(--gray); }
+    .plan-price { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 900; color: var(--navy); line-height: 1; }
     .plan-price span { font-size: 1rem; font-weight: 500; color: var(--gray); }
+    .plan-pay-note { font-size: 0.78rem; color: var(--gray); margin-top: 6px; line-height: 1.5; }
     .plan-feature { display: flex; align-items: flex-start; gap: 10px; font-size: 0.88rem; color: #444; line-height: 1.5; }
     .plan-feature::before { content: '✓'; color: #22c55e; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
     .plan-feature.no::before { content: '–'; color: #d1d5db; }
     .plan-feature.no { color: #aaa; }
+    .plan-feature .old-price { text-decoration: line-through; color: #aaa; font-weight: 500; margin-right: 4px; }
+    .plan-feature .new-price { color: var(--red); font-weight: 700; }
+    .plan-feature .save { display: inline-block; background: #fee2e2; color: #991b1b; font-size: 0.72rem; font-weight: 700; padding: 1px 6px; border-radius: 4px; margin-left: 4px; }
+    .plan-section-title { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); margin-top: 18px; margin-bottom: 10px; }
 
     /* Form */
     .form-field { display: flex; flex-direction: column; gap: 6px; }
@@ -148,66 +155,107 @@
       <h2 style="font-size:clamp(1.8rem,3vw,2.6rem);font-weight:900;color:var(--navy);margin-top:8px;">Alege ce se potrivește animalului tău</h2>
     </div>
 
-    <div class="grid md:grid-cols-3 gap-8 items-start">
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 items-start">
 
-      <!-- SILVER -->
+      <!-- SILVER CÂINE -->
       <div class="plan-card">
         <div style="margin-bottom:20px;">
-          <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:8px;">🥈 Silver</div>
-          <div style="font-size:1rem;color:var(--gray);margin-top:6px;line-height:1.5;">Îngrijire esențială pentru un start sănătos.</div>
+          <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:8px;">🥈 Silver · Câine</div>
+          <div style="font-size:1rem;color:var(--gray);margin-top:6px;line-height:1.5;">Pachet anual de îngrijire esențială pentru câine.</div>
         </div>
-        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px;padding-top:20px;border-top:1px solid var(--border);">
-          <div class="plan-feature">2 consultații generale/an</div>
-          <div class="plan-feature">Vaccinare anuală inclusă</div>
-          <div class="plan-feature">Deparazitare internă 2x/an</div>
-          <div class="plan-feature">10% reducere la analize</div>
-          <div class="plan-feature no">Deparazitare externă</div>
-          <div class="plan-feature no">Consultații nelimitate</div>
-          <div class="plan-feature no">Prioritate programări</div>
+        <div style="padding-top:20px;border-top:1px solid var(--border);">
+          <div class="plan-price">XXX lei<span> / an</span></div>
+          <div class="plan-pay-note">Plata într-o tranșă sau în maxim 3 tranșe în decurs de 30 de zile.</div>
         </div>
-        <button class="btn-red w-full justify-center" onclick="selectPlan('Silver')" style="margin-top:auto;">Mă înscriu →</button>
+
+        <div class="plan-section-title">În pachet ai</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px;">
+          <div class="plan-feature"><strong>1</strong> consultație generală</div>
+          <div class="plan-feature"><strong>1</strong> vaccin polivalent + antirabic</div>
+          <div class="plan-feature"><strong>4</strong> deparazitări interne / an</div>
+          <div class="plan-feature"><strong>4</strong> deparazitări externe / an</div>
+          <div class="plan-feature"><strong>1</strong> consultație de urgență cu reducere</div>
+          <div class="plan-feature">Reducere la toate produsele</div>
+        </div>
+
+        <div class="plan-section-title">Detalii prețuri</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:8px;">
+          <div class="plan-feature">Consultație generală: <span class="old-price">150 lei</span><span class="new-price">80 lei</span><span class="save">−70 lei</span></div>
+          <div class="plan-feature">Vaccin polivalent + antirabic: <span class="old-price">200 lei</span><span class="new-price">120 lei</span><span class="save">−80 lei</span></div>
+          <div class="plan-feature">Deparazitări interne: <strong>−10%</strong> la produsul ales<br/><span style="font-size:0.78rem;color:var(--gray);">Prețuri orientative: de la 8 lei (10 kg) până la 60 lei (25 kg).</span></div>
+          <div class="plan-feature">Deparazitări externe: <strong>−10%</strong> la produsul ales<br/><span style="font-size:0.78rem;color:var(--gray);">Prețuri orientative: între 40 și 150 lei (pipete sau comprimate).</span></div>
+          <div class="plan-feature">Consultație de urgență: <span class="old-price">350 lei</span><span class="new-price">175 lei</span><span class="save">−50%</span></div>
+          <div class="plan-feature"><strong>−5%</strong> la toate produsele din clinică</div>
+        </div>
+
+        <button class="btn-red w-full justify-center" onclick="selectPlan('Silver Câine')" style="margin-top:auto;">Mă înscriu →</button>
       </div>
 
-      <!-- GOLD (featured) -->
-      <div class="plan-card featured">
-        <div class="plan-badge">Cel mai popular</div>
+      <!-- SILVER PISICĂ -->
+      <div class="plan-card">
+        <div style="margin-bottom:20px;">
+          <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:8px;">🥈 Silver · Pisică</div>
+          <div style="font-size:1rem;color:var(--gray);margin-top:6px;line-height:1.5;">Pachet anual de îngrijire esențială pentru pisică.</div>
+        </div>
+        <div style="padding-top:20px;border-top:1px solid var(--border);">
+          <div class="plan-price">XXX lei<span> / an</span></div>
+          <div class="plan-pay-note">Plata într-o tranșă sau în maxim 3 tranșe în decurs de 30 de zile.</div>
+        </div>
+
+        <div class="plan-section-title">În pachet ai</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px;">
+          <div class="plan-feature"><strong>1</strong> consultație generală</div>
+          <div class="plan-feature"><strong>1</strong> vaccin polivalent + antirabic</div>
+          <div class="plan-feature">Opțional: fracție leucemică</div>
+          <div class="plan-feature"><strong>4</strong> deparazitări interne / an</div>
+          <div class="plan-feature"><strong>4</strong> deparazitări externe / an</div>
+          <div class="plan-feature"><strong>1</strong> consultație de urgență cu reducere</div>
+          <div class="plan-feature">Reducere la toate produsele</div>
+        </div>
+
+        <div class="plan-section-title">Detalii prețuri</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:8px;">
+          <div class="plan-feature">Consultație generală: <span class="old-price">150 lei</span><span class="new-price">80 lei</span><span class="save">−70 lei</span></div>
+          <div class="plan-feature">Vaccin polivalent + antirabic: <span class="old-price">200 lei</span><span class="new-price">120 lei</span><span class="save">−80 lei</span></div>
+          <div class="plan-feature">Opțional: fracție leucemică <span class="new-price">+30 lei</span> la vaccin</div>
+          <div class="plan-feature">Deparazitări interne: <strong>−10%</strong> la produsul ales<br/><span style="font-size:0.78rem;color:var(--gray);">Prețuri orientative: de la 8 lei (10 kg) până la 60 lei (25 kg).</span></div>
+          <div class="plan-feature">Deparazitări externe: <strong>−10%</strong> la produsul ales<br/><span style="font-size:0.78rem;color:var(--gray);">Prețuri orientative: între 40 și 150 lei (pipete sau comprimate).</span></div>
+          <div class="plan-feature">Consultație de urgență: <span class="old-price">350 lei</span><span class="new-price">175 lei</span><span class="save">−50%</span></div>
+          <div class="plan-feature"><strong>−5%</strong> la toate produsele din clinică</div>
+        </div>
+
+        <button class="btn-red w-full justify-center" onclick="selectPlan('Silver Pisică')" style="margin-top:auto;">Mă înscriu →</button>
+      </div>
+
+      <!-- GOLD (placeholder) -->
+      <div class="plan-card coming-soon">
+        <div class="plan-badge soon">În curând</div>
         <div style="margin-bottom:20px;">
           <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#d97706;margin-bottom:8px;">🥇 Gold</div>
-          <div style="font-size:1rem;color:var(--gray);margin-top:6px;line-height:1.5;">Echilibrul perfect între prevenție și protecție completă.</div>
+          <div style="font-size:1rem;color:var(--gray);margin-top:6px;line-height:1.5;">Pachet intermediar — detalii în pregătire.</div>
         </div>
         <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px;padding-top:20px;border-top:1px solid var(--border);">
-          <div class="plan-feature">4 consultații generale/an</div>
-          <div class="plan-feature">Vaccinare anuală inclusă</div>
-          <div class="plan-feature">Deparazitare internă 4x/an</div>
-          <div class="plan-feature">Deparazitare externă 4x/an</div>
-          <div class="plan-feature">15% reducere la analize</div>
-          <div class="plan-feature">Prioritate la programări</div>
-          <div class="plan-feature no">Consultații nelimitate</div>
+          <div class="plan-feature no">Detalii în curând</div>
         </div>
-        <button class="btn-red w-full justify-center" onclick="selectPlan('Gold')" style="margin-top:auto;background:var(--navy);" onmouseover="this.style.background='#122a52'" onmouseout="this.style.background='var(--navy)'">Mă înscriu →</button>
+        <button class="btn-red w-full justify-center" disabled style="margin-top:auto;background:#9ca3af;cursor:not-allowed;">Disponibil curând</button>
       </div>
 
-      <!-- PLATINUM -->
-      <div class="plan-card">
+      <!-- PLATINUM (placeholder) -->
+      <div class="plan-card coming-soon">
+        <div class="plan-badge soon">În curând</div>
         <div style="margin-bottom:20px;">
           <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#7c3aed;margin-bottom:8px;">💎 Platinum</div>
-          <div style="font-size:1rem;color:var(--gray);margin-top:6px;line-height:1.5;">Cea mai completă îngrijire, fără compromisuri.</div>
+          <div style="font-size:1rem;color:var(--gray);margin-top:6px;line-height:1.5;">Pachet premium — detalii în pregătire.</div>
         </div>
         <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px;padding-top:20px;border-top:1px solid var(--border);">
-          <div class="plan-feature">Consultații generale nelimitate</div>
-          <div class="plan-feature">Vaccinare anuală inclusă</div>
-          <div class="plan-feature">Deparazitare internă & externă</div>
-          <div class="plan-feature">20% reducere la toate serviciile</div>
-          <div class="plan-feature">Prioritate maximă programări</div>
-          <div class="plan-feature">Dosar medical digital</div>
-          <div class="plan-feature">Consultații telefonice incluse</div>
+          <div class="plan-feature no">Detalii în curând</div>
         </div>
-        <button class="btn-red w-full justify-center" onclick="selectPlan('Platinum')" style="margin-top:auto;">Mă înscriu →</button>
+        <button class="btn-red w-full justify-center" disabled style="margin-top:auto;background:#9ca3af;cursor:not-allowed;">Disponibil curând</button>
       </div>
 
     </div>
 
-    <p style="text-align:center;font-size:0.82rem;color:var(--gray);margin-top:28px;">Prețurile sunt per animal. Reduceri disponibile pentru mai multe animale din aceeași familie. Contactează-ne pentru detalii.</p>
+    <p style="text-align:center;font-size:0.82rem;color:var(--gray);margin-top:28px;max-width:720px;margin-left:auto;margin-right:auto;line-height:1.7;">Prețurile sunt per animal. Reducerile la deparazitări se aplică la prețul produselor din clinică (variază în funcție de produsul ales și greutatea animalului). Reduceri disponibile pentru mai multe animale din aceeași familie — contactează-ne pentru detalii.</p>
   </div>
 </section>
 
@@ -227,9 +275,10 @@
             <label>Plan selectat *</label>
             <select id="ab-plan" required>
               <option value="">-- Alege un plan --</option>
-              <option>Silver</option>
-              <option>Gold</option>
-              <option>Platinum</option>
+              <option>Silver Câine</option>
+              <option>Silver Pisică</option>
+              <option disabled>Gold (disponibil curând)</option>
+              <option disabled>Platinum (disponibil curând)</option>
             </select>
           </div>
           <div class="form-field">
