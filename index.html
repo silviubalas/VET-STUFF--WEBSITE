@@ -204,7 +204,7 @@
     /* ── HEADER WRAPPER (sticky) ───────────────────────────── */
     #site-header {
       position: sticky;
-      top: 0;
+      top: 36px;
       z-index: 999;
     }
 
@@ -787,7 +787,7 @@
   </style>
 </head>
 <body>
-<div style="background:#b52020;color:#fff;text-align:center;padding:8px 16px;font-size:0.82rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">🔔 Disponibil curând în Bacău</div>
+<div style="position:sticky;top:0;z-index:9999;background:#b52020;color:#fff;text-align:center;padding:8px 16px;font-size:0.82rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;box-shadow:0 2px 8px rgba(0,0,0,0.15);">🔔 Disponibil curând în Bacău</div>
 
 <!-- ═══════════════════════════════════════════════════
      SITE HEADER (sticky wrapper)
@@ -1112,9 +1112,8 @@
 
       <!-- Image -->
       <div class="reveal">
-        <div class="rounded-2xl overflow-hidden" style="box-shadow:0 8px 16px rgba(0,0,0,0.07), 0 32px 64px rgba(27,58,107,0.14); aspect-ratio:4/5;">
-          <img src="imagini/doctor-silviu.jpg"
-               alt="Dr. Balaș Silviu-Constantin — Medic Veterinar VET STUFF Bacău" class="w-full h-full object-cover" style="object-position:center top;" loading="lazy" />
+        <div class="rounded-2xl overflow-hidden" style="box-shadow:0 8px 16px rgba(0,0,0,0.07), 0 32px 64px rgba(27,58,107,0.14); aspect-ratio:4/5; background:linear-gradient(135deg, #e8edf5 0%, #d4dce8 100%); display:flex; align-items:center; justify-content:center;">
+          <div style="font-size:6rem;">🐾</div>
         </div>
       </div>
 
