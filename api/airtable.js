@@ -2,7 +2,7 @@
 // Tokenul Airtable este pastrat ca variabila de mediu AIRTABLE_TOKEN si nu ajunge niciodata in browser.
 
 const AIRTABLE_BASE = 'appGhcW1B4iDA4cUY';
-const ALLOWED_TABLES = new Set(['Programari', 'Abonamente', 'Newsletter', 'Feedback']);
+const ALLOWED_TABLES = new Set(['Programari', 'Abonamente', 'Newsletter', 'Feedback', 'UtilizareAbonamente']);
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
