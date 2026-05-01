@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Status abonament | VET STUFF</title>
+  <meta name="description" content="Verifică statusul abonamentului tău VET STUFF: ce ai folosit din pachet și ce mai ai disponibil." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; color: #1a1a1a; background: #fff; overflow-x: hidden; }
+    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
+    :root { --red: #D42B2B; --navy: #1B3A6B; --gray: #7A8BA0; --light: #F8F7F4; --border: #e5e7eb; }
+    #topbar { background: var(--navy); font-size: 0.78rem; color: rgba(255,255,255,0.85); padding: 7px 0; }
+    #topbar a { color: rgba(255,255,255,0.85); transition: color 0.15s; }
+    #topbar a:hover { color: #fff; }
+    #site-header { position: sticky; top: 36px; z-index: 999; }
+    #navbar { background: #fff; border-bottom: 1px solid var(--border); transition: box-shadow 0.2s; }
+    .nav-link { font-size: 0.9rem; font-weight: 500; color: #222; white-space: nowrap; transition: color 0.15s; }
+    .nav-link:hover, .nav-link.active { color: var(--red); }
+    .btn-red { display: inline-flex; align-items: center; gap: 6px; background: var(--red); color: #fff; font-size: 0.85rem; font-weight: 600; padding: 9px 18px; border-radius: 6px; white-space: nowrap; transition: background 0.15s, transform 0.15s; border: none; cursor: pointer; }
+    .btn-red:hover { background: #b52020; transform: translateY(-1px); }
+    .nav-urgenta { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 20px; border: 1.5px solid rgba(212,43,43,0.35); font-size: 0.82rem; font-weight: 700; color: var(--red); transition: background 0.15s, color 0.15s; white-space: nowrap; }
+    .nav-urgenta:hover { background: var(--red); color: #fff; }
+    .pulse-red { width: 6px; height: 6px; border-radius: 50%; background: var(--red); display: inline-block; animation: pulse-red-anim 1.4s ease-in-out infinite; }
+    @keyframes pulse-red-anim { 0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.6);} }
+    #mobile-menu { display: none; position: fixed; inset: 0; background: #fff; z-index: 998; flex-direction: column; padding: 80px 24px 24px; gap: 4px; }
+    #mobile-menu.open { display: flex; }
+    .mob-link { font-size: 1.4rem; font-weight: 700; color: var(--navy); padding: 12px 0; border-bottom: 1px solid var(--border); transition: color 0.15s; }
+    .mob-link:hover { color: var(--red); }
+
+    .status-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 28px; }
+    .status-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid #f1f5f9; gap: 16px; }
+    .status-row:last-child { border-bottom: none; }
+    .status-label { font-weight: 600; color: #222; }
+    .status-meta { font-size: 0.78rem; color: var(--gray); margin-top: 2px; }
+    .status-pill { padding: 4px 12px; border-radius: 999px; font-size: 0.78rem; font-weight: 700; white-space: nowrap; }
+    .pill-used { background: #fee2e2; color: #991b1b; }
+    .pill-available { background: #dcfce7; color: #166534; }
+    .pill-info { background: #dbeafe; color: #1e3a8a; }
+    .progress-bar { width: 120px; height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, #22c55e, #16a34a); transition: width 0.4s ease; }
+    .progress-fill.full { background: linear-gradient(90deg, #ef4444, #dc2626); }
+
+    #footer { background: #fff; border-top: 1px solid var(--border); }
+    #footer-bottom { background: #f3f4f6; border-top: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+<div style="position:sticky;top:0;z-index:9999;background:#b52020;color:#fff;text-align:center;padding:8px 16px;font-size:0.82rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;box-shadow:0 2px 8px rgba(0,0,0,0.15);">🔔 Disponibil curând în Bacău</div>
+
+<header id="site-header">
+  <div id="topbar">
+    <div class="max-w-6xl mx-auto px-4 flex items-center justify-between">
+      <a href="tel:+407XXXXXXXX" class="flex items-center gap-1.5 font-medium">
+        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+        CALL CENTER +40 7XX XXX XXX
+      </a>
+      <a href="index.html#contact" class="flex items-center gap-1.5 font-medium">
+        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        CONTACT
+      </a>
+    </div>
+  </div>
+  <nav id="navbar">
+    <div class="max-w-6xl mx-auto px-4 flex items-center justify-between" style="height:70px;">
+      <a href="index.html"><img src="logo.PNG" alt="VET STUFF" style="height:56px;width:auto;" /></a>
+      <div class="hidden md:flex items-center gap-6">
+        <a href="index.html#despre" class="nav-link">Despre noi</a>
+        <a href="servicii.html" class="nav-link">Servicii</a>
+        <a href="echipa.html" class="nav-link">Echipa medicală</a>
+        <a href="abonamente.html" class="nav-link">Abonamente</a>
+        <a href="index.html#programare" class="nav-link">Programare</a>
+        <a href="index.html#contact" class="nav-link">Contact</a>
+        <a href="feedback.html" class="nav-link">Feedback</a>
+        <a href="index.html#urgenta" class="nav-urgenta"><span class="pulse-red"></span>Urgență</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="index.html#programare" class="btn-red hidden md:inline-flex">Programare</a>
+        <button id="hamburger" class="md:hidden p-1 flex flex-col gap-1.5" aria-label="Meniu">
+          <span class="block w-6 h-0.5" style="background:#222;"></span>
+          <span class="block w-6 h-0.5" style="background:#222;"></span>
+          <span class="block w-6 h-0.5" style="background:#222;"></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <div id="mobile-menu">
+    <button onclick="closeMenu()" style="position:absolute;top:20px;right:20px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:none;background:transparent;cursor:pointer;color:var(--navy);border-radius:50%;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <a href="index.html#despre" class="mob-link" onclick="closeMenu()">Despre noi</a>
+    <a href="servicii.html" class="mob-link" onclick="closeMenu()">Servicii</a>
+    <a href="echipa.html" class="mob-link" onclick="closeMenu()">Echipa medicală</a>
+    <a href="abonamente.html" class="mob-link" onclick="closeMenu()">Abonamente</a>
+    <a href="index.html#programare" class="mob-link" onclick="closeMenu()">Programare</a>
+    <a href="index.html#contact" class="mob-link" onclick="closeMenu()">Contact</a>
+    <a href="feedback.html" class="mob-link" onclick="closeMenu()">Feedback</a>
+    <a href="index.html#urgenta" class="mob-link" onclick="closeMenu()" style="color:var(--red);">🚨 Urgență</a>
+    <div class="mt-6"><a href="index.html#programare" onclick="closeMenu()" class="btn-red w-full justify-center">Programare online</a></div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section style="background:var(--navy);padding:56px 16px 48px;position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 80% 30%,rgba(212,43,43,0.15) 0%,transparent 55%);pointer-events:none;"></div>
+  <div class="max-w-3xl mx-auto text-center" style="position:relative;">
+    <span style="display:inline-block;font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:10px;">Status abonament</span>
+    <h1 style="font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:900;color:#fff;line-height:1.15;margin-bottom:10px;">Vezi ce ai folosit din abonamentul tău</h1>
+    <p style="font-size:0.95rem;color:rgba(255,255,255,0.75);line-height:1.65;max-width:520px;margin:0 auto;">Introdu codul primit la înscriere ca să vezi ce servicii ai folosit și ce mai ai disponibil din pachet.</p>
+  </div>
+</section>
+
+<!-- INPUT COD -->
+<section style="padding:40px 16px 24px;background:var(--light);">
+  <div class="max-w-md mx-auto">
+    <form id="cod-form" onsubmit="event.preventDefault();loadStatus(document.getElementById('cod-input').value.trim());" style="display:flex;gap:8px;">
+      <input id="cod-input" type="text" placeholder="Cod (ex: MAIA01)" autocomplete="off" maxlength="16" style="flex:1;padding:13px 16px;border:1.5px solid var(--border);border-radius:8px;font-size:0.95rem;font-family:'DM Sans',sans-serif;outline:none;background:#fff;" />
+      <button type="submit" class="btn-red" style="padding:13px 22px;">Caută</button>
+    </form>
+    <p style="font-size:0.78rem;color:var(--gray);margin-top:10px;text-align:center;">Nu ai un cod? <a href="index.html#contact" style="color:var(--red);font-weight:600;">Contactează-ne</a> pentru ajutor.</p>
+  </div>
+</section>
+
+<!-- STATUS DISPLAY -->
+<section style="padding:24px 16px 64px;background:var(--light);min-height:300px;">
+  <div class="max-w-2xl mx-auto">
+    <div id="status-loading" style="display:none;text-align:center;padding:40px;color:var(--gray);">Se încarcă...</div>
+
+    <div id="status-error" style="display:none;background:#fee2e2;border:1px solid #fecaca;border-radius:12px;padding:18px 22px;color:#991b1b;text-align:center;">
+      <div style="font-weight:700;margin-bottom:4px;">Cod inexistent sau invalid</div>
+      <div style="font-size:0.88rem;">Verifică dacă ai introdus codul corect. Pentru ajutor, <a href="index.html#contact" style="text-decoration:underline;">contactează-ne</a>.</div>
+    </div>
+
+    <div id="status-display" style="display:none;">
+      <!-- Header card -->
+      <div class="status-card" style="margin-bottom:18px;">
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;">
+          <div>
+            <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:4px;">Pachet activ</div>
+            <h2 style="font-size:1.4rem;color:var(--navy);" id="s-pachet">—</h2>
+            <div style="font-size:0.95rem;color:#444;margin-top:4px;" id="s-nume">—</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:0.72rem;color:var(--gray);">Cod</div>
+            <div style="font-family:monospace;font-size:0.95rem;font-weight:700;color:var(--navy);" id="s-cod">—</div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:0.85rem;color:#555;border-top:1px solid var(--border);padding-top:12px;">
+          <div><span style="color:var(--gray);">Activ din:</span> <strong id="s-start">—</strong></div>
+          <div><span style="color:var(--gray);">Expiră la:</span> <strong id="s-expira">—</strong></div>
+        </div>
+      </div>
+
+      <!-- Servicii card -->
+      <div class="status-card">
+        <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray);margin-bottom:8px;">Utilizare servicii</div>
+
+        <div class="status-row">
+          <div>
+            <div class="status-label">Consultație generală</div>
+            <div class="status-meta" id="s-consultatie-meta">—</div>
+          </div>
+          <span class="status-pill" id="s-consultatie-pill">—</span>
+        </div>
+
+        <div class="status-row">
+          <div>
+            <div class="status-label">Vaccin polivalent + antirabic</div>
+            <div class="status-meta" id="s-vaccin-meta">—</div>
+          </div>
+          <span class="status-pill" id="s-vaccin-pill">—</span>
+        </div>
+
+        <div class="status-row">
+          <div>
+            <div class="status-label">Deparazitări interne</div>
+            <div class="status-meta" id="s-int-meta">—</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="progress-bar"><div class="progress-fill" id="s-int-fill" style="width:0%"></div></div>
+            <span style="font-weight:700;min-width:32px;text-align:right;" id="s-int-text">0/2</span>
+          </div>
+        </div>
+
+        <div class="status-row">
+          <div>
+            <div class="status-label">Deparazitări externe</div>
+            <div class="status-meta" id="s-ext-meta">—</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="progress-bar"><div class="progress-fill" id="s-ext-fill" style="width:0%"></div></div>
+            <span style="font-weight:700;min-width:32px;text-align:right;" id="s-ext-text">0/4</span>
+          </div>
+        </div>
+
+        <div class="status-row">
+          <div>
+            <div class="status-label">Consultație de urgență (−50%)</div>
+            <div class="status-meta" id="s-urg-meta">Beneficiu bonus, fără cost suplimentar</div>
+          </div>
+          <span class="status-pill" id="s-urg-pill">—</span>
+        </div>
+
+        <div class="status-row">
+          <div>
+            <div class="status-label">Reducere produse (−5%)</div>
+            <div class="status-meta">Activă pe toată durata abonamentului</div>
+          </div>
+          <span class="status-pill pill-info">Activ</span>
+        </div>
+      </div>
+
+      <div id="s-note-wrap" style="display:none;background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:14px 18px;margin-top:18px;font-size:0.88rem;color:#92400e;line-height:1.55;">
+        <strong>Notă:</strong> <span id="s-note"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="footer">
+  <div id="footer-bottom" style="padding:18px 16px;text-align:center;font-size:0.78rem;color:var(--gray);">
+    © VET STUFF Bacău. Toate drepturile rezervate.
+  </div>
+</footer>
+
+<script>
+  // Mobile menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  if (hamburger) hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+  function closeMenu() { mobileMenu.classList.remove('open'); }
+
+  // Format date helper
+  function fmtDate(s) {
+    if (!s) return null;
+    try {
+      const d = new Date(s);
+      return d.toLocaleDateString('ro-RO', { day: 'numeric', month: 'long', year: 'numeric' });
+    } catch { return s; }
+  }
+
+  function show(id, display) { document.getElementById(id).style.display = display || 'block'; }
+  function hide(id) { document.getElementById(id).style.display = 'none'; }
+
+  async function loadStatus(cod) {
+    if (!cod) return;
+    hide('status-display'); hide('status-error'); show('status-loading', 'block');
+    try {
+      const res = await fetch('/api/status?cod=' + encodeURIComponent(cod));
+      hide('status-loading');
+      if (!res.ok) { show('status-error', 'block'); return; }
+      const d = await res.json();
+      renderStatus(d);
+    } catch (e) {
+      hide('status-loading'); show('status-error', 'block');
+    }
+  }
+
+  function renderStatus(d) {
+    document.getElementById('s-pachet').textContent = d.pachet || '—';
+    document.getElementById('s-nume').textContent = d.nume || '';
+    document.getElementById('s-cod').textContent = d.cod || '';
+    document.getElementById('s-start').textContent = fmtDate(d.dataStart) || '—';
+    document.getElementById('s-expira').textContent = fmtDate(d.dataExpirare) || '—';
+
+    // Consultație
+    const cPill = document.getElementById('s-consultatie-pill');
+    const cMeta = document.getElementById('s-consultatie-meta');
+    if (d.consultatie.folosita) {
+      cPill.textContent = 'Folosită'; cPill.className = 'status-pill pill-used';
+      cMeta.textContent = d.consultatie.data ? 'La ' + fmtDate(d.consultatie.data) : 'Folosită';
+    } else {
+      cPill.textContent = 'Disponibilă'; cPill.className = 'status-pill pill-available';
+      cMeta.textContent = 'Încă nu ai folosit-o';
+    }
+
+    // Vaccin
+    const vPill = document.getElementById('s-vaccin-pill');
+    const vMeta = document.getElementById('s-vaccin-meta');
+    if (d.vaccin.folosit) {
+      vPill.textContent = 'Folosit'; vPill.className = 'status-pill pill-used';
+      vMeta.textContent = d.vaccin.data ? 'La ' + fmtDate(d.vaccin.data) : 'Folosit';
+    } else {
+      vPill.textContent = 'Disponibil'; vPill.className = 'status-pill pill-available';
+      vMeta.textContent = 'Încă nu ai folosit-o';
+    }
+
+    // Deparazitări interne
+    const intF = d.deparazitariInterne.folosite, intT = d.deparazitariInterne.total;
+    document.getElementById('s-int-text').textContent = intF + '/' + intT;
+    const intFill = document.getElementById('s-int-fill');
+    intFill.style.width = (intT > 0 ? (intF / intT * 100) : 0) + '%';
+    intFill.classList.toggle('full', intF >= intT);
+    document.getElementById('s-int-meta').textContent = (intT - intF) + ' rămase din ' + intT;
+
+    // Deparazitări externe
+    const extF = d.deparazitariExterne.folosite, extT = d.deparazitariExterne.total;
+    document.getElementById('s-ext-text').textContent = extF + '/' + extT;
+    const extFill = document.getElementById('s-ext-fill');
+    extFill.style.width = (extT > 0 ? (extF / extT * 100) : 0) + '%';
+    extFill.classList.toggle('full', extF >= extT);
+    document.getElementById('s-ext-meta').textContent = (extT - extF) + ' rămase din ' + extT;
+
+    // Urgență
+    const uPill = document.getElementById('s-urg-pill');
+    const uMeta = document.getElementById('s-urg-meta');
+    if (d.urgenta.folosita) {
+      uPill.textContent = 'Folosită'; uPill.className = 'status-pill pill-used';
+      uMeta.textContent = d.urgenta.data ? 'La ' + fmtDate(d.urgenta.data) : 'Folosită';
+    } else {
+      uPill.textContent = 'Activ'; uPill.className = 'status-pill pill-info';
+      uMeta.textContent = 'Disponibil oricând în perioada abonamentului';
+    }
+
+    // Note
+    if (d.note) {
+      document.getElementById('s-note').textContent = d.note;
+      document.getElementById('s-note-wrap').style.display = 'block';
+    } else {
+      document.getElementById('s-note-wrap').style.display = 'none';
+    }
+
+    show('status-display', 'block');
+  }
+
+  // Citeste cod din URL la load
+  const urlCod = new URLSearchParams(location.search).get('cod');
+  if (urlCod) {
+    document.getElementById('cod-input').value = urlCod;
+    loadStatus(urlCod);
+  }
+</script>
+</body>
+</html>
