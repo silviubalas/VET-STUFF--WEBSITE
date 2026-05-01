@@ -620,7 +620,14 @@ document.getElementById('abonament-form').addEventListener('submit', function(e)
     headers: { 'Accept': 'application/json' }
   });
 
-  Promise.allSettled([abonamenteRequest, utilizareRequest, formspreeRequest]).then(results => {
+  // Email de confirmare catre client (doar daca a completat email)
+  const emailRequest = email ? fetch('/api/send-confirmation', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, nume, plan, animal, cod })
+  }) : Promise.resolve(null);
+
+  Promise.allSettled([abonamenteRequest, utilizareRequest, formspreeRequest, emailRequest]).then(results => {
     const anyOk = results.some(r => r.status === 'fulfilled' && r.value && r.value.ok);
     if (anyOk) {
       // Afiseaza codul + linkul catre status
