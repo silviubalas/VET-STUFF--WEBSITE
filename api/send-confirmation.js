@@ -83,7 +83,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'VET STUFF <onboarding@resend.dev>',
+        from: 'VET STUFF <noreply@vet-stuff.ro>',
         to: [email],
         subject,
         html,
