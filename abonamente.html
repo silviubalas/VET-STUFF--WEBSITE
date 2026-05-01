@@ -449,6 +449,13 @@
             <div style="font-size:0.78rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#166534;margin-bottom:8px;">Codul tău de abonament</div>
             <div id="ab-cod-value" style="font-family:monospace;font-size:1.3rem;font-weight:900;color:var(--navy);background:#fff;padding:10px 18px;border-radius:10px;display:inline-block;border:2px dashed var(--navy);letter-spacing:0.05em;">—</div>
             <div style="font-size:0.82rem;color:#166534;margin-top:12px;line-height:1.55;">📌 Salvează acest cod (screenshot, notes, oriunde). Îl folosești pe pagina de status ca să vezi ce ai folosit din pachet.</div>
+
+            <div id="ab-qr-block" style="margin-top:18px;padding-top:16px;border-top:1px dashed #86EFAC;">
+              <div style="font-size:0.78rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#166534;margin-bottom:10px;">Codul QR pentru clinică</div>
+              <img id="ab-qr-img" alt="Cod QR abonament" style="width:180px;height:180px;background:#fff;padding:10px;border-radius:10px;border:1px solid #86EFAC;" />
+              <div style="font-size:0.78rem;color:#166534;margin-top:10px;line-height:1.5;">La fiecare vizită, arată acest QR medicului. El va înregistra serviciile folosite.</div>
+            </div>
+
             <a id="ab-status-link" href="status.html" style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:10px 20px;background:var(--navy);color:#fff;border-radius:8px;font-size:0.85rem;font-weight:600;text-decoration:none;">🔍 Vezi statusul tău →</a>
           </div>
         </div>
@@ -630,9 +637,11 @@ document.getElementById('abonament-form').addEventListener('submit', function(e)
   Promise.allSettled([abonamenteRequest, utilizareRequest, formspreeRequest, emailRequest]).then(results => {
     const anyOk = results.some(r => r.status === 'fulfilled' && r.value && r.value.ok);
     if (anyOk) {
-      // Afiseaza codul + linkul catre status
+      // Afiseaza codul + linkul catre status + QR pentru clinica
       document.getElementById('ab-cod-value').textContent = cod;
       document.getElementById('ab-status-link').href = 'status.html?cod=' + encodeURIComponent(cod);
+      const qrTarget = 'https://www.vet-stuff.ro/u.html?cod=' + encodeURIComponent(cod);
+      document.getElementById('ab-qr-img').src = 'https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=10&data=' + encodeURIComponent(qrTarget);
       document.getElementById('ab-cod-block').style.display = 'block';
       document.getElementById('ab-success').style.display = 'block';
       form.reset();

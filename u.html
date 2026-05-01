@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Utilizare abonament — VET STUFF</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    :root { --red: #D42B2B; --red-dark: #b52020; --navy: #1B3A6B; --gray: #7A8BA0; --bg: #F8F7F4; --border: #e5e7eb; --green: #16a34a; --green-bg: #dcfce7; }
+    html, body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; color: #1a1a1a; background: var(--bg); min-height: 100vh; }
+    body { padding: 16px; padding-bottom: 120px; max-width: 560px; margin: 0 auto; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; padding: 8px 0 18px; border-bottom: 1px solid var(--border); margin-bottom: 18px; }
+    .topbar img { height: 36px; }
+    .topbar .who { font-size: 0.72rem; color: var(--gray); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+    .card { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 16px; }
+    h1 { font-size: 1.3rem; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+    h2 { font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 14px; }
+    p.sub { font-size: 0.88rem; color: var(--gray); line-height: 1.5; }
+    label { display: block; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--navy); margin-bottom: 6px; }
+    input[type="text"], input[type="password"], input[type="number"], input[type="date"], textarea {
+      width: 100%; font-family: inherit; font-size: 1rem; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 10px; background: #fff; color: #111; outline: none; transition: border-color 0.15s;
+    }
+    input:focus, textarea:focus { border-color: var(--red); }
+    textarea { resize: vertical; min-height: 80px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: 100%; font-family: inherit; font-size: 1rem; font-weight: 700; padding: 14px 18px; border-radius: 10px; border: none; cursor: pointer; transition: background 0.15s, transform 0.05s; }
+    .btn-primary { background: var(--red); color: #fff; }
+    .btn-primary:hover { background: var(--red-dark); }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-ghost { background: transparent; color: var(--gray); font-size: 0.85rem; font-weight: 600; padding: 10px; }
+    .btn-ghost:hover { color: var(--red); }
+    .row-toggle { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 14px 0; border-bottom: 1px solid #f3f4f6; }
+    .row-toggle:last-of-type { border-bottom: none; }
+    .row-toggle .label-main { font-size: 0.98rem; font-weight: 600; color: #222; }
+    .row-toggle .label-sub { font-size: 0.78rem; color: var(--gray); margin-top: 2px; }
+    .switch { position: relative; width: 52px; height: 30px; flex-shrink: 0; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; inset: 0; background: #cbd5e1; border-radius: 30px; transition: 0.2s; }
+    .slider::before { position: absolute; content: ""; height: 24px; width: 24px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+    .switch input:checked + .slider { background: var(--green); }
+    .switch input:checked + .slider::before { transform: translateX(22px); }
+    .sub-fields { padding: 10px 0 14px; display: none; }
+    .sub-fields.show { display: block; }
+    .counter { display: flex; align-items: center; gap: 12px; }
+    .counter-btn { width: 44px; height: 44px; flex-shrink: 0; border: 1.5px solid var(--border); background: #fff; border-radius: 10px; font-size: 1.4rem; font-weight: 700; color: var(--navy); cursor: pointer; transition: background 0.15s; }
+    .counter-btn:hover:not(:disabled) { background: var(--bg); }
+    .counter-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .counter-value { flex: 1; text-align: center; font-size: 1.4rem; font-weight: 800; color: var(--navy); }
+    .counter-meta { font-size: 0.78rem; color: var(--gray); margin-top: 6px; text-align: center; }
+    .badge-info { display: inline-block; background: #dbeafe; color: #1e3a8a; padding: 3px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; }
+    .alert { padding: 12px 14px; border-radius: 10px; font-size: 0.88rem; margin-bottom: 14px; }
+    .alert-error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    .alert-ok { background: var(--green-bg); color: #166534; border: 1px solid #86efac; }
+    .info-row { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; font-size: 0.9rem; }
+    .info-row .k { color: var(--gray); }
+    .info-row .v { color: #111; font-weight: 600; }
+    .save-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid var(--border); padding: 12px 16px; box-shadow: 0 -4px 12px rgba(0,0,0,0.04); }
+    .save-bar-inner { max-width: 560px; margin: 0 auto; display: flex; gap: 10px; }
+    .hidden { display: none !important; }
+    .pin-display { font-family: ui-monospace, 'Menlo', monospace; font-size: 1.5rem; letter-spacing: 0.4em; text-align: center; padding: 14px; background: var(--bg); border-radius: 10px; }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <img src="logo.PNG" alt="VET STUFF" />
+  <div class="who">Mod medic</div>
+</div>
+
+<!-- ============ STEP 1: COD ============ -->
+<section id="step-cod" class="card hidden">
+  <h1>Cod abonament</h1>
+  <p class="sub" style="margin-bottom:18px;">Scanează QR-ul clientului sau introdu codul manual.</p>
+  <label for="cod-input">Cod client</label>
+  <input id="cod-input" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ex: ANAMAIA01052026" />
+  <div style="margin-top:14px;">
+    <button class="btn btn-primary" id="cod-submit">Continuă →</button>
+  </div>
+</section>
+
+<!-- ============ STEP 2: PIN ============ -->
+<section id="step-pin" class="card hidden">
+  <h1>PIN clinică</h1>
+  <p class="sub" style="margin-bottom:18px;">Introdu PIN-ul pentru a putea modifica utilizarea.</p>
+  <div id="pin-error" class="alert alert-error hidden"></div>
+  <label for="pin-input">PIN</label>
+  <input id="pin-input" type="password" inputmode="numeric" autocomplete="off" maxlength="20" placeholder="••••" />
+  <div style="margin-top:14px;">
+    <button class="btn btn-primary" id="pin-submit">Deblochează</button>
+  </div>
+  <button class="btn btn-ghost" id="pin-back" style="margin-top:6px;">← Schimbă codul</button>
+</section>
+
+<!-- ============ STEP 3: FORM ============ -->
+<section id="step-form" class="hidden">
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px;">
+      <h2 style="margin:0;" id="form-cod">—</h2>
+      <span class="badge-info" id="form-pachet">—</span>
+    </div>
+    <div class="info-row"><span class="k">Client</span><span class="v" id="form-nume">—</span></div>
+    <div class="info-row"><span class="k">Start</span><span class="v" id="form-start">—</span></div>
+    <div class="info-row"><span class="k">Expirare</span><span class="v" id="form-expirare">—</span></div>
+  </div>
+
+  <div id="form-error" class="alert alert-error hidden"></div>
+  <div id="form-ok" class="alert alert-ok hidden"></div>
+
+  <!-- Consultatie -->
+  <div class="card">
+    <div class="row-toggle">
+      <div>
+        <div class="label-main">Consultație</div>
+        <div class="label-sub">Inclus în abonament: 1 vizită</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="t-consultatie" />
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div id="sub-consultatie" class="sub-fields">
+      <label for="d-consultatie">Data consultației</label>
+      <input id="d-consultatie" type="date" />
+    </div>
+  </div>
+
+  <!-- Vaccin -->
+  <div class="card">
+    <div class="row-toggle">
+      <div>
+        <div class="label-main">Vaccin</div>
+        <div class="label-sub">Inclus în abonament: 1 doză</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="t-vaccin" />
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div id="sub-vaccin" class="sub-fields">
+      <label for="d-vaccin">Data vaccinului</label>
+      <input id="d-vaccin" type="date" />
+    </div>
+  </div>
+
+  <!-- Deparazitari interne -->
+  <div class="card">
+    <label>Deparazitări interne folosite</label>
+    <div class="counter">
+      <button type="button" class="counter-btn" data-cnt="interne" data-op="-">−</button>
+      <div class="counter-value" id="c-interne">0</div>
+      <button type="button" class="counter-btn" data-cnt="interne" data-op="+">+</button>
+    </div>
+    <div class="counter-meta">din maxim <strong id="c-interne-max">2</strong> incluse în abonament</div>
+  </div>
+
+  <!-- Deparazitari externe -->
+  <div class="card">
+    <label>Deparazitări externe folosite</label>
+    <div class="counter">
+      <button type="button" class="counter-btn" data-cnt="externe" data-op="-">−</button>
+      <div class="counter-value" id="c-externe">0</div>
+      <button type="button" class="counter-btn" data-cnt="externe" data-op="+">+</button>
+    </div>
+    <div class="counter-meta">din maxim <strong id="c-externe-max">4</strong> incluse în abonament</div>
+  </div>
+
+  <!-- Urgenta -->
+  <div class="card">
+    <div class="row-toggle">
+      <div>
+        <div class="label-main">Urgență</div>
+        <div class="label-sub">Inclus în abonament: 1 intervenție</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="t-urgenta" />
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div id="sub-urgenta" class="sub-fields">
+      <label for="d-urgenta">Data urgenței</label>
+      <input id="d-urgenta" type="date" />
+    </div>
+  </div>
+
+  <!-- Note -->
+  <div class="card">
+    <label for="note">Note interne</label>
+    <textarea id="note" placeholder="Observații, recomandări, lot vaccin..."></textarea>
+  </div>
+
+  <button class="btn btn-ghost" id="btn-other" style="margin-top:6px;">↻ Alt client / alt cod</button>
+</section>
+
+<!-- Save bar (fixed bottom) -->
+<div id="save-bar" class="save-bar hidden">
+  <div class="save-bar-inner">
+    <button class="btn btn-primary" id="btn-save">💾 Salvează modificări</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  const PIN_KEY = 'vetstuff_pin';
+  const $ = (id) => document.getElementById(id);
+
+  const state = {
+    cod: '',
+    pin: sessionStorage.getItem(PIN_KEY) || '',
+    data: null,
+    interne: 0,
+    externe: 0,
+    interneMax: 2,
+    externeMax: 4,
+  };
+
+  function show(stepId) {
+    ['step-cod', 'step-pin', 'step-form'].forEach(id => $(id).classList.add('hidden'));
+    $(stepId).classList.remove('hidden');
+    $('save-bar').classList.toggle('hidden', stepId !== 'step-form');
+    window.scrollTo(0, 0);
+  }
+
+  function showError(id, msg) {
+    const el = $(id);
+    el.textContent = msg;
+    el.classList.remove('hidden');
+  }
+  function hideAlert(id) { $(id).classList.add('hidden'); }
+
+  // ---- Init: read ?cod= from URL ----
+  const urlCod = new URLSearchParams(location.search).get('cod') || '';
+  if (urlCod && /^[A-Za-z0-9_-]{4,16}$/.test(urlCod)) {
+    state.cod = urlCod.toUpperCase();
+    if (state.pin) {
+      loadData();
+    } else {
+      show('step-pin');
+    }
+  } else {
+    show('step-cod');
+  }
+
+  // ---- Step 1: cod ----
+  $('cod-submit').addEventListener('click', () => {
+    const v = $('cod-input').value.trim().toUpperCase();
+    if (!/^[A-Za-z0-9_-]{4,16}$/.test(v)) {
+      alert('Cod invalid. Folosește 4-16 caractere alfanumerice.');
+      return;
+    }
+    state.cod = v;
+    if (state.pin) {
+      loadData();
+    } else {
+      show('step-pin');
+    }
+  });
+  $('cod-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('cod-submit').click(); });
+
+  // ---- Step 2: pin ----
+  $('pin-submit').addEventListener('click', async () => {
+    hideAlert('pin-error');
+    const v = $('pin-input').value.trim();
+    if (!v) {
+      showError('pin-error', 'Introdu PIN-ul.');
+      return;
+    }
+    state.pin = v;
+    sessionStorage.setItem(PIN_KEY, v);
+    await loadData();
+  });
+  $('pin-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('pin-submit').click(); });
+  $('pin-back').addEventListener('click', () => {
+    $('cod-input').value = state.cod;
+    show('step-cod');
+  });
+
+  // ---- Load data from /api/status ----
+  async function loadData() {
+    try {
+      const r = await fetch('/api/status?cod=' + encodeURIComponent(state.cod));
+      const j = await r.json();
+      if (!r.ok) {
+        if (r.status === 404) {
+          alert('Codul "' + state.cod + '" nu există în baza de date.');
+          show('step-cod');
+          return;
+        }
+        throw new Error(j.error || 'Eroare necunoscută');
+      }
+      state.data = j;
+      populateForm(j);
+      show('step-form');
+    } catch (err) {
+      alert('Eroare la încărcare: ' + err.message);
+    }
+  }
+
+  function populateForm(d) {
+    $('form-cod').textContent = d.cod;
+    $('form-pachet').textContent = d.pachet || '—';
+    $('form-nume').textContent = d.nume || '—';
+    $('form-start').textContent = d.dataStart || '—';
+    $('form-expirare').textContent = d.dataExpirare || '—';
+
+    $('t-consultatie').checked = !!d.consultatie.folosita;
+    $('d-consultatie').value = d.consultatie.data || '';
+    $('sub-consultatie').classList.toggle('show', !!d.consultatie.folosita);
+
+    $('t-vaccin').checked = !!d.vaccin.folosit;
+    $('d-vaccin').value = d.vaccin.data || '';
+    $('sub-vaccin').classList.toggle('show', !!d.vaccin.folosit);
+
+    state.interneMax = d.deparazitariInterne.total || 2;
+    state.externeMax = d.deparazitariExterne.total || 4;
+    state.interne = Number(d.deparazitariInterne.folosite) || 0;
+    state.externe = Number(d.deparazitariExterne.folosite) || 0;
+    $('c-interne-max').textContent = state.interneMax;
+    $('c-externe-max').textContent = state.externeMax;
+    renderCounters();
+
+    $('t-urgenta').checked = !!d.urgenta.folosita;
+    $('d-urgenta').value = d.urgenta.data || '';
+    $('sub-urgenta').classList.toggle('show', !!d.urgenta.folosita);
+
+    $('note').value = d.note || '';
+
+    hideAlert('form-error');
+    hideAlert('form-ok');
+  }
+
+  // ---- Toggle sub-fields when switch changes; auto-fill date ----
+  function bindToggle(togId, subId, dateId) {
+    $(togId).addEventListener('change', () => {
+      const on = $(togId).checked;
+      $(subId).classList.toggle('show', on);
+      if (on && !$(dateId).value) {
+        $(dateId).value = todayISO();
+      }
+    });
+  }
+  bindToggle('t-consultatie', 'sub-consultatie', 'd-consultatie');
+  bindToggle('t-vaccin', 'sub-vaccin', 'd-vaccin');
+  bindToggle('t-urgenta', 'sub-urgenta', 'd-urgenta');
+
+  function todayISO() {
+    const d = new Date();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return d.getFullYear() + '-' + m + '-' + day;
+  }
+
+  // ---- Counters ----
+  function renderCounters() {
+    $('c-interne').textContent = state.interne;
+    $('c-externe').textContent = state.externe;
+    document.querySelectorAll('.counter-btn').forEach(b => {
+      const cnt = b.dataset.cnt, op = b.dataset.op;
+      const v = state[cnt], max = state[cnt + 'Max'];
+      b.disabled = (op === '-' && v <= 0) || (op === '+' && v >= max);
+    });
+  }
+  document.querySelectorAll('.counter-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      const cnt = b.dataset.cnt, op = b.dataset.op;
+      const max = state[cnt + 'Max'];
+      if (op === '+' && state[cnt] < max) state[cnt]++;
+      else if (op === '-' && state[cnt] > 0) state[cnt]--;
+      renderCounters();
+    });
+  });
+
+  // ---- Save ----
+  $('btn-save').addEventListener('click', async () => {
+    hideAlert('form-error');
+    hideAlert('form-ok');
+    const btn = $('btn-save');
+    btn.disabled = true;
+    const original = btn.innerHTML;
+    btn.innerHTML = 'Se salvează…';
+
+    const consultatieOn = $('t-consultatie').checked;
+    const vaccinOn = $('t-vaccin').checked;
+    const urgentaOn = $('t-urgenta').checked;
+
+    const fields = {
+      'Consultatie folosita': consultatieOn,
+      'Data consultatie': consultatieOn ? ($('d-consultatie').value || null) : null,
+      'Vaccin folosit': vaccinOn,
+      'Data vaccin': vaccinOn ? ($('d-vaccin').value || null) : null,
+      'Deparazitari interne folosite': state.interne,
+      'Deparazitari externe folosite': state.externe,
+      'Urgenta folosita': urgentaOn,
+      'Data urgenta': urgentaOn ? ($('d-urgenta').value || null) : null,
+      'Note': $('note').value || '',
+    };
+
+    try {
+      const r = await fetch('/api/use-service', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cod: state.cod, pin: state.pin, fields }),
+      });
+      const j = await r.json();
+      if (!r.ok) {
+        if (r.status === 401) {
+          sessionStorage.removeItem(PIN_KEY);
+          state.pin = '';
+          showError('form-error', 'PIN incorect. Reintrodu PIN-ul.');
+          show('step-pin');
+        } else {
+          showError('form-error', j.error || 'Eroare la salvare.');
+        }
+        return;
+      }
+      const ok = $('form-ok');
+      ok.textContent = '✅ Salvat. Câmpuri actualizate: ' + (j.updated || []).length;
+      ok.classList.remove('hidden');
+      setTimeout(() => ok.classList.add('hidden'), 3500);
+    } catch (err) {
+      showError('form-error', 'Eroare rețea: ' + err.message);
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = original;
+    }
+  });
+
+  // ---- Other client ----
+  $('btn-other').addEventListener('click', () => {
+    state.cod = '';
+    state.data = null;
+    $('cod-input').value = '';
+    show('step-cod');
+  });
+})();
+</script>
+</body>
+</html>
