@@ -26,6 +26,8 @@ export default async function handler(req, res) {
   const safeCod    = String(cod).slice(0, 16);
 
   const statusUrl = 'https://www.vet-stuff.ro/status.html?cod=' + encodeURIComponent(safeCod);
+  const useUrl    = 'https://www.vet-stuff.ro/u.html?cod=' + encodeURIComponent(safeCod);
+  const qrUrl     = 'https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=10&data=' + encodeURIComponent(useUrl);
 
   const subject = 'Abonamentul tau VET STUFF — Codul: ' + safeCod;
 
@@ -47,6 +49,12 @@ export default async function handler(req, res) {
   <div style="background:#fef2f2; border:2px dashed #b52020; border-radius:12px; padding:20px; margin:24px 0; text-align:center;">
     <p style="margin:0 0 8px; color:#6b7280; font-size:13px; text-transform:uppercase; letter-spacing:1px;">Codul tău unic</p>
     <p style="margin:0; font-size:28px; font-weight:bold; color:#b52020; letter-spacing:2px; font-family:'Menlo','Courier New',monospace;">${escapeHtml(safeCod)}</p>
+  </div>
+
+  <div style="background:#f9fafb; border:1px solid #e5e7eb; border-radius:12px; padding:20px; margin:24px 0; text-align:center;">
+    <p style="margin:0 0 12px; color:#6b7280; font-size:13px; text-transform:uppercase; letter-spacing:1px;">Codul QR pentru clinică</p>
+    <img src="${qrUrl}" alt="Cod QR abonament" width="240" height="240" style="display:block; margin:0 auto; background:#fff; padding:10px; border-radius:8px; border:1px solid #e5e7eb;">
+    <p style="margin:12px 0 0; color:#6b7280; font-size:13px; line-height:1.5;">La fiecare vizită, arată acest QR medicului.<br>El va înregistra serviciile folosite pe loc.</p>
   </div>
 
   <p>Cu acest cod poți verifica oricând statusul abonamentului — ce servicii ai folosit și ce mai ai disponibil:</p>
