@@ -435,10 +435,17 @@
           Trimite cererea de înscriere
         </button>
 
-        <div id="ab-success" style="display:none;margin-top:20px;background:#DCFCE7;border:1px solid #86EFAC;border-radius:10px;padding:16px;text-align:center;">
-          <div style="font-size:1.4rem;margin-bottom:6px;">✅</div>
-          <div style="font-weight:700;color:#166534;">Cerere trimisă cu succes!</div>
+        <div id="ab-success" style="display:none;margin-top:20px;background:#DCFCE7;border:1px solid #86EFAC;border-radius:14px;padding:22px 18px;text-align:center;">
+          <div style="font-size:1.6rem;margin-bottom:6px;">✅</div>
+          <div style="font-weight:700;color:#166534;font-size:1.05rem;">Cerere trimisă cu succes!</div>
           <div style="font-size:0.85rem;color:#166534;margin-top:4px;">Te contactăm în maxim 24 de ore pentru a finaliza înscrierea.</div>
+
+          <div id="ab-cod-block" style="display:none;margin-top:18px;padding-top:18px;border-top:1px solid #86EFAC;">
+            <div style="font-size:0.78rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#166534;margin-bottom:8px;">Codul tău de abonament</div>
+            <div id="ab-cod-value" style="font-family:monospace;font-size:1.3rem;font-weight:900;color:var(--navy);background:#fff;padding:10px 18px;border-radius:10px;display:inline-block;border:2px dashed var(--navy);letter-spacing:0.05em;">—</div>
+            <div style="font-size:0.82rem;color:#166534;margin-top:12px;line-height:1.55;">📌 Salvează acest cod (screenshot, notes, oriunde). Îl folosești pe pagina de status ca să vezi ce ai folosit din pachet.</div>
+            <a id="ab-status-link" href="status.html" style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:10px 20px;background:var(--navy);color:#fff;border-radius:8px;font-size:0.85rem;font-weight:600;text-decoration:none;">🔍 Vezi statusul tău →</a>
+          </div>
         </div>
       </form>
     </div>
@@ -518,6 +525,19 @@ function selectPlan(plan) {
   document.getElementById('ab-plan').value = plan;
   document.getElementById('inscriere').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+// Generare cod abonament: [4 chars nume client][4 chars nume animal][DDMMYYYY]
+// Ex: "Maria Popescu" + "Rex" pe 10 iunie 2026 → "MARIREX10062026"
+function genCodAbonament(numeClient, numeAnimal) {
+  const clean = (s) => (s || '')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 4);
+  const t = new Date();
+  const dd = String(t.getDate()).padStart(2, '0');
+  const mm = String(t.getMonth() + 1).padStart(2, '0');
+  const yyyy = t.getFullYear();
+  return clean(numeClient) + clean(numeAnimal) + dd + mm + yyyy;
+}
+
 document.getElementById('abonament-form').addEventListener('submit', function(e) {
   e.preventDefault();
   const plan   = document.getElementById('ab-plan').value;
@@ -531,13 +551,17 @@ document.getElementById('abonament-form').addEventListener('submit', function(e)
   const rasa  = document.getElementById('ab-rasa').value.trim();
   const mesaj = document.getElementById('ab-mesaj').value.trim();
 
+  const cod = genCodAbonament(nume, animal);
+  const today = new Date();
+  const dataStartIso = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
+
   const form = this;
   const btn = form.querySelector('button[type="submit"]');
   const originalLabel = btn.innerHTML;
   btn.disabled = true;
   btn.textContent = 'Se trimite...';
 
-  const airtableRequest = fetch('/api/airtable', {
+  const abonamenteRequest = fetch('/api/airtable', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -549,13 +573,34 @@ document.getElementById('abonament-form').addEventListener('submit', function(e)
         'Email':          email,
         'Nume animal':    animal,
         'Specie si rasa': rasa,
-        'Mesaj':          mesaj
+        'Mesaj':          mesaj,
+        'Cod':            cod
+      }
+    })
+  });
+
+  const utilizareRequest = fetch('/api/airtable', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      table: 'UtilizareAbonamente',
+      fields: {
+        'Cod client':                     cod,
+        'Nume client':                    nume + ' - ' + animal,
+        'Tip pachet':                     plan,
+        'Data start':                     dataStartIso,
+        'Consultatie folosita':           false,
+        'Vaccin folosit':                 false,
+        'Deparazitari interne folosite':  0,
+        'Deparazitari externe folosite':  0,
+        'Urgenta folosita':               false
       }
     })
   });
 
   const fd = new FormData();
-  fd.append('_subject', 'Abonament — cerere nouă');
+  fd.append('_subject', 'Abonament — cerere nouă (' + cod + ')');
+  fd.append('Cod abonament', cod);
   fd.append('Plan', plan);
   fd.append('Nume', nume);
   fd.append('Telefon', tel);
@@ -569,9 +614,13 @@ document.getElementById('abonament-form').addEventListener('submit', function(e)
     headers: { 'Accept': 'application/json' }
   });
 
-  Promise.allSettled([airtableRequest, formspreeRequest]).then(results => {
+  Promise.allSettled([abonamenteRequest, utilizareRequest, formspreeRequest]).then(results => {
     const anyOk = results.some(r => r.status === 'fulfilled' && r.value && r.value.ok);
     if (anyOk) {
+      // Afiseaza codul + linkul catre status
+      document.getElementById('ab-cod-value').textContent = cod;
+      document.getElementById('ab-status-link').href = 'status.html?cod=' + encodeURIComponent(cod);
+      document.getElementById('ab-cod-block').style.display = 'block';
       document.getElementById('ab-success').style.display = 'block';
       form.reset();
     } else {
