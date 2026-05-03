@@ -714,8 +714,38 @@
       color: var(--gray);
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin-bottom: 24px;
+      margin-bottom: 12px;
       display: block;
+    }
+    .plan-card .plan-price {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--navy);
+      margin-bottom: 4px;
+      letter-spacing: -0.01em;
+    }
+    .plan-card .plan-price small {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--gray);
+    }
+    .plan-card .plan-savings {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #15803d;
+      background: #DCFCE7;
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+      letter-spacing: 0.02em;
+    }
+    .plan-highlight .plan-price { color: #fff; }
+    .plan-highlight .plan-price small { color: rgba(255,255,255,0.55); }
+    .plan-highlight .plan-savings {
+      color: #FDE68A;
+      background: rgba(253,230,138,0.12);
     }
     .plan-card ul {
       list-style: none;
@@ -1242,88 +1272,87 @@
       <span class="section-subtitle">Planuri de sănătate</span>
       <h2 class="section-title">Planuri de sănătate VET STUFF</h2>
     </div>
-    <p class="reveal reveal-d1" style="text-align:center; color:#555; font-size:0.95rem; line-height:1.8; max-width:560px; margin:0 auto 48px;">
+    <p class="reveal reveal-d1" style="text-align:center; color:#555; font-size:0.95rem; line-height:1.8; max-width:560px; margin:0 auto 36px;">
       Îngrijirea nu ar trebui să înceapă doar când apare o problemă. Planurile noastre sunt gândite pentru prevenție, monitorizare și liniștea ta pe termen lung.
     </p>
+
+    <!-- Trei beneficii esențiale -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12 reveal reveal-d2">
+      <div style="background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:22px 22px;">
+        <div style="font-size:1.4rem;margin-bottom:6px;">🪙</div>
+        <h3 style="font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:800;color:var(--navy);margin-bottom:6px;letter-spacing:-0.01em;">Predictibilitate financiară</h3>
+        <p style="font-size:0.83rem;color:#555;line-height:1.6;">Un preț fix pe an, economii reale față de plățile la cabinet. Fără facturi-surpriză.</p>
+      </div>
+      <div style="background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:22px 22px;">
+        <div style="font-size:1.4rem;margin-bottom:6px;">❤️</div>
+        <h3 style="font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:800;color:var(--navy);margin-bottom:6px;letter-spacing:-0.01em;">Vitalitate pe termen lung</h3>
+        <p style="font-size:0.83rem;color:#555;line-height:1.6;">Calendar medical respectat, prevenție continuă, detectare timpurie — ani sănătoși în plus.</p>
+      </div>
+      <div style="background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:22px 22px;">
+        <div style="font-size:1.4rem;margin-bottom:6px;">🌿</div>
+        <h3 style="font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:800;color:var(--navy);margin-bottom:6px;letter-spacing:-0.01em;">Liniște sufletească</h3>
+        <p style="font-size:0.83rem;color:#555;line-height:1.6;">Prioritate la programări, acces direct la medic, decizii luate la rece. Mai mult timp împreună.</p>
+      </div>
+    </div>
 
     <div class="grid md:grid-cols-3 gap-6 items-stretch">
 
       <!-- Silver -->
       <div class="plan-card reveal reveal-d1">
         <h3>Silver</h3>
-        <span class="plan-subtitle">Baza unei îngrijiri corecte</span>
+        <span class="plan-subtitle">Esențialul preventiv</span>
+        <div class="plan-price"><small>de la</small> 358 lei <small>/ an</small></div>
+        <span class="plan-savings">~150 lei economii / an</span>
         <ul>
-          <li>✔ Consultații generale periodice</li>
-          <li>✔ Vaccinări incluse</li>
-          <li>✔ Deparazitări interne și externe</li>
-          <li>✔ Recomandări personalizate de îngrijire</li>
+          <li>✔ Consultație anuală + vaccinare completă</li>
+          <li>✔ 2 deparazitări interne · 4 externe</li>
+          <li>✔ 1 consultație de urgență inclusă</li>
+          <li>✔ 5 vouchere produse cu −5%</li>
         </ul>
-        <p class="plan-description">Ideal pentru prevenție și menținerea stării de sănătate.</p>
+        <p class="plan-description">Plătești o dată, ești acoperit un an. Fără facturi-surpriză la prevenție.</p>
       </div>
 
       <!-- Gold — highlighted -->
       <div class="plan-card plan-highlight reveal reveal-d2">
         <span class="badge">Recomandat</span>
         <h3>Gold</h3>
-        <span class="plan-subtitle">Prevenție + monitorizare</span>
+        <span class="plan-subtitle">Prevenție + diagnostic complet</span>
+        <div class="plan-price"><small>de la</small> 1126 lei <small>/ an</small></div>
+        <span class="plan-savings">~500 lei economii / an</span>
         <ul>
-          <li>✔ Tot din planul Silver</li>
-          <li>✔ Investigații de bază incluse</li>
-          <li>✔ Consultații suplimentare la nevoie</li>
-          <li>✔ Monitorizare periodică a pacientului</li>
-          <li>✔ Reduceri la servicii</li>
+          <li>✔ Tot din Silver, cu protecție extinsă</li>
+          <li>✔ Detartraj fără anestezie inclus</li>
+          <li>✔ Ecografie abdominală + analize de sânge</li>
+          <li>✔ 4 deparazitări interne · 8 externe</li>
+          <li>✔ 8 vouchere produse cu −8%</li>
         </ul>
-        <p class="plan-description">Pentru proprietari care vor mai mult control și siguranță.</p>
+        <p class="plan-description">Vezi din timp ce nu se vede cu ochiul liber. Detectezi devreme, intervii ușor.</p>
       </div>
 
       <!-- Platinum -->
-      <div class="plan-card reveal reveal-d3">
+      <div class="plan-card reveal reveal-d3" style="border:2px solid #7c3aed;">
         <h3>Platinum</h3>
-        <span class="plan-subtitle">Grijă completă, fără compromisuri</span>
+        <span class="plan-subtitle">Acoperire totală, prioritate absolută</span>
+        <div class="plan-price"><small>de la</small> 1918 lei <small>/ an</small></div>
+        <span class="plan-savings">Plafon previzibil până la 3369 lei</span>
         <ul>
-          <li>✔ Tot din planul Gold</li>
-          <li>✔ Prioritate la programări</li>
-          <li>✔ Monitorizare avansată</li>
-          <li>✔ Consultații de urgență incluse</li>
-          <li>✔ Reduceri extinse la intervenții</li>
+          <li>✔ 2 consultații + vaccin tuse canisă (câine)</li>
+          <li>✔ Consultație de specialitate inclusă</li>
+          <li>✔ Detartraj cu anestezie inhalatorie</li>
+          <li>✔ A 2-a ecografie + 4 urgențe</li>
+          <li>✔ 12 vouchere produse cu −12%</li>
         </ul>
-        <p class="plan-description">Pentru liniște totală și intervenție rapidă când contează.</p>
+        <p class="plan-description">Pentru când nu vrei să mai numeri costurile. Răspuns rapid, fără limite.</p>
       </div>
 
     </div>
 
-    <div class="plans-cta reveal">
-      <p>În curând disponibile. Vrei să fii printre primii care află?</p>
-      <form id="notify-form" action="https://formspree.io/f/mzdkbdzb" method="POST"
-            style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%;max-width:420px;">
-        <input type="hidden" name="_subject" value="Notificare lansare abonamente — VET STUFF" />
-        <input type="hidden" name="Tip" value="Notificare abonamente" />
-        <input type="email" name="Email" required placeholder="Emailul tău"
-               style="flex:1;min-width:200px;padding:11px 16px;border:1.5px solid var(--border);border-radius:8px;font-size:0.88rem;font-family:inherit;outline:none;transition:border-color 0.2s;"
-               onfocus="this.style.borderColor='var(--red)'" onblur="this.style.borderColor='var(--border)'" />
-        <button type="submit" class="btn-red" style="flex-shrink:0;">
-          Notifică-mă →
-        </button>
-      </form>
-      <div id="notify-success" style="display:none;align-items:center;gap:8px;background:#DCFCE7;border:1px solid #86EFAC;border-radius:10px;padding:12px 20px;font-size:0.88rem;color:#166534;font-weight:600;">
-        ✅ Înregistrat! Te anunțăm la lansare.
-      </div>
+    <div class="plans-cta reveal" style="margin-top:40px;text-align:center;">
+      <p style="color:#555;font-size:0.95rem;margin-bottom:16px;">Vezi toate detaliile, prețurile complete și activează abonamentul în câteva minute.</p>
+      <a href="abonamente.html" class="discover-btn" style="display:inline-flex;max-width:420px;margin:0 auto;">
+        Descoperă planurile complete →
+      </a>
     </div>
-
-    <script>
-      document.getElementById('notify-form').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const form = e.target;
-        const data = new FormData(form);
-        try {
-          const res = await fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
-          if (res.ok) {
-            form.style.display = 'none';
-            document.getElementById('notify-success').style.display = 'flex';
-          }
-        } catch(err) {}
-      });
-    </script>
 
   </div>
 </section>
