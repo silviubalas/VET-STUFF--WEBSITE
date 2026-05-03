@@ -135,7 +135,7 @@
     <div class="row-toggle">
       <div>
         <div class="label-main">Vaccin</div>
-        <div class="label-sub">Inclus în abonament: 1 doză</div>
+        <div class="label-sub">Inclus în abonament: 1 doză polivalent + antirabic</div>
       </div>
       <label class="switch">
         <input type="checkbox" id="t-vaccin" />
@@ -145,6 +145,16 @@
     <div id="sub-vaccin" class="sub-fields">
       <label for="d-vaccin">Data vaccinului</label>
       <input id="d-vaccin" type="date" />
+      <div class="row-toggle" style="margin-top:6px;">
+        <div>
+          <div class="label-main" style="font-size:0.92rem;">Cu fracție leucemică (+30 lei)</div>
+          <div class="label-sub">Doar pentru pisici, la cerere</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="t-fractie" />
+          <span class="slider"></span>
+        </label>
+      </div>
     </div>
   </div>
 
@@ -174,8 +184,8 @@
   <div class="card">
     <div class="row-toggle">
       <div>
-        <div class="label-main">Urgență</div>
-        <div class="label-sub">Inclus în abonament: 1 intervenție</div>
+        <div class="label-main">Urgență (−50%)</div>
+        <div class="label-sub">Beneficiu bonus, fără cost suplimentar</div>
       </div>
       <label class="switch">
         <input type="checkbox" id="t-urgenta" />
@@ -186,6 +196,77 @@
       <label for="d-urgenta">Data urgenței</label>
       <input id="d-urgenta" type="date" />
     </div>
+  </div>
+
+  <!-- Detartraj (Gold only) -->
+  <div class="card hidden" id="card-detartraj">
+    <div class="row-toggle">
+      <div>
+        <div class="label-main">Detartraj (−30%)</div>
+        <div class="label-sub">Inclus în Gold: 1× / an. Fără anestezie.</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="t-detartraj" />
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div id="sub-detartraj" class="sub-fields">
+      <label for="d-detartraj">Data detartrajului</label>
+      <input id="d-detartraj" type="date" />
+    </div>
+  </div>
+
+  <!-- Ecografie (Gold only) -->
+  <div class="card hidden" id="card-eco">
+    <div class="row-toggle">
+      <div>
+        <div class="label-main">Ecografie abdominală (−30%)</div>
+        <div class="label-sub">Inclus în Gold: 1× / an</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="t-eco" />
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div id="sub-eco" class="sub-fields">
+      <label for="d-eco">Data ecografiei</label>
+      <input id="d-eco" type="date" />
+    </div>
+  </div>
+
+  <!-- Analize (Gold only) -->
+  <div class="card hidden" id="card-analize">
+    <div class="row-toggle">
+      <div>
+        <div class="label-main">Profil analize sânge (−15%)</div>
+        <div class="label-sub">Inclus în Gold: 1× / an</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="t-analize" />
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div id="sub-analize" class="sub-fields">
+      <label for="d-analize">Data recoltării</label>
+      <input id="d-analize" type="date" />
+      <label for="profil-analize" style="margin-top:12px;">Tip profil ales</label>
+      <select id="profil-analize" style="width:100%;font-family:inherit;font-size:1rem;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;background:#fff;color:#111;outline:none;">
+        <option value="">— Alege —</option>
+        <option value="Bază">Bază (300 lei → 255 lei)</option>
+        <option value="Avansat">Avansat (450 lei → 383 lei)</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Vouchere produse -->
+  <div class="card">
+    <label id="lbl-vouchere">Vouchere produse folosite</label>
+    <div class="counter">
+      <button type="button" class="counter-btn" data-cnt="vouchere" data-op="-">−</button>
+      <div class="counter-value" id="c-vouchere">0</div>
+      <button type="button" class="counter-btn" data-cnt="vouchere" data-op="+">+</button>
+    </div>
+    <div class="counter-meta">din maxim <strong id="c-vouchere-max">5</strong> vouchere incluse în abonament</div>
   </div>
 
   <!-- Note -->
@@ -215,8 +296,11 @@
     data: null,
     interne: 0,
     externe: 0,
+    vouchere: 0,
     interneMax: 2,
     externeMax: 4,
+    vouchereMax: 5,
+    isGold: false,
   };
 
   function show(stepId) {
@@ -308,12 +392,15 @@
     $('form-start').textContent = d.dataStart || '—';
     $('form-expirare').textContent = d.dataExpirare || '—';
 
+    state.isGold = /gold/i.test(d.pachet || '');
+
     $('t-consultatie').checked = !!d.consultatie.folosita;
     $('d-consultatie').value = d.consultatie.data || '';
     $('sub-consultatie').classList.toggle('show', !!d.consultatie.folosita);
 
     $('t-vaccin').checked = !!d.vaccin.folosit;
     $('d-vaccin').value = d.vaccin.data || '';
+    $('t-fractie').checked = !!d.vaccin.fractieLeucemica;
     $('sub-vaccin').classList.toggle('show', !!d.vaccin.folosit);
 
     state.interneMax = d.deparazitariInterne.total || 2;
@@ -322,11 +409,42 @@
     state.externe = Number(d.deparazitariExterne.folosite) || 0;
     $('c-interne-max').textContent = state.interneMax;
     $('c-externe-max').textContent = state.externeMax;
-    renderCounters();
 
     $('t-urgenta').checked = !!d.urgenta.folosita;
     $('d-urgenta').value = d.urgenta.data || '';
     $('sub-urgenta').classList.toggle('show', !!d.urgenta.folosita);
+
+    // Gold-only sections
+    $('card-detartraj').classList.toggle('hidden', !d.detartraj);
+    $('card-eco').classList.toggle('hidden', !d.ecografie);
+    $('card-analize').classList.toggle('hidden', !d.analize);
+    if (d.detartraj) {
+      $('t-detartraj').checked = !!d.detartraj.folosit;
+      $('d-detartraj').value = d.detartraj.data || '';
+      $('sub-detartraj').classList.toggle('show', !!d.detartraj.folosit);
+    }
+    if (d.ecografie) {
+      $('t-eco').checked = !!d.ecografie.folosita;
+      $('d-eco').value = d.ecografie.data || '';
+      $('sub-eco').classList.toggle('show', !!d.ecografie.folosita);
+    }
+    if (d.analize) {
+      $('t-analize').checked = !!d.analize.folosite;
+      $('d-analize').value = d.analize.data || '';
+      $('profil-analize').value = d.analize.tipProfil || '';
+      $('sub-analize').classList.toggle('show', !!d.analize.folosite);
+    }
+
+    // Vouchere
+    if (d.vouchereProduse) {
+      state.vouchereMax = d.vouchereProduse.total || 5;
+      state.vouchere = Number(d.vouchereProduse.folosite) || 0;
+    }
+    $('c-vouchere-max').textContent = state.vouchereMax;
+    const procent = state.isGold ? '−8%' : '−5%';
+    $('lbl-vouchere').textContent = 'Vouchere produse folosite (' + procent + ')';
+
+    renderCounters();
 
     $('note').value = d.note || '';
 
@@ -347,6 +465,9 @@
   bindToggle('t-consultatie', 'sub-consultatie', 'd-consultatie');
   bindToggle('t-vaccin', 'sub-vaccin', 'd-vaccin');
   bindToggle('t-urgenta', 'sub-urgenta', 'd-urgenta');
+  bindToggle('t-detartraj', 'sub-detartraj', 'd-detartraj');
+  bindToggle('t-eco', 'sub-eco', 'd-eco');
+  bindToggle('t-analize', 'sub-analize', 'd-analize');
 
   function todayISO() {
     const d = new Date();
@@ -359,6 +480,7 @@
   function renderCounters() {
     $('c-interne').textContent = state.interne;
     $('c-externe').textContent = state.externe;
+    $('c-vouchere').textContent = state.vouchere;
     document.querySelectorAll('.counter-btn').forEach(b => {
       const cnt = b.dataset.cnt, op = b.dataset.op;
       const v = state[cnt], max = state[cnt + 'Max'];
@@ -387,18 +509,34 @@
     const consultatieOn = $('t-consultatie').checked;
     const vaccinOn = $('t-vaccin').checked;
     const urgentaOn = $('t-urgenta').checked;
+    const detartrajOn = $('t-detartraj').checked;
+    const ecoOn = $('t-eco').checked;
+    const analizeOn = $('t-analize').checked;
 
     const fields = {
       'Consultatie folosita': consultatieOn,
       'Data consultatie': consultatieOn ? ($('d-consultatie').value || null) : null,
       'Vaccin folosit': vaccinOn,
       'Data vaccin': vaccinOn ? ($('d-vaccin').value || null) : null,
+      'Fractie leucemica': vaccinOn && $('t-fractie').checked,
       'Deparazitari interne folosite': state.interne,
       'Deparazitari externe folosite': state.externe,
       'Urgenta folosita': urgentaOn,
       'Data urgenta': urgentaOn ? ($('d-urgenta').value || null) : null,
+      'Vouchere produse folosite': state.vouchere,
       'Note': $('note').value || '',
     };
+
+    // Adauga campurile Gold doar daca pachetul e Gold
+    if (state.isGold) {
+      fields['Detartraj folosit'] = detartrajOn;
+      fields['Data detartraj'] = detartrajOn ? ($('d-detartraj').value || null) : null;
+      fields['Ecografie folosita'] = ecoOn;
+      fields['Data ecografie'] = ecoOn ? ($('d-eco').value || null) : null;
+      fields['Analize folosite'] = analizeOn;
+      fields['Data analize'] = analizeOn ? ($('d-analize').value || null) : null;
+      fields['Tip profil analize'] = analizeOn ? ($('profil-analize').value || '') : '';
+    }
 
     try {
       const r = await fetch('/api/use-service', {
