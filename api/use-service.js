@@ -56,7 +56,7 @@ export default async function handler(req, res) {
     'Data vaccin tuse': 'date',
     'A 2-a consultatie folosita': 'boolean',
     'Data a 2-a consultatie': 'date',
-    'Consultatie specialitate folosita': 'boolean',
+    'Consultatie de specialitate folosita': 'boolean',
     'Data consultatie specialitate': 'date',
     'A 2-a ecografie folosita': 'boolean',
     'Data a 2-a ecografie': 'date',

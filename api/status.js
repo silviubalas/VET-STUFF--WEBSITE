@@ -158,7 +158,7 @@ export default async function handler(req, res) {
         data: f['Data a 2-a consultatie'] || null,
       } : null,
       consultatieSpecialitate: isPlatinum ? {
-        folosita: !!f['Consultatie specialitate folosita'],
+        folosita: !!f['Consultatie de specialitate folosita'],
         data: f['Data consultatie specialitate'] || null,
       } : null,
       note: f['Note'] || '',
