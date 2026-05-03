@@ -202,6 +202,30 @@
           </div>
         </div>
 
+        <div class="status-row" id="s-row-detartraj" style="display:none;">
+          <div>
+            <div class="status-label">Detartraj (−30%)</div>
+            <div class="status-meta" id="s-detartraj-meta">—</div>
+          </div>
+          <span class="status-pill" id="s-detartraj-pill">—</span>
+        </div>
+
+        <div class="status-row" id="s-row-eco" style="display:none;">
+          <div>
+            <div class="status-label">Ecografie abdominală (−30%)</div>
+            <div class="status-meta" id="s-eco-meta">—</div>
+          </div>
+          <span class="status-pill" id="s-eco-pill">—</span>
+        </div>
+
+        <div class="status-row" id="s-row-analize" style="display:none;">
+          <div>
+            <div class="status-label">Profil analize sânge (−15%)</div>
+            <div class="status-meta" id="s-analize-meta">—</div>
+          </div>
+          <span class="status-pill" id="s-analize-pill">—</span>
+        </div>
+
         <div class="status-row">
           <div>
             <div class="status-label">Consultație de urgență (−50%)</div>
@@ -212,10 +236,13 @@
 
         <div class="status-row">
           <div>
-            <div class="status-label">Reducere produse (−5%)</div>
-            <div class="status-meta">Activă pe toată durata abonamentului</div>
+            <div class="status-label" id="s-vouch-label">Vouchere produse</div>
+            <div class="status-meta" id="s-vouch-meta">—</div>
           </div>
-          <span class="status-pill pill-info">Activ</span>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="progress-bar"><div class="progress-fill" id="s-vouch-fill" style="width:0%"></div></div>
+            <span style="font-weight:700;min-width:32px;text-align:right;" id="s-vouch-text">0/5</span>
+          </div>
         </div>
       </div>
 
@@ -286,12 +313,13 @@
     // Vaccin
     const vPill = document.getElementById('s-vaccin-pill');
     const vMeta = document.getElementById('s-vaccin-meta');
+    const fracExtra = d.vaccin.fractieLeucemica ? ' · cu fracție leucemică' : '';
     if (d.vaccin.folosit) {
       vPill.textContent = 'Folosit'; vPill.className = 'status-pill pill-used';
-      vMeta.textContent = d.vaccin.data ? 'La ' + fmtDate(d.vaccin.data) : 'Folosit';
+      vMeta.textContent = (d.vaccin.data ? 'La ' + fmtDate(d.vaccin.data) : 'Folosit') + fracExtra;
     } else {
       vPill.textContent = 'Disponibil'; vPill.className = 'status-pill pill-available';
-      vMeta.textContent = 'Încă nu ai folosit-o';
+      vMeta.textContent = 'Încă nu ai folosit-o' + fracExtra;
     }
 
     // Deparazitări interne
@@ -319,6 +347,68 @@
     } else {
       uPill.textContent = 'Activ'; uPill.className = 'status-pill pill-info';
       uMeta.textContent = 'Disponibil oricând în perioada abonamentului';
+    }
+
+    // Servicii Gold (detartraj / ecografie / analize) — afisate doar daca pachetul le include
+    const dRow = document.getElementById('s-row-detartraj');
+    if (d.detartraj) {
+      dRow.style.display = '';
+      const dPill = document.getElementById('s-detartraj-pill');
+      const dMeta = document.getElementById('s-detartraj-meta');
+      if (d.detartraj.folosit) {
+        dPill.textContent = 'Folosit'; dPill.className = 'status-pill pill-used';
+        dMeta.textContent = d.detartraj.data ? 'La ' + fmtDate(d.detartraj.data) : 'Folosit';
+      } else {
+        dPill.textContent = 'Disponibil'; dPill.className = 'status-pill pill-available';
+        dMeta.textContent = 'Încă nu ai folosit-o';
+      }
+    } else {
+      dRow.style.display = 'none';
+    }
+
+    const eRow = document.getElementById('s-row-eco');
+    if (d.ecografie) {
+      eRow.style.display = '';
+      const ePill = document.getElementById('s-eco-pill');
+      const eMeta = document.getElementById('s-eco-meta');
+      if (d.ecografie.folosita) {
+        ePill.textContent = 'Folosită'; ePill.className = 'status-pill pill-used';
+        eMeta.textContent = d.ecografie.data ? 'La ' + fmtDate(d.ecografie.data) : 'Folosită';
+      } else {
+        ePill.textContent = 'Disponibilă'; ePill.className = 'status-pill pill-available';
+        eMeta.textContent = 'Încă nu ai folosit-o';
+      }
+    } else {
+      eRow.style.display = 'none';
+    }
+
+    const aRow = document.getElementById('s-row-analize');
+    if (d.analize) {
+      aRow.style.display = '';
+      const aPill = document.getElementById('s-analize-pill');
+      const aMeta = document.getElementById('s-analize-meta');
+      const profilTxt = d.analize.tipProfil ? ' · profil ' + d.analize.tipProfil : '';
+      if (d.analize.folosite) {
+        aPill.textContent = 'Folosit'; aPill.className = 'status-pill pill-used';
+        aMeta.textContent = (d.analize.data ? 'La ' + fmtDate(d.analize.data) : 'Folosit') + profilTxt;
+      } else {
+        aPill.textContent = 'Disponibil'; aPill.className = 'status-pill pill-available';
+        aMeta.textContent = 'Încă nu ai folosit-o' + profilTxt;
+      }
+    } else {
+      aRow.style.display = 'none';
+    }
+
+    // Vouchere produse
+    if (d.vouchereProduse) {
+      const vF = d.vouchereProduse.folosite, vT = d.vouchereProduse.total;
+      const procent = /gold/i.test(d.pachet) ? '−8%' : '−5%';
+      document.getElementById('s-vouch-label').textContent = 'Vouchere produse (' + procent + ')';
+      document.getElementById('s-vouch-text').textContent = vF + '/' + vT;
+      const vFill = document.getElementById('s-vouch-fill');
+      vFill.style.width = (vT > 0 ? (vF / vT * 100) : 0) + '%';
+      vFill.classList.toggle('full', vF >= vT);
+      document.getElementById('s-vouch-meta').textContent = (vT - vF) + ' vouchere rămase din ' + vT;
     }
 
     // Note

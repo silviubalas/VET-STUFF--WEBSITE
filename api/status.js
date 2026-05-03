@@ -4,17 +4,26 @@
 // STRUCTURA AIRTABLE NECESARA — tabel `UtilizareAbonamente`:
 //   - Cod client (Single line text) — cod unic per client (ex: "MAIA01", "ABC123"); este "cheia" cu care clientul vede statusul
 //   - Nume client (Single line text)
-//   - Tip pachet (Single select: "Silver Câine", "Silver Pisică", etc.)
+//   - Tip pachet (Single line text: "Silver", "Gold", etc.)
 //   - Data start (Date)
 //   - Data expirare (Date) — recomandat: formula = DATEADD({Data start}, 1, 'years')
 //   - Consultatie folosita (Checkbox)
 //   - Data consultatie (Date)
 //   - Vaccin folosit (Checkbox)
 //   - Data vaccin (Date)
+//   - Fractie leucemica (Checkbox) — pentru pisici, doar daca a fost aleasa
 //   - Deparazitari interne folosite (Number, integer, default 0)
 //   - Deparazitari externe folosite (Number, integer, default 0)
 //   - Urgenta folosita (Checkbox)
 //   - Data urgenta (Date)
+//   - Detartraj folosit (Checkbox) — Gold
+//   - Data detartraj (Date) — Gold
+//   - Ecografie folosita (Checkbox) — Gold
+//   - Data ecografie (Date) — Gold
+//   - Analize folosite (Checkbox) — Gold
+//   - Data analize (Date) — Gold
+//   - Tip profil analize (Single line text: "Bază" / "Avansat") — Gold
+//   - Vouchere produse folosite (Number, integer, default 0)
 //   - Note (Long text, optional)
 
 const AIRTABLE_BASE = 'appGhcW1B4iDA4cUY';
@@ -60,11 +69,14 @@ export default async function handler(req, res) {
     }
 
     const f = record.fields || {};
+    const pachet = (f['Tip pachet'] || '').toString();
+    const isGold = /gold/i.test(pachet);
+
     // Returnam doar campurile necesare pentru afisare (sanitized)
     return res.status(200).json({
       cod: f['Cod client'] || cod,
       nume: f['Nume client'] || '',
-      pachet: f['Tip pachet'] || '',
+      pachet: pachet,
       dataStart: f['Data start'] || null,
       dataExpirare: f['Data expirare'] || null,
       consultatie: {
@@ -74,18 +86,36 @@ export default async function handler(req, res) {
       vaccin: {
         folosit: !!f['Vaccin folosit'],
         data: f['Data vaccin'] || null,
+        fractieLeucemica: !!f['Fractie leucemica'],
       },
       deparazitariInterne: {
         folosite: Number(f['Deparazitari interne folosite'] || 0),
-        total: 2,
+        total: isGold ? 4 : 2,
       },
       deparazitariExterne: {
         folosite: Number(f['Deparazitari externe folosite'] || 0),
-        total: 4,
+        total: isGold ? 8 : 4,
       },
       urgenta: {
         folosita: !!f['Urgenta folosita'],
         data: f['Data urgenta'] || null,
+      },
+      detartraj: isGold ? {
+        folosit: !!f['Detartraj folosit'],
+        data: f['Data detartraj'] || null,
+      } : null,
+      ecografie: isGold ? {
+        folosita: !!f['Ecografie folosita'],
+        data: f['Data ecografie'] || null,
+      } : null,
+      analize: isGold ? {
+        folosite: !!f['Analize folosite'],
+        data: f['Data analize'] || null,
+        tipProfil: f['Tip profil analize'] || '',
+      } : null,
+      vouchereProduse: {
+        folosite: Number(f['Vouchere produse folosite'] || 0),
+        total: isGold ? 8 : 5,
       },
       note: f['Note'] || '',
     });
