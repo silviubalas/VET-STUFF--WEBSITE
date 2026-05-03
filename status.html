@@ -126,7 +126,19 @@
       <input id="cod-input" type="text" placeholder="Cod (ex: MAIA01)" autocomplete="off" maxlength="16" style="flex:1;padding:13px 16px;border:1.5px solid var(--border);border-radius:8px;font-size:0.95rem;font-family:'DM Sans',sans-serif;outline:none;background:#fff;" />
       <button type="submit" class="btn-red" style="padding:13px 22px;">Caută</button>
     </form>
-    <p style="font-size:0.78rem;color:var(--gray);margin-top:10px;text-align:center;">Nu ai un cod? <a href="index.html#contact" style="color:var(--red);font-weight:600;">Contactează-ne</a> pentru ajutor.</p>
+    <p style="font-size:0.78rem;color:var(--gray);margin-top:10px;text-align:center;">Nu ai un cod? <a href="#resend-section" onclick="document.getElementById('resend-section').style.display='block';this.closest('p').style.display='none';" style="color:var(--red);font-weight:600;">Trimite-l pe email →</a></p>
+  </div>
+
+  <!-- Resend cod prin email -->
+  <div id="resend-section" style="display:none;max-width:480px;margin:18px auto 0;background:#fff;border:1px solid var(--border);border-radius:14px;padding:22px 20px;">
+    <div style="font-weight:700;color:var(--navy);margin-bottom:4px;">N-ai codul la tine?</div>
+    <div style="font-size:0.85rem;color:var(--gray);margin-bottom:14px;line-height:1.5;">Introdu emailul cu care te-ai înscris și îți retrimitem codul + QR-ul pe adresa respectivă.</div>
+    <div id="resend-error" style="display:none;color:#991b1b;font-size:0.83rem;margin-bottom:10px;"></div>
+    <div id="resend-ok" style="display:none;background:#dcfce7;border:1px solid #86efac;border-radius:10px;padding:12px 14px;font-size:0.88rem;color:#166534;margin-bottom:10px;"></div>
+    <form id="resend-form" style="display:flex;gap:8px;" onsubmit="event.preventDefault();sendResend();">
+      <input id="resend-email" type="email" placeholder="emailul tău" autocomplete="email" required style="flex:1;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:0.92rem;font-family:inherit;outline:none;" />
+      <button type="submit" id="resend-btn" class="btn-red" style="padding:11px 18px;white-space:nowrap;">Trimite</button>
+    </form>
   </div>
 </section>
 
@@ -157,6 +169,13 @@
         <div style="display:flex;justify-content:space-between;font-size:0.85rem;color:#555;border-top:1px solid var(--border);padding-top:12px;">
           <div><span style="color:var(--gray);">Activ din:</span> <strong id="s-start">—</strong></div>
           <div><span style="color:var(--gray);">Expiră la:</span> <strong id="s-expira">—</strong></div>
+        </div>
+
+        <!-- QR code pentru clinică -->
+        <div style="margin-top:18px;padding-top:18px;border-top:1px solid var(--border);text-align:center;">
+          <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--gray);margin-bottom:10px;">Codul QR pentru clinică</div>
+          <img id="s-qr-img" alt="Cod QR abonament" style="width:160px;height:160px;background:#fff;padding:8px;border-radius:10px;border:1px solid var(--border);" />
+          <div style="font-size:0.78rem;color:var(--gray);margin-top:8px;line-height:1.5;">Arată-l medicului la fiecare vizită.<br/>Poți face screenshot să îl ai offline.</div>
         </div>
       </div>
 
@@ -419,7 +438,41 @@
       document.getElementById('s-note-wrap').style.display = 'none';
     }
 
+    // QR code
+    const qrUrl = 'https://www.vet-stuff.ro/u.html?cod=' + encodeURIComponent(d.cod);
+    document.getElementById('s-qr-img').src = 'https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=10&data=' + encodeURIComponent(qrUrl);
+
     show('status-display', 'block');
+  }
+
+  // Resend cod prin email
+  async function sendResend() {
+    const email = document.getElementById('resend-email').value.trim();
+    const btn = document.getElementById('resend-btn');
+    const errEl = document.getElementById('resend-error');
+    const okEl = document.getElementById('resend-ok');
+    errEl.style.display = 'none'; okEl.style.display = 'none';
+    btn.disabled = true; btn.textContent = 'Se trimite...';
+    try {
+      const r = await fetch('/api/resend-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      if (r.ok) {
+        okEl.textContent = '✅ Dacă emailul este în sistemul nostru, vei primi codul + QR-ul în câteva minute. Verifică și spam-ul.';
+        okEl.style.display = 'block';
+        document.getElementById('resend-form').style.display = 'none';
+      } else {
+        errEl.textContent = 'A apărut o eroare. Încearcă din nou sau contactează-ne direct.';
+        errEl.style.display = 'block';
+      }
+    } catch {
+      errEl.textContent = 'Eroare de rețea. Încearcă din nou.';
+      errEl.style.display = 'block';
+    } finally {
+      btn.disabled = false; btn.textContent = 'Trimite';
+    }
   }
 
   // Citeste cod din URL la load
