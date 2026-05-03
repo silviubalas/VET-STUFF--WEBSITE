@@ -77,6 +77,7 @@ export default async function handler(req, res) {
       cod: f['Cod client'] || cod,
       nume: f['Nume client'] || '',
       pachet: pachet,
+      activ: !!f['Activ'],
       dataStart: f['Data start'] || null,
       dataExpirare: f['Data expirare'] || null,
       consultatie: {

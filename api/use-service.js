@@ -31,6 +31,8 @@ export default async function handler(req, res) {
 
   // Whitelist campuri permise (impotriva injection)
   const allowed = {
+    'Activ': 'boolean',
+    'Data start': 'date',
     'Consultatie folosita': 'boolean',
     'Data consultatie': 'date',
     'Vaccin folosit': 'boolean',
