@@ -191,10 +191,19 @@
 
         <div class="status-row">
           <div>
-            <div class="status-label">Consultație generală</div>
+            <div class="status-label" id="s-consultatie-label">Consultație generală</div>
             <div class="status-meta" id="s-consultatie-meta">—</div>
           </div>
           <span class="status-pill" id="s-consultatie-pill">—</span>
+        </div>
+
+        <!-- A 2-a consultație (Platinum only) -->
+        <div class="status-row" id="s-row-consultatie-a2a" style="display:none;">
+          <div>
+            <div class="status-label">A 2-a consultație generală</div>
+            <div class="status-meta" id="s-consultatie-a2a-meta">—</div>
+          </div>
+          <span class="status-pill" id="s-consultatie-a2a-pill">—</span>
         </div>
 
         <div class="status-row">
@@ -203,6 +212,15 @@
             <div class="status-meta" id="s-vaccin-meta">—</div>
           </div>
           <span class="status-pill" id="s-vaccin-pill">—</span>
+        </div>
+
+        <!-- Vaccin tuse canisă / leucemie felină (Platinum only) -->
+        <div class="status-row" id="s-row-vaccin-tuse" style="display:none;">
+          <div>
+            <div class="status-label">Vaccin tuse canisă / leucemie (−35%)</div>
+            <div class="status-meta" id="s-vaccin-tuse-meta">—</div>
+          </div>
+          <span class="status-pill" id="s-vaccin-tuse-pill">—</span>
         </div>
 
         <div class="status-row">
@@ -243,20 +261,51 @@
           <span class="status-pill" id="s-eco-pill">—</span>
         </div>
 
+        <!-- A 2-a ecografie (Platinum only) -->
+        <div class="status-row" id="s-row-eco-a2a" style="display:none;">
+          <div>
+            <div class="status-label">A 2-a ecografie abdominală (−30%)</div>
+            <div class="status-meta" id="s-eco-a2a-meta">—</div>
+          </div>
+          <span class="status-pill" id="s-eco-a2a-pill">—</span>
+        </div>
+
         <div class="status-row" id="s-row-analize" style="display:none;">
           <div>
-            <div class="status-label">Profil analize sânge (−15%)</div>
+            <div class="status-label" id="s-analize-label">Profil analize sânge (−15%)</div>
             <div class="status-meta" id="s-analize-meta">—</div>
           </div>
           <span class="status-pill" id="s-analize-pill">—</span>
         </div>
 
-        <div class="status-row">
+        <!-- Consultație specialitate (Platinum only) -->
+        <div class="status-row" id="s-row-spec" style="display:none;">
+          <div>
+            <div class="status-label">Consultație specialitate (−25%)</div>
+            <div class="status-meta" id="s-spec-meta">—</div>
+          </div>
+          <span class="status-pill" id="s-spec-pill">—</span>
+        </div>
+
+        <!-- Urgență Silver/Gold (single checkbox) -->
+        <div class="status-row" id="s-row-urgenta">
           <div>
             <div class="status-label">Consultație de urgență (−50%)</div>
             <div class="status-meta" id="s-urg-meta">Beneficiu bonus, fără cost suplimentar</div>
           </div>
           <span class="status-pill" id="s-urg-pill">—</span>
+        </div>
+
+        <!-- Urgențe Platinum (counter 0/4) -->
+        <div class="status-row" id="s-row-urgente-pl" style="display:none;">
+          <div>
+            <div class="status-label">Urgențe (−50%) · 4/an</div>
+            <div class="status-meta" id="s-urgente-pl-meta">—</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="progress-bar"><div class="progress-fill" id="s-urgente-pl-fill" style="width:0%"></div></div>
+            <span style="font-weight:700;min-width:32px;text-align:right;" id="s-urgente-pl-text">0/4</span>
+          </div>
         </div>
 
         <div class="status-row">
@@ -338,15 +387,35 @@
       pendingRow.style.display = 'block';
     }
 
+    const isPlatinum = /platinum/i.test(d.pachet);
+
     // Consultație
     const cPill = document.getElementById('s-consultatie-pill');
     const cMeta = document.getElementById('s-consultatie-meta');
+    if (isPlatinum) document.getElementById('s-consultatie-label').textContent = 'Consultație generală (1ª)';
     if (d.consultatie.folosita) {
       cPill.textContent = 'Folosită'; cPill.className = 'status-pill pill-used';
       cMeta.textContent = d.consultatie.data ? 'La ' + fmtDate(d.consultatie.data) : 'Folosită';
     } else {
       cPill.textContent = 'Disponibilă'; cPill.className = 'status-pill pill-available';
       cMeta.textContent = 'Încă nu ai folosit-o';
+    }
+
+    // A 2-a consultație (Platinum)
+    const c2aRow = document.getElementById('s-row-consultatie-a2a');
+    if (d.consultatieA2a) {
+      c2aRow.style.display = '';
+      const c2Pill = document.getElementById('s-consultatie-a2a-pill');
+      const c2Meta = document.getElementById('s-consultatie-a2a-meta');
+      if (d.consultatieA2a.folosita) {
+        c2Pill.textContent = 'Folosită'; c2Pill.className = 'status-pill pill-used';
+        c2Meta.textContent = d.consultatieA2a.data ? 'La ' + fmtDate(d.consultatieA2a.data) : 'Folosită';
+      } else {
+        c2Pill.textContent = 'Disponibilă'; c2Pill.className = 'status-pill pill-available';
+        c2Meta.textContent = 'Încă nu ai folosit-o';
+      }
+    } else {
+      c2aRow.style.display = 'none';
     }
 
     // Vaccin
@@ -359,6 +428,23 @@
     } else {
       vPill.textContent = 'Disponibil'; vPill.className = 'status-pill pill-available';
       vMeta.textContent = 'Încă nu ai folosit-o' + fracExtra;
+    }
+
+    // Vaccin tuse (Platinum)
+    const vtRow = document.getElementById('s-row-vaccin-tuse');
+    if (d.vaccinTuse) {
+      vtRow.style.display = '';
+      const vtPill = document.getElementById('s-vaccin-tuse-pill');
+      const vtMeta = document.getElementById('s-vaccin-tuse-meta');
+      if (d.vaccinTuse.folosit) {
+        vtPill.textContent = 'Folosit'; vtPill.className = 'status-pill pill-used';
+        vtMeta.textContent = d.vaccinTuse.data ? 'La ' + fmtDate(d.vaccinTuse.data) : 'Folosit';
+      } else {
+        vtPill.textContent = 'Disponibil'; vtPill.className = 'status-pill pill-available';
+        vtMeta.textContent = 'Încă nu ai folosit-o';
+      }
+    } else {
+      vtRow.style.display = 'none';
     }
 
     // Deparazitări interne
@@ -377,15 +463,31 @@
     extFill.classList.toggle('full', extF >= extT);
     document.getElementById('s-ext-meta').textContent = (extT - extF) + ' rămase din ' + extT;
 
-    // Urgență
-    const uPill = document.getElementById('s-urg-pill');
-    const uMeta = document.getElementById('s-urg-meta');
-    if (d.urgenta.folosita) {
-      uPill.textContent = 'Folosită'; uPill.className = 'status-pill pill-used';
-      uMeta.textContent = d.urgenta.data ? 'La ' + fmtDate(d.urgenta.data) : 'Folosită';
-    } else {
-      uPill.textContent = 'Activ'; uPill.className = 'status-pill pill-info';
-      uMeta.textContent = 'Disponibil oricând în perioada abonamentului';
+    // Urgență Silver/Gold vs Urgențe Platinum (counter)
+    const urgRow = document.getElementById('s-row-urgenta');
+    const urgPlRow = document.getElementById('s-row-urgente-pl');
+    if (d.urgente) {
+      // Platinum: counter 0-4
+      urgRow.style.display = 'none';
+      urgPlRow.style.display = '';
+      const uF = d.urgente.folosite, uT = d.urgente.total;
+      document.getElementById('s-urgente-pl-text').textContent = uF + '/' + uT;
+      const uFill = document.getElementById('s-urgente-pl-fill');
+      uFill.style.width = (uT > 0 ? (uF / uT * 100) : 0) + '%';
+      uFill.classList.toggle('full', uF >= uT);
+      document.getElementById('s-urgente-pl-meta').textContent = (uT - uF) + ' urgențe rămase din ' + uT;
+    } else if (d.urgenta) {
+      urgRow.style.display = '';
+      urgPlRow.style.display = 'none';
+      const uPill = document.getElementById('s-urg-pill');
+      const uMeta = document.getElementById('s-urg-meta');
+      if (d.urgenta.folosita) {
+        uPill.textContent = 'Folosită'; uPill.className = 'status-pill pill-used';
+        uMeta.textContent = d.urgenta.data ? 'La ' + fmtDate(d.urgenta.data) : 'Folosită';
+      } else {
+        uPill.textContent = 'Activ'; uPill.className = 'status-pill pill-info';
+        uMeta.textContent = 'Disponibil oricând în perioada abonamentului';
+      }
     }
 
     // Servicii Gold (detartraj / ecografie / analize) — afisate doar daca pachetul le include
@@ -406,6 +508,7 @@
     }
 
     const eRow = document.getElementById('s-row-eco');
+    const eA2aRow = document.getElementById('s-row-eco-a2a');
     if (d.ecografie) {
       eRow.style.display = '';
       const ePill = document.getElementById('s-eco-pill');
@@ -417,13 +520,30 @@
         ePill.textContent = 'Disponibilă'; ePill.className = 'status-pill pill-available';
         eMeta.textContent = 'Încă nu ai folosit-o';
       }
+      // A 2-a ecografie (Platinum bonus)
+      if (d.ecografie.a2a) {
+        eA2aRow.style.display = '';
+        const e2Pill = document.getElementById('s-eco-a2a-pill');
+        const e2Meta = document.getElementById('s-eco-a2a-meta');
+        if (d.ecografie.a2a.folosita) {
+          e2Pill.textContent = 'Folosită'; e2Pill.className = 'status-pill pill-used';
+          e2Meta.textContent = d.ecografie.a2a.data ? 'La ' + fmtDate(d.ecografie.a2a.data) : 'Folosită';
+        } else {
+          e2Pill.textContent = 'Disponibilă'; e2Pill.className = 'status-pill pill-available';
+          e2Meta.textContent = 'Bonus opțional — activezi când ai nevoie';
+        }
+      } else {
+        eA2aRow.style.display = 'none';
+      }
     } else {
       eRow.style.display = 'none';
+      eA2aRow.style.display = 'none';
     }
 
     const aRow = document.getElementById('s-row-analize');
     if (d.analize) {
       aRow.style.display = '';
+      if (isPlatinum) document.getElementById('s-analize-label').textContent = 'Profil analize extins (−20%)';
       const aPill = document.getElementById('s-analize-pill');
       const aMeta = document.getElementById('s-analize-meta');
       const profilTxt = d.analize.tipProfil ? ' · profil ' + d.analize.tipProfil : '';
@@ -438,11 +558,29 @@
       aRow.style.display = 'none';
     }
 
-    // Vouchere produse
+    // Consultație specialitate (Platinum)
+    const specRow = document.getElementById('s-row-spec');
+    if (d.consultatieSpecialitate) {
+      specRow.style.display = '';
+      const spPill = document.getElementById('s-spec-pill');
+      const spMeta = document.getElementById('s-spec-meta');
+      if (d.consultatieSpecialitate.folosita) {
+        spPill.textContent = 'Folosită'; spPill.className = 'status-pill pill-used';
+        spMeta.textContent = d.consultatieSpecialitate.data ? 'La ' + fmtDate(d.consultatieSpecialitate.data) : 'Folosită';
+      } else {
+        spPill.textContent = 'Disponibilă'; spPill.className = 'status-pill pill-available';
+        spMeta.textContent = 'Bonus exclusiv — planificată de tine oricând';
+      }
+    } else {
+      specRow.style.display = 'none';
+    }
+
+    // Vouchere produse/servicii
     if (d.vouchereProduse) {
       const vF = d.vouchereProduse.folosite, vT = d.vouchereProduse.total;
-      const procent = /gold/i.test(d.pachet) ? '−8%' : '−5%';
-      document.getElementById('s-vouch-label').textContent = 'Vouchere produse (' + procent + ')';
+      const procent = isPlatinum ? '−12%' : /gold/i.test(d.pachet) ? '−8%' : '−5%';
+      const vouchLabel = isPlatinum ? 'Vouchere produse/servicii (' + procent + ')' : 'Vouchere produse (' + procent + ')';
+      document.getElementById('s-vouch-label').textContent = vouchLabel;
       document.getElementById('s-vouch-text').textContent = vF + '/' + vT;
       const vFill = document.getElementById('s-vouch-fill');
       vFill.style.width = (vT > 0 ? (vF / vT * 100) : 0) + '%';

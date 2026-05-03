@@ -51,6 +51,18 @@ export default async function handler(req, res) {
     'Tip profil analize': 'string',
     'Vouchere produse folosite': 'number',
     'Note': 'string',
+    // Platinum-specific
+    'Vaccin tuse canisa folosit': 'boolean',
+    'Data vaccin tuse': 'date',
+    'A 2-a consultatie folosita': 'boolean',
+    'Data a 2-a consultatie': 'date',
+    'Consultatie specialitate folosita': 'boolean',
+    'Data consultatie specialitate': 'date',
+    'A 2-a ecografie folosita': 'boolean',
+    'Data a 2-a ecografie': 'date',
+    'Urgente folosite': 'number',
+    'Anestezie detartraj folosita': 'boolean',
+    'Data anestezie detartraj': 'date',
   };
   const cleanFields = {};
   for (const [k, v] of Object.entries(fields)) {

@@ -212,12 +212,59 @@
     </div>
   </div>
 
-  <!-- Detartraj (Gold only) -->
+  <!-- Vaccin tuse canisă (Platinum only) -->
+  <div class="card hidden" id="card-vaccin-tuse">
+    <div class="row-toggle">
+      <div>
+        <div class="label-main">Vaccin tuse canisă / leucemie (−35%)</div>
+        <div class="label-sub">Inclus în Platinum: 1× / an</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="t-vaccin-tuse" />
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div id="sub-vaccin-tuse" class="sub-fields">
+      <label for="d-vaccin-tuse">Data vaccinului tuse</label>
+      <input id="d-vaccin-tuse" type="date" />
+    </div>
+  </div>
+
+  <!-- A 2-a consultație (Platinum only) -->
+  <div class="card hidden" id="card-consultatie-a2a">
+    <div class="row-toggle">
+      <div>
+        <div class="label-main">A 2-a consultație generală</div>
+        <div class="label-sub">Inclus în Platinum: 2 consultații / an</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="t-consultatie-a2a" />
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div id="sub-consultatie-a2a" class="sub-fields">
+      <label for="d-consultatie-a2a">Data consultației</label>
+      <input id="d-consultatie-a2a" type="date" />
+    </div>
+  </div>
+
+  <!-- Urgențe Platinum (counter 0-4) -->
+  <div class="card hidden" id="card-urgente-pl">
+    <label>Urgențe folosite (−50%)</label>
+    <div class="counter">
+      <button type="button" class="counter-btn" data-cnt="urgente" data-op="-">−</button>
+      <div class="counter-value" id="c-urgente">0</div>
+      <button type="button" class="counter-btn" data-cnt="urgente" data-op="+">+</button>
+    </div>
+    <div class="counter-meta">din maxim <strong>4</strong> urgențe incluse în Platinum</div>
+  </div>
+
+  <!-- Detartraj (Gold+) -->
   <div class="card hidden" id="card-detartraj">
     <div class="row-toggle">
       <div>
-        <div class="label-main">Detartraj (−30%)</div>
-        <div class="label-sub">Inclus în Gold: 1× / an. Fără anestezie.</div>
+        <div class="label-main" id="lbl-detartraj-main">Detartraj (−30%)</div>
+        <div class="label-sub" id="lbl-detartraj-sub">Inclus în Gold: 1× / an. Fără anestezie.</div>
       </div>
       <label class="switch">
         <input type="checkbox" id="t-detartraj" />
@@ -227,6 +274,21 @@
     <div id="sub-detartraj" class="sub-fields">
       <label for="d-detartraj">Data detartrajului</label>
       <input id="d-detartraj" type="date" />
+      <!-- Anestezie inhalatorie (Platinum only) -->
+      <div class="row-toggle hidden" id="card-anestezie" style="margin-top:10px;">
+        <div>
+          <div class="label-main" style="font-size:0.92rem;">Anestezie inhalatorie efectuată (−25%)</div>
+          <div class="label-sub">Obligatorie în Platinum</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="t-anestezie" />
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div id="sub-anestezie" class="sub-fields hidden">
+        <label for="d-anestezie">Data anesteziei</label>
+        <input id="d-anestezie" type="date" />
+      </div>
     </div>
   </div>
 
@@ -248,12 +310,30 @@
     </div>
   </div>
 
-  <!-- Analize (Gold only) -->
+  <!-- A 2-a ecografie (Platinum only) -->
+  <div class="card hidden" id="card-eco-a2a">
+    <div class="row-toggle">
+      <div>
+        <div class="label-main">A 2-a ecografie abdominală (−30%)</div>
+        <div class="label-sub">Bonus Platinum: opțional, activat la cerere</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="t-eco-a2a" />
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div id="sub-eco-a2a" class="sub-fields">
+      <label for="d-eco-a2a">Data ecografiei</label>
+      <input id="d-eco-a2a" type="date" />
+    </div>
+  </div>
+
+  <!-- Analize (Gold+) -->
   <div class="card hidden" id="card-analize">
     <div class="row-toggle">
       <div>
-        <div class="label-main">Profil analize sânge (−15%)</div>
-        <div class="label-sub">Inclus în Gold: 1× / an</div>
+        <div class="label-main" id="lbl-analize-main">Profil analize sânge (−15%)</div>
+        <div class="label-sub" id="lbl-analize-sub">Inclus în Gold: 1× / an</div>
       </div>
       <label class="switch">
         <input type="checkbox" id="t-analize" />
@@ -268,7 +348,26 @@
         <option value="">— Alege —</option>
         <option value="Bază">Bază (300 lei → 255 lei)</option>
         <option value="Avansat">Avansat (450 lei → 383 lei)</option>
+        <option value="Extins">Extins (800 lei → 640 lei) — Platinum</option>
       </select>
+    </div>
+  </div>
+
+  <!-- Consultație specialitate (Platinum only) -->
+  <div class="card hidden" id="card-spec">
+    <div class="row-toggle">
+      <div>
+        <div class="label-main">Consultație specialitate (−25%)</div>
+        <div class="label-sub">Bonus Platinum: 1× / an</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="t-spec" />
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div id="sub-spec" class="sub-fields">
+      <label for="d-spec">Data consultației</label>
+      <input id="d-spec" type="date" />
     </div>
   </div>
 
@@ -311,10 +410,12 @@
     interne: 0,
     externe: 0,
     vouchere: 0,
+    urgente: 0,
     interneMax: 2,
     externeMax: 4,
     vouchereMax: 5,
     isGold: false,
+    isPlatinum: false,
   };
 
   function show(stepId) {
@@ -409,6 +510,7 @@
     $('d-start').value = d.dataStart || '';
 
     state.isGold = /gold/i.test(d.pachet || '');
+    state.isPlatinum = /platinum/i.test(d.pachet || '');
 
     $('t-consultatie').checked = !!d.consultatie.folosita;
     $('d-consultatie').value = d.consultatie.data || '';
@@ -426,15 +528,36 @@
     $('c-interne-max').textContent = state.interneMax;
     $('c-externe-max').textContent = state.externeMax;
 
-    $('t-urgenta').checked = !!d.urgenta.folosita;
-    $('d-urgenta').value = d.urgenta.data || '';
-    $('sub-urgenta').classList.toggle('show', !!d.urgenta.folosita);
+    // Urgenta: Silver/Gold = checkbox; Platinum = counter
+    const urgCard = document.querySelector('.card:has(#t-urgenta)');
+    const urgPlCard = $('card-urgente-pl');
+    if (state.isPlatinum) {
+      if (urgCard) urgCard.classList.add('hidden');
+      urgPlCard.classList.remove('hidden');
+      state.urgente = Number(d.urgente ? d.urgente.folosite : 0) || 0;
+    } else {
+      if (urgCard) urgCard.classList.remove('hidden');
+      urgPlCard.classList.add('hidden');
+      $('t-urgenta').checked = !!(d.urgenta && d.urgenta.folosita);
+      $('d-urgenta').value = (d.urgenta && d.urgenta.data) || '';
+      $('sub-urgenta').classList.toggle('show', !!(d.urgenta && d.urgenta.folosita));
+    }
 
-    // Gold-only sections
+    // Gold/Platinum sections
     $('card-detartraj').classList.toggle('hidden', !d.detartraj);
     $('card-eco').classList.toggle('hidden', !d.ecografie);
     $('card-analize').classList.toggle('hidden', !d.analize);
     if (d.detartraj) {
+      if (state.isPlatinum) {
+        $('lbl-detartraj-main').textContent = 'Detartraj (−30%) + Anestezie inhalatorie';
+        $('lbl-detartraj-sub').textContent = 'Inclus în Platinum: 1× / an. Anestezie obligatorie −25%.';
+        $('card-anestezie').classList.remove('hidden');
+        $('t-anestezie').checked = !!d.detartraj.anestezie && !!d.detartraj.anestezie.folosita;
+        $('d-anestezie').value = (d.detartraj.anestezie && d.detartraj.anestezie.data) || '';
+        bindToggle('t-anestezie', 'sub-anestezie', 'd-anestezie');
+      } else {
+        $('card-anestezie').classList.add('hidden');
+      }
       $('t-detartraj').checked = !!d.detartraj.folosit;
       $('d-detartraj').value = d.detartraj.data || '';
       $('sub-detartraj').classList.toggle('show', !!d.detartraj.folosit);
@@ -444,11 +567,41 @@
       $('d-eco').value = d.ecografie.data || '';
       $('sub-eco').classList.toggle('show', !!d.ecografie.folosita);
     }
+    // A 2-a ecografie (Platinum)
+    $('card-eco-a2a').classList.toggle('hidden', !(d.ecografie && d.ecografie.a2a));
+    if (d.ecografie && d.ecografie.a2a) {
+      $('t-eco-a2a').checked = !!d.ecografie.a2a.folosita;
+      $('d-eco-a2a').value = d.ecografie.a2a.data || '';
+      $('sub-eco-a2a').classList.toggle('show', !!d.ecografie.a2a.folosita);
+    }
     if (d.analize) {
+      if (state.isPlatinum) {
+        $('lbl-analize-main').textContent = 'Profil analize extins (−20%)';
+        $('lbl-analize-sub').textContent = 'Inclus în Platinum: profil extins 800 lei → 640 lei';
+      }
       $('t-analize').checked = !!d.analize.folosite;
       $('d-analize').value = d.analize.data || '';
       $('profil-analize').value = d.analize.tipProfil || '';
       $('sub-analize').classList.toggle('show', !!d.analize.folosite);
+    }
+    // Platinum-only extras
+    $('card-vaccin-tuse').classList.toggle('hidden', !d.vaccinTuse);
+    $('card-consultatie-a2a').classList.toggle('hidden', !d.consultatieA2a);
+    $('card-spec').classList.toggle('hidden', !d.consultatieSpecialitate);
+    if (d.vaccinTuse) {
+      $('t-vaccin-tuse').checked = !!d.vaccinTuse.folosit;
+      $('d-vaccin-tuse').value = d.vaccinTuse.data || '';
+      $('sub-vaccin-tuse').classList.toggle('show', !!d.vaccinTuse.folosit);
+    }
+    if (d.consultatieA2a) {
+      $('t-consultatie-a2a').checked = !!d.consultatieA2a.folosita;
+      $('d-consultatie-a2a').value = d.consultatieA2a.data || '';
+      $('sub-consultatie-a2a').classList.toggle('show', !!d.consultatieA2a.folosita);
+    }
+    if (d.consultatieSpecialitate) {
+      $('t-spec').checked = !!d.consultatieSpecialitate.folosita;
+      $('d-spec').value = d.consultatieSpecialitate.data || '';
+      $('sub-spec').classList.toggle('show', !!d.consultatieSpecialitate.folosita);
     }
 
     // Vouchere
@@ -457,8 +610,9 @@
       state.vouchere = Number(d.vouchereProduse.folosite) || 0;
     }
     $('c-vouchere-max').textContent = state.vouchereMax;
-    const procent = state.isGold ? '−8%' : '−5%';
-    $('lbl-vouchere').textContent = 'Vouchere produse folosite (' + procent + ')';
+    const procent = state.isPlatinum ? '−12%' : state.isGold ? '−8%' : '−5%';
+    const vLabel = state.isPlatinum ? 'Vouchere produse/servicii folosite (' + procent + ')' : 'Vouchere produse folosite (' + procent + ')';
+    $('lbl-vouchere').textContent = vLabel;
 
     renderCounters();
 
@@ -484,6 +638,10 @@
   bindToggle('t-detartraj', 'sub-detartraj', 'd-detartraj');
   bindToggle('t-eco', 'sub-eco', 'd-eco');
   bindToggle('t-analize', 'sub-analize', 'd-analize');
+  bindToggle('t-vaccin-tuse', 'sub-vaccin-tuse', 'd-vaccin-tuse');
+  bindToggle('t-consultatie-a2a', 'sub-consultatie-a2a', 'd-consultatie-a2a');
+  bindToggle('t-eco-a2a', 'sub-eco-a2a', 'd-eco-a2a');
+  bindToggle('t-spec', 'sub-spec', 'd-spec');
 
   function todayISO() {
     const d = new Date();
@@ -497,9 +655,12 @@
     $('c-interne').textContent = state.interne;
     $('c-externe').textContent = state.externe;
     $('c-vouchere').textContent = state.vouchere;
+    if ($('c-urgente')) $('c-urgente').textContent = state.urgente;
     document.querySelectorAll('.counter-btn').forEach(b => {
       const cnt = b.dataset.cnt, op = b.dataset.op;
-      const v = state[cnt], max = state[cnt + 'Max'];
+      const v = state[cnt];
+      const maxKey = cnt + 'Max';
+      const max = cnt === 'urgente' ? 4 : state[maxKey];
       b.disabled = (op === '-' && v <= 0) || (op === '+' && v >= max);
     });
   }
@@ -524,7 +685,7 @@
 
     const consultatieOn = $('t-consultatie').checked;
     const vaccinOn = $('t-vaccin').checked;
-    const urgentaOn = $('t-urgenta').checked;
+    const urgentaOn = !state.isPlatinum && $('t-urgenta').checked;
     const detartrajOn = $('t-detartraj').checked;
     const ecoOn = $('t-eco').checked;
     const analizeOn = $('t-analize').checked;
@@ -545,8 +706,8 @@
       'Note': $('note').value || '',
     };
 
-    // Adauga campurile Gold doar daca pachetul e Gold
-    if (state.isGold) {
+    // Adauga campurile Gold+Platinum
+    if (state.isGold || state.isPlatinum) {
       fields['Detartraj folosit'] = detartrajOn;
       fields['Data detartraj'] = detartrajOn ? ($('d-detartraj').value || null) : null;
       fields['Ecografie folosita'] = ecoOn;
@@ -554,6 +715,26 @@
       fields['Analize folosite'] = analizeOn;
       fields['Data analize'] = analizeOn ? ($('d-analize').value || null) : null;
       fields['Tip profil analize'] = analizeOn ? ($('profil-analize').value || '') : '';
+    }
+
+    // Adauga campurile exclusiv Platinum
+    if (state.isPlatinum) {
+      const tuse = $('t-vaccin-tuse').checked;
+      const c2a = $('t-consultatie-a2a').checked;
+      const eco2 = $('t-eco-a2a').checked;
+      const spec = $('t-spec').checked;
+      const anest = $('t-anestezie').checked;
+      fields['Urgente folosite'] = state.urgente;
+      fields['Vaccin tuse canisa folosit'] = tuse;
+      fields['Data vaccin tuse'] = tuse ? ($('d-vaccin-tuse').value || null) : null;
+      fields['A 2-a consultatie folosita'] = c2a;
+      fields['Data a 2-a consultatie'] = c2a ? ($('d-consultatie-a2a').value || null) : null;
+      fields['A 2-a ecografie folosita'] = eco2;
+      fields['Data a 2-a ecografie'] = eco2 ? ($('d-eco-a2a').value || null) : null;
+      fields['Consultatie specialitate folosita'] = spec;
+      fields['Data consultatie specialitate'] = spec ? ($('d-spec').value || null) : null;
+      fields['Anestezie detartraj folosita'] = anest;
+      fields['Data anestezie detartraj'] = anest ? ($('d-anestezie').value || null) : null;
     }
 
     try {
