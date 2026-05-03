@@ -157,18 +157,24 @@
       <div class="status-card" style="margin-bottom:18px;">
         <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;">
           <div>
-            <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:4px;">Pachet activ</div>
+            <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:4px;">Abonament</div>
             <h2 style="font-size:1.4rem;color:var(--navy);" id="s-pachet">—</h2>
             <div style="font-size:0.95rem;color:#444;margin-top:4px;" id="s-nume">—</div>
+            <div style="margin-top:8px;">
+              <span id="s-activ-badge" class="status-pill">—</span>
+            </div>
           </div>
           <div style="text-align:right;">
             <div style="font-size:0.72rem;color:var(--gray);">Cod</div>
             <div style="font-family:monospace;font-size:0.95rem;font-weight:700;color:var(--navy);" id="s-cod">—</div>
           </div>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:0.85rem;color:#555;border-top:1px solid var(--border);padding-top:12px;">
+        <div id="s-dates-row" style="display:none;justify-content:space-between;font-size:0.85rem;color:#555;border-top:1px solid var(--border);padding-top:12px;">
           <div><span style="color:var(--gray);">Activ din:</span> <strong id="s-start">—</strong></div>
           <div><span style="color:var(--gray);">Expiră la:</span> <strong id="s-expira">—</strong></div>
+        </div>
+        <div id="s-pending-row" style="border-top:1px solid var(--border);padding-top:12px;font-size:0.85rem;color:#92400e;background:#fffbeb;border-radius:0 0 8px 8px;margin:-1px -1px 0;padding:12px 14px;">
+          ⏳ Abonamentul tău este înregistrat și urmează să fie confirmat de clinică după finalizarea plății. Vei putea folosi serviciile după confirmare.
         </div>
 
         <!-- QR code pentru clinică -->
@@ -315,8 +321,22 @@
     document.getElementById('s-pachet').textContent = d.pachet || '—';
     document.getElementById('s-nume').textContent = d.nume || '';
     document.getElementById('s-cod').textContent = d.cod || '';
-    document.getElementById('s-start').textContent = fmtDate(d.dataStart) || '—';
-    document.getElementById('s-expira').textContent = fmtDate(d.dataExpirare) || '—';
+
+    // Badge Activ / În așteptare
+    const badge = document.getElementById('s-activ-badge');
+    const datesRow = document.getElementById('s-dates-row');
+    const pendingRow = document.getElementById('s-pending-row');
+    if (d.activ) {
+      badge.textContent = '✅ Activ'; badge.className = 'status-pill pill-available';
+      document.getElementById('s-start').textContent = fmtDate(d.dataStart) || '—';
+      document.getElementById('s-expira').textContent = fmtDate(d.dataExpirare) || '—';
+      datesRow.style.display = 'flex';
+      pendingRow.style.display = 'none';
+    } else {
+      badge.textContent = '⏳ În așteptare confirmare'; badge.className = 'status-pill pill-info';
+      datesRow.style.display = 'none';
+      pendingRow.style.display = 'block';
+    }
 
     // Consultație
     const cPill = document.getElementById('s-consultatie-pill');

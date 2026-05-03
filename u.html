@@ -105,8 +105,22 @@
       <span class="badge-info" id="form-pachet">—</span>
     </div>
     <div class="info-row"><span class="k">Client</span><span class="v" id="form-nume">—</span></div>
-    <div class="info-row"><span class="k">Start</span><span class="v" id="form-start">—</span></div>
     <div class="info-row"><span class="k">Expirare</span><span class="v" id="form-expirare">—</span></div>
+
+    <div style="border-top:1px solid var(--border);margin-top:12px;padding-top:14px;">
+      <div class="row-toggle" style="padding:0 0 12px;">
+        <div>
+          <div class="label-main">Abonament activ</div>
+          <div class="label-sub">Bifează după confirmarea plății</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="t-activ" />
+          <span class="slider"></span>
+        </label>
+      </div>
+      <label for="d-start" style="margin-top:4px;">Data start (zi confirmare plată)</label>
+      <input id="d-start" type="date" placeholder="YYYY-MM-DD" />
+    </div>
   </div>
 
   <div id="form-error" class="alert alert-error hidden"></div>
@@ -389,8 +403,10 @@
     $('form-cod').textContent = d.cod;
     $('form-pachet').textContent = d.pachet || '—';
     $('form-nume').textContent = d.nume || '—';
-    $('form-start').textContent = d.dataStart || '—';
     $('form-expirare').textContent = d.dataExpirare || '—';
+
+    $('t-activ').checked = !!d.activ;
+    $('d-start').value = d.dataStart || '';
 
     state.isGold = /gold/i.test(d.pachet || '');
 
@@ -514,6 +530,8 @@
     const analizeOn = $('t-analize').checked;
 
     const fields = {
+      'Activ': $('t-activ').checked,
+      'Data start': $('d-start').value || null,
       'Consultatie folosita': consultatieOn,
       'Data consultatie': consultatieOn ? ($('d-consultatie').value || null) : null,
       'Vaccin folosit': vaccinOn,

@@ -562,8 +562,7 @@ document.getElementById('abonament-form').addEventListener('submit', function(e)
   const mesaj = document.getElementById('ab-mesaj').value.trim();
 
   const cod = genCodAbonament(nume, animal);
-  const today = new Date();
-  const dataStartIso = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
+  // Data start si Activ sunt setate manual de medic dupa confirmarea platii (nu la inscriere)
 
   const form = this;
   const btn = form.querySelector('button[type="submit"]');
@@ -598,12 +597,12 @@ document.getElementById('abonament-form').addEventListener('submit', function(e)
         'Cod client':                     cod,
         'Nume client':                    nume + ' - ' + animal,
         'Tip pachet':                     plan,
-        'Data start':                     dataStartIso,
         'Consultatie folosita':           false,
         'Vaccin folosit':                 false,
         'Deparazitari interne folosite':  0,
         'Deparazitari externe folosite':  0,
-        'Urgenta folosita':               false
+        'Urgenta folosita':               false,
+        'Activ':                          false
       }
     })
   });
