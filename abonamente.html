@@ -419,15 +419,6 @@
           <div class="calc-slider-range"><span id="calc-ext-min">144 lei</span><span id="calc-ext-max">540 lei</span></div>
         </div>
 
-        <div class="calc-slider-block" id="calc-tuse-block" style="display:none;">
-          <div class="calc-slider-head">
-            <div class="calc-slider-label">Vaccin tuse canisă / leucemie felină <small>(−35%)</small></div>
-            <div class="calc-slider-value"><span id="calc-tuse-val">59</span><small> lei</small></div>
-          </div>
-          <input type="range" class="calc-slider-input" id="calc-tuse" min="59" max="85" value="59" step="1" />
-          <div class="calc-slider-range"><span>59 lei</span><span>85 lei</span></div>
-        </div>
-
         <div class="calc-slider-block" id="calc-anest-block" style="display:none;">
           <div class="calc-slider-head">
             <div class="calc-slider-label">Anestezie inhalatorie detartraj <small>(−25%)</small></div>
@@ -931,55 +922,63 @@ document.getElementById('abonament-form').addEventListener('submit', function(e)
 <!-- ═══ CALCULATOR PREȚ — JS ═══ -->
 <script>
 (function(){
-  // Configurația pachetelor
+  // Configurația pachetelor — fix: { val = preț cu reducerea aplicată; original = preț cabinet întreg }
   const PLANS = {
     silver: {
       label: '🥈 Silver',
       formPlan: 'Silver',
       fix: [
-        { id: 'consult',  label: 'Consultație generală',         val: 80 },
-        { id: 'vaccin',   label: 'Vaccin polivalent + antirabic', val: 120 },
+        { id: 'consult', label: 'Consultație generală',          val: 80,  original: 150 },
+        { id: 'vaccin',  label: 'Vaccin polivalent + antirabic', val: 120, original: 200 },
       ],
-      flBonus: 30, // +30 lei vaccin pisică cu fracție leucemică
+      flBonus: 30, // +30 lei vaccin pisică cu fracție leucemică (la Silver/Gold)
       sliders: {
         int: { min: 14,  max: 108,  label: '2× / an, −10%' },
         ext: { min: 144, max: 540,  label: '4× / an, −10%' },
       },
-      hasProfil: false, hasTuse: false, hasAnest: false,
+      hasProfil: false, hasAnest: false,
     },
     gold: {
       label: '🥇 Gold',
       formPlan: 'Gold',
       fix: [
-        { id: 'consult',  label: 'Consultație generală',         val: 80 },
-        { id: 'vaccin',   label: 'Vaccin polivalent + antirabic', val: 120 },
-        { id: 'detartraj',label: 'Detartraj fără anestezie',      val: 210 },
-        { id: 'eco',      label: 'Ecografie abdominală',          val: 154 },
+        { id: 'consult',  label: 'Consultație generală',          val: 80,  original: 150 },
+        { id: 'vaccin',   label: 'Vaccin polivalent + antirabic', val: 120, original: 200 },
+        { id: 'detartraj',label: 'Detartraj fără anestezie',      val: 210, original: 300 },
+        { id: 'eco',      label: 'Ecografie abdominală',          val: 154, original: 220 },
       ],
       flBonus: 30,
-      profil: { baza: 255, avansat: 383 },
+      profil: {
+        baza:    { val: 255, original: 300 },
+        avansat: { val: 383, original: 450 },
+      },
       sliders: {
         int: { min: 25,  max: 211,  label: '4× / an, −12%' },
         ext: { min: 282, max: 1056, label: '8× / an, −12%' },
       },
-      hasProfil: true, hasTuse: false, hasAnest: false,
+      hasProfil: true, hasAnest: false,
     },
     platinum: {
       label: '💎 Platinum',
       formPlan: 'Platinum',
       fix: [
-        { id: 'consult',  label: '2× consultație generală',       val: 160 },
-        { id: 'vaccin',   label: 'Vaccin polivalent + antirabic', val: 120 },
-        { id: 'profil',   label: 'Profil analize extins',         val: 640 },
-        { id: 'detartraj',label: 'Detartraj fără anestezie',      val: 210 },
-        { id: 'eco',      label: 'Ecografie abdominală',          val: 154 },
+        { id: 'consult',  label: '2× consultație generală',       val: 160, original: 300 },
+        { id: 'vaccin',   label: 'Vaccin polivalent + antirabic', val: 120, original: 200 },
+        { id: 'profil',   label: 'Profil analize extins',         val: 640, original: 800 },
+        { id: 'detartraj',label: 'Detartraj fără anestezie',      val: 210, original: 300 },
+        { id: 'eco',      label: 'Ecografie abdominală',          val: 154, original: 220 },
       ],
-      flBonus: 0, // la Platinum vaccinul leucemic e inclus în slider tuse/leucemie
+      // Vaccin tuse canisă (câine) / leucemie felină (pisică) — preț fix per specie, adăugat în render()
+      vaccinSpecie: {
+        caine:  { label: 'Vaccin tuse canisă (−35%)',     val: 72, original: 110 },
+        pisica: { label: 'Vaccin leucemie felină (−35%)', val: 65, original: 100 },
+      },
+      flBonus: 0, // la Platinum, leucemia felină e linie separată (nu opțional bonus)
       sliders: {
         int: { min: 28,  max: 215,  label: '4× / an, −20%' },
         ext: { min: 384, max: 1440, label: '12× / an, −20%' },
       },
-      hasProfil: false, hasTuse: true, hasAnest: true,
+      hasProfil: false, hasAnest: true,
     },
   };
 
@@ -1011,7 +1010,7 @@ document.getElementById('abonament-form').addEventListener('submit', function(e)
   $('calc-fl').addEventListener('change', (e) => { state.fl = e.target.checked; render(); });
 
   // Slidere — actualizare live a valorii afișate + a gradientului
-  ['int','ext','tuse','anest'].forEach(k => {
+  ['int','ext','anest'].forEach(k => {
     const inp = $('calc-' + k);
     if (!inp) return;
     inp.addEventListener('input', () => {
@@ -1051,9 +1050,7 @@ document.getElementById('abonament-form').addEventListener('submit', function(e)
     $('calc-ext-meta').textContent = '(' + p.sliders.ext.label + ')';
     paintSlider(extInp);
     // Slidere Platinum
-    $('calc-tuse-block').style.display  = p.hasTuse  ? 'block' : 'none';
     $('calc-anest-block').style.display = p.hasAnest ? 'block' : 'none';
-    if (p.hasTuse)  { $('calc-tuse').value  = 59;  $('calc-tuse-val').textContent  = 59;  paintSlider($('calc-tuse')); }
     if (p.hasAnest) { $('calc-anest').value = 150; $('calc-anest-val').textContent = 150; paintSlider($('calc-anest')); }
     // Profil analize (doar Gold)
     $('calc-profil-wrap').style.display = p.hasProfil ? 'block' : 'none';
@@ -1075,14 +1072,17 @@ document.getElementById('abonament-form').addEventListener('submit', function(e)
     if (!isCat || p.flBonus === 0) { $('calc-fl').checked = false; state.fl = false; }
 
     // Costuri fixe
-    const fixLines = p.fix.map(f => {
-      let v = f.val;
-      // pe Gold, "profil" se calculează din selecția curentă
-      return { label: f.label, val: v, id: f.id };
-    });
+    const fixLines = p.fix.map(f => ({ label: f.label, val: f.val, original: f.original, id: f.id }));
     if (state.plan === 'gold') {
       const pv = PLANS.gold.profil[state.profil];
-      fixLines.push({ label: 'Profil analize sânge (' + (state.profil === 'baza' ? 'bază' : 'avansat') + ')', val: pv });
+      fixLines.push({
+        label: 'Profil analize sânge (' + (state.profil === 'baza' ? 'bază' : 'avansat') + ', −15%)',
+        val: pv.val, original: pv.original,
+      });
+    }
+    if (state.plan === 'platinum' && p.vaccinSpecie) {
+      const v = p.vaccinSpecie[state.specie];
+      if (v) fixLines.push({ label: v.label, val: v.val, original: v.original });
     }
     if (isCat && p.flBonus > 0 && state.fl) {
       fixLines.push({ label: 'Fracție leucemică (vaccin pisică)', val: p.flBonus });
@@ -1097,20 +1097,23 @@ document.getElementById('abonament-form').addEventListener('submit', function(e)
     varLines.push({ label: 'Deparazitări interne ' + p.sliders.int.label, val: intVal });
     varLines.push({ label: 'Deparazitări externe ' + p.sliders.ext.label, val: extVal });
     let totalVar = intVal + extVal;
-    if (p.hasTuse) {
-      const tuse = Number($('calc-tuse').value);
-      varLines.push({ label: 'Vaccin tuse canisă / leucemie felină', val: tuse });
-      totalVar += tuse;
-    }
     if (p.hasAnest) {
       const anest = Number($('calc-anest').value);
       varLines.push({ label: 'Anestezie inhalatorie', val: anest });
       totalVar += anest;
     }
 
+    // Helper — formatează linia: "label   <s>orig</s> val lei" sau "label   val lei"
+    const fmtFix = (l) => {
+      const orig = (l.original && l.original !== l.val)
+        ? `<span style="color:rgba(255,255,255,0.4);text-decoration:line-through;font-weight:500;margin-right:6px;">${l.original}</span>`
+        : '';
+      return `<div class="calc-line"><span class="calc-line-label">${l.label}</span><span class="calc-line-val">${orig}${l.val} lei</span></div>`;
+    };
+
     // Render
     $('calc-fix-lines').innerHTML = '<div style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-bottom:6px;">Costuri fixe (incluse)</div>' +
-      fixLines.map(l => `<div class="calc-line"><span class="calc-line-label">${l.label}</span><span class="calc-line-val">${l.val} lei</span></div>`).join('');
+      fixLines.map(fmtFix).join('');
 
     $('calc-var-lines').innerHTML = '<div style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-bottom:6px;">Costuri variabile (estimate)</div>' +
       varLines.map(l => `<div class="calc-line calc-variable"><span class="calc-line-label">${l.label}</span><span class="calc-line-val">${l.val} lei</span></div>`).join('');
