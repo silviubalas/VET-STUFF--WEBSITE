@@ -1,20 +1,12 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// blog.js — Logica blogului VET STUFF
-// Detectează automat pagina curentă și inițializează funcționalitatea corectă.
-// Folosit atât de blog/index.html cât și de blog/post.html.
-// ─────────────────────────────────────────────────────────────────────────────
+const POSTS_INDEX = 'posts/posts.json';
+const POSTS_DIR   = 'posts/';
+const PAGE_SIZE   = 6;
 
-const POSTS_INDEX = 'posts/posts.json'; // indexul cu metadata tuturor articolelor
-const POSTS_DIR   = 'posts/';           // directorul cu fișierele .md
-
-// Detectăm pagina după elementele prezente în DOM
 if (document.getElementById('blog-list')) initBlogList();
 if (document.getElementById('blog-post')) initBlogPost();
 
 
-// ─────────────────────────────────────────────────────────────────────────────
-// PAGINA LISTĂ — blog/index.html
-// ─────────────────────────────────────────────────────────────────────────────
+// ── PAGINA LISTĂ ──────────────────────────────────────────────────────────────
 
 async function initBlogList() {
   const container = document.getElementById('blog-list');
@@ -27,7 +19,35 @@ async function initBlogList() {
       return;
     }
 
-    container.innerHTML = posts.map(renderCard).join('');
+    const [featured, ...rest] = posts;
+    let shown = Math.min(PAGE_SIZE, rest.length);
+
+    function render() {
+      const cards = rest.slice(0, shown).map(renderCard).join('');
+      const hasMore = shown < rest.length;
+      const loadMoreHtml = hasMore
+        ? `<div class="load-more-wrap">
+             <button class="load-more-btn" id="load-more-btn">
+               Citește mai multe articole
+               <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
+             </button>
+           </div>`
+        : '';
+
+      container.innerHTML =
+        renderFeatured(featured) +
+        `<div class="blog-grid">${cards}</div>` +
+        loadMoreHtml;
+
+      if (hasMore) {
+        document.getElementById('load-more-btn').addEventListener('click', () => {
+          shown = Math.min(shown + PAGE_SIZE, rest.length);
+          render();
+        });
+      }
+    }
+
+    render();
 
   } catch (err) {
     container.innerHTML = '<p class="blog-error">Eroare la încărcarea articolelor. Încearcă din nou.</p>';
@@ -35,11 +55,47 @@ async function initBlogList() {
   }
 }
 
-// Generează HTML-ul pentru un card din grila de articole
+function renderFeatured(post) {
+  const url = `post.html?slug=${encodeURIComponent(post.slug)}`;
+  const imgHtml = post.cover
+    ? `<div class="featured-img-wrap">
+         <a href="${url}" tabindex="-1" aria-hidden="true">
+           <img src="${escapeHtml(post.cover)}" alt="${escapeHtml(post.title)}" class="featured-img" loading="eager"
+                onerror="this.closest('.featured-img-wrap').style.display='none'">
+         </a>
+       </div>`
+    : '';
+  return `
+    <article class="blog-featured">
+      ${imgHtml}
+      <div class="featured-body">
+        <div class="featured-meta">
+          <div class="blog-card-tags">${post.tags.map(t => `<span class="blog-tag">${escapeHtml(t)}</span>`).join('')}</div>
+          <time class="blog-card-date" datetime="${post.date}">${formatDate(post.date)}</time>
+        </div>
+        <span class="featured-label">Articol recomandat</span>
+        <h2 class="featured-title"><a href="${url}">${escapeHtml(post.title)}</a></h2>
+        <p class="featured-excerpt">${escapeHtml(post.excerpt)}</p>
+        <a href="${url}" class="featured-cta">
+          Citește articolul complet
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+        </a>
+      </div>
+    </article>
+  `;
+}
+
 function renderCard(post) {
   const url = `post.html?slug=${encodeURIComponent(post.slug)}`;
+  const imgHtml = post.cover
+    ? `<a href="${url}" class="blog-card-img-link" tabindex="-1" aria-hidden="true">
+         <img src="${escapeHtml(post.cover)}" alt="${escapeHtml(post.title)}" class="blog-card-img" loading="lazy"
+              onerror="this.closest('.blog-card-img-link').style.display='none'">
+       </a>`
+    : '';
   return `
-    <article class="blog-card">
+    <article class="blog-card${post.cover ? ' has-img' : ''}">
+      ${imgHtml}
       <div class="blog-card-top">
         <div class="blog-card-tags">${post.tags.map(t => `<span class="blog-tag">${escapeHtml(t)}</span>`).join('')}</div>
         <time class="blog-card-date" datetime="${post.date}">${formatDate(post.date)}</time>
@@ -55,12 +111,9 @@ function renderCard(post) {
 }
 
 
-// ─────────────────────────────────────────────────────────────────────────────
-// PAGINA ARTICOL — blog/post.html
-// ─────────────────────────────────────────────────────────────────────────────
+// ── PAGINA ARTICOL ────────────────────────────────────────────────────────────
 
 async function initBlogPost() {
-  // Extragem slug-ul din query string: post.html?slug=primul-articol
   const slug = new URLSearchParams(window.location.search).get('slug');
 
   if (!slug) {
@@ -69,7 +122,6 @@ async function initBlogPost() {
   }
 
   try {
-    // Încărcăm în paralel indexul JSON și fișierul Markdown
     const [posts, markdown] = await Promise.all([
       fetchPosts(),
       fetchMarkdown(slug)
@@ -89,30 +141,31 @@ async function initBlogPost() {
   }
 }
 
-// Randează header-ul și conținutul articolului în DOM
 function renderPost(meta, markdown) {
-  // Actualizăm titlul tab-ului
   document.title = `${meta.title} | Blog VET STUFF`;
 
-  // Injectăm meta-ul articolului deasupra conținutului
   const metaEl = document.getElementById('post-meta');
   if (metaEl) {
+    const coverHtml = meta.cover
+      ? `<div class="post-cover">
+           <img src="${escapeHtml(meta.cover)}" alt="${escapeHtml(meta.title)}" loading="eager"
+                onerror="this.closest('.post-cover').style.display='none'">
+         </div>`
+      : '';
     metaEl.innerHTML = `
+      ${coverHtml}
       <div class="post-tags">${meta.tags.map(t => `<span class="blog-tag">${escapeHtml(t)}</span>`).join('')}</div>
       <h1 class="post-title">${escapeHtml(meta.title)}</h1>
       <time class="post-date" datetime="${meta.date}">${formatDate(meta.date)}</time>
     `;
   }
 
-  // Convertim Markdown → HTML cu marked și injectăm în container
   document.getElementById('blog-post').innerHTML = marked.parse(markdown);
 }
 
-// Afișează un mesaj de eroare în locul conținutului articolului
 function showPostError(msg) {
   const metaEl = document.getElementById('post-meta');
   if (metaEl) metaEl.innerHTML = '';
-
   document.getElementById('blog-post').innerHTML = `
     <div class="blog-error">
       <p>${msg}</p>
@@ -122,11 +175,8 @@ function showPostError(msg) {
 }
 
 
-// ─────────────────────────────────────────────────────────────────────────────
-// UTILITARE
-// ─────────────────────────────────────────────────────────────────────────────
+// ── UTILITARE ─────────────────────────────────────────────────────────────────
 
-// Încarcă posts.json și returnează articolele sortate descrescător după dată
 async function fetchPosts() {
   const res = await fetch(POSTS_INDEX);
   if (!res.ok) throw new Error(`fetch posts.json → HTTP ${res.status}`);
@@ -134,22 +184,18 @@ async function fetchPosts() {
   return data.sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
-// Încarcă conținutul .md al unui articol după slug
 async function fetchMarkdown(slug) {
   const res = await fetch(`${POSTS_DIR}${slug}.md`);
   if (!res.ok) throw new Error(`fetch ${slug}.md → HTTP ${res.status}`);
   return res.text();
 }
 
-// Formatează data ISO → română: "1 mai 2026"
 function formatDate(dateStr) {
   return new Date(dateStr).toLocaleDateString('ro-RO', {
     day: 'numeric', month: 'long', year: 'numeric'
   });
 }
 
-// Escapează HTML pentru textele afișate direct din JSON (titluri, excerpt-uri)
-// Previne XSS în cazul în care posts.json conține caractere speciale
 function escapeHtml(str) {
   return String(str)
     .replace(/&/g, '&amp;')
