@@ -95,6 +95,57 @@
     #scroll-top { position: fixed; bottom: 24px; right: 24px; width: 44px; height: 44px; background: var(--navy); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 990; opacity: 0; pointer-events: none; transform: translateY(10px); transition: opacity 0.25s, transform 0.25s, background 0.15s; box-shadow: 0 4px 16px rgba(0,0,0,0.18); border: none; }
     #scroll-top.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
     #scroll-top:hover { background: var(--red); }
+
+    /* ═══ Calculator preț ═══ */
+    #calculator { padding: 80px 16px; background: #fff; }
+    .calc-wrap { max-width: 1100px; margin: 0 auto; }
+    .calc-grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
+    @media (min-width: 900px) { .calc-grid { grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: start; } }
+    .calc-panel { background: var(--light); border: 1.5px solid var(--border); border-radius: 16px; padding: 28px 24px; }
+    .calc-panel h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 800; color: var(--navy); margin: 0 0 4px; }
+    .calc-panel .calc-subtitle { font-size: 0.82rem; color: var(--gray); margin-bottom: 20px; }
+    .calc-section-title { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); margin: 18px 0 10px; }
+    .calc-section-title:first-child { margin-top: 0; }
+    .calc-radio-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .calc-radio { flex: 1; min-width: 90px; padding: 11px 14px; background: #fff; border: 1.5px solid var(--border); border-radius: 8px; font-size: 0.88rem; font-weight: 600; color: var(--navy); cursor: pointer; text-align: center; transition: all 0.15s; }
+    .calc-radio:hover { border-color: var(--navy); }
+    .calc-radio.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .calc-radio input { display: none; }
+    .calc-check { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #fff; border: 1.5px solid var(--border); border-radius: 8px; font-size: 0.88rem; color: #333; cursor: pointer; }
+    .calc-check input { width: 16px; height: 16px; accent-color: var(--navy); cursor: pointer; }
+    .calc-slider-block { background: #fff; border: 1.5px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; }
+    .calc-slider-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 8px; }
+    .calc-slider-label { font-size: 0.85rem; font-weight: 600; color: #1a1a1a; }
+    .calc-slider-label small { font-weight: 500; color: var(--gray); font-size: 0.78rem; }
+    .calc-slider-value { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 800; color: var(--navy); white-space: nowrap; }
+    .calc-slider-value small { font-size: 0.8rem; font-weight: 500; color: var(--gray); }
+    .calc-slider-input { width: 100%; -webkit-appearance: none; appearance: none; height: 6px; background: linear-gradient(to right, var(--red) 0%, var(--red) 0%, #e5e7eb 0%, #e5e7eb 100%); border-radius: 999px; outline: none; cursor: pointer; }
+    .calc-slider-input::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; background: #fff; border: 3px solid var(--red); border-radius: 50%; cursor: grab; box-shadow: 0 2px 6px rgba(0,0,0,0.18); transition: transform 0.1s; }
+    .calc-slider-input::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.1); }
+    .calc-slider-input::-moz-range-thumb { width: 22px; height: 22px; background: #fff; border: 3px solid var(--red); border-radius: 50%; cursor: grab; box-shadow: 0 2px 6px rgba(0,0,0,0.18); }
+    .calc-slider-range { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--gray); margin-top: 6px; }
+    .calc-result { background: var(--navy); color: #fff; border-radius: 16px; padding: 28px 24px; position: sticky; top: 100px; }
+    .calc-result h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 800; color: #fff; margin: 0 0 4px; }
+    .calc-result .calc-subtitle { font-size: 0.8rem; color: rgba(255,255,255,0.65); margin-bottom: 20px; }
+    .calc-line { display: flex; justify-content: space-between; align-items: baseline; padding: 7px 0; font-size: 0.84rem; color: rgba(255,255,255,0.85); border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .calc-line:last-child { border-bottom: none; }
+    .calc-line .calc-line-label { color: rgba(255,255,255,0.75); }
+    .calc-line .calc-line-val { font-weight: 700; color: #fff; white-space: nowrap; }
+    .calc-line.calc-variable .calc-line-val { color: #FDE68A; }
+    .calc-divider { height: 1px; background: rgba(255,255,255,0.16); margin: 14px 0; }
+    .calc-total { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+    .calc-total .calc-total-label { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.7); }
+    .calc-total .calc-total-val { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 900; color: #fff; line-height: 1; }
+    .calc-total .calc-total-val small { font-size: 0.95rem; font-weight: 500; color: rgba(255,255,255,0.6); margin-left: 4px; }
+    .calc-rate { background: rgba(253,230,138,0.12); border: 1px solid rgba(253,230,138,0.3); border-radius: 10px; padding: 14px 16px; margin-top: 18px; }
+    .calc-rate-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #FDE68A; margin-bottom: 4px; }
+    .calc-rate-val { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 800; color: #fff; }
+    .calc-rate-note { font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-top: 4px; }
+    .calc-cta { display: block; width: 100%; text-align: center; padding: 13px; background: var(--red); color: #fff; border-radius: 8px; font-size: 0.92rem; font-weight: 700; text-decoration: none; margin-top: 18px; transition: background 0.15s; }
+    .calc-cta:hover { background: #b52020; }
+    .calc-print { display: block; width: 100%; text-align: center; padding: 10px; background: transparent; color: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; font-size: 0.82rem; font-weight: 600; margin-top: 8px; cursor: pointer; transition: all 0.15s; }
+    .calc-print:hover { background: rgba(255,255,255,0.08); color: #fff; }
+    @media print { body > *:not(#calculator) { display: none !important; } #calculator { padding: 0; } .calc-result { position: static; } .calc-cta, .calc-print { display: none; } }
   </style>
 </head>
 <body>
@@ -165,6 +216,9 @@
     <div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:14px;">
       <a href="#planuri" style="display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:var(--red);color:#fff;border-radius:8px;font-size:0.95rem;font-weight:700;transition:background 0.15s;" onmouseover="this.style.background='#b52020'" onmouseout="this.style.background='var(--red)'">
         Alege planul tău →
+      </a>
+      <a href="#calculator" style="display:inline-flex;align-items:center;gap:8px;padding:13px 24px;background:rgba(255,255,255,0.1);color:#fff;border:1.5px solid rgba(255,255,255,0.4);border-radius:8px;font-size:0.9rem;font-weight:600;transition:background 0.15s,border-color 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.18)';this.style.borderColor='#fff'" onmouseout="this.style.background='rgba(255,255,255,0.1)';this.style.borderColor='rgba(255,255,255,0.4)'">
+        🧮 Simulează prețul
       </a>
       <a href="status.html" style="display:inline-flex;align-items:center;gap:8px;padding:13px 24px;background:rgba(255,255,255,0.1);color:#fff;border:1.5px solid rgba(255,255,255,0.4);border-radius:8px;font-size:0.9rem;font-weight:600;transition:background 0.15s,border-color 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.18)';this.style.borderColor='#fff'" onmouseout="this.style.background='rgba(255,255,255,0.1)';this.style.borderColor='rgba(255,255,255,0.4)'">
         🔍 Ai deja abonament? Verifică status
@@ -294,6 +348,124 @@
       <a href="status.html" style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border:1.5px solid var(--border);border-radius:8px;font-size:0.88rem;font-weight:600;color:var(--navy);transition:all 0.2s;background:#fff;" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)';" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--navy)';">
         🔍 Verifică statusul abonamentului tău
       </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     CALCULATOR PREȚ — pentru discuție în clinică
+═══════════════════════════════════════════════════ -->
+<section id="calculator">
+  <div class="calc-wrap">
+
+    <div style="text-align:center;margin-bottom:36px;">
+      <span style="font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--red);">Calculator preț</span>
+      <h2 style="font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;color:var(--navy);margin-top:8px;">Simulează prețul exact pentru animalul tău</h2>
+      <p style="font-size:0.92rem;color:var(--gray);max-width:640px;margin:12px auto 0;line-height:1.7;">Costurile fixe sunt incluse în abonament. Cele variabile (deparazitări, anestezie, vaccin tuse) depind de produsul ales și greutate — trage cursorul pe prețul real din clinică pentru calcul precis.</p>
+    </div>
+
+    <div class="calc-grid">
+
+      <!-- Stânga: inputuri + slidere -->
+      <div class="calc-panel">
+        <h3>Configurează abonamentul</h3>
+        <div class="calc-subtitle">Selectează pachetul, specia și ajustează costurile variabile cu cursoarele.</div>
+
+        <div class="calc-section-title">1. Pachet</div>
+        <div class="calc-radio-row" id="calc-plan-row">
+          <label class="calc-radio active" data-plan="silver"><input type="radio" name="calc-plan" value="silver" checked />🥈 Silver</label>
+          <label class="calc-radio" data-plan="gold"><input type="radio" name="calc-plan" value="gold" />🥇 Gold</label>
+          <label class="calc-radio" data-plan="platinum"><input type="radio" name="calc-plan" value="platinum" />💎 Platinum</label>
+        </div>
+
+        <div class="calc-section-title">2. Specie</div>
+        <div class="calc-radio-row" id="calc-specie-row">
+          <label class="calc-radio active" data-specie="caine"><input type="radio" name="calc-specie" value="caine" checked />🐶 Câine</label>
+          <label class="calc-radio" data-specie="pisica"><input type="radio" name="calc-specie" value="pisica" />🐱 Pisică</label>
+        </div>
+
+        <div id="calc-fl-wrap" style="display:none;margin-top:12px;">
+          <label class="calc-check">
+            <input type="checkbox" id="calc-fl" />
+            <span>Fracție leucemică (vaccin pisică) <strong style="color:var(--red);">+30 lei</strong></span>
+          </label>
+        </div>
+
+        <div id="calc-profil-wrap" style="display:none;">
+          <div class="calc-section-title">3. Profil analize sânge</div>
+          <div class="calc-radio-row" id="calc-profil-row">
+            <label class="calc-radio active" data-profil="baza"><input type="radio" name="calc-profil" value="baza" checked />Bază <small style="opacity:0.7;">255 lei</small></label>
+            <label class="calc-radio" data-profil="avansat"><input type="radio" name="calc-profil" value="avansat" />Avansat <small style="opacity:0.7;">383 lei</small></label>
+          </div>
+        </div>
+
+        <div class="calc-section-title" id="calc-var-title">3. Costuri variabile (trage cursorul)</div>
+
+        <div class="calc-slider-block">
+          <div class="calc-slider-head">
+            <div class="calc-slider-label">Deparazitări interne <small id="calc-int-meta">(2× / an, −10%)</small></div>
+            <div class="calc-slider-value"><span id="calc-int-val">14</span><small> lei / an</small></div>
+          </div>
+          <input type="range" class="calc-slider-input" id="calc-int" min="14" max="108" value="14" step="1" />
+          <div class="calc-slider-range"><span id="calc-int-min">14 lei</span><span id="calc-int-max">108 lei</span></div>
+        </div>
+
+        <div class="calc-slider-block">
+          <div class="calc-slider-head">
+            <div class="calc-slider-label">Deparazitări externe <small id="calc-ext-meta">(4× / an, −10%)</small></div>
+            <div class="calc-slider-value"><span id="calc-ext-val">144</span><small> lei / an</small></div>
+          </div>
+          <input type="range" class="calc-slider-input" id="calc-ext" min="144" max="540" value="144" step="1" />
+          <div class="calc-slider-range"><span id="calc-ext-min">144 lei</span><span id="calc-ext-max">540 lei</span></div>
+        </div>
+
+        <div class="calc-slider-block" id="calc-tuse-block" style="display:none;">
+          <div class="calc-slider-head">
+            <div class="calc-slider-label">Vaccin tuse canisă / leucemie felină <small>(−35%)</small></div>
+            <div class="calc-slider-value"><span id="calc-tuse-val">59</span><small> lei</small></div>
+          </div>
+          <input type="range" class="calc-slider-input" id="calc-tuse" min="59" max="85" value="59" step="1" />
+          <div class="calc-slider-range"><span>59 lei</span><span>85 lei</span></div>
+        </div>
+
+        <div class="calc-slider-block" id="calc-anest-block" style="display:none;">
+          <div class="calc-slider-head">
+            <div class="calc-slider-label">Anestezie inhalatorie detartraj <small>(−25%)</small></div>
+            <div class="calc-slider-value"><span id="calc-anest-val">150</span><small> lei</small></div>
+          </div>
+          <input type="range" class="calc-slider-input" id="calc-anest" min="150" max="300" value="150" step="1" />
+          <div class="calc-slider-range"><span>150 lei</span><span>300 lei</span></div>
+        </div>
+      </div>
+
+      <!-- Dreapta: defalcare + total -->
+      <div class="calc-result">
+        <h3>Estimare preț</h3>
+        <div class="calc-subtitle" id="calc-result-sub">Pachet Silver · Câine</div>
+
+        <div id="calc-fix-lines"></div>
+
+        <div class="calc-divider"></div>
+
+        <div id="calc-var-lines"></div>
+
+        <div class="calc-divider"></div>
+
+        <div class="calc-total">
+          <div class="calc-total-label">Total / an</div>
+          <div class="calc-total-val"><span id="calc-total">358</span><small>lei</small></div>
+        </div>
+
+        <div class="calc-rate">
+          <div class="calc-rate-label">💳 Sau în 3 rate egale</div>
+          <div class="calc-rate-val"><span id="calc-rate">120</span> lei × 3 luni</div>
+          <div class="calc-rate-note">Prima rată la activare, următoarele la 30 și 60 de zile. Fără comisioane, plată direct la clinică.</div>
+        </div>
+
+        <a href="#inscriere" class="calc-cta" id="calc-cta">Activează acest plan →</a>
+        <button type="button" class="calc-print" onclick="window.print()">🖨 Tipărește simularea</button>
+      </div>
+
     </div>
   </div>
 </section>
@@ -634,7 +806,18 @@ function genCodAbonament(numeClient, numeAnimal) {
   const dd = String(t.getDate()).padStart(2, '0');
   const mm = String(t.getMonth() + 1).padStart(2, '0');
   const yyyy = t.getFullYear();
-  return clean(numeClient) + clean(numeAnimal) + dd + mm + yyyy;
+  // Sufix random 4 caractere alfanumerice (~1.6M combinații) — elimină practic coliziunile
+  // chiar dacă același proprietar înregistrează 2 animale cu nume identic în aceeași zi.
+  const ALPHA = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // fără I/O/0/1 pt lizibilitate
+  let suffix = '';
+  if (window.crypto && window.crypto.getRandomValues) {
+    const buf = new Uint8Array(4);
+    window.crypto.getRandomValues(buf);
+    for (let i = 0; i < 4; i++) suffix += ALPHA[buf[i] % ALPHA.length];
+  } else {
+    for (let i = 0; i < 4; i++) suffix += ALPHA[Math.floor(Math.random() * ALPHA.length)];
+  }
+  return clean(numeClient) + clean(numeAnimal) + dd + mm + yyyy + suffix;
 }
 
 document.getElementById('abonament-form').addEventListener('submit', function(e) {
@@ -745,6 +928,212 @@ document.getElementById('abonament-form').addEventListener('submit', function(e)
   });
 });
 </script>
+<!-- ═══ CALCULATOR PREȚ — JS ═══ -->
+<script>
+(function(){
+  // Configurația pachetelor
+  const PLANS = {
+    silver: {
+      label: '🥈 Silver',
+      formPlan: 'Silver',
+      fix: [
+        { id: 'consult',  label: 'Consultație generală',         val: 80 },
+        { id: 'vaccin',   label: 'Vaccin polivalent + antirabic', val: 120 },
+      ],
+      flBonus: 30, // +30 lei vaccin pisică cu fracție leucemică
+      sliders: {
+        int: { min: 14,  max: 108,  label: '2× / an, −10%' },
+        ext: { min: 144, max: 540,  label: '4× / an, −10%' },
+      },
+      hasProfil: false, hasTuse: false, hasAnest: false,
+    },
+    gold: {
+      label: '🥇 Gold',
+      formPlan: 'Gold',
+      fix: [
+        { id: 'consult',  label: 'Consultație generală',         val: 80 },
+        { id: 'vaccin',   label: 'Vaccin polivalent + antirabic', val: 120 },
+        { id: 'detartraj',label: 'Detartraj fără anestezie',      val: 210 },
+        { id: 'eco',      label: 'Ecografie abdominală',          val: 154 },
+      ],
+      flBonus: 30,
+      profil: { baza: 255, avansat: 383 },
+      sliders: {
+        int: { min: 25,  max: 211,  label: '4× / an, −12%' },
+        ext: { min: 282, max: 1056, label: '8× / an, −12%' },
+      },
+      hasProfil: true, hasTuse: false, hasAnest: false,
+    },
+    platinum: {
+      label: '💎 Platinum',
+      formPlan: 'Platinum',
+      fix: [
+        { id: 'consult',  label: '2× consultație generală',       val: 160 },
+        { id: 'vaccin',   label: 'Vaccin polivalent + antirabic', val: 120 },
+        { id: 'profil',   label: 'Profil analize extins',         val: 640 },
+        { id: 'detartraj',label: 'Detartraj fără anestezie',      val: 210 },
+        { id: 'eco',      label: 'Ecografie abdominală',          val: 154 },
+      ],
+      flBonus: 0, // la Platinum vaccinul leucemic e inclus în slider tuse/leucemie
+      sliders: {
+        int: { min: 28,  max: 215,  label: '4× / an, −20%' },
+        ext: { min: 384, max: 1440, label: '12× / an, −20%' },
+      },
+      hasProfil: false, hasTuse: true, hasAnest: true,
+    },
+  };
+
+  const $ = (id) => document.getElementById(id);
+  const state = { plan: 'silver', specie: 'caine', fl: false, profil: 'baza' };
+
+  // Click handler pentru radio-buttons stilizate
+  function bindRadioGroup(rowId, stateKey, onChange) {
+    const row = $(rowId);
+    if (!row) return;
+    row.addEventListener('click', (e) => {
+      const lbl = e.target.closest('.calc-radio');
+      if (!lbl) return;
+      [...row.querySelectorAll('.calc-radio')].forEach(x => x.classList.remove('active'));
+      lbl.classList.add('active');
+      const input = lbl.querySelector('input');
+      if (input) input.checked = true;
+      const val = lbl.dataset.plan || lbl.dataset.specie || lbl.dataset.profil;
+      state[stateKey] = val;
+      if (onChange) onChange(val);
+      render();
+    });
+  }
+
+  bindRadioGroup('calc-plan-row', 'plan', () => syncSlidersToPlan());
+  bindRadioGroup('calc-specie-row', 'specie');
+  bindRadioGroup('calc-profil-row', 'profil');
+
+  $('calc-fl').addEventListener('change', (e) => { state.fl = e.target.checked; render(); });
+
+  // Slidere — actualizare live a valorii afișate + a gradientului
+  ['int','ext','tuse','anest'].forEach(k => {
+    const inp = $('calc-' + k);
+    if (!inp) return;
+    inp.addEventListener('input', () => {
+      $('calc-' + k + '-val').textContent = inp.value;
+      paintSlider(inp);
+      render();
+    });
+  });
+
+  function paintSlider(inp) {
+    const min = Number(inp.min), max = Number(inp.max), val = Number(inp.value);
+    const pct = max > min ? ((val - min) / (max - min)) * 100 : 0;
+    inp.style.background = `linear-gradient(to right, var(--red) 0%, var(--red) ${pct}%, #e5e7eb ${pct}%, #e5e7eb 100%)`;
+  }
+
+  // Când se schimbă pachetul: re-aplicăm min/max la slidere și ascundem/arătăm controale
+  function syncSlidersToPlan() {
+    const p = PLANS[state.plan];
+    // Slider intern
+    const intInp = $('calc-int');
+    intInp.min = p.sliders.int.min;
+    intInp.max = p.sliders.int.max;
+    intInp.value = p.sliders.int.min;
+    $('calc-int-val').textContent = p.sliders.int.min;
+    $('calc-int-min').textContent = p.sliders.int.min + ' lei';
+    $('calc-int-max').textContent = p.sliders.int.max + ' lei';
+    $('calc-int-meta').textContent = '(' + p.sliders.int.label + ')';
+    paintSlider(intInp);
+    // Slider extern
+    const extInp = $('calc-ext');
+    extInp.min = p.sliders.ext.min;
+    extInp.max = p.sliders.ext.max;
+    extInp.value = p.sliders.ext.min;
+    $('calc-ext-val').textContent = p.sliders.ext.min;
+    $('calc-ext-min').textContent = p.sliders.ext.min + ' lei';
+    $('calc-ext-max').textContent = p.sliders.ext.max + ' lei';
+    $('calc-ext-meta').textContent = '(' + p.sliders.ext.label + ')';
+    paintSlider(extInp);
+    // Slidere Platinum
+    $('calc-tuse-block').style.display  = p.hasTuse  ? 'block' : 'none';
+    $('calc-anest-block').style.display = p.hasAnest ? 'block' : 'none';
+    if (p.hasTuse)  { $('calc-tuse').value  = 59;  $('calc-tuse-val').textContent  = 59;  paintSlider($('calc-tuse')); }
+    if (p.hasAnest) { $('calc-anest').value = 150; $('calc-anest-val').textContent = 150; paintSlider($('calc-anest')); }
+    // Profil analize (doar Gold)
+    $('calc-profil-wrap').style.display = p.hasProfil ? 'block' : 'none';
+    // Renumerotare titluri secțiuni
+    $('calc-var-title').textContent = (p.hasProfil ? '4' : '3') + '. Costuri variabile (trage cursorul)';
+  }
+
+  // Calcul + render defalcare
+  function render() {
+    const p = PLANS[state.plan];
+    const isCat = state.specie === 'pisica';
+
+    // Subtitle dreapta
+    const speciaLabel = isCat ? 'Pisică' : 'Câine';
+    $('calc-result-sub').textContent = `Pachet ${p.formPlan} · ${speciaLabel}`;
+
+    // Vizibilitate fracție leucemică
+    $('calc-fl-wrap').style.display = (isCat && p.flBonus > 0) ? 'block' : 'none';
+    if (!isCat || p.flBonus === 0) { $('calc-fl').checked = false; state.fl = false; }
+
+    // Costuri fixe
+    const fixLines = p.fix.map(f => {
+      let v = f.val;
+      // pe Gold, "profil" se calculează din selecția curentă
+      return { label: f.label, val: v, id: f.id };
+    });
+    if (state.plan === 'gold') {
+      const pv = PLANS.gold.profil[state.profil];
+      fixLines.push({ label: 'Profil analize sânge (' + (state.profil === 'baza' ? 'bază' : 'avansat') + ')', val: pv });
+    }
+    if (isCat && p.flBonus > 0 && state.fl) {
+      fixLines.push({ label: 'Fracție leucemică (vaccin pisică)', val: p.flBonus });
+    }
+
+    let totalFix = fixLines.reduce((s,l) => s + l.val, 0);
+
+    // Costuri variabile
+    const varLines = [];
+    const intVal = Number($('calc-int').value);
+    const extVal = Number($('calc-ext').value);
+    varLines.push({ label: 'Deparazitări interne ' + p.sliders.int.label, val: intVal });
+    varLines.push({ label: 'Deparazitări externe ' + p.sliders.ext.label, val: extVal });
+    let totalVar = intVal + extVal;
+    if (p.hasTuse) {
+      const tuse = Number($('calc-tuse').value);
+      varLines.push({ label: 'Vaccin tuse canisă / leucemie felină', val: tuse });
+      totalVar += tuse;
+    }
+    if (p.hasAnest) {
+      const anest = Number($('calc-anest').value);
+      varLines.push({ label: 'Anestezie inhalatorie', val: anest });
+      totalVar += anest;
+    }
+
+    // Render
+    $('calc-fix-lines').innerHTML = '<div style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-bottom:6px;">Costuri fixe (incluse)</div>' +
+      fixLines.map(l => `<div class="calc-line"><span class="calc-line-label">${l.label}</span><span class="calc-line-val">${l.val} lei</span></div>`).join('');
+
+    $('calc-var-lines').innerHTML = '<div style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-bottom:6px;">Costuri variabile (estimate)</div>' +
+      varLines.map(l => `<div class="calc-line calc-variable"><span class="calc-line-label">${l.label}</span><span class="calc-line-val">${l.val} lei</span></div>`).join('');
+
+    const total = totalFix + totalVar;
+    $('calc-total').textContent = total;
+    $('calc-rate').textContent = Math.ceil(total / 3);
+
+    // CTA — preselectează pachetul în formularul de înscriere
+    $('calc-cta').onclick = function() {
+      const planSelect = document.getElementById('ab-plan');
+      if (planSelect) planSelect.value = p.formPlan;
+    };
+  }
+
+  // Init
+  syncSlidersToPlan();
+  paintSlider($('calc-int'));
+  paintSlider($('calc-ext'));
+  render();
+})();
+</script>
+
 <!-- FEEDBACK FLOAT BUTTON -->
 <a href="feedback.html" aria-label="Lasă feedback" style="position:fixed; bottom:28px; left:28px; z-index:998; height:48px; padding:0 18px; background:#b52020; color:#fff; border-radius:24px; display:inline-flex; align-items:center; gap:8px; font-size:0.85rem; font-weight:700; box-shadow:0 4px 20px rgba(181,32,32,0.4), 0 2px 8px rgba(0,0,0,0.15); transition:transform 0.2s, box-shadow 0.2s; text-decoration:none;" onmouseover="this.style.transform='scale(1.05)';this.style.boxShadow='0 6px 28px rgba(181,32,32,0.5), 0 4px 12px rgba(0,0,0,0.2)'" onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 20px rgba(181,32,32,0.4), 0 2px 8px rgba(0,0,0,0.15)'"><svg width="20" height="20" fill="#fff" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>Feedback</a>
 </body>
