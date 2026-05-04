@@ -54,7 +54,7 @@ export default async function handler(req, res) {
 
   const cod = (req.query.cod || '').toString().trim();
   // Validare format: 4-16 caractere alfanumerice
-  if (!cod || !/^[A-Za-z0-9_-]{4,16}$/.test(cod)) {
+  if (!cod || !/^[A-Za-z0-9_-]{4,32}$/.test(cod)) {
     return res.status(400).json({ error: 'Cod invalid' });
   }
 

@@ -17,13 +17,13 @@ export default async function handler(req, res) {
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return res.status(400).json({ error: 'Email invalid' });
   }
-  if (!cod || !/^[A-Za-z0-9_-]{4,16}$/.test(cod)) {
+  if (!cod || !/^[A-Za-z0-9_-]{4,32}$/.test(cod)) {
     return res.status(400).json({ error: 'Cod invalid' });
   }
   const safeNume   = String(nume   || '').slice(0, 100);
   const safePlan   = String(plan   || '').slice(0, 80);
   const safeAnimal = String(animal || '').slice(0, 80);
-  const safeCod    = String(cod).slice(0, 16);
+  const safeCod    = String(cod).slice(0, 32);
 
   const statusUrl = 'https://www.vet-stuff.ro/status.html?cod=' + encodeURIComponent(safeCod);
   const useUrl    = 'https://www.vet-stuff.ro/u.html?cod=' + encodeURIComponent(safeCod);

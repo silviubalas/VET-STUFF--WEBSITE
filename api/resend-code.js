@@ -1,5 +1,6 @@
-// Vercel Serverless Function — retrimite codul de abonament pe email
-// Cauta email in tabela Abonamente din Airtable si retrimite emailul de confirmare cu QR.
+// Vercel Serverless Function — retrimite TOATE codurile de abonament pentru un email
+// Cauta in tabela Abonamente toate inregistrarile cu acel email si trimite un singur email
+// cu lista completa de coduri (un proprietar poate avea mai multe animale).
 // Returneaza INTOTDEAUNA 200 (nu dezvaluie daca emailul exista in sistem — securitate).
 
 const AIRTABLE_BASE = 'appGhcW1B4iDA4cUY';
@@ -23,12 +24,12 @@ export default async function handler(req, res) {
   const safeEmail = String(email).slice(0, 254).toLowerCase();
 
   try {
-    // Cauta in Abonamente dupa email (case-insensitive)
+    // Cauta in Abonamente TOATE inregistrarile cu acel email (case-insensitive)
     const escaped = safeEmail.replace(/'/g, "\\'");
     const formula = `LOWER({Email})='${escaped}'`;
     const url = 'https://api.airtable.com/v0/' + AIRTABLE_BASE + '/' + encodeURIComponent(TABLE)
       + '?filterByFormula=' + encodeURIComponent(formula)
-      + '&maxRecords=1'
+      + '&pageSize=100'
       + '&fields%5B%5D=Email&fields%5B%5D=Name&fields%5B%5D=Plan&fields%5B%5D=Cod&fields%5B%5D=Nume%20animal';
 
     const atRes = await fetch(url, {
@@ -41,26 +42,51 @@ export default async function handler(req, res) {
     }
 
     const data = await atRes.json();
-    const record = (data.records && data.records[0]) || null;
+    const records = (data.records || []).filter(r => {
+      const c = String((r.fields || {}).Cod || '').trim();
+      return c && /^[A-Za-z0-9_-]{4,32}$/.test(c);
+    });
 
-    // Daca nu gasim emailul, returnam tot 200 (nu dezvaluim absenta)
-    if (!record) {
+    // Daca nu gasim nimic, returnam tot 200 (nu dezvaluim absenta)
+    if (records.length === 0) {
       return res.status(200).json({ ok: true });
     }
 
-    const f = record.fields || {};
-    const cod    = String(f['Cod'] || '').trim();
-    const nume   = String(f['Name'] || '').slice(0, 100);
-    const plan   = String(f['Plan'] || '').slice(0, 80);
-    const animal = String(f['Nume animal'] || '').slice(0, 80);
+    // Numele primului record (pentru salut). Daca proprietarii au facut inscrieri pe nume diferite, alegem primul.
+    const firstFields = records[0].fields || {};
+    const nume = String(firstFields['Name'] || '').slice(0, 100);
 
-    if (!cod || !/^[A-Za-z0-9_-]{4,16}$/.test(cod)) {
-      return res.status(200).json({ ok: true });
-    }
+    // Construim lista de carduri — cate unul pentru fiecare animal/cod
+    const cardsHtml = records.map(r => {
+      const f = r.fields || {};
+      const cod    = String(f['Cod'] || '').trim();
+      const plan   = String(f['Plan'] || '').slice(0, 80);
+      const animal = String(f['Nume animal'] || '').slice(0, 80);
+      const statusUrl = 'https://www.vet-stuff.ro/status.html?cod=' + encodeURIComponent(cod);
+      const useUrl    = 'https://www.vet-stuff.ro/u.html?cod=' + encodeURIComponent(cod);
+      const qrUrl     = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=8&data=' + encodeURIComponent(useUrl);
+      return `
+  <div style="background:#fef2f2;border:2px dashed #b52020;border-radius:12px;padding:18px;margin:18px 0;">
+    <div style="text-align:center;">
+      <p style="margin:0 0 6px;color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:1px;">${animal ? escapeHtml(animal) + ' · ' : ''}${escapeHtml(plan)}</p>
+      <p style="margin:0;font-size:24px;font-weight:bold;color:#b52020;letter-spacing:2px;font-family:'Menlo','Courier New',monospace;">${escapeHtml(cod)}</p>
+    </div>
+    <div style="text-align:center;margin-top:14px;">
+      <img src="${qrUrl}" alt="QR ${escapeHtml(cod)}" width="180" height="180" style="background:#fff;padding:8px;border-radius:8px;border:1px solid #e5e7eb;display:inline-block;">
+    </div>
+    <div style="text-align:center;margin-top:10px;">
+      <a href="${statusUrl}" style="font-size:13px;color:#b52020;text-decoration:underline;">Verifică status →</a>
+    </div>
+  </div>`;
+    }).join('');
 
-    const statusUrl = 'https://www.vet-stuff.ro/status.html?cod=' + encodeURIComponent(cod);
-    const useUrl    = 'https://www.vet-stuff.ro/u.html?cod=' + encodeURIComponent(cod);
-    const qrUrl     = 'https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=10&data=' + encodeURIComponent(useUrl);
+    const subject = records.length === 1
+      ? 'Codul tău VET STUFF'
+      : 'Codurile tale VET STUFF (' + records.length + ' abonamente)';
+
+    const intro = records.length === 1
+      ? 'Ai solicitat retrimierea codului de abonament. Mai jos ai codul + QR-ul pentru clinică.'
+      : 'Ai solicitat codurile abonamentelor tale. Mai jos găsești toate cele <strong>' + records.length + '</strong> abonamente înregistrate pe acest email — fiecare animal are propriul cod și QR.';
 
     const html = `
 <!DOCTYPE html>
@@ -73,25 +99,11 @@ export default async function handler(req, res) {
 
   <h2 style="color:#1f2937;margin-top:32px;">Salut${nume ? ', ' + escapeHtml(nume) : ''}!</h2>
 
-  <p>Ai solicitat retrimierea codului de abonament${animal ? ' pentru <strong>' + escapeHtml(animal) + '</strong>' : ''}.</p>
+  <p>${intro}</p>
 
-  <div style="background:#fef2f2;border:2px dashed #b52020;border-radius:12px;padding:20px;margin:24px 0;text-align:center;">
-    <p style="margin:0 0 8px;color:#6b7280;font-size:13px;text-transform:uppercase;letter-spacing:1px;">Codul tău unic</p>
-    <p style="margin:0;font-size:28px;font-weight:bold;color:#b52020;letter-spacing:2px;font-family:'Menlo','Courier New',monospace;">${escapeHtml(cod)}</p>
-    <p style="margin:8px 0 0;font-size:13px;color:#6b7280;">Pachet: ${escapeHtml(plan)}</p>
-  </div>
+  ${cardsHtml}
 
-  <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin:24px 0;text-align:center;">
-    <p style="margin:0 0 12px;color:#6b7280;font-size:13px;text-transform:uppercase;letter-spacing:1px;">Codul QR pentru clinică</p>
-    <img src="${qrUrl}" alt="Cod QR abonament" width="240" height="240" style="display:block;margin:0 auto;background:#fff;padding:10px;border-radius:8px;border:1px solid #e5e7eb;">
-    <p style="margin:12px 0 0;color:#6b7280;font-size:13px;line-height:1.5;">La fiecare vizită, arată acest QR medicului.<br>El va înregistra serviciile folosite pe loc.</p>
-  </div>
-
-  <div style="text-align:center;margin:32px 0;">
-    <a href="${statusUrl}" style="display:inline-block;background:#b52020;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:16px;">Verifică status abonament</a>
-  </div>
-
-  <p style="font-size:14px;color:#6b7280;">Sau accesează: <a href="${statusUrl}" style="color:#b52020;">${statusUrl}</a></p>
+  <p style="font-size:14px;color:#6b7280;margin-top:24px;">La fiecare vizită, arată QR-ul potrivit medicului. El înregistrează serviciile folosite pe loc.</p>
 
   <hr style="border:none;border-top:1px solid #e5e7eb;margin:32px 0;">
   <p style="font-size:13px;color:#9ca3af;text-align:center;">
@@ -110,7 +122,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         from: 'VET STUFF <noreply@vet-stuff.ro>',
         to: [safeEmail],
-        subject: 'Codul tău VET STUFF — ' + cod,
+        subject,
         html,
       }),
     });

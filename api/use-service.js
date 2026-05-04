@@ -21,7 +21,7 @@ export default async function handler(req, res) {
   const fields = body.fields || {};
 
   // Validari
-  if (!cod || !/^[A-Za-z0-9_-]{4,16}$/.test(cod)) {
+  if (!cod || !/^[A-Za-z0-9_-]{4,32}$/.test(cod)) {
     return res.status(400).json({ error: 'Cod invalid' });
   }
   // Comparatie PIN constant-time-ish (tolerant la lungime)

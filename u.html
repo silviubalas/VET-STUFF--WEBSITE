@@ -434,7 +434,7 @@
 
   // ---- Init: read ?cod= from URL ----
   const urlCod = new URLSearchParams(location.search).get('cod') || '';
-  if (urlCod && /^[A-Za-z0-9_-]{4,16}$/.test(urlCod)) {
+  if (urlCod && /^[A-Za-z0-9_-]{4,32}$/.test(urlCod)) {
     state.cod = urlCod.toUpperCase();
     if (state.pin) {
       loadData();
@@ -448,8 +448,8 @@
   // ---- Step 1: cod ----
   $('cod-submit').addEventListener('click', () => {
     const v = $('cod-input').value.trim().toUpperCase();
-    if (!/^[A-Za-z0-9_-]{4,16}$/.test(v)) {
-      alert('Cod invalid. Folosește 4-16 caractere alfanumerice.');
+    if (!/^[A-Za-z0-9_-]{4,32}$/.test(v)) {
+      alert('Cod invalid. Folosește 4-32 caractere alfanumerice.');
       return;
     }
     state.cod = v;

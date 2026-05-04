@@ -806,7 +806,18 @@ function genCodAbonament(numeClient, numeAnimal) {
   const dd = String(t.getDate()).padStart(2, '0');
   const mm = String(t.getMonth() + 1).padStart(2, '0');
   const yyyy = t.getFullYear();
-  return clean(numeClient) + clean(numeAnimal) + dd + mm + yyyy;
+  // Sufix random 4 caractere alfanumerice (~1.6M combinații) — elimină practic coliziunile
+  // chiar dacă același proprietar înregistrează 2 animale cu nume identic în aceeași zi.
+  const ALPHA = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // fără I/O/0/1 pt lizibilitate
+  let suffix = '';
+  if (window.crypto && window.crypto.getRandomValues) {
+    const buf = new Uint8Array(4);
+    window.crypto.getRandomValues(buf);
+    for (let i = 0; i < 4; i++) suffix += ALPHA[buf[i] % ALPHA.length];
+  } else {
+    for (let i = 0; i < 4; i++) suffix += ALPHA[Math.floor(Math.random() * ALPHA.length)];
+  }
+  return clean(numeClient) + clean(numeAnimal) + dd + mm + yyyy + suffix;
 }
 
 document.getElementById('abonament-form').addEventListener('submit', function(e) {
