@@ -1,6 +1,6 @@
 const POSTS_INDEX = 'posts/posts.json';
 const POSTS_DIR   = 'posts/';
-const PAGE_SIZE   = 6;
+const PAGE_SIZE   = 12;
 
 if (document.getElementById('blog-list')) initBlogList();
 if (document.getElementById('blog-post')) initBlogPost();
@@ -19,32 +19,25 @@ async function initBlogList() {
       return;
     }
 
-    const [featured, ...rest] = posts;
-    let shown = Math.min(PAGE_SIZE, rest.length);
+    let currentPage = 0;
+    const totalPages = Math.ceil(posts.length / PAGE_SIZE);
 
     function render() {
-      const cards = rest.slice(0, shown).map(renderCard).join('');
-      const hasMore = shown < rest.length;
-      const loadMoreHtml = hasMore
-        ? `<div class="load-more-wrap">
-             <button class="load-more-btn" id="load-more-btn">
-               Citește mai multe articole
-               <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
-             </button>
-           </div>`
-        : '';
+      const start = currentPage * PAGE_SIZE;
+      const pagePosts = posts.slice(start, start + PAGE_SIZE);
+      const cards = pagePosts.map(renderCard).join('');
 
       container.innerHTML =
-        renderFeatured(featured) +
         `<div class="blog-grid">${cards}</div>` +
-        loadMoreHtml;
+        renderPagination(totalPages, currentPage);
 
-      if (hasMore) {
-        document.getElementById('load-more-btn').addEventListener('click', () => {
-          shown = Math.min(shown + PAGE_SIZE, rest.length);
+      container.querySelectorAll('.page-btn[data-page]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          currentPage = parseInt(btn.dataset.page, 10);
           render();
+          window.scrollTo({ top: container.offsetTop - 120, behavior: 'smooth' });
         });
-      }
+      });
     }
 
     render();
@@ -53,36 +46,6 @@ async function initBlogList() {
     container.innerHTML = '<p class="blog-error">Eroare la încărcarea articolelor. Încearcă din nou.</p>';
     console.error('[Blog] initBlogList:', err);
   }
-}
-
-function renderFeatured(post) {
-  const url = `post.html?slug=${encodeURIComponent(post.slug)}`;
-  const imgHtml = post.cover
-    ? `<div class="featured-img-wrap">
-         <a href="${url}" tabindex="-1" aria-hidden="true">
-           <img src="${escapeHtml(post.cover)}" alt="${escapeHtml(post.title)}" class="featured-img" loading="eager"
-                onerror="this.closest('.featured-img-wrap').style.display='none'">
-         </a>
-       </div>`
-    : '';
-  return `
-    <article class="blog-featured">
-      ${imgHtml}
-      <div class="featured-body">
-        <div class="featured-meta">
-          <div class="blog-card-tags">${post.tags.map(t => `<span class="blog-tag">${escapeHtml(t)}</span>`).join('')}</div>
-          <time class="blog-card-date" datetime="${post.date}">${formatDate(post.date)}</time>
-        </div>
-        <span class="featured-label">Articol recomandat</span>
-        <h2 class="featured-title"><a href="${url}">${escapeHtml(post.title)}</a></h2>
-        <p class="featured-excerpt">${escapeHtml(post.excerpt)}</p>
-        <a href="${url}" class="featured-cta">
-          Citește articolul complet
-          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </a>
-      </div>
-    </article>
-  `;
 }
 
 function renderCard(post) {
@@ -96,18 +59,31 @@ function renderCard(post) {
   return `
     <article class="blog-card${post.cover ? ' has-img' : ''}">
       ${imgHtml}
-      <div class="blog-card-top">
-        <div class="blog-card-tags">${post.tags.map(t => `<span class="blog-tag">${escapeHtml(t)}</span>`).join('')}</div>
+      <div class="blog-card-body">
+        <div class="blog-card-tags">${post.tags.slice(0, 2).map(t => `<span class="blog-tag">${escapeHtml(t)}</span>`).join('')}</div>
+        <h2 class="blog-card-title"><a href="${url}">${escapeHtml(post.title)}</a></h2>
         <time class="blog-card-date" datetime="${post.date}">${formatDate(post.date)}</time>
       </div>
-      <h2 class="blog-card-title"><a href="${url}">${escapeHtml(post.title)}</a></h2>
-      <p class="blog-card-excerpt">${escapeHtml(post.excerpt)}</p>
-      <a href="${url}" class="blog-card-cta">
-        Citește articolul
-        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-      </a>
     </article>
   `;
+}
+
+function renderPagination(totalPages, currentPage) {
+  if (totalPages <= 1) return '';
+
+  const prevBtn = currentPage > 0
+    ? `<button class="page-btn page-nav" data-page="${currentPage - 1}">‹ Înapoi</button>`
+    : '';
+  const nextBtn = currentPage < totalPages - 1
+    ? `<button class="page-btn page-nav" data-page="${currentPage + 1}">Înainte ›</button>`
+    : '';
+
+  let pageNums = '';
+  for (let i = 0; i < totalPages; i++) {
+    pageNums += `<button class="page-btn${i === currentPage ? ' active' : ''}" data-page="${i}">${i + 1}</button>`;
+  }
+
+  return `<nav class="pagination" aria-label="Paginare">${prevBtn}${pageNums}${nextBtn}</nav>`;
 }
 
 
