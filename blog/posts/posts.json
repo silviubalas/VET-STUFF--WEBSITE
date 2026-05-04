@@ -1,0 +1,16 @@
+[
+  {
+    "slug": "primul-articol",
+    "title": "De ce vizitele preventive sunt esențiale pentru câinele tău",
+    "date": "2026-05-01",
+    "excerpt": "Prevenția este cel mai eficient instrument din medicina veterinară. Află de ce controalele regulate pot salva viața animalului tău de companie și ce presupune un consult preventiv complet la VET STUFF.",
+    "tags": ["prevenție", "câini", "sănătate"]
+  },
+  {
+    "slug": "semne-pisica-bolnava",
+    "title": "7 semne că pisica ta ar putea fi bolnavă — și când să suni la veterinar",
+    "date": "2026-04-20",
+    "excerpt": "Pisicile sunt maeștre în a-și ascunde durerea și disconfortul. Iată cele mai importante semnale de alarmă pe care trebuie să le cunoști ca stăpân responsabil.",
+    "tags": ["pisici", "urgențe", "simptome"]
+  }
+]
