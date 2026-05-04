@@ -19,15 +19,20 @@ async function initBlogList() {
       return;
     }
 
+    const [featured, ...rest] = posts;
     let currentPage = 0;
-    const totalPages = Math.ceil(posts.length / PAGE_SIZE);
+    const totalPages = Math.ceil(rest.length / PAGE_SIZE);
 
     function render() {
       const start = currentPage * PAGE_SIZE;
-      const pagePosts = posts.slice(start, start + PAGE_SIZE);
+      const pagePosts = rest.slice(start, start + PAGE_SIZE);
       const cards = pagePosts.map(renderCard).join('');
 
+      // Featured apare doar pe prima pagină
+      const featuredHtml = currentPage === 0 ? renderFeatured(featured) : '';
+
       container.innerHTML =
+        featuredHtml +
         `<div class="blog-grid">${cards}</div>` +
         renderPagination(totalPages, currentPage);
 
@@ -46,6 +51,36 @@ async function initBlogList() {
     container.innerHTML = '<p class="blog-error">Eroare la încărcarea articolelor. Încearcă din nou.</p>';
     console.error('[Blog] initBlogList:', err);
   }
+}
+
+function renderFeatured(post) {
+  const url = `post.html?slug=${encodeURIComponent(post.slug)}`;
+  const imgHtml = post.cover
+    ? `<div class="featured-img-wrap">
+         <a href="${url}" tabindex="-1" aria-hidden="true">
+           <img src="${escapeHtml(post.cover)}" alt="${escapeHtml(post.title)}" class="featured-img" loading="eager"
+                onerror="this.closest('.featured-img-wrap').style.display='none'">
+         </a>
+       </div>`
+    : '';
+  return `
+    <article class="blog-featured">
+      ${imgHtml}
+      <div class="featured-body">
+        <div class="featured-meta">
+          <div class="blog-card-tags">${post.tags.map(t => `<span class="blog-tag">${escapeHtml(t)}</span>`).join('')}</div>
+          <time class="blog-card-date" datetime="${post.date}">${formatDate(post.date)}</time>
+        </div>
+        <span class="featured-label">Articol recomandat</span>
+        <h2 class="featured-title"><a href="${url}">${escapeHtml(post.title)}</a></h2>
+        <p class="featured-excerpt">${escapeHtml(post.excerpt)}</p>
+        <a href="${url}" class="featured-cta">
+          Citește articolul complet
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+        </a>
+      </div>
+    </article>
+  `;
 }
 
 function renderCard(post) {
