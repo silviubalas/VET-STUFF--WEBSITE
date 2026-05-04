@@ -42,9 +42,10 @@ export default async function handler(req, res) {
       }
     );
 
-    const text = await airtableRes.text();
     if (!airtableRes.ok) {
-      return res.status(airtableRes.status).json({ error: 'Airtable error', detail: text.slice(0, 500) });
+      const text = await airtableRes.text();
+      console.error('[airtable] error', airtableRes.status, text.slice(0, 500));
+      return res.status(airtableRes.status).json({ error: 'Airtable error' });
     }
     return res.status(200).json({ ok: true });
   } catch (err) {

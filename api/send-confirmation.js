@@ -14,9 +14,10 @@ export default async function handler(req, res) {
   const { email, nume, plan, animal, cod } = req.body || {};
 
   // Validari minime
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (!email || typeof email !== 'string' || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return res.status(400).json({ error: 'Email invalid' });
   }
+  const safeEmail = email.trim().slice(0, 254);
   if (!cod || !/^[A-Za-z0-9_-]{4,32}$/.test(cod)) {
     return res.status(400).json({ error: 'Cod invalid' });
   }
@@ -92,15 +93,16 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         from: 'VET STUFF <noreply@vet-stuff.ro>',
-        to: [email],
+        to: [safeEmail],
         subject,
         html,
       }),
     });
 
-    const text = await resendRes.text();
     if (!resendRes.ok) {
-      return res.status(resendRes.status).json({ error: 'Resend error', detail: text.slice(0, 500) });
+      const text = await resendRes.text();
+      console.error('[send-confirmation] resend error', resendRes.status, text.slice(0, 500));
+      return res.status(resendRes.status).json({ error: 'Resend error' });
     }
     return res.status(200).json({ ok: true });
   } catch (err) {

@@ -2,8 +2,22 @@
 // PIN-ul este in variabila de mediu VET_PIN si nu ajunge niciodata in browser.
 // Endpoint apelat din u.html dupa ce medicul scaneaza QR-ul si introduce PIN-ul.
 
+import { timingSafeEqual } from 'node:crypto';
+
 const AIRTABLE_BASE = 'appGhcW1B4iDA4cUY';
 const TABLE = 'UtilizareAbonamente';
+
+// Comparatie string in timp constant (previne timing attacks pe PIN)
+function timingSafeEqualStr(a, b) {
+  const ba = Buffer.from(String(a), 'utf8');
+  const bb = Buffer.from(String(b), 'utf8');
+  if (ba.length !== bb.length) {
+    // Comparam totusi cu un buffer de aceeasi lungime ca sa nu scurgem lungimea exact
+    timingSafeEqual(ba, ba);
+    return false;
+  }
+  return timingSafeEqual(ba, bb);
+}
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -24,8 +38,8 @@ export default async function handler(req, res) {
   if (!cod || !/^[A-Za-z0-9_-]{4,32}$/.test(cod)) {
     return res.status(400).json({ error: 'Cod invalid' });
   }
-  // Comparatie PIN constant-time-ish (tolerant la lungime)
-  if (!pin || pin !== expectedPin) {
+  // Comparatie PIN constant-time pentru a preveni timing attacks
+  if (!pin || !timingSafeEqualStr(pin, expectedPin)) {
     return res.status(401).json({ error: 'PIN incorect' });
   }
 
@@ -99,7 +113,8 @@ export default async function handler(req, res) {
     });
     if (!findRes.ok) {
       const t = await findRes.text();
-      return res.status(findRes.status).json({ error: 'Airtable lookup error', detail: t.slice(0, 300) });
+      console.error('[use-service] lookup error', findRes.status, t.slice(0, 300));
+      return res.status(findRes.status).json({ error: 'Airtable lookup error' });
     }
     const findData = await findRes.json();
     const record = (findData.records && findData.records[0]) || null;
@@ -115,9 +130,10 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({ fields: cleanFields }),
     });
-    const patchText = await patchRes.text();
     if (!patchRes.ok) {
-      return res.status(patchRes.status).json({ error: 'Airtable update error', detail: patchText.slice(0, 300) });
+      const patchText = await patchRes.text();
+      console.error('[use-service] update error', patchRes.status, patchText.slice(0, 300));
+      return res.status(patchRes.status).json({ error: 'Airtable update error' });
     }
 
     return res.status(200).json({ ok: true, updated: Object.keys(cleanFields) });
