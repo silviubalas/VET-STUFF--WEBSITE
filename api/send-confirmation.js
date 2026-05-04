@@ -70,7 +70,7 @@ export default async function handler(req, res) {
   <h3 style="color:#1f2937;">Ce urmează?</h3>
   <ol style="color:#4b5563;">
     <li>Te vom contacta în scurt timp pentru a stabili produsele exacte (deparazitări) și data primei consultații.</li>
-    <li>Plata se face integral sau în 3 rate egale, în decurs de o lună.</li>
+    <li>Plata se face integral sau în 3 rate egale, pe parcursul a 60 de zile.</li>
     <li>După prima vizită, abonamentul devine activ pentru 12 luni.</li>
   </ol>
 
