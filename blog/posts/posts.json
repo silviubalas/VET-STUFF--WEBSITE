@@ -12,5 +12,89 @@
     "date": "2026-04-20",
     "excerpt": "Pisicile sunt maestre în a-și ascunde durerea și disconfortul. Iată cele mai importante semnale de alarmă pe care trebuie să le cunoști ca stăpân responsabil.",
     "tags": ["pisici", "urgențe", "simptome"]
+  },
+  {
+    "slug": "sterilizare-castrare",
+    "title": "Sterilizare și castrare: tot ce trebuie să știi înainte de operație",
+    "date": "2026-04-28",
+    "excerpt": "Sterilizarea și castrarea sunt printre cele mai frecvente intervenții chirurgicale veterinare — și printre cele mai benefice pentru sănătatea pe termen lung a animalului tău. Iată ce presupun, când se fac și la ce să te aștepți.",
+    "tags": ["chirurgie", "prevenție", "câini", "pisici"]
+  },
+  {
+    "slug": "calatorie-animale-ue-2026",
+    "title": "Călătoria cu animale de companie în UE în 2026: pașaport, microcip, vaccinuri",
+    "date": "2026-04-22",
+    "excerpt": "Vrei să pleci în vacanță sau să te muți în altă țară UE cu câinele sau pisica? Iată exact ce documente sunt obligatorii, ce termene trebuie respectate și cum eviți surprizele la graniță.",
+    "tags": ["călătorii", "legislație", "câini", "pisici"]
+  },
+  {
+    "slug": "consult-oftalmologic-animale",
+    "title": "Consultul oftalmologic la animale: când e necesar și ce implică",
+    "date": "2026-04-15",
+    "excerpt": "Problemele oculare la câini și pisici pot evolua rapid spre pierderea vederii dacă nu sunt depistate la timp. Află care sunt semnele de alarmă și ce presupune un examen oftalmologic veterinar complet.",
+    "tags": ["oftalmologie", "câini", "pisici", "diagnostic"]
+  },
+  {
+    "slug": "analize-preoperatorii",
+    "title": "Analizele preoperatorii: de ce sunt obligatorii înainte de orice operație",
+    "date": "2026-04-08",
+    "excerpt": "Înainte de orice intervenție chirurgicală, analizele de sânge nu sunt o formalitate — sunt instrumentul prin care medicul veterinar identifică riscurile ascunse și adaptează anestezia la pacientul specific.",
+    "tags": ["chirurgie", "diagnostic", "anestezie", "prevenție"]
+  },
+  {
+    "slug": "microcipare-caini-romania",
+    "title": "Microciparea câinilor în România: obligații legale și ce se întâmplă dacă nu microcipezi",
+    "date": "2026-04-01",
+    "excerpt": "În România, microciparea câinilor este obligatorie prin lege. Află ce prevede legislația, ce amenzi riscă proprietarii, cum funcționează microcipul și de ce identificarea electronică îți protejează și pe tine, nu doar animalul.",
+    "tags": ["legislație", "câini", "microcip", "identificare"]
+  },
+  {
+    "slug": "keratoconjunctivita-sicca",
+    "title": "Keratoconjunctivita sicca (ochiul uscat) la câini: cauze, simptome, tratament",
+    "date": "2026-03-24",
+    "excerpt": "Ochiul uscat este una dintre cele mai frecvente afecțiuni oculare la câini și, netratat, duce la orbire. Boala este controlabilă, dar necesită tratament zilnic pe tot parcursul vieții.",
+    "tags": ["oftalmologie", "câini", "boli cronice"]
+  },
+  {
+    "slug": "cardiomiopatie-pisici-british",
+    "title": "Cardiomiopatia hipertrofică la pisicile British Shorthair: ce trebuie să știe orice proprietar",
+    "date": "2026-03-17",
+    "excerpt": "Cardiomiopatia hipertrofică (HCM) este cea mai frecventă boală cardiacă la pisici și afectează disproporționat rasele British Shorthair și Scottish Fold. Mulți proprietari nu știu că animalul lor are o problemă cardiacă până când apare o criză.",
+    "tags": ["cardiologie", "pisici", "boli cronice", "British Shorthair"]
+  },
+  {
+    "slug": "anestezie-veterinara",
+    "title": "Anestezia în medicina veterinară: cum funcționează și de ce e sigură",
+    "date": "2026-03-10",
+    "excerpt": "Mulți proprietari sunt îngrijorați de anestezie mai mult decât de intervenția chirurgicală în sine. Iată ce se întâmplă de fapt când animalul tău e anesteziat, cum se monitorizează și ce îl face sigur.",
+    "tags": ["chirurgie", "anestezie", "siguranță"]
+  },
+  {
+    "slug": "urgente-veterinare",
+    "title": "Top 10 urgențe veterinare: cum le recunoști și ce faci în primele minute",
+    "date": "2026-03-03",
+    "excerpt": "O urgență veterinară este orice situație în care viața animalului e amenințată și fiecare minut contează. Cunoaște semnele și știi exact ce să faci — și ce să NU faci — înainte să ajungi la clinică.",
+    "tags": ["urgențe", "câini", "pisici", "prim ajutor"]
+  },
+  {
+    "slug": "plimbari-caini-iarna",
+    "title": "Plimbările cu câinele iarna: ce se schimbă și ce nu",
+    "date": "2026-02-24",
+    "excerpt": "Iarna nu e un motiv să reduci drastic ieșirile cu câinele — e un motiv să le faci mai atent. Câteva ajustări simple fac diferența dintre o plimbare confortabilă și una cu riscuri reale.",
+    "tags": ["câini", "sezonier", "îngrijire"]
+  },
+  {
+    "slug": "deparazitare-externa-iarna",
+    "title": "Deparazitarea externă iarna: de ce nu te oprești din octombrie",
+    "date": "2026-02-17",
+    "excerpt": "Există o convingere răspândită că paraziții externi dispar iarna. Această convingere e greșită și poate lăsa animalul tău expus la paraziți timp de luni întregi.",
+    "tags": ["deparazitare", "câini", "pisici", "sezonier"]
+  },
+  {
+    "slug": "urinat-afara-litierei-pisici",
+    "title": "Pisica urinează în afara litierei: cauze medicale și comportamentale",
+    "date": "2026-02-10",
+    "excerpt": "Urinarea în afara litierei este una dintre cele mai frecvente probleme raportate de proprietarii de pisici. Înainte de orice altceva, trebuie înțeles că pisica nu face asta din răutate — transmite că ceva nu e în regulă.",
+    "tags": ["pisici", "comportament", "urologie"]
   }
 ]
