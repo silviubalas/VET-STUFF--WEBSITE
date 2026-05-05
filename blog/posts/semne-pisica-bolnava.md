@@ -61,9 +61,9 @@ Respirația pisicii ar trebui să fie aproape invizibilă în repaus. Alertează
 
 Aceste zone sunt ferestre către starea generală de sănătate:
 
-- **Ochii** — secreții, membrane nictitante vizibile (cel de-al treilea pleoap), opacități ale corneei, pupile de mărimi diferite
-- **Nasul** — secreții nazale colorate (galbene, verzi), sângerare, nas excesiv de uscat sau cu cruste
-- **Urechile** — scărpinat frecvent al urechilor, miros neplăcut, secreție maro/neagră (posibil acarieni), scuturarea capului
+- **Ochii** — secreții, membrane nictitante vizibile (a treia pleoapă), opacități ale corneei, pupile de mărimi diferite
+- **Nasul** — secreții nazale colorate (galbene, verzi), sângerare, excesiv de uscat sau cu cruste
+- **Urechile** — scărpinat frecvent, miros neplăcut, secreție maro/neagră (posibil acarieni), scuturarea capului
 
 ---
 
@@ -73,7 +73,7 @@ Schimbările de personalitate sunt adesea primul semn subtil de boală:
 
 - **Izolare** — pisica se ascunde în locuri neobișnuite și evită contactul
 - **Letargie** — doarme mai mult, nu mai reacționează la stimuli
-- **Agresivitate neobișnuită** — o pisică blândă care mușcă sau zgârie la atingere poate semnaliza durere
+- **Agresivitate neobișnuită** — o pisică blândă care mușcă sau zgârie la atingere poate semnala durere
 - **Dezorientare** — mers nesigur, căderi, lovire de obiecte (posibil probleme neurologice sau tensiune arterială ridicată)
 
 ---
