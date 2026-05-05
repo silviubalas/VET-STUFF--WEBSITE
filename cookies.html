@@ -134,6 +134,9 @@
     footer { background: var(--light); border-top: 1px solid var(--border); padding: 32px 0; margin-top: 80px; }
     .footer-link { font-size: 0.83rem; color: #888; transition: color 0.15s; }
     .footer-link:hover { color: var(--red); }
+      #scroll-top { position: fixed; bottom: 92px; right: 28px; width: 44px; height: 44px; background: var(--navy); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 990; opacity: 0; pointer-events: none; transform: translateY(10px); transition: opacity 0.25s, transform 0.25s, background 0.15s; box-shadow: 0 4px 16px rgba(0,0,0,0.18); border: none; }
+    #scroll-top.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    #scroll-top:hover { background: var(--red); }
   </style>
 </head>
 <body>
@@ -318,6 +321,7 @@
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 8);
+    var st = document.getElementById('scroll-top'); if(st) st.classList.toggle('show', window.scrollY > 400);
   });
 
   // Hamburger
@@ -354,5 +358,15 @@
 
 <!-- FEEDBACK FLOAT BUTTON -->
 <a href="feedback.html" aria-label="Lasă feedback" style="position:fixed; bottom:28px; left:28px; z-index:998; height:48px; padding:0 18px; background:#b52020; color:#fff; border-radius:24px; display:inline-flex; align-items:center; gap:8px; font-size:0.85rem; font-weight:700; box-shadow:0 4px 20px rgba(181,32,32,0.4), 0 2px 8px rgba(0,0,0,0.15); transition:transform 0.2s, box-shadow 0.2s; text-decoration:none;" onmouseover="this.style.transform='scale(1.05)';this.style.boxShadow='0 6px 28px rgba(181,32,32,0.5), 0 4px 12px rgba(0,0,0,0.2)'" onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 20px rgba(181,32,32,0.4), 0 2px 8px rgba(0,0,0,0.15)'"><svg width="20" height="20" fill="#fff" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>Feedback</a>
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Sus">
+  <svg fill="currentColor" width="22" height="22" viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+</button>
+<!-- MESSENGER FLOAT BUTTON -->
+<a href="https://www.facebook.com/vetstuff" target="_blank" rel="noopener" aria-label="Scrie-ne pe Messenger"
+   style="position:fixed; bottom:28px; right:28px; z-index:998; width:56px; height:56px; background:#0099FF; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 20px rgba(0,153,255,0.4), 0 2px 8px rgba(0,0,0,0.15); transition:transform 0.2s, box-shadow 0.2s;"
+   onmouseover="this.style.transform='scale(1.1)';this.style.boxShadow='0 6px 28px rgba(0,153,255,0.5), 0 4px 12px rgba(0,0,0,0.2)'"
+   onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 20px rgba(0,153,255,0.4), 0 2px 8px rgba(0,0,0,0.15)'">
+  <svg width="28" height="28" fill="#fff" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 4.975 0 11.111c0 3.498 1.744 6.614 4.469 8.652V24l4.088-2.242c1.092.3 2.246.464 3.443.464 6.626 0 12-4.974 12-11.111C24 4.975 18.626 0 12 0zm1.191 14.963l-3.055-3.26-5.963 3.26L10.732 8l3.131 3.259L19.752 8l-6.561 6.963z"/></svg>
+</a>
 </body>
 </html>
