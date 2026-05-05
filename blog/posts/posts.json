@@ -1,5 +1,77 @@
 [
   {
+    "slug": "alimente-periculoase-craciun-animale",
+    "cover": "https://images.unsplash.com/photo-1607758877445-3fef75ea8abe?w=1200&q=80&auto=format&fit=crop",
+    "title": "Masa de Crăciun și animalele: ce alimente sunt toxice pentru câini și pisici",
+    "date": "2026-02-03",
+    "excerpt": "Ciocolata, stafidele, ceapa, xilitol — mesele festive ascund pericole reale pentru animale. Ghidul complet al alimentelor toxice și ce faci dacă animalul a ingerat ceva periculos.",
+    "tags": ["toxicologie", "câini", "pisici", "nutriție"]
+  },
+  {
+    "slug": "ce-faci-cu-animalul-cand-pleci-vacanta",
+    "cover": "https://images.unsplash.com/photo-1743763959056-41bbb557272d?w=1200&q=80&auto=format&fit=crop",
+    "title": "Ce faci cu câinele sau pisica când pleci în vacanță: opțiuni și ce trebuie să știi",
+    "date": "2026-01-27",
+    "excerpt": "Pensiune veterinară, pet sitter sau rude de încredere? Analiza completă a fiecărei opțiuni — cu avantaje, dezavantaje și checklist înainte de plecare.",
+    "tags": ["îngrijire", "câini", "pisici", "călătorii"]
+  },
+  {
+    "slug": "urgente-veterinare-sarbatori",
+    "cover": "https://images.unsplash.com/photo-1772081960353-2ca7b181440c?w=1200&q=80&auto=format&fit=crop",
+    "title": "Urgențe veterinare de sărbători: ce se întâmplă mai des și cum te pregătești",
+    "date": "2026-01-20",
+    "excerpt": "Intoxicații, pancreatită, corpuri străine, frică de artificii — perioada Crăciunului și Revelionului aduce un vârf de urgențe veterinare. Ce să știi și cum să previi.",
+    "tags": ["urgențe", "câini", "pisici", "sezonier"]
+  },
+  {
+    "slug": "corpuri-straine-liniare-pisici",
+    "cover": "https://images.unsplash.com/photo-1642805775208-8b336d60a6ef?w=1200&q=80&auto=format&fit=crop",
+    "title": "Corpurile străine liniare la pisici: de ce sunt mai periculoase decât par",
+    "date": "2026-01-13",
+    "excerpt": "Un fir de ață, o panglică, un elastic — obiecte banale care pot provoca leziuni intestinale severe la pisici. Cum recunoști problema și de ce trebuie să acționezi imediat.",
+    "tags": ["pisici", "urgențe", "chirurgie"]
+  },
+  {
+    "slug": "cum-recunosti-durerea-animale",
+    "cover": "https://images.unsplash.com/photo-1669408695293-049a5d1766b4?w=1200&q=80&auto=format&fit=crop",
+    "title": "Cum recunoști durerea la câini și pisici: semne pe care nu trebuie să le ignori",
+    "date": "2026-01-06",
+    "excerpt": "Animalele ascund durerea prin instinct. Iată semnele comportamentale și fizice care trădează suferința — de la modificări subtile de postură la scala grimacei feline.",
+    "tags": ["câini", "pisici", "simptome", "comportament"]
+  },
+  {
+    "slug": "blocaj-urinar-motani",
+    "cover": "https://images.unsplash.com/photo-1727510152600-199102202dcf?w=1200&q=80&auto=format&fit=crop",
+    "title": "Blocajul urinar la motani: semne, cauze și de ce e o urgență absolută",
+    "date": "2025-12-30",
+    "excerpt": "Un motan care nu poate urina poate muri în 24–48 de ore fără tratament. Ghidul complet: cum recunoști un blocaj urinar, ce se întâmplă în organism și cum previi recidivele.",
+    "tags": ["pisici", "urgențe", "urologie"]
+  },
+  {
+    "slug": "oase-caini-pericole",
+    "cover": "https://images.unsplash.com/photo-1566710582818-d673dc761201?w=1200&q=80&auto=format&fit=crop",
+    "title": "De ce nu trebuie să dai oase câinelui: pericole reale pe care mulți stăpâni le ignoră",
+    "date": "2025-12-23",
+    "excerpt": "Oasele gătite se fragmentează în ace și perforează intestinul. Oasele crude fracturează dinții. Iată ce se întâmplă de fapt și ce alternative sigure există pentru nevoia de mestecat.",
+    "tags": ["câini", "nutriție", "urgențe", "îngrijire"]
+  },
+  {
+    "slug": "articulatii-caini-iarna",
+    "cover": "https://images.unsplash.com/photo-1551308075-d5f542da6386?w=1200&q=80&auto=format&fit=crop",
+    "title": "Articulațiile câinilor iarna: cum gestionezi durerea articulară pe timp de frig",
+    "date": "2025-12-16",
+    "excerpt": "Frigul agravează osteoartrita și displazia. Cum recunoști durerea articulară, ce schimbi acasă și când trebuie consult veterinar — ghid practic pentru lunile reci.",
+    "tags": ["câini", "ortopedie", "boli cronice", "sezonier"]
+  },
+  {
+    "slug": "gustari-sanatoase-caini",
+    "cover": "https://images.unsplash.com/photo-1549297161-14f79605a74c?w=1200&q=80&auto=format&fit=crop",
+    "title": "Gustări sănătoase pentru câini: ce poți oferi fără riscuri",
+    "date": "2025-12-09",
+    "excerpt": "Morcov, pui fiert, afine sau castravete — există o listă lungă de gustări naturale sigure pentru câini. Ghid complet cu ce dai, ce eviți și cum alegi recompensele comerciale.",
+    "tags": ["câini", "nutriție", "îngrijire"]
+  },
+  {
     "slug": "primul-articol",
     "cover": "https://images.unsplash.com/photo-1765045952615-9e28d239f053?w=1200&q=80&auto=format&fit=crop",
     "title": "De ce vizitele preventive sunt esențiale pentru câinele tău",
