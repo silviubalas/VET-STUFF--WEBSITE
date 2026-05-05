@@ -153,7 +153,7 @@ async function initBlogPost() {
 }
 
 function renderPost(meta, markdown) {
-  document.title = `${meta.title} | Blog VET STUFF`;
+  document.title = `${meta.title} | VETSTUFF INFO`;
 
   const metaEl = document.getElementById('post-meta');
   if (metaEl) {
