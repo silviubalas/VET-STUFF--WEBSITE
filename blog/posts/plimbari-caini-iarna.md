@@ -36,7 +36,7 @@ Hăinuțele de câini nu sunt doar estetice. La câinii vulnerabili la frig, o j
 **Criterii pentru o haină bună:**
 - Acoperă burta, nu doar spinarea
 - Nu restricționează mișcarea umerilor sau coapselor
-- Nu e prea strânsă (verifici trecând doi degete sub ea)
+- Nu e prea strânsă (verifici trecând două degete sub ea)
 - Ușor de pus și scos — nu trebuie să fie o luptă
 
 Câinii cu blană dublă (Labrador, Golden, Husky) nu au nevoie de haină în condiții normale de iarnă.
@@ -65,7 +65,7 @@ Lăbile sunt cel mai expus punct în iarnă. Riscuri specifice:
 
 - În loc de o plimbare lungă de o oră, fă două de 30 minute
 - Menține ritmul de mișcare — câinele se încălzește în mers
-- Evită perioadele de maximă frig (dimineața devreme, noaptea)
+- Evită perioadele de frig maxim (dimineața devreme, noaptea)
 - Alege trasee fără sare sau substanțe chimice vizibile pe asfalt
 
 ---

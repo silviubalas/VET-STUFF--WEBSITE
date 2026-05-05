@@ -61,7 +61,7 @@ Urinarea în locuri noi poate fi marcaj teritorial (mai frecvent la pisicile nec
 ## Ce funcționează
 
 ### Curățarea corectă a zonelor marcate
-Detergentii cu amoniac sau înălbitor imită mirosul urinei și atrag pisica înapoi. **Folosește exclusiv soluții enzimatice** (disponibile în petshop-uri) care descompun proteic mirosul.
+Detergenții cu amoniac sau înălbitor imită mirosul urinei și atrag pisica înapoi. **Folosește exclusiv soluții enzimatice** (disponibile în petshop-uri) care descompun proteic mirosul.
 
 ### Reducerea stresului
 - Menține un program stabil zilnic

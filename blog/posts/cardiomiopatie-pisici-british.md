@@ -34,7 +34,7 @@ Semnele care apar odată ce boala avansează:
 - Refuzul de a se deplasa sau durere evidentă la membre (semn de tromboembolism)
 - Pierderea apetitului
 
-> **Orice dificultate respiratorie la o pisică = urgență veterinară.** Nu aștepța.
+> **Orice dificultate respiratorie la o pisică = urgență veterinară.** Nu aștepta.
 
 ---
 
@@ -55,7 +55,7 @@ Ecocardiografia măsoară grosimea pereților ventriculari, dimensiunea camerelo
 | Adult cu modificări minore | La 6 luni |
 | Pisică cu risc crescut sau simptome | La indicația medicului |
 
-Screeningul anual permite detectarea îngroșării muschiului cardiac **înainte** ca boala să producă simptome — moment în care tratamentul medicamentos poate încetini semnificativ progresia.
+Screeningul anual permite detectarea îngroșării mușchiului cardiac **înainte** ca boala să producă simptome — moment în care tratamentul medicamentos poate încetini semnificativ progresia.
 
 ---
 

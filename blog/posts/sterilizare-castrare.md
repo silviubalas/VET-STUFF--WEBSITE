@@ -15,7 +15,7 @@ Ambele sunt intervenții chirurgicale sub anestezie generală, cu o perioadă de
 ## De ce sunt recomandate?
 
 **Beneficii medicale:**
-- Elimină riscul de piometru (infecție uterină gravă, frecventă la femele nestevilizate)
+- Elimină riscul de piometru (infecție uterină gravă, frecventă la femele nesterilizate)
 - Reduce semnificativ riscul tumorilor mamare la femele (cu cât e mai devreme, cu atât mai eficient)
 - Elimină riscul tumorilor ovariene și testiculare
 - Previne pseudogestația repetată la femele
@@ -32,7 +32,7 @@ Ambele sunt intervenții chirurgicale sub anestezie generală, cu o perioadă de
 
 | Specie | Femelă | Mascul |
 |--------|--------|--------|
-| Câine | 5–6 luni (înainte de primul călduri) | 6–12 luni |
+| Câine | 5–6 luni (înainte de primele călduri) | 6–12 luni |
 | Pisică | 5–6 luni | 5–6 luni |
 
 Momentul exact depinde de rasă, talie și starea generală de sănătate. Câinii de talie mare pot beneficia de o amânare ușoară față de cei mici — medicul veterinar stabilește calendarul optim după evaluare.

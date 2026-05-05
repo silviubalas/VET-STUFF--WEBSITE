@@ -51,7 +51,7 @@ Un animal care a suferit un traumatism major poate părea relativ bine imediat d
 
 ## 5. Convulsii
 
-Prima criză epileptică sau o criză care durează mai mult de 5 minute (status epilepticus) este urgență. O criză sub 2 minute care se oprește singur — programare în aceeași zi, nu urgență imediată.
+Prima criză epileptică sau o criză care durează mai mult de 5 minute (status epilepticus) este o urgență. O criză sub 2 minute care se oprește singură — programare în aceeași zi, nu urgență imediată.
 
 **Ce faci:**
 - Nu introduce mâna în gura animalului — nu se înghite limba, e un mit

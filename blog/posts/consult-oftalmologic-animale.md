@@ -50,7 +50,7 @@ Anumite rase au predispoziție anatomică sau genetică pentru afecțiuni ocular
 
 **Rase cu predispoziție genetică la cataractă**: Labrador, Golden Retriever, Cocker Spaniel, Pudel
 
-**Pisici cu față turtită**: Persan, Exotic Shorthair, British — secretie lacrimală excesivă și risc de iritații cronice
+**Pisici cu față turtită**: Persan, Exotic Shorthair, British — secreție lacrimală excesivă și risc de iritații cronice
 
 ---
 

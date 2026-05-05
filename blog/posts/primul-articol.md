@@ -55,7 +55,7 @@ Paraziții sunt o problemă permanentă, nu sezonieră. Căpușele sunt active d
 - Deparazitare internă la fiecare 3 luni (mai frecvent la câinii care stau mult afară)
 - Antipuricii/anticăpușe lunar sau trimestrial, în funcție de produsul folosit
 
-Mulți viermi intestinali nu produc simptome vizibile dar afectează absorbția nutrienților și, în cazul unor specii, se pot transmite și la oameni.
+Mulți viermi intestinali nu produc simptome vizibile, dar afectează absorbția nutrienților și, în cazul unor specii, se pot transmite și la oameni.
 
 ---
 

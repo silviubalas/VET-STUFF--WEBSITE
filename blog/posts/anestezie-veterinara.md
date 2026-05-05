@@ -94,7 +94,7 @@ De aceea analizele preoperatorii există — pentru a identifica acești factori
 
 Trezirea din anestezia inhalatorie este graduală. Animalul e monitorizat până la trezire completă și stabilizarea parametrilor vitali. E normal să fie:
 
-- Dezorientat sau vocalizeze în primele 30–60 minute
+- Dezorientat sau să vocalizeze în primele 30–60 minute
 - Somnolent câteva ore
 - Cu apetit redus în prima zi
 - Cu temperatura corporală ușor scăzută (se remediază cu păturat)

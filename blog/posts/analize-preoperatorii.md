@@ -27,7 +27,7 @@ Evaluează funcția organelor interne:
 
 Un animal poate părea perfect sănătos la exterior și totuși să aibă o valoare hepatică sau renală modificată. Aceste afecțiuni **nu produc simptome vizibile** în stadii incipiente — se descoperă la analize.
 
-**Fără analize, medicul veterinar anestezizează practic în orbire.** Cu rezultatele în față, poate:
+**Fără analize, medicul veterinar anestezează practic în orbire.** Cu rezultatele în față, poate:
 - Ajusta dozele de anestezic
 - Alege protocolul anestezic potrivit
 - Administra lichide intravenos profilactic dacă rinichii sunt la limită
