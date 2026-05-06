@@ -31,7 +31,7 @@ Obstrucția poate fi cauzată de:
 Semnele în ordine cronologică — de la debut la stadiu critic:
 
 ### Stadiu precoce (primele 6–12 ore)
-- **Vizite frecvente la litieră** — motanul intră des, stă în poziția de urinare, produce nimic sau câteva picături
+- **Vizite frecvente la litieră** — motanul intră des, stă în poziția de urinare, nu produce nimic sau produce câteva picături
 - **Lins excesiv al zonei genitale**
 - **Vocalizare la tentativa de urinare** — miorlăit sau gemut în litieră
 - **Agitație** — merge în cerc, nu se liniștește

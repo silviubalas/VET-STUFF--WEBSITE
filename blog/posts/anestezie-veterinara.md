@@ -6,7 +6,7 @@ Mulți proprietari sunt îngrijorați de anestezie mai mult decât de intervenț
 
 ## Când este necesară anestezia?
 
-Anestezia generală este indicată ori de câte ori o procedură ar produce durere, stres intens sau imobilitate completă imposibil de obținut altfel:
+Anestezia generală este indicată ori de câte ori o procedură ar produce durere, stres intens sau imobilitate completă imposibilă de obținut altfel:
 
 **Intervenții chirurgicale:**
 - Sterilizare / castrare

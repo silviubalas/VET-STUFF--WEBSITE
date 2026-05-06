@@ -72,8 +72,8 @@ Drojdia activă în stomac produce gaze (distensie gastrică) și alcool prin fe
 ## Cum previi incidentele de sărbători
 
 - **Informează oaspeții** înainte de masă — mai ales copiii și bunicii care „vor să ofere ceva bun"
-- **Ține animalul din cameră** în perioada servirii, sau în camera sa cu jucării și apă
-- **Coșul de gunoi** — asigurați-l, deoarece animalele accesează deșeurile de masă mult mai frecvent de sărbători
+- **Ține animalul afară din cameră** în perioada servirii, sau în camera sa cu jucării și apă
+- **Coșul de gunoi** — asigură-l, deoarece animalele accesează deșeurile de masă mult mai frecvent de sărbători
 - **Nu lăsa cutii de ciocolată** la nivelul blăturilor sau sub brad accesibile
 
 Câteva precauții simple fac diferența dintre o sărbătoare liniștită și o noapte la urgența veterinară.

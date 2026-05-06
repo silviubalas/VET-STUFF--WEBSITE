@@ -32,7 +32,7 @@ Dacă investigațiile medicale nu arată nimic, problema devine comportamentală
 
 ### Litiera — probleme frecvente
 
-**Prea murdară:** Pisicile sunt extrem de curate. O litieră neutrată zilnic și curățată săptămânal e minimul. Dacă litiera miroase sau e vizibil murdară, pisica va căuta alternative.
+**Prea murdară:** Pisicile sunt extrem de curate. O litieră igienizată zilnic și curățată săptămânal e minimul. Dacă litiera miroase sau e vizibil murdară, pisica va căuta alternative.
 
 **Tip de nisip nepotrivit:** Preferința majorității pisicilor e nisipul cu granulație fină, fără parfum. Nisipul parfumat sau cu granulație mare este respingător pentru multe pisici.
 

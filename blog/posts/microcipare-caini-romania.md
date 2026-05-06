@@ -38,7 +38,7 @@ Conform regulamentelor europene (importante pentru călătorii și pașaport), v
 Microciparea se face la medicul veterinar, fără anestezie, în câteva minute:
 
 1. Medicul verifică cu cititorul că animalul nu are deja un microcip
-2. Se implantează cu un aplicator special (similar unei injecții, dar mai groasă)
+2. Se implantează cu un aplicator special (similar unei injecții, dar mai gros)
 3. Se scanează imediat pentru confirmare
 4. Se înregistrează codul în **RECS** (Registrul de Evidență a Câinilor cu Stăpân) — baza națională de date
 

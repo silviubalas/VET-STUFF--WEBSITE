@@ -10,7 +10,7 @@ Un consult preventiv regulat schimbă complet ecuația: problemele sunt depistat
 
 La VET STUFF, un control de rutină nu înseamnă doar „îl ascultăm și gata". Examinăm sistematic fiecare sistem al organismului:
 
-- **Examinare fizică generală** — greutate, condiție corporală, temperatura, ganglioni limfatici
+- **Examinare fizică generală** — greutate, condiție corporală, temperatură, ganglioni limfatici
 - **Evaluare dentară** — tartru, gingivite, dinți lipsă sau mobili (bolile dentare sunt printre cele mai frecvente la câini)
 - **Ascultare cardiacă și pulmonară** — detectăm sufluri, aritmii sau modificări respiratorii
 - **Palpare abdominală** — dimensiunea organelor, sensibilitate, anomalii palpabile

@@ -91,10 +91,10 @@ Pisicile tolerează în general mult mai greu deplasările și schimbul de mediu
 
 Dacă animalul tău are o afecțiune cronică (diabet, boli renale, epilepsie, boli cardiace), planificarea trebuie să înceapă cu câteva săptămâni înainte:
 
-- Discutați cu medicul veterinar despre fiecare opțiune
-- Pregătiți un rezumat medical scris cu diagnostic, tratament curent și doze
-- Identificați o clinică veterinară la destinație sau în apropierea locului de cazare al animalului
-- Asigurați-vă că persoana care îngrijește înțelege semnele de agravare
+- Discută cu medicul veterinar despre fiecare opțiune
+- Pregătește un rezumat medical scris cu diagnostic, tratament curent și doze
+- Identifică o clinică veterinară la destinație sau în apropierea locului de cazare al animalului
+- Asigură-te că persoana care îngrijește înțelege semnele de agravare
 
 ---
 
@@ -111,4 +111,4 @@ Dacă animalul tău are o afecțiune cronică (diabet, boli renale, epilepsie, b
 
 ## Concluzie
 
-Nu există o soluție perfectă universal valabilă — există soluția potrivită pentru animalul tău. Un câine sociabil și sănătos suportă bine o pensiune bună; o pisică bătrână cu tratament cronic are nevoie de un îngrijitor cunoscut și instrucțiuni precise. Planificați din timp și consultați medicul veterinar dacă animalul are nevoi speciale.
+Nu există o soluție perfectă universal valabilă — există soluția potrivită pentru animalul tău. Un câine sociabil și sănătos suportă bine o pensiune bună; o pisică bătrână cu tratament cronic are nevoie de un îngrijitor cunoscut și instrucțiuni precise. Planifică din timp și consultă medicul veterinar dacă animalul are nevoi speciale.
