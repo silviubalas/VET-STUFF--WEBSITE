@@ -41,7 +41,7 @@ Simptomele apar cu întârziere de 3–5 zile: mucoase palide, letargie, urină 
 Specifice câinilor: tremurături, slăbiciune musculară, vărsături, hipertermie. Mecanismul nu e complet înțeles, dar toxicitatea este documentată.
 
 ### Alcool
-Eggnog-ul, vinul cu scorțișoară, vin fiert, lichioruri — toate sunt toxice. Câinii și pisicile metabolizează alcoolul mult mai lent decât oamenii. Hipoglicemie, depresie respiratorie, comă.
+Eggnog-ul, vin cu scorțișoară, vin fiert, lichioruri — toate sunt toxice. Câinii și pisicile metabolizează alcoolul mult mai lent decât oamenii. Hipoglicemie, depresie respiratorie, comă.
 
 ---
 

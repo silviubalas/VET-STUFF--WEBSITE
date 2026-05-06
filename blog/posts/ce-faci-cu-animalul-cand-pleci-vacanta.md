@@ -105,7 +105,7 @@ Dacă animalul tău are o afecțiune cronică (diabet, boli renale, epilepsie, b
 - [ ] Medicamente suficiente + instrucțiuni de administrare
 - [ ] Numărul clinicii veterinare și al urgențelor la îndemâna îngrijitorului
 - [ ] Autorizare medicală scrisă dacă animalul are tratamente sau afecțiuni
-- [ ] Animale cu probleme cardiace, renale sau metabolice — consultați medicul veterinar înainte de orice schimbare de rutină
+- [ ] Animale cu probleme cardiace, renale sau metabolice — consultă medicul veterinar înainte de orice schimbare de rutină
 
 ---
 

@@ -67,8 +67,8 @@ Produse de mediu (spray sau fumigante cu IGR — regulatori de creștere a insec
 
 ## Programul recomandat de deparazitare externă
 
-- **Pipetă spot-on:** aplicat lunar, fără pauze sezoniere
-- **Zgardă:** schimbat conform prospectului (4 sau 8 luni)
+- **Pipetă spot-on:** aplicată lunar, fără pauze sezoniere
+- **Zgardă:** schimbată conform prospectului (4 sau 8 luni)
 - **Comprimat oral:** conform indicației medicului, de regulă lunar sau trimestrial
 
 Nu amesteca produse fără indicație medicală — supradozajul cu insecticide poate fi toxic.
