@@ -77,7 +77,7 @@ Nu amesteca produse fără indicație medicală — supradozajul cu insecticide 
 
 ## Deparazitarea internă merge împreună
 
-Puricii transmit tenia *Dipylidium caninum* — orice animal care înghite accidental un purici (lucru frecvent la toaletare) poate contracta această tenie. Deparazitarea externă fără cea internă este incompletă.
+Puricii transmit tenia *Dipylidium caninum* — orice animal care înghite accidental un purice (lucru frecvent la toaletare) poate contracta această tenie. Deparazitarea externă fără cea internă este incompletă.
 
 Program minim pentru deparazitare internă: la fiecare 3 luni pentru adulți, lunar pentru cățeluși și pui de pisică.
 

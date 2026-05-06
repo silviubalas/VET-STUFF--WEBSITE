@@ -64,7 +64,7 @@ Petardele și artificiile de Revelion sunt o sursă reală de suferință pentru
 - Pregătire din timp, nu în ziua de Revelion
 - Consultă medicul veterinar înainte de perioada de petarde — există anxiolitice veterinare sigure și eficiente
 - **Nu lăsa câinele în curte nesupravegheat** de Revelion
-- Microchip la zi — câinii speriați fug și se pierd mai frecvent în această perioadă
+- Microcip la zi — câinii speriați fug și se pierd mai frecvent în această perioadă
 - Oferă un spațiu retras și confortabil, cu zgomote de fond (TV, muzică)
 
 ---
@@ -95,7 +95,7 @@ Câinii lăsați afară fără adăpost pe timp de ger, sau câinii mici și vâ
 - [ ] Salvează numărul clinicii veterinare și al urgențelor în telefon
 - [ ] Verifică microcipul și datele de contact din baza de date — câinii speriați fug
 - [ ] Dacă câinele are fobie de petarde: consultă medicul veterinar pentru anxiolitice (nu se administrează în ziua evenimentului, ci conform protocolului)
-- [ ] Fă un stoc de hrana obișnuită — nu schimba dieta în perioada sărbătorilor
+- [ ] Fă un stoc de hrană obișnuită — nu schimba dieta în perioada sărbătorilor
 
 **În perioada sărbătorilor:**
 - [ ] Informează oaspeții să nu hrănească animalul fără acordul tău

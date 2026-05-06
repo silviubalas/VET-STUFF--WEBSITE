@@ -21,7 +21,7 @@ Rezultatul practic: un câine cu osteoartrită compensată vara poate deveni sem
 Câinii la risc pentru probleme articulare severe iarna:
 - **Rase mari și gigantice** — Labrador, Golden Retriever, Ciobanesc German, Rottweiler, Dogul German — predispuse la displazia de șold și cot
 - **Câinii vârstnici** (7+ ani pentru rase mari, 10+ ani pentru rase mici) — articulațiile uzate tolerează mai puțin frigul
-- **Câinii supraponderali** — excesul de greutate amplificată presiunea pe articulații
+- **Câinii supraponderali** — excesul de greutate amplifică presiunea pe articulații
 - **Câinii cu antecedente de traumatisme articulare** — fracturi vechi, rupturi de ligament operate
 
 ---
@@ -55,7 +55,7 @@ Repausul total este contraproductiv — mișcarea menține lichidul sinovial act
 - Întoarcerea acasă la primele semne de rigiditate sau șchiopătare
 
 ### 3. Haina de câine — nu e vanitate
-La câinii cu probleme articulare, o jachetă care acoperă și zona lombară menține temperatura musculaturii periarticularare. Scade contractura reflexă asociată frigului.
+La câinii cu probleme articulare, o jachetă care acoperă și zona lombară menține temperatura musculaturii periarticulare. Scade contractura reflexă asociată frigului.
 
 ### 4. Masa și apa la temperatura camerei
 Apa rece și hrana rece din frigider sunt consumate mai puțin pe timp de iarnă. Hidratarea influențează calitatea lichidului sinovial — asigură-te că apa este la temperatura camerei.
@@ -88,7 +88,7 @@ Nu administra AINS umane (ibuprofen, diclofenac, aspirină) — sunt toxice pent
 
 Fiecare kilogram în plus înseamnă 4–5 kg de presiune suplimentară pe articulațiile șoldului și genunchiului la fiecare pas. Reducerea greutății cu 10–15% produce o ameliorare a durerii comparabilă cu medicația antiinflamatoare, fără efecte secundare.
 
-Dacă câinele tău este supraponderal și are probleme articulare, discuție despre dietă cu medicul veterinar este la fel de importantă ca discuția despre tratament.
+Dacă câinele tău este supraponderal și are probleme articulare, o discuție despre dietă cu medicul veterinar este la fel de importantă ca discuția despre tratament.
 
 ---
 

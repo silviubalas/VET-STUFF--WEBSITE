@@ -56,7 +56,7 @@ Urgențele veterinare după ingestia de oase implică cel mai frecvent:
 - Constipație severă sau diaree cu sânge (fragment în colon)
 - Agravare progresivă a stării generale
 
-> **Dacă bănuiești că un fragment de os a creat o problemă, nu aștepta să vadă dacă „trece singur". O perforație intestinală cu câteva ore întârziere poate fi fatală.**
+> **Dacă bănuiești că un fragment de os a creat o problemă, nu aștepta să vezi dacă „trece singur". O perforație intestinală cu câteva ore întârziere poate fi fatală.**
 
 ---
 
@@ -70,7 +70,7 @@ Câinii au o nevoie reală de a mesteca — stimulare mentală, igienă dentară
 - **Dental chews** veterinare (Oravet, Virbac CET) — eficiente și pentru igiena dentară
 - **Stick-uri Bully (pene de taur)** — proteice, digestibile complet
 
-Evită: copite de cal, oase de umăr comprimați, oase „presate" de origine necunoscută — unele se fragmentează imprevizibil.
+Evită: copite de cal, oase de umăr comprimate, oase „presate" de origine necunoscută — unele se fragmentează imprevizibil.
 
 ---
 

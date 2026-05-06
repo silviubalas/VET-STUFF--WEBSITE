@@ -8,7 +8,7 @@ Iată o analiză sinceră a fiecărei opțiuni, cu avantaje, dezavantaje și ce 
 
 ## Opțiunea 1: Pensiune veterinară sau hotel pentru animale
 
-Animale rămân sub supraveghere profesională, în spații special amenajate, cu personal format.
+Animalele rămân sub supraveghere profesională, în spații special amenajate, cu personal format.
 
 **Avantaje:**
 - Supraveghere 24/7 sau în program extins
@@ -28,7 +28,7 @@ Animale rămân sub supraveghere profesională, în spații special amenajate, c
 - Referințe de la alți stăpâni
 
 ### Tusea de canisă — risc real
-Orice câine care stă în colectivitate (pensiune, hotel, tabără) trebuie vaccinat împotriva complexului tuse de canisă (Bordetella + parainflluenza). Vaccinul se face cu minimum **7–14 zile înainte** de internare. Verifică la medicul veterinar dacă vaccinul este la zi.
+Orice câine care stă în colectivitate (pensiune, hotel, tabără) trebuie vaccinat împotriva complexului tuse de canisă (Bordetella + parainfluenza). Vaccinul se face cu minimum **7–14 zile înainte** de internare. Verifică la medicul veterinar dacă vaccinul este la zi.
 
 ---
 

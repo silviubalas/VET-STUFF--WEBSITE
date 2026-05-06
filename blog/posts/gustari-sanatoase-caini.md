@@ -2,7 +2,7 @@
 
 Hrănirea câinelui cu recompense face parte din relația stăpân-animal. Problema nu e actul în sine, ci ce anume dai și cât de des. „Table scraps" — resturile de la masă — sunt una dintre principalele cauze de obezitate, pancreatită și intoxicații accidentale la câini.
 
-Există alternativele care satisfac același impuls de a-l răsfăța pe câine, fără riscuri.
+Există alternative care satisfac același impuls de a-l răsfăța pe câine, fără riscuri.
 
 ---
 
@@ -43,7 +43,7 @@ Antioxidanți, vitamina C, fibre. Porții mici (5–10 bucăți) ca recompensă 
 |---------|-----------------|
 | Struguri și stafide | Insuficiență renală acută, fără doză sigură documentată |
 | Ceapă și usturoi | Anemie hemolitică (distruge globulele roșii) |
-| Avocado | Contine persin, toxic pentru câini și pisici |
+| Avocado | Conține persin, toxic pentru câini și pisici |
 | Ciuperci sălbatice | Toxice, unele letale |
 | Macadamia | Tremurături, slăbiciune musculară |
 | Coacăze negre | Toxice pentru câini |

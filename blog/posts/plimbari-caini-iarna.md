@@ -14,7 +14,7 @@ Nu toți câinii reacționează la fel la temperaturi scăzute. Cei care necesit
 - **Câinii cu articulații problematice** — frigul agravează durerea articulară
 - **Cățeii** — nu au termoreglarea complet dezvoltată
 
-Rase nordice (Husky, Malamute, Samoed, Chow-Chow) suportă bine temperaturile scăzute și chiar preferă frigul.
+Rase nordice (Husky, Malamute, Samoied, Chow-Chow) suportă bine temperaturile scăzute și chiar preferă frigul.
 
 ---
 

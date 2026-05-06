@@ -9,7 +9,7 @@ Blocajul urinar la motani este una dintre cele mai grave urgențe în medicina v
 Anatomia urogenitală a motanilor este factorul principal: uretra lor este mai lungă și mai îngustă decât la femele, ceea ce o face mai vulnerabilă la obstrucție.
 
 Obstrucția poate fi cauzată de:
-- **Cristale urinare** (strivit sau oxalat de calciu) care se acumulează și formează un dop uretral
+- **Cristale urinare** (struvit sau oxalat de calciu) care se acumulează și formează un dop uretral
 - **Calculi uretero-vezicali** (pietre în uretră sau vezică)
 - **Spasm uretral** fără un corp fizic evident
 - **Mucus și celule inflamatorii** în contextul cistitei idiopatice feline (FIC)
@@ -66,12 +66,12 @@ Urina acumulată în vezică conține uree, creatinină, potasiu și alte substa
 Tratamentul necesită internare și intervenție de urgență:
 
 1. **Stabilizare** — perfuzii IV, corectarea dezechilibrelor electrolitice, tratamentul hiperkaliemiei
-2. **Deblocare uretral** — sub anestezie sau sedare, prin cateterism uretral
+2. **Deblocare uretrală** — sub anestezie sau sedare, prin cateterism uretral
 3. **Lavaj vezical** — pentru eliminarea cristalelor, mucusului și cheagurilor
 4. **Menținerea sondei urinare** 24–72 ore — până la rezoluția inflamației uretrale
 5. **Monitorizare** — funcție renală, producție de urină, electroliți
 
-Prognosticul este bun la câini diagnosticați în primele 24 ore. La cei ajunși în stadiu critic (colaps, hiperkaliemie severă), mortalitatea crește semnificativ.
+Prognosticul este bun la motani diagnosticați în primele 24 ore. La cei ajunși în stadiu critic (colaps, hiperkaliemie severă), mortalitatea crește semnificativ.
 
 ---
 
@@ -85,7 +85,7 @@ Motanii care au avut un blocaj urinar au **risc crescut de recidivă** (50–70%
 - Fântâni de apă — pisicile beau mai mult din apă curgătoare
 
 **Mediu:**
-- Reducerea stresului — resursele separate la mai mulți pisici (litiere, boluri), rutine stabile
+- Reducerea stresului — resursele separate la mai multe pisici (litiere, boluri), rutine stabile
 - Monitorizarea litierei — frecvența și volumul urinărilor
 
 **Monitorizare veterinară:**

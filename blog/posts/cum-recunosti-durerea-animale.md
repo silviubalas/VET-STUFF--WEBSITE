@@ -60,7 +60,7 @@ Prezența a 3 sau mai mulți indicatori sugerează durere moderată spre severă
 
 ### Semne fizice
 - Respirație rapidă sau cu efort în repaus
-- Postura ghemuit neobișnuit, cu toate patru labe strânse sub corp și capul coborât
+- Postură ghemuită neobișnuit, cu toate patru labe strânse sub corp și capul coborât
 - Tremur fin
 - Reducerea apetitului
 
@@ -89,7 +89,7 @@ Orice modificare comportamentală persistentă sau inexplicabilă justifică un 
 | Imposibilitate de a se ridica | Urgentă |
 | Respirație rapidă în repaus | Urgentă |
 | Vocalizare continuă de durere | Urgentă |
-| Șchiopătare bruscă, fără a pisa pe labă | Aceeași zi |
+| Șchiopătare bruscă, fără a păși pe labă | Aceeași zi |
 | Iritabilitate bruscă la atingere | Programare 24–48h |
 | Reducerea activității pe parcursul mai multor zile | Programare săptămânală |
 

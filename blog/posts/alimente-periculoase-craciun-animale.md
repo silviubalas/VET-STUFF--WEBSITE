@@ -53,7 +53,7 @@ Nu toxice prin ele însele, dar devin fragile la gătire și se sparg în fragme
 Un câine care mestecă în voie un os de pui gătit poate ajunge la urgența veterinară în aceeași seară.
 
 ### Mâncăruri grase (friptură, slănină, cârnați)
-Un bolide de grăsime la un câine neobișnuit cu ea → pancreatită acută. Durere abdominală severă, vărsături repetate, deshidratare, spitalizare necesară.
+Un bol de grăsime la un câine neobișnuit cu ea → pancreatită acută. Durere abdominală severă, vărsături repetate, deshidratare, spitalizare necesară.
 
 ### Aluat crud cu drojdie
 Drojdia activă în stomac produce gaze (distensie gastrică) și alcool prin fermentare. Risc de GDV la câinii predispuși.
@@ -71,7 +71,7 @@ Drojdia activă în stomac produce gaze (distensie gastrică) și alcool prin fe
 
 ## Cum previi incidentele de sărbători
 
-- **Informează oaspeții** înainte de masa — mai ales copiii și bunicii care „vor să ofere ceva bun"
+- **Informează oaspeții** înainte de masă — mai ales copiii și bunicii care „vor să ofere ceva bun"
 - **Ține animalul din cameră** în perioada servirii, sau în camera sa cu jucării și apă
 - **Coșul de gunoi** — asigurați-l, deoarece animalele accesează deșeurile de masă mult mai frecvent de sărbători
 - **Nu lăsa cutii de ciocolată** la nivelul blăturilor sau sub brad accesibile
