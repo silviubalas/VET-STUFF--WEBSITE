@@ -80,7 +80,7 @@ Piața oferă zeci de opțiuni. Criterii pentru o alegere bună:
 - Fără propilen glicol (conservant, toxic la pisici, controversat la câini)
 
 **Tipuri recomandate:**
-- Bucăți de carne uscată monoingredient (pui, rațe, vită) — ingredient unic, trasabilitate clară
+- Bucăți de carne uscată monoingredient (pui, rață, vită) — ingredient unic, trasabilitate clară
 - Dental chews veterinare (Virbac CET, Greenies, Oravet) — au și efect de igienă dentară
 - Recompense cu formulă specifică (hipoalergenice, cu proteine noi) pentru câinii cu sensibilități
 

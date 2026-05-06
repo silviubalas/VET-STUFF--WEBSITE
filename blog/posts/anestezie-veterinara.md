@@ -97,7 +97,7 @@ Trezirea din anestezia inhalatorie este graduală. Animalul e monitorizat până
 - Dezorientat sau să vocalizeze în primele 30–60 minute
 - Somnolent câteva ore
 - Cu apetit redus în prima zi
-- Cu temperatura corporală ușor scăzută (se remediază cu păturat)
+- Cu temperatura corporală ușor scăzută (se remediază cu o pătură)
 
 Simptome care necesită contact imediat cu clinica: dificultăți respiratorii, mucoase palide sau vineții, imposibilitate de a se ridica după 4–6 ore, convulsii.
 
