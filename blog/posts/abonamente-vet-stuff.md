@@ -1,150 +1,116 @@
-# Abonamentele VET STUFF: ce conțin, cât economisești și de ce are sens financiar
+# Planurile de sănătate VET STUFF: îngrijire continuă pentru membrul cu patru labe al familiei
 
-Un abonament veterinar nu este o cheltuială în plus — este o modalitate de a transforma cheltuielile veterinare imprevizibile într-un cost fix, planificabil, mai mic decât la tarif standard. Dacă animalul tău are oricum nevoie de consultație anuală, vaccin și deparazitări — și are nevoie, indiferent dacă îți planifici sau nu — atunci întrebarea nu este „merită un abonament?", ci „de ce nu ai deja unul?".
+La VET STUFF, pornim de la o convingere simplă: câinele sau pisica ta nu este un pacient ocazional — este un membru al familiei tale. Iar un membru al familiei merită același lucru pe care îl oferim celor dragi: un medic care îl cunoaște, care îl urmărește an de an și care este acolo nu doar când apare o problemă, ci și înainte.
 
----
-
-## Ce este un abonament VET STUFF?
-
-Un abonament VET STUFF este un pachet anual de servicii preventive plătit o singură dată (sau în 3 rate egale pe 60 de zile), la prețuri reduse față de tarifele standard. Nu este un credit sau o promisiune vagă — fiecare serviciu inclus are prețul explicit, reducerea aplicată și economisirea calculată înainte să semnezi.
-
-Există trei niveluri: **Silver**, **Gold** și **Platinum**. Fiecare nivel acoperă un profil diferit de animal și de stăpân.
+Planurile de sănătate VET STUFF sunt construite exact din această filosofie. Nu sunt un pachet de servicii — sunt modul prin care tu, ca stăpân, îi asiguri animalului tău o îngrijire continuă, predictibilă și personalizată, cu un medic care devine, în timp, medicul lui de familie.
 
 ---
 
-## Planul Silver — esențialul preventiv
+## Ce înseamnă, concret, un plan de sănătate
 
-**De la 358 lei / an** — plătibil integral sau în 3 rate egale.
+Un plan de sănătate VET STUFF înseamnă că, pentru următoarele 12 luni, știi exact ce primește animalul tău, când primește și de la cine. Nu mai improvizezi de la un an la altul. Nu mai uiți de vaccinare sau de deparazitare. Nu mai ești surprins de o factură pe care nu o anticipai.
 
-Silver acoperă tot ce orice animal trebuie să facă în mod obligatoriu în fiecare an:
+Totul este stabilit de la început, împreună cu medicul, în funcție de specia, greutatea și nevoile specifice ale animalului tău.
 
-- **1 consultație generală** — de la 150 lei → **80 lei** (−70 lei)
-- **1 vaccin polivalent + antirabic** — de la 200 lei → **120 lei** (−80 lei)
-- **2 deparazitări interne / an** — cu **−10%** la produsul ales
-- **4 deparazitări externe / an** — cu **−10%** la produsul ales
-
-Economii garantate chiar și fără deparazitări: **150 lei** (doar pe consultație și vaccin).
-
-### Beneficii incluse, fără plată suplimentară
-- Consultație de urgență la **−50%** (350 → 175 lei) — plătești doar dacă ai nevoie
-- **5 vouchere × −5%** la produsele din clinică
-
-Silver este alegerea logică pentru orice stăpân care face oricum vizita anuală. Diferența dintre a merge neabonat și a merge cu Silver este, literal, 150 de lei pe care îi pierzi fără motiv.
+Plata se face o singură dată sau în trei tranșe egale pe parcursul a 60 de zile — fără surprize, fără costuri suplimentare.
 
 ---
 
-## Planul Gold — preventiv complet cu diagnostic
+## Planul Silver — îngrijirea preventivă de bază
 
-**De la 1126 lei / an** — plătibil integral sau în 3 rate egale.
+**De la 358 lei / an**
 
-Gold adaugă diagnosticul la prevenție: pe lângă tot ce include Silver, primești anual servicii de investigație care, la tarif standard, ar costa cu peste 500 de lei mai mult.
+Silver este punctul de pornire: tot ce membrul familiei tale are nevoie în fiecare an pentru a fi sănătos și protejat.
 
-Ce include față de Silver:
-- **4 deparazitări interne** (față de 2) cu **−12%** la produs
-- **8 deparazitări externe** (față de 4) cu **−12%** la produs
-- **1 detartraj** (fără anestezie) — de la 300 lei → **210 lei** (−30%)
-- **1 ecografie abdominală completă** — de la 220 lei → **154 lei** (−30%)
-- **1 profil analize sânge** (profil bază sau avansat, la alegere) — **−15%**
+- **Consultație anuală** — medicul îl vede, îl evaluează, îl cunoaște
+- **Vaccin polivalent cu antirabic** — protecție completă pentru tot anul
+- **Deparazitare internă** (de 2 ori pe an) și **deparazitare externă** (de 4 ori pe an) — cu produsele alese împreună cu medicul, în funcție de stilul de viață al animalului
 
-Economii garantate: **~500 lei** față de tariful la bucată.
+Dacă apare vreodată o urgență, membrul familiei tale are acces prioritar la consultație la jumătate din costul obișnuit. Și pentru că relația cu clinica se construiește în timp, ai la dispoziție vouchere pentru produsele pe care le alegi din clinică pe parcursul anului.
 
-### Beneficii incluse
-- Consultație de urgență la **−50%**
-- **8 vouchere × −8%** la produsele din clinică
-
-Gold este pachetul pentru stăpânul care vrea să știe anual că animalul lui este sănătos — nu doar vaccinat. Ecografia abdominală și analizele de sânge depistează modificări interne înainte să producă simptome. Depistate devreme, aceste probleme se tratează mai simplu și mai ieftin.
+Silver este planul potrivit pentru animalele tinere și sănătoase, ai căror stăpâni vor să știe că îngrijirea preventivă este acoperită — ordonat, constant, an de an.
 
 ---
 
-## Planul Platinum — nivelul maxim de îngrijire
+## Planul Gold — îngrijire completă, cu diagnostic inclus
 
-**De la 1918 lei / an** — plătibil integral sau în 3 rate egale.
+**De la 1126 lei / an**
 
-**Condiție de acces:** animalul este hrănit cu branduri partenere VET STUFF (verificat la prima vizită).
+Gold adaugă un nivel în plus față de prevenție: diagnosticul. Pe lângă tot ce include Silver, animalul tău beneficiază anual de investigații care îi verifică sănătatea la interior — nu doar aspectul exterior.
 
-Platinum este pachetul fără compromisuri. Conține tot ce Gold oferă — și mai mult, cu reduceri mai mari și avantaje exclusive pe care niciun alt plan nu le oferă.
+Ce include în plus față de Silver:
+- **Deparazitare internă** de 4 ori pe an și **deparazitare externă** de 8 ori pe an
+- **Detartraj dentar** — sănătatea dentară este una dintre cele mai neglijate forme de îngrijire la animale și una dintre cele mai importante
+- **Ecografie abdominală completă** — organele interne verificate o dată pe an, înainte să apară orice semn
+- **Profil de analize sânge** (bază sau avansat, ales împreună cu medicul) — ficatul, rinichii, glicemia, funcția generală a organismului
 
-Ce include față de Gold:
-- **2 consultații generale / an** (față de 1) — 300 → **160 lei**
-- **Vaccin tuse canisă** (câine) sau **leucemie felină** (pisică) — **−35%**
-- **4 deparazitări interne** cu **−20%** (față de −12%)
-- **12 deparazitări externe / an** (1 pe lună) cu **−20%** (față de 8 cu −12%)
-- **Profil analize extins** — 800 → **640 lei** (−160 lei)
-- **Detartraj cu anestezie inhalatorie** obligatorie — **−25%** la anestezie
-- **1 ecografie abdominală** — **−30%**
+Multe boli care afectează câinii și pisicile nu produc simptome vizibile până în stadii avansate. Ecografia și analizele anuale sunt modul prin care te asiguri că totul este în regulă — nu că pare în regulă.
+
+Gold este planul pentru stăpânul care vrea să știe, nu doar să spere că animalul lui este sănătos.
+
+---
+
+## Planul Platinum — îngrijirea fără compromisuri
+
+**De la 1918 lei / an**
+
+*Condiție de acces: animalul este hrănit cu branduri partenere VET STUFF.*
+
+Platinum este gândit pentru stăpânul care tratează animalul ca pe un membru deplin al familiei și vrea să îi ofere tot ce există mai bun în materie de îngrijire — nu selectiv, nu ocazional, ci constant, pe tot parcursul anului.
+
+Ce include:
+- **Două consultații generale pe an** — medicul îl vede de două ori, cunoaște evoluția, poate observa schimbări subtile de la o vizită la alta
+- **Vaccin polivalent cu antirabic** și **vaccin tuse canisă / leucemie felină** — protecție extinsă
+- **Deparazitare internă** de 4 ori pe an și **deparazitare externă în fiecare lună** — protecție continuă, fără niciun interval neacoperit
+- **Profil de analize extins** — investigație completă a organismului
+- **Detartraj cu anestezie inhalatorie** — procedura completă, în siguranță maximă
+- **Ecografie abdominală** inclusă anual
 
 ### Beneficii exclusive Platinum
-- **4 consultații de urgență / an** la −50% (față de 1 la Silver și Gold)
-- **1 consultație de specialitate / an** la **−25%**
-- **A 2-a ecografie abdominală** opțională la **−30%**
-- **12 vouchere × −12%** la produse **sau** servicii — cel mai flexibil sistem de vouchere
-- **Prioritate garantată la programări** — înaintea tuturor pacienților, pe toată durata abonamentului
+- **4 consultații de urgență pe an** la jumătate din costul obișnuit — pentru că urgențele nu se programează, dar poți fi pregătit pentru ele
+- **Consultație de specialitate** o dată pe an, când ai nevoie
+- **A doua ecografie abdominală** disponibilă opțional
+- **12 vouchere** pentru produse sau servicii din clinică — cel mai flexibil nivel de beneficii
+- **Prioritate garantată la programări** — indiferent de cât de ocupat este programul clinicii, animalul tău are loc
 
-Economii garantate: **~800 lei** față de tariful standard.
-
----
-
-## De ce un abonament are sens financiar
-
-### 1. Plătești mai puțin pentru același lucru
-
-Consultația anuală și vaccinul sunt inevitabile — legea impune vaccinul antirabic, iar consultația este recomandată cel puțin anual. Dacă le faci oricum, de ce să le plătești la tarif întreg?
-
-Doar pe aceste două servicii, Silver îți economisește 150 de lei. Abonamentul se amortizează de la prima vizită.
-
-### 2. Previi cheltuielile mari prin diagnostic precoce
-
-O boală renală descoperită la analize anuale — înainte să producă simptome — se tratează cu dietă și monitorizare. Aceeași boală descoperită la urgență, după ce animalul nu mai mănâncă, înseamnă internare, perfuzii și o factură de câteva ori mai mare.
-
-Ecografia abdominală și profilul de analize din Gold și Platinum nu sunt costuri — sunt investiții care pot preveni cheltuieli de 5–10× mai mari.
-
-### 3. Urgența te costă jumătate
-
-Urgențele nu se programează. Un câine care înghite ceva, o pisică cu blocaj urinar, o tăietură adâncă — se întâmplă oricând. Cu orice abonament VET STUFF, consultația de urgență costă **175 lei** în loc de 350 lei. Cu Platinum, ai 4 astfel de consultații acoperite la jumătate de preț.
-
-### 4. Predictibilitate: știi dinainte ce cheltuiești
-
-Fără abonament, bugetul veterinar al unui an este necunoscut — depinde de ce apare. Cu un abonament, cheltuielile fixe sunt stabilite de la început. Poți planifica, poți împărți în rate, nu ești prins nepregătit.
-
-### 5. Plata în 3 rate egale — fără dobânzi, fără comisioane
-
-Niciunul dintre abonamente nu trebuie plătit integral din prima zi. Poți achita în 3 tranșe egale pe parcursul a 60 de zile, direct la clinică, fără niciun cost suplimentar.
+Platinum nu este despre a bifa o listă de servicii. Este despre a-i oferi animalului tău o relație continuă cu medicul, un urmăritor constant al sănătății lui și liniștea că, indiferent ce apare, ești pregătit.
 
 ---
 
-## Comparație rapidă
+## De ce un plan de sănătate schimbă felul în care îți îngrijești animalul
 
-| | Silver | Gold | Platinum |
-|--|--------|------|----------|
-| **Preț de la** | 358 lei/an | 1126 lei/an | 1918 lei/an |
-| **Consultații** | 1 | 1 | 2 |
-| **Vaccin polivalent** | ✓ | ✓ | ✓ |
-| **Vaccin tuse/leucemie** | — | — | −35% |
-| **Deparazitări interne** | 2× (−10%) | 4× (−12%) | 4× (−20%) |
-| **Deparazitări externe** | 4× (−10%) | 8× (−12%) | 12× (−20%) |
-| **Detartraj** | — | −30% | −30% + anestezie |
-| **Ecografie abdominală** | — | −30% | −30% |
-| **Analize sânge** | — | −15% | −20% (extins) |
-| **Urgențe la −50%** | 1 | 1 | 4 |
-| **Vouchere produse** | 5 × −5% | 8 × −8% | 12 × −12% |
-| **Prioritate programări** | — | — | ✓ garantat |
-| **Economii garantate** | ~150 lei | ~500 lei | ~800 lei |
-| **Rate** | 3 rate egale | 3 rate egale | 3 rate egale |
+### Un medic care îl cunoaște
 
----
+Îngrijirea ocazională — „mergem când e ceva" — înseamnă că medicul vede animalul de câteva ori în viața lui, fără continuitate. Un plan de sănătate înseamnă că același medic îl vede în fiecare an, îi cunoaște istoricul, poate observa o schimbare subtilă de comportament sau o modificare ușoară a greutății pe care un medic care îl vede prima dată nu ar sesiza-o.
 
-## Cum alegi planul potrivit
+Această continuitate nu este un detaliu — este una dintre cele mai valoroase forme de îngrijire medicală, atât pentru oameni, cât și pentru animale.
 
-**Silver** — dacă animalul tău este tânăr și sănătos și vrei să acoperi minimul obligatoriu (consultație + vaccin + deparazitări) la un preț mai bun decât la tarif standard.
+### Predictibilitate și liniște
 
-**Gold** — dacă vrei să știi anual că animalul tău este sănătos la interior, nu doar vaccinat. Detartrajul, ecografia și analizele de sânge sunt servicii pe care oricum ar trebui să le faci — Gold le include la prețuri de abonat.
+Îngrijirea reactivă — mergi la medic când apare o problemă — este imprevizibilă prin definiție. Nu știi când vine problema, nu știi cât costă, nu poți planifica.
 
-**Platinum** — dacă animalul tău mănâncă deja branduri partenere VET STUFF și vrei cel mai complet nivel de îngrijire: deparazitare lunară, analize extinse, prioritate la programări și flexibilitate maximă cu voucherele.
+Cu un plan de sănătate, știi de la începutul anului ce primește animalul tău, când și în ce condiții. Nicio surpriză neplăcută, nicio decizie luată în grabă.
+
+### Prevenția este mai blândă decât tratamentul
+
+O boală renală depistată la analizele anuale, înainte să producă simptome, se gestionează prin ajustări de dietă și monitorizare. Aceeași boală descoperită când animalul nu mai mănâncă înseamnă internare, intervenții și o suferință pe care prevenția ar fi evitat-o complet.
+
+Ecografia anuală și profilul de analize nu sunt „investigații în plus" — sunt modul prin care te asiguri că nu ajungi niciodată în situația în care spui „dacă am fi prins-o mai devreme".
+
+### Urgențele nu se anunță
+
+Niciun plan de sănătate nu poate garanta că animalul tău nu va trece printr-o urgență. Dar poate garanta că, dacă se întâmplă, ești pregătit — atât prin accesul la consultație la jumătate din cost, cât și prin faptul că medicul îl cunoaște deja și nu pierde timp cu istoricul de la zero.
 
 ---
 
-## Cum te înscrii
+## Ce plan se potrivește animalului tău
 
-Te înscrii prin formularul de pe [pagina de abonamente](https://vet-stuff.ro/abonamente.html) sau direct la clinică. Te contactăm în maxim 24 de ore pentru a finaliza înscrierea. La prima vizită, alegi produsele de deparazitare împreună cu medicul, se calculează prețul final și alegi modalitatea de plată.
+**Silver** — pentru animalele tinere și sănătoase, ai căror stăpâni vor îngrijire preventivă ordonată, an de an, fără să se îngrijoreze dacă au uitat ceva.
 
-Nu există taxe de activare și nu există costuri ascunse. Prețul pe care îl calculezi este prețul pe care îl plătești.
+**Gold** — pentru stăpânul care vrea să știe că totul este în regulă la interior, nu doar în exterior. Recomandăm Gold începând cu vârsta de 4–5 ani, când diagnosticul precoce devine cu adevărat important.
+
+**Platinum** — pentru animalul care mănâncă deja branduri partenere VET STUFF și al cărui stăpân vrea cel mai complet nivel de îngrijire posibil: protecție lunară, două vizite anuale, analize extinse și prioritate garantată oricând.
+
+---
+
+Înscrierea se face prin formularul de pe [pagina de abonamente](https://vet-stuff.ro/abonamente.html) sau direct la clinică. La prima vizită, alegi împreună cu medicul tot ce intră în planul tău. De acolo, te ocupi de familia ta — noi ne ocupăm de a lui.
