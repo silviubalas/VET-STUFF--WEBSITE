@@ -1,6 +1,6 @@
 # Planurile de sănătate VET STUFF: îngrijire continuă pentru fiecare membru al familiei
 
-La VET STUFF, pornim de la o convingere simplă: câinele sau pisica ta nu este un pacient ocazional — este un membru al familiei tale. Iar un membru al familiei merită același lucru pe care îl oferim celor dragi: un medic care îl cunoaște, care îl urmărește an de an și care este acolo nu doar când apare o problemă, ci și înainte.
+La VET STUFF, pornim de la o convingere simplă: câinele tău sau pisica ta nu este un pacient ocazional — este un membru al familiei tale. Iar un membru al familiei merită același lucru pe care îl oferim celor dragi: un medic care îl cunoaște, care îl urmărește an de an și care este acolo nu doar când apare o problemă, ci și înainte.
 
 Planurile de sănătate VET STUFF sunt construite exact din această filosofie. Nu sunt un pachet de servicii — sunt modul prin care tu, ca stăpân, îi asiguri animalului tău o îngrijire continuă, predictibilă și personalizată, cu un medic care devine, în timp, medicul lui de familie.
 
