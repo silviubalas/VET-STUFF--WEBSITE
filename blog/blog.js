@@ -155,6 +155,22 @@ async function initBlogPost() {
 function renderPost(meta, markdown) {
   document.title = `${meta.title} | VETSTUFF INFO`;
 
+  const pageUrl = `https://vet-stuff.ro/blog/post.html?slug=${encodeURIComponent(meta.slug)}`;
+  const imgUrl  = meta.cover || 'https://vet-stuff.ro/logo.PNG';
+
+  const setMeta = (sel, attr, val) => { const el = document.getElementById(sel); if (el) el.setAttribute(attr, val); };
+  const setDesc = (sel, val) => { const el = document.querySelector(`meta[name="${sel}"]`); if (el) el.setAttribute('content', val); };
+
+  setDesc('description', meta.excerpt);
+  setMeta('seo-canonical', 'href', pageUrl);
+  setMeta('seo-og-title',  'content', `${meta.title} | VET STUFF Bacău`);
+  setMeta('seo-og-desc',   'content', meta.excerpt);
+  setMeta('seo-og-img',    'content', imgUrl);
+  setMeta('seo-og-url',    'content', pageUrl);
+  setMeta('seo-tw-title',  'content', `${meta.title} | VET STUFF Bacău`);
+  setMeta('seo-tw-desc',   'content', meta.excerpt);
+  setMeta('seo-tw-img',    'content', imgUrl);
+
   const metaEl = document.getElementById('post-meta');
   if (metaEl) {
     const coverHtml = meta.cover
