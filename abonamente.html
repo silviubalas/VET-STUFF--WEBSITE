@@ -934,7 +934,7 @@ async function doSubmitForm() {
       fetch('/api/send-sms', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tel, cod })
+        body: JSON.stringify({ tel, cod, nume, plan, animal })
       })
     ]);
 

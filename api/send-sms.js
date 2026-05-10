@@ -1,21 +1,19 @@
 // Vercel Serverless Function — trimite SMS de confirmare catre client cu codul de abonament
 // Foloseste Twilio REST API cu fetch() nativ. Credentialele sunt in variabile de mediu.
 
+import { getTwilioConfig, sendTwilioSms } from './_twilio.js';
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const sid   = process.env.TWILIO_ACCOUNT_SID;
-  const token = process.env.TWILIO_AUTH_TOKEN;
-  const from  = process.env.TWILIO_FROM;
-
   // Daca Twilio nu e configurat, ignora silentios
-  if (!sid || !token || !from) {
+  if (!getTwilioConfig().configured) {
     return res.status(200).json({ ok: false, reason: 'SMS not configured' });
   }
 
-  const { tel, cod } = req.body || {};
+  const { tel, cod, animal, plan } = req.body || {};
 
   if (!tel || !cod) {
     return res.status(400).json({ error: 'tel si cod sunt obligatorii' });
@@ -26,50 +24,24 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Format cod invalid' });
   }
 
-  // Normalizare numar la E.164 (+40XXXXXXXXX)
-  function toE164(nr) {
-    const clean = (nr || '').replace(/[\s\-()+]/g, '');
-    if (clean.startsWith('40')) return '+' + clean;
-    if (clean.startsWith('0'))  return '+4' + clean;
-    return '+40' + clean;
-  }
-
-  const to = toE164(tel);
-
-  // Validare: +40 urmat de exact 9 cifre
-  if (!/^\+40\d{9}$/.test(to)) {
-    return res.status(400).json({ error: 'Numar de telefon invalid' });
-  }
-
-  const statusUrl = 'vet-stuff.ro/status.html?cod=' + encodeURIComponent(cod);
+  const statusUrl = 'https://vet-stuff.ro/status.html?cod=' + encodeURIComponent(cod);
+  const animalLine = animal ? 'Pentru: ' + String(animal).slice(0, 50) : '';
+  const planLine = plan ? 'Plan: ' + String(plan).slice(0, 30) : '';
 
   const body = [
-    'VET STUFF: Abonamentul tau a fost inregistrat!',
+    'VET STUFF: Abonamentul a fost inregistrat.',
+    planLine,
+    animalLine,
     'Cod: ' + cod,
-    'Status: ' + statusUrl,
-    'Ne vedem la clinica!'
-  ].join('\n');
+    'Status: ' + statusUrl
+  ].filter(Boolean).join('\n');
 
   try {
-    const response = await fetch(
-      `https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`,
-      {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Basic ' + Buffer.from(`${sid}:${token}`).toString('base64'),
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({ From: from, To: to, Body: body }).toString(),
-      }
-    );
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      console.error('Twilio error:', data);
-      return res.status(500).json({ error: data.message || 'Twilio error' });
+    const result = await sendTwilioSms({ to: tel, body });
+    if (!result.ok) {
+      console.error('Twilio error:', result);
+      return res.status(result.status || 500).json({ error: result.error || 'Twilio error' });
     }
-
     return res.status(200).json({ ok: true });
   } catch (err) {
     console.error('SMS fetch error:', err);

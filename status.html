@@ -29,6 +29,8 @@
     .nav-link:hover, .nav-link.active { color: var(--red); }
     .btn-red { display: inline-flex; align-items: center; gap: 6px; background: var(--red); color: #fff; font-size: 0.85rem; font-weight: 600; padding: 9px 18px; border-radius: 6px; white-space: nowrap; transition: background 0.15s, transform 0.15s; border: none; cursor: pointer; }
     .btn-red:hover { background: #b52020; transform: translateY(-1px); }
+    .btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 6px; background: transparent; color: var(--navy); font-size: 0.85rem; font-weight: 600; padding: 9px 18px; border-radius: 6px; border: 1.5px solid var(--navy); cursor: pointer; transition: background 0.15s, color 0.15s, transform 0.15s; }
+    .btn-outline:hover { background: var(--navy); color: #fff; transform: translateY(-1px); }
     .nav-urgenta { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 20px; border: 1.5px solid rgba(212,43,43,0.35); font-size: 0.82rem; font-weight: 700; color: var(--red); transition: background 0.15s, color 0.15s; white-space: nowrap; }
     .nav-urgenta:hover { background: var(--red); color: #fff; }
     .pulse-red { width: 6px; height: 6px; border-radius: 50%; background: var(--red); display: inline-block; animation: pulse-red-anim 1.4s ease-in-out infinite; }
@@ -137,18 +139,27 @@
       <input id="cod-input" type="text" placeholder="Cod abonament" autocomplete="off" maxlength="32" style="flex:1;padding:13px 16px;border:1.5px solid var(--border);border-radius:8px;font-size:0.95rem;font-family:'DM Sans',sans-serif;outline:none;background:#fff;" />
       <button type="submit" class="btn-red" style="padding:13px 22px;">Caută</button>
     </form>
-    <p style="font-size:0.78rem;color:var(--gray);margin-top:10px;text-align:center;">Ai uitat codul / ai mai multe animale? <a href="#resend-section" onclick="document.getElementById('resend-section').style.display='block';this.closest('p').style.display='none';" style="color:var(--red);font-weight:600;">Primește toate codurile pe email →</a></p>
+    <p style="font-size:0.78rem;color:var(--gray);margin-top:10px;text-align:center;">Ai uitat codul / ai mai multe animale? <a href="#resend-section" onclick="document.getElementById('resend-section').style.display='block';this.closest('p').style.display='none';" style="color:var(--red);font-weight:600;">Primește codurile pe email sau SMS →</a></p>
   </div>
 
-  <!-- Resend cod prin email -->
+  <!-- Resend cod prin email sau SMS -->
   <div id="resend-section" style="display:none;max-width:480px;margin:18px auto 0;background:#fff;border:1px solid var(--border);border-radius:14px;padding:22px 20px;">
     <div style="font-weight:700;color:var(--navy);margin-bottom:4px;">N-ai codul la tine?</div>
-    <div style="font-size:0.85rem;color:var(--gray);margin-bottom:14px;line-height:1.5;">Introdu emailul cu care te-ai înscris și îți trimitem <strong>toate codurile + QR-urile</strong> abonamentelor de pe acest email (un email pentru fiecare animal înscris).</div>
+    <div style="font-size:0.85rem;color:var(--gray);margin-bottom:14px;line-height:1.5;">Introdu emailul sau telefonul cu care te-ai înscris. Pe email primești <strong>codurile + QR-urile</strong>, iar prin SMS primești codurile pentru verificare rapidă.</div>
     <div id="resend-error" style="display:none;color:#991b1b;font-size:0.83rem;margin-bottom:10px;"></div>
     <div id="resend-ok" style="display:none;background:#dcfce7;border:1px solid #86efac;border-radius:10px;padding:12px 14px;font-size:0.88rem;color:#166534;margin-bottom:10px;"></div>
-    <form id="resend-form" style="display:flex;gap:8px;" onsubmit="event.preventDefault();sendResend();">
-      <input id="resend-email" type="email" placeholder="emailul tău" autocomplete="email" required style="flex:1;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:0.92rem;font-family:inherit;outline:none;" />
+    <form id="resend-form" style="display:flex;gap:8px;flex-wrap:wrap;" onsubmit="event.preventDefault();sendResend();">
+      <input id="resend-email" type="email" placeholder="emailul tău" autocomplete="email" required style="flex:1;min-width:0;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:0.92rem;font-family:inherit;outline:none;" />
       <button type="submit" id="resend-btn" class="btn-red" style="padding:11px 18px;white-space:nowrap;">Trimite</button>
+    </form>
+    <div style="display:flex;align-items:center;gap:10px;margin:16px 0 14px;color:var(--gray);font-size:0.78rem;">
+      <span style="height:1px;background:var(--border);flex:1;"></span>
+      sau
+      <span style="height:1px;background:var(--border);flex:1;"></span>
+    </div>
+    <form id="resend-sms-form" style="display:flex;gap:8px;flex-wrap:wrap;" onsubmit="event.preventDefault();sendResendSms();">
+      <input id="resend-phone" type="tel" placeholder="telefonul tău, ex. 0742 000 000" autocomplete="tel" required style="flex:1;min-width:0;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:0.92rem;font-family:inherit;outline:none;" />
+      <button type="submit" id="resend-sms-btn" class="btn-outline" style="padding:11px 18px;white-space:nowrap;">Trimite SMS</button>
     </form>
   </div>
 </section>
@@ -705,6 +716,37 @@
       errEl.style.display = 'block';
     } finally {
       btn.disabled = false; btn.textContent = 'Trimite';
+    }
+  }
+
+  // Resend cod prin SMS
+  async function sendResendSms() {
+    const tel = document.getElementById('resend-phone').value.trim();
+    const btn = document.getElementById('resend-sms-btn');
+    const errEl = document.getElementById('resend-error');
+    const okEl = document.getElementById('resend-ok');
+    errEl.style.display = 'none'; okEl.style.display = 'none';
+    btn.disabled = true; btn.textContent = 'Se trimite...';
+    try {
+      const r = await fetch('/api/resend-code-sms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tel }),
+      });
+      if (r.ok) {
+        okEl.textContent = '✅ Dacă telefonul este în sistemul nostru, vei primi în câteva minute un SMS cu codurile abonamentelor tale.';
+        okEl.style.display = 'block';
+        document.getElementById('resend-sms-form').style.display = 'none';
+      } else {
+        const data = await r.json().catch(() => ({}));
+        errEl.textContent = data.error || 'A apărut o eroare. Verifică numărul sau contactează-ne direct.';
+        errEl.style.display = 'block';
+      }
+    } catch {
+      errEl.textContent = 'Eroare de rețea. Încearcă din nou.';
+      errEl.style.display = 'block';
+    } finally {
+      btn.disabled = false; btn.textContent = 'Trimite SMS';
     }
   }
 
