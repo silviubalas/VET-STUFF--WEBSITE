@@ -18,13 +18,13 @@ Plata se face o singură dată sau în trei tranșe egale pe parcursul a 60 de z
 
 ## Planul Silver — îngrijirea preventivă de bază
 
-**De la 358 lei / an**
+**De la 660 lei / an**
 
 Silver este punctul de pornire: tot ce membrul familiei tale are nevoie în fiecare an pentru a fi sănătos și protejat.
 
 - **Consultație anuală** — medicul îl vede, îl evaluează, îl cunoaște
 - **Vaccin polivalent cu antirabic** — protecție completă pentru tot anul
-- **Deparazitare internă** (de 2 ori pe an) și **deparazitare externă** (de 4 ori pe an) — cu produsele alese împreună cu medicul, în funcție de stilul de viață al animalului
+- **Deparazitare internă** (de 4 ori pe an) și **deparazitare externă** (de 12 ori pe an, câte una pe lună) — cu produsele alese împreună cu medicul, în funcție de stilul de viață al animalului
 
 Dacă apare vreodată o urgență, membrul familiei tale are acces prioritar la consultație la jumătate din costul obișnuit. Și pentru că relația cu clinica se construiește în timp, ai la dispoziție vouchere pentru produsele pe care le alegi din clinică pe parcursul anului.
 
@@ -34,12 +34,12 @@ Silver este planul potrivit pentru animalele tinere și sănătoase, ai căror s
 
 ## Planul Gold — îngrijire completă, cu diagnostic inclus
 
-**De la 1126 lei / an**
+**De la 1266 lei / an**
 
 Gold adaugă un nivel în plus față de prevenție: diagnosticul. Pe lângă tot ce include Silver, animalul tău beneficiază anual de investigații care îi verifică sănătatea la interior — nu doar aspectul exterior.
 
 Ce include în plus față de Silver:
-- **Deparazitare internă** de 4 ori pe an și **deparazitare externă** de 8 ori pe an
+- **Deparazitare internă** de 4 ori pe an și **deparazitare externă** de 12 ori pe an (câte una pe lună)
 - **Detartraj dentar** — sănătatea dentară este una dintre cele mai neglijate forme de îngrijire la animale și una dintre cele mai importante
 - **Ecografie abdominală completă** — organele interne verificate o dată pe an, înainte să apară orice semn
 - **Profil de analize sânge** (bază sau avansat, ales împreună cu medicul) — ficatul, rinichii, glicemia, funcția generală a organismului
