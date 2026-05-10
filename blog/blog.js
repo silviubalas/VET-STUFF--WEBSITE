@@ -131,19 +131,20 @@ async function initBlogPost() {
     showPostError('Lipsește parametrul <code>?slug=</code> din URL.');
     return;
   }
+  if (!isValidSlug(slug)) {
+    showPostError('Articol invalid.');
+    return;
+  }
 
   try {
-    const [posts, markdown] = await Promise.all([
-      fetchPosts(),
-      fetchMarkdown(slug)
-    ]);
-
+    const posts = await fetchPosts();
     const meta = posts.find(p => p.slug === slug);
     if (!meta) {
       showPostError(`Articolul <code>${escapeHtml(slug)}</code> nu există în posts.json.`);
       return;
     }
 
+    const markdown = await fetchMarkdown(meta.slug);
     renderPost(meta, markdown);
 
   } catch (err) {
@@ -187,7 +188,7 @@ function renderPost(meta, markdown) {
     `;
   }
 
-  document.getElementById('blog-post').innerHTML = marked.parse(markdown);
+  document.getElementById('blog-post').innerHTML = sanitizeHtml(marked.parse(markdown));
 }
 
 function showPostError(msg) {
@@ -215,6 +216,31 @@ async function fetchMarkdown(slug) {
   const res = await fetch(`${POSTS_DIR}${slug}.md`);
   if (!res.ok) throw new Error(`fetch ${slug}.md → HTTP ${res.status}`);
   return res.text();
+}
+
+function isValidSlug(slug) {
+  return /^[a-z0-9-]+$/.test(String(slug || ''));
+}
+
+function sanitizeHtml(html) {
+  if (window.DOMPurify) {
+    return DOMPurify.sanitize(html, {
+      USE_PROFILES: { html: true },
+      FORBID_TAGS: ['style', 'script', 'iframe', 'object', 'embed'],
+    });
+  }
+
+  const template = document.createElement('template');
+  template.innerHTML = html;
+  template.content.querySelectorAll('script,style,iframe,object,embed,link,meta').forEach(el => el.remove());
+  template.content.querySelectorAll('*').forEach(el => {
+    [...el.attributes].forEach(attr => {
+      const name = attr.name.toLowerCase();
+      const value = attr.value.trim().toLowerCase();
+      if (name.startsWith('on') || value.startsWith('javascript:')) el.removeAttribute(attr.name);
+    });
+  });
+  return template.innerHTML;
 }
 
 function formatDate(dateStr) {
