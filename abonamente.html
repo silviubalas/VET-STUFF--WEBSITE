@@ -967,7 +967,14 @@ function doSubmitForm() {
     body: JSON.stringify({ email, nume, plan, animal, cod })
   }) : Promise.resolve(null);
 
-  Promise.allSettled([abonamenteRequest, utilizareRequest, formspreeRequest, emailRequest]).then(results => {
+  // SMS de confirmare catre client (pe numarul de telefon furnizat)
+  const smsRequest = tel ? fetch('/api/send-sms', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ tel, cod })
+  }) : Promise.resolve(null);
+
+  Promise.allSettled([abonamenteRequest, utilizareRequest, formspreeRequest, emailRequest, smsRequest]).then(results => {
     const anyOk = results.some(r => r.status === 'fulfilled' && r.value && r.value.ok);
     if (anyOk) {
       // Afiseaza codul + linkul catre status + QR pentru clinica
