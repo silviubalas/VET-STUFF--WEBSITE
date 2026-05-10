@@ -667,7 +667,7 @@
   document.querySelectorAll('.counter-btn').forEach(b => {
     b.addEventListener('click', () => {
       const cnt = b.dataset.cnt, op = b.dataset.op;
-      const max = state[cnt + 'Max'];
+      const max = cnt === 'urgente' ? 4 : state[cnt + 'Max'];
       if (op === '+' && state[cnt] < max) state[cnt]++;
       else if (op === '-' && state[cnt] > 0) state[cnt]--;
       renderCounters();
