@@ -682,8 +682,13 @@
             <input type="tel" id="ab-telefon" placeholder="ex. 0742 000 000" required />
           </div>
           <div class="form-field">
-            <label>Email</label>
-            <input type="email" id="ab-email" placeholder="ex. ion@email.com" />
+            <label>Email *</label>
+            <input type="email" id="ab-email" placeholder="ex. ion@email.com" required autocomplete="email" />
+          </div>
+          <div class="form-field">
+            <label>Confirmă emailul *</label>
+            <input type="email" id="ab-email-confirm" placeholder="Rescrie adresa de email" autocomplete="off" />
+            <div id="ab-email-match-msg" style="display:none;font-size:0.8rem;margin-top:5px;"></div>
           </div>
           <div class="form-field">
             <label>Nume animal *</label>
@@ -828,23 +833,67 @@ function genCodAbonament(numeClient, numeAnimal) {
   return clean(numeClient) + clean(numeAnimal) + dd + mm + yyyy + suffix;
 }
 
-document.getElementById('abonament-form').addEventListener('submit', function(e) {
-  e.preventDefault();
+<!-- MODAL: Confirmare email -->
+<dialog id="modal-confirm-email" style="border:none;border-radius:18px;padding:32px 28px;max-width:380px;width:92%;box-shadow:0 20px 60px rgba(0,0,0,0.22);text-align:center;" onclick="if(event.target===this)this.close()">
+  <div style="font-size:2rem;margin-bottom:10px;">✉️</div>
+  <h3 style="font-size:1.15rem;font-weight:800;color:var(--navy);margin:0 0 10px;">Confirmă adresa de email</h3>
+  <p style="font-size:0.88rem;color:#444;margin:0 0 14px;line-height:1.6;">Detaliile abonamentului vor fi trimise la:</p>
+  <div id="confirm-email-display" style="font-weight:700;font-size:1.05rem;color:var(--navy);background:#f0f7ff;border:1.5px solid #c7dbf2;border-radius:10px;padding:10px 16px;word-break:break-all;margin-bottom:12px;"></div>
+  <p style="font-size:0.8rem;color:var(--gray);margin:0 0 22px;line-height:1.55;">Verifică cu atenție — dacă adresa nu este corectă, nu vei primi confirmarea.</p>
+  <div style="display:flex;gap:10px;">
+    <button id="btn-email-back" type="button" class="btn-outline w-full justify-center" style="flex:1;">Corectează</button>
+    <button id="btn-email-ok"   type="button" class="btn-red   w-full justify-center" style="flex:1;">Da, continuă →</button>
+  </div>
+</dialog>
+
+<script>
+// ---- Validare email în timp real ----
+(function() {
+  const email = document.getElementById('ab-email');
+  const conf  = document.getElementById('ab-email-confirm');
+  const msg   = document.getElementById('ab-email-match-msg');
+  function checkMatch() {
+    const v1 = email.value.trim(), v2 = conf.value.trim();
+    if (!v1 || !v2) { msg.style.display = 'none'; return; }
+    if (v1 === v2) {
+      msg.style.display = 'block';
+      msg.style.color = '#16a34a';
+      msg.textContent = '✓ Emailurile se potrivesc';
+    } else {
+      msg.style.display = 'block';
+      msg.style.color = 'var(--red)';
+      msg.textContent = '✗ Emailurile nu se potrivesc';
+    }
+  }
+  email.addEventListener('input', checkMatch);
+  conf.addEventListener('input', checkMatch);
+
+  // Butoane dialog confirmare
+  document.getElementById('btn-email-back').addEventListener('click', function() {
+    document.getElementById('modal-confirm-email').close();
+    document.getElementById('ab-email').focus();
+  });
+  document.getElementById('btn-email-ok').addEventListener('click', function() {
+    document.getElementById('modal-confirm-email').close();
+    doSubmitForm();
+  });
+})();
+</script>
+
+<script>
+function doSubmitForm() {
   const plan   = document.getElementById('ab-plan').value;
   const nume   = document.getElementById('ab-nume').value.trim();
   const tel    = document.getElementById('ab-telefon').value.trim();
   const animal = document.getElementById('ab-animal').value.trim();
-  if (!plan || !nume || !tel || !animal) { document.getElementById('ab-error').style.display = 'block'; return; }
-  document.getElementById('ab-error').style.display = 'none';
-
-  const email = document.getElementById('ab-email').value.trim();
-  const rasa  = document.getElementById('ab-rasa').value.trim();
-  const mesaj = document.getElementById('ab-mesaj').value.trim();
+  const email  = document.getElementById('ab-email').value.trim();
+  const rasa   = document.getElementById('ab-rasa').value.trim();
+  const mesaj  = document.getElementById('ab-mesaj').value.trim();
 
   const cod = genCodAbonament(nume, animal);
   // Data start si Activ sunt setate manual de medic dupa confirmarea platii (nu la inscriere)
 
-  const form = this;
+  const form = document.getElementById('abonament-form');
   const btn = form.querySelector('button[type="submit"]');
   const originalLabel = btn.innerHTML;
   btn.disabled = true;
@@ -934,6 +983,38 @@ document.getElementById('abonament-form').addEventListener('submit', function(e)
       alert('A apărut o eroare la trimitere. Te rugăm să ne contactezi telefonic la +40 7XX XXX XXX.');
     }
   });
+}
+
+document.getElementById('abonament-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const plan         = document.getElementById('ab-plan').value;
+  const nume         = document.getElementById('ab-nume').value.trim();
+  const tel          = document.getElementById('ab-telefon').value.trim();
+  const animal       = document.getElementById('ab-animal').value.trim();
+  const email        = document.getElementById('ab-email').value.trim();
+  const emailConfirm = document.getElementById('ab-email-confirm').value.trim();
+  const errEl        = document.getElementById('ab-error');
+
+  if (!plan || !nume || !tel || !animal) {
+    errEl.textContent = 'Te rugăm să completezi câmpurile obligatorii.';
+    errEl.style.display = 'block';
+    return;
+  }
+  if (!email) {
+    errEl.textContent = 'Emailul este obligatoriu pentru a primi detaliile abonamentului.';
+    errEl.style.display = 'block';
+    document.getElementById('ab-email').focus();
+    return;
+  }
+  if (email !== emailConfirm) {
+    errEl.textContent = 'Emailurile nu se potrivesc. Verifică și rescrie adresa de confirmare.';
+    errEl.style.display = 'block';
+    document.getElementById('ab-email-confirm').focus();
+    return;
+  }
+  errEl.style.display = 'none';
+  document.getElementById('confirm-email-display').textContent = email;
+  document.getElementById('modal-confirm-email').showModal();
 });
 </script>
 <!-- ═══ CALCULATOR PREȚ — JS ═══ -->
