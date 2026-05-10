@@ -180,7 +180,7 @@
       <div class="counter-value" id="c-interne">0</div>
       <button type="button" class="counter-btn" data-cnt="interne" data-op="+">+</button>
     </div>
-    <div class="counter-meta">din maxim <strong id="c-interne-max">2</strong> incluse în abonament</div>
+    <div class="counter-meta">din maxim <strong id="c-interne-max">4</strong> incluse în abonament</div>
   </div>
 
   <!-- Deparazitari externe -->
@@ -191,7 +191,7 @@
       <div class="counter-value" id="c-externe">0</div>
       <button type="button" class="counter-btn" data-cnt="externe" data-op="+">+</button>
     </div>
-    <div class="counter-meta">din maxim <strong id="c-externe-max">4</strong> incluse în abonament</div>
+    <div class="counter-meta">din maxim <strong id="c-externe-max">12</strong> incluse în abonament</div>
   </div>
 
   <!-- Urgenta -->
@@ -411,8 +411,8 @@
     externe: 0,
     vouchere: 0,
     urgente: 0,
-    interneMax: 2,
-    externeMax: 4,
+    interneMax: 4,
+    externeMax: 12,
     vouchereMax: 5,
     isGold: false,
     isPlatinum: false,
@@ -521,8 +521,8 @@
     $('t-fractie').checked = !!d.vaccin.fractieLeucemica;
     $('sub-vaccin').classList.toggle('show', !!d.vaccin.folosit);
 
-    state.interneMax = d.deparazitariInterne.total || 2;
-    state.externeMax = d.deparazitariExterne.total || 4;
+    state.interneMax = d.deparazitariInterne.total || 4;
+    state.externeMax = d.deparazitariExterne.total || 12;
     state.interne = Number(d.deparazitariInterne.folosite) || 0;
     state.externe = Number(d.deparazitariExterne.folosite) || 0;
     $('c-interne-max').textContent = state.interneMax;
