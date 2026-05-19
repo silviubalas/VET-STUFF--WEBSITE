@@ -1,15 +1,15 @@
 // Vercel Serverless Function — trimite SMS de confirmare catre client cu codul de abonament
-// Foloseste Twilio REST API cu fetch() nativ. Credentialele sunt in variabile de mediu.
+// Foloseste SMSlink.ro REST API. Credentialele sunt in variabile de mediu.
 
-import { getTwilioConfig, sendTwilioSms } from './_twilio.js';
+import { getSmsLinkConfig, sendSmsLink } from './_smslink.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // Daca Twilio nu e configurat, ignora silentios
-  if (!getTwilioConfig().configured) {
+  // Daca SMSlink nu e configurat, ignora silentios
+  if (!getSmsLinkConfig().configured) {
     return res.status(200).json({ ok: false, reason: 'SMS not configured' });
   }
 
@@ -37,10 +37,10 @@ export default async function handler(req, res) {
   ].filter(Boolean).join('\n');
 
   try {
-    const result = await sendTwilioSms({ to: tel, body });
+    const result = await sendSmsLink({ to: tel, body });
     if (!result.ok) {
-      console.error('Twilio error:', result);
-      return res.status(result.status || 500).json({ error: result.error || 'Twilio error' });
+      console.error('SMSlink error:', result);
+      return res.status(result.status || 500).json({ error: result.error || 'SMSlink error' });
     }
     return res.status(200).json({ ok: true });
   } catch (err) {

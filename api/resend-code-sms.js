@@ -1,7 +1,7 @@
 // Vercel Serverless Function — retrimite codurile abonamentelor prin SMS.
 // Returneaza intentionat 200 chiar daca telefonul nu exista, ca sa nu expuna date.
 
-import { getTwilioConfig, phoneLastNine, sendTwilioSms } from './_twilio.js';
+import { getSmsLinkConfig, phoneLastNine, sendSmsLink } from './_smslink.js';
 
 const AIRTABLE_BASE = 'appGhcW1B4iDA4cUY';
 const TABLE = 'Abonamente';
@@ -11,7 +11,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  if (!getTwilioConfig().configured) {
+  if (!getSmsLinkConfig().configured) {
     return res.status(200).json({ ok: true, smsConfigured: false });
   }
 
@@ -33,9 +33,9 @@ export default async function handler(req, res) {
     }
 
     const body = buildSms(records);
-    const result = await sendTwilioSms({ to: tel, body });
+    const result = await sendSmsLink({ to: tel, body });
     if (!result.ok) {
-      console.error('[resend-code-sms] Twilio error', result);
+      console.error('[resend-code-sms] SMSlink error', result);
     }
 
     return res.status(200).json({ ok: true });
