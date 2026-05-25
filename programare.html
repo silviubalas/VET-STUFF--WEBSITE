@@ -28,6 +28,50 @@
     #navbar { background:#fff; border-bottom:1px solid var(--border); }
     .nav-link { font-size:.9rem; font-weight:600; color:#222; white-space:nowrap; transition:color .15s; }
     .nav-link:hover,.nav-link.active { color:var(--red); }
+
+    /* Nav dropdown — Servicii mega menu */
+    .nav-dropdown { position: relative; display: inline-block; }
+    .nav-dropdown > .nav-link { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+    .nav-dropdown > .nav-link::after { content: '▾'; font-size: .7em; transition: transform .18s; }
+    .nav-dropdown:hover > .nav-link::after,
+    .nav-dropdown:focus-within > .nav-link::after { transform: rotate(180deg); }
+    .nav-dropdown-panel {
+      position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%) translateY(8px);
+      background: #fff; border: 1.5px solid var(--border); border-radius: 12px;
+      box-shadow: 0 14px 40px rgba(27,58,107,0.16), 0 2px 6px rgba(0,0,0,0.04);
+      padding: 12px 0; min-width: 260px;
+      opacity: 0; visibility: hidden; pointer-events: none;
+      transition: opacity .18s, transform .18s, visibility .18s;
+      z-index: 1100;
+    }
+    .nav-dropdown:hover .nav-dropdown-panel,
+    .nav-dropdown:focus-within .nav-dropdown-panel {
+      opacity: 1; visibility: visible; pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
+    }
+    .nav-dd-head {
+      display: block; padding: 4px 22px 10px; font-size: .7rem; font-weight: 800;
+      letter-spacing: .08em; text-transform: uppercase; color: var(--red);
+      border-bottom: 1px solid var(--border); margin-bottom: 6px;
+    }
+    .nav-dropdown-panel a:not(.nav-dd-all) {
+      display: block; padding: 7px 22px; font-size: .88rem; color: #333;
+      white-space: nowrap; transition: background .12s, color .12s; font-weight: 500;
+    }
+    .nav-dropdown-panel a:not(.nav-dd-all):hover { background: #f1f5ff; color: var(--red); }
+    .nav-dd-all {
+      display: block; padding: 11px 22px 4px; margin-top: 8px;
+      border-top: 1px solid var(--border); font-weight: 800; color: var(--navy);
+      font-size: .86rem; transition: color .12s;
+    }
+    .nav-dd-all:hover { color: var(--red); }
+    .nav-dropdown::before { content: ''; position: absolute; top: 100%; left: 0; right: 0; height: 12px; }
+    .mob-sublist { padding: 4px 0 8px 16px; display: flex; flex-direction: column; gap: 0; }
+    .mob-sublist a { font-size: .9rem; padding: 7px 4px; color: #444; }
+    .mob-sublist a:hover { color: var(--red); }
+    .mob-sub-toggle { display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+    .mob-sub-toggle::after { content: '▾'; font-size: .8em; transition: transform .2s; }
+    details[open] > .mob-sub-toggle::after { transform: rotate(180deg); }
     .btn-red { display:inline-flex; align-items:center; justify-content:center; gap:7px; background:var(--red); color:#fff; border:none; border-radius:7px; padding:11px 19px; font-size:.88rem; font-weight:800; cursor:pointer; transition:background .16s, transform .16s, box-shadow .16s; box-shadow:0 10px 24px rgba(212,43,43,.18), 0 2px 5px rgba(0,0,0,.08); }
     .btn-red:hover { background:#b52020; transform:translateY(-1px); box-shadow:0 16px 34px rgba(212,43,43,.24), 0 3px 8px rgba(0,0,0,.1); }
     .btn-red:focus-visible,.f-input:focus-visible { outline:3px solid rgba(212,43,43,.28); outline-offset:2px; }
@@ -73,7 +117,34 @@
       <a href="index.html"><img src="logo.PNG" alt="VET STUFF" style="height:76px;width:auto;" /></a>
       <div class="hidden md:flex items-center gap-6">
         <a class="nav-link" href="index.html#despre">Despre noi</a>
-        <a class="nav-link" href="servicii.html">Servicii</a>
+        <div class="nav-dropdown">
+        <a href="servicii.html" class="nav-link" aria-haspopup="true">Servicii</a>
+        <div class="nav-dropdown-panel" role="menu" aria-label="Toate serviciile">
+          <span class="nav-dd-head">Toate serviciile</span>
+          <a href="servicii.html#diagnostic">🔬 Analize laborator</a>
+          <a href="servicii.html#chirurgie">💉 Anestezie & sedare</a>
+          <a href="servicii.html#cardiologie">❤️ Cardiologie</a>
+          <a href="servicii.html#chirurgie">⚕️ Chirurgie generală</a>
+          <a href="servicii.html#diagnostic">🩺 Consultații</a>
+          <a href="servicii.html#dermatologie">🩹 Dermatologie</a>
+          <a href="servicii.html#preventie">📄 Documentație & pașaport</a>
+          <a href="servicii.html#diagnostic">🔭 Endoscopie</a>
+          <a href="servicii.html#altele">🕊️ Eutanasiere</a>
+          <a href="servicii.html#altele">🏃 Fizioterapie</a>
+          <a href="servicii.html#geriatrie">🐾 Geriatrie</a>
+          <a href="servicii.html#diagnostic">📡 Imagistică</a>
+          <a href="servicii.html#altele">🏥 Internare</a>
+          <a href="servicii.html#medicina-interna">🫀 Medicină internă</a>
+          <a href="servicii.html#altele">👁️ Oftalmologie</a>
+          <a href="servicii.html#oncologie">🎗️ Oncologie</a>
+          <a href="servicii.html#ortopedie">🦴 Ortopedie</a>
+          <a href="servicii.html#preventie">🛡️ Prevenție & vaccinare</a>
+          <a href="servicii.html#altele">💊 Servicii medicale</a>
+          <a href="servicii.html#stomatologie">🦷 Stomatologie</a>
+          <a href="servicii.html#altele">🚨 Urgențe</a>
+          <a href="servicii.html" class="nav-dd-all">Vezi pagina completă →</a>
+        </div>
+      </div>
         <a class="nav-link" href="echipa.html">Echipa medicală</a>
         <a class="nav-link" href="abonamente.html">Abonamente</a>
         <a class="nav-link active" href="programare.html">Programare</a>

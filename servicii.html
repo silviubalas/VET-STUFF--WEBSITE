@@ -171,6 +171,54 @@
     .nav-link:hover { color: var(--red); }
     .nav-link.active { color: var(--red); }
 
+    /* Nav dropdown — Servicii mega menu */
+    .nav-dropdown { position: relative; display: inline-block; }
+    .nav-dropdown > .nav-link { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+    .nav-dropdown > .nav-link::after { content: '▾'; font-size: .7em; transition: transform .18s; }
+    .nav-dropdown:hover > .nav-link::after,
+    .nav-dropdown:focus-within > .nav-link::after { transform: rotate(180deg); }
+    .nav-dropdown-panel {
+      position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%) translateY(8px);
+      background: #fff; border: 1.5px solid var(--border); border-radius: 12px;
+      box-shadow: 0 14px 40px rgba(27,58,107,0.16), 0 2px 6px rgba(0,0,0,0.04);
+      padding: 12px 0; min-width: 260px;
+      opacity: 0; visibility: hidden; pointer-events: none;
+      transition: opacity .18s, transform .18s, visibility .18s;
+      z-index: 1100;
+    }
+    .nav-dropdown:hover .nav-dropdown-panel,
+    .nav-dropdown:focus-within .nav-dropdown-panel {
+      opacity: 1; visibility: visible; pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
+    }
+    .nav-dd-head {
+      display: block; padding: 4px 22px 10px; font-size: .7rem; font-weight: 800;
+      letter-spacing: .08em; text-transform: uppercase; color: var(--red);
+      border-bottom: 1px solid var(--border); margin-bottom: 6px;
+    }
+    .nav-dropdown-panel a:not(.nav-dd-all) {
+      display: block; padding: 7px 22px; font-size: .88rem; color: #333;
+      white-space: nowrap; transition: background .12s, color .12s; font-weight: 500;
+    }
+    .nav-dropdown-panel a:not(.nav-dd-all):hover { background: #f1f5ff; color: var(--red); }
+    .nav-dd-all {
+      display: block; padding: 11px 22px 4px; margin-top: 8px;
+      border-top: 1px solid var(--border); font-weight: 800; color: var(--navy);
+      font-size: .86rem; transition: color .12s;
+    }
+    .nav-dd-all:hover { color: var(--red); }
+    /* Bridge over the 6px gap to keep hover state when moving cursor */
+    .nav-dropdown::before {
+      content: ''; position: absolute; top: 100%; left: 0; right: 0; height: 12px;
+    }
+    /* Mobile sub-menu in hamburger */
+    .mob-sublist { padding: 4px 0 8px 16px; display: flex; flex-direction: column; gap: 0; }
+    .mob-sublist a { font-size: .9rem; padding: 7px 4px; color: #444; }
+    .mob-sublist a:hover { color: var(--red); }
+    .mob-sub-toggle { display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+    .mob-sub-toggle::after { content: '▾'; font-size: .8em; transition: transform .2s; }
+    details[open] > .mob-sub-toggle::after { transform: rotate(180deg); }
+
     .btn-red {
       display: inline-flex; align-items: center; gap: 6px;
       background: var(--red); color: #fff; font-size: 0.85rem; font-weight: 600;
@@ -402,7 +450,34 @@
     </a>
     <div class="hidden md:flex items-center gap-6">
       <a href="index.html#despre" class="nav-link">Despre noi</a>
-      <a href="servicii.html" class="nav-link active">Servicii</a>
+      <div class="nav-dropdown">
+        <a href="servicii.html" class="nav-link active" aria-haspopup="true">Servicii</a>
+        <div class="nav-dropdown-panel" role="menu" aria-label="Toate serviciile">
+          <span class="nav-dd-head">Toate serviciile</span>
+          <a href="servicii.html#diagnostic">🔬 Analize laborator</a>
+          <a href="servicii.html#chirurgie">💉 Anestezie & sedare</a>
+          <a href="servicii.html#cardiologie">❤️ Cardiologie</a>
+          <a href="servicii.html#chirurgie">⚕️ Chirurgie generală</a>
+          <a href="servicii.html#diagnostic">🩺 Consultații</a>
+          <a href="servicii.html#dermatologie">🩹 Dermatologie</a>
+          <a href="servicii.html#preventie">📄 Documentație & pașaport</a>
+          <a href="servicii.html#diagnostic">🔭 Endoscopie</a>
+          <a href="servicii.html#altele">🕊️ Eutanasiere</a>
+          <a href="servicii.html#altele">🏃 Fizioterapie</a>
+          <a href="servicii.html#geriatrie">🐾 Geriatrie</a>
+          <a href="servicii.html#diagnostic">📡 Imagistică</a>
+          <a href="servicii.html#altele">🏥 Internare</a>
+          <a href="servicii.html#medicina-interna">🫀 Medicină internă</a>
+          <a href="servicii.html#altele">👁️ Oftalmologie</a>
+          <a href="servicii.html#oncologie">🎗️ Oncologie</a>
+          <a href="servicii.html#ortopedie">🦴 Ortopedie</a>
+          <a href="servicii.html#preventie">🛡️ Prevenție & vaccinare</a>
+          <a href="servicii.html#altele">💊 Servicii medicale</a>
+          <a href="servicii.html#stomatologie">🦷 Stomatologie</a>
+          <a href="servicii.html#altele">🚨 Urgențe</a>
+          <a href="servicii.html" class="nav-dd-all">Vezi pagina completă →</a>
+        </div>
+      </div>
       <a href="echipa.html" class="nav-link">Echipa medicală</a>
       <a href="abonamente.html" class="nav-link">Abonamente</a>
       <a href="programare.html" class="nav-link">Programare</a>
@@ -428,80 +503,8 @@
 
 <!-- ANCHOR NAV — parte din header sticky -->
 <div style="background:#fff; border-bottom:1px solid var(--border); padding:10px 0;">
-  <div class="max-w-6xl mx-auto px-4" style="display:flex; align-items:center; gap:12px;">
-    <details class="all-services" id="all-services-dd">
-      <summary class="anchor-pill all-pill">📋 Vezi toate serviciile</summary>
-      <div class="all-services-panel" role="menu" aria-label="Toate serviciile">
-        <h4>Toate serviciile veterinare VET STUFF</h4>
-        <div class="as-grid">
-          <div class="as-cat">
-            <a href="#diagnostic">🩺 Diagnostic & Investigații</a>
-            <div class="as-sub"><span>Consultații</span><span>Analize</span><span>Imagistică</span><span>Endoscopie</span></div>
-          </div>
-          <div class="as-cat">
-            <a href="#chirurgie">⚕️ Chirurgie & Anestezie</a>
-            <div class="as-sub"><span>Sterilizări</span><span>Castrări</span><span>Țesut moale</span><span>Anestezie</span></div>
-          </div>
-          <div class="as-cat">
-            <a href="#ortopedie">🦴 Ortopedie & Traumatologie</a>
-            <div class="as-sub"><span>Fracturi</span><span>LCA</span><span>Displazie</span><span>Neurochirurgie</span></div>
-          </div>
-          <div class="as-cat">
-            <a href="#cardiologie">❤️ Cardiologie</a>
-            <div class="as-sub"><span>Ecocardiografie</span><span>ECG</span><span>Pre-anestezie</span><span>Boli cronice</span></div>
-          </div>
-          <div class="as-cat">
-            <a href="#oncologie">🎗️ Oncologie</a>
-            <div class="as-sub"><span>Citologie FNA</span><span>Biopsii</span><span>Chimioterapie</span><span>Paliație</span></div>
-          </div>
-          <div class="as-cat">
-            <a href="#stomatologie">🦷 Stomatologie</a>
-            <div class="as-sub"><span>Detartraj</span><span>Extracții</span><span>Chirurgie orală</span></div>
-          </div>
-          <div class="as-cat">
-            <a href="#dermatologie">🩹 Dermatologie</a>
-            <div class="as-sub"><span>Alergii</span><span>Otite</span><span>Parazitoze</span><span>Biopsie cutanată</span></div>
-          </div>
-          <div class="as-cat">
-            <a href="#preventie">🛡️ Prevenție & Profilaxie</a>
-            <div class="as-sub"><span>Vaccinări</span><span>Deparazitare</span><span>Pașaport</span><span>Microcip</span></div>
-          </div>
-          <div class="as-cat">
-            <a href="#medicina-interna">🫀 Medicină internă</a>
-            <div class="as-sub"><span>Gastroenterologie</span><span>Endocrinologie</span><span>Renale</span><span>Pulmonare</span><span>Infecțioase</span></div>
-          </div>
-          <div class="as-cat">
-            <a href="#altele">👁️ Oftalmologie</a>
-            <div class="as-sub"><span>Examen ocular</span><span>Ulcere</span><span>Glaucom</span><span>Cataractă</span></div>
-          </div>
-          <div class="as-cat">
-            <a href="#altele">🏃 Fizioterapie & Kinetoterapie</a>
-            <div class="as-sub"><span>Recuperare</span><span>Artroză</span><span>Hidroterapie</span></div>
-          </div>
-          <div class="as-cat">
-            <a href="#geriatrie">🐾 Geriatrie</a>
-            <div class="as-sub"><span>Profil senior</span><span>Cardio</span><span>Renal</span><span>Hepatic</span><span>Nutriție</span></div>
-          </div>
-          <div class="as-cat">
-            <a href="#altele">🏥 Internare & Monitorizare</a>
-            <div class="as-sub"><span>Internare de zi</span><span>Terapie intensivă</span><span>Perfuzii</span><span>Injecții</span><span>Pansamente</span></div>
-          </div>
-          <div class="as-cat">
-            <a href="#altele">🚨 Urgențe</a>
-            <div class="as-sub"><span>Messenger 24/7</span><span>STUFFIE AI</span><span>Medic de gardă</span></div>
-          </div>
-          <div class="as-cat">
-            <a href="#altele">🕊️ Despărțire blândă</a>
-            <div class="as-sub"><span>Consiliere</span><span>Procedură demnă</span><span>Îngrijire rămășițe</span></div>
-          </div>
-          <div class="as-cat">
-            <a href="#preturi">💶 Prețuri orientative</a>
-            <div class="as-sub"><span>Tabel complet</span><span>Modale per categorie</span></div>
-          </div>
-        </div>
-      </div>
-    </details>
-    <div class="anchor-nav-wrap" id="anchor-wrap" style="flex:1; min-width:0;">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="anchor-nav-wrap" id="anchor-wrap">
     <div class="anchor-nav" id="anchor-scroll">
       <a href="#diagnostic" class="anchor-pill">🩺 Diagnostic</a>
       <a href="#chirurgie" class="anchor-pill">⚕️ Chirurgie</a>
@@ -518,23 +521,6 @@
     </div>
   </div>
 </div>
-<script>
-// Close all-services dropdown when clicking outside or pressing Escape
-(function(){
-  var dd = document.getElementById('all-services-dd');
-  if (!dd) return;
-  document.addEventListener('click', function(e){
-    if (dd.open && !dd.contains(e.target)) dd.open = false;
-  });
-  document.addEventListener('keydown', function(e){
-    if (e.key === 'Escape' && dd.open) dd.open = false;
-  });
-  // Close on anchor click inside panel
-  dd.querySelectorAll('.as-cat > a').forEach(function(a){
-    a.addEventListener('click', function(){ dd.open = false; });
-  });
-})();
-</script>
 
 <div id="mobile-menu">
   <button onclick="closeMenu()" aria-label="Închide meniu" style="position:absolute;top:20px;right:20px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:none;background:transparent;cursor:pointer;color:var(--navy);border-radius:50%;transition:background 0.2s;">
@@ -543,7 +529,33 @@
     </svg>
   </button>
   <a href="index.html#despre"     class="mob-link" onclick="closeMenu()">Despre noi</a>
-  <a href="servicii.html"         class="mob-link" onclick="closeMenu()" style="color:var(--red);">Servicii</a>
+  <details>
+    <summary class="mob-link mob-sub-toggle" style="color:var(--red); list-style:none;">Servicii</summary>
+    <div class="mob-sublist">
+      <a href="servicii.html#diagnostic" onclick="closeMenu()">🔬 Analize laborator</a>
+      <a href="servicii.html#chirurgie" onclick="closeMenu()">💉 Anestezie & sedare</a>
+      <a href="servicii.html#cardiologie" onclick="closeMenu()">❤️ Cardiologie</a>
+      <a href="servicii.html#chirurgie" onclick="closeMenu()">⚕️ Chirurgie</a>
+      <a href="servicii.html#diagnostic" onclick="closeMenu()">🩺 Consultații</a>
+      <a href="servicii.html#dermatologie" onclick="closeMenu()">🩹 Dermatologie</a>
+      <a href="servicii.html#preventie" onclick="closeMenu()">📄 Documentație</a>
+      <a href="servicii.html#diagnostic" onclick="closeMenu()">🔭 Endoscopie</a>
+      <a href="servicii.html#altele" onclick="closeMenu()">🕊️ Eutanasiere</a>
+      <a href="servicii.html#altele" onclick="closeMenu()">🏃 Fizioterapie</a>
+      <a href="servicii.html#geriatrie" onclick="closeMenu()">🐾 Geriatrie</a>
+      <a href="servicii.html#diagnostic" onclick="closeMenu()">📡 Imagistică</a>
+      <a href="servicii.html#altele" onclick="closeMenu()">🏥 Internare</a>
+      <a href="servicii.html#medicina-interna" onclick="closeMenu()">🫀 Medicină internă</a>
+      <a href="servicii.html#altele" onclick="closeMenu()">👁️ Oftalmologie</a>
+      <a href="servicii.html#oncologie" onclick="closeMenu()">🎗️ Oncologie</a>
+      <a href="servicii.html#ortopedie" onclick="closeMenu()">🦴 Ortopedie</a>
+      <a href="servicii.html#preventie" onclick="closeMenu()">🛡️ Prevenție & vaccinare</a>
+      <a href="servicii.html#altele" onclick="closeMenu()">💊 Servicii medicale</a>
+      <a href="servicii.html#stomatologie" onclick="closeMenu()">🦷 Stomatologie</a>
+      <a href="servicii.html#altele" onclick="closeMenu()">🚨 Urgențe</a>
+      <a href="servicii.html" onclick="closeMenu()" style="font-weight:800; color:var(--navy); margin-top:6px;">Vezi pagina completă →</a>
+    </div>
+  </details>
   <a href="echipa.html"           class="mob-link" onclick="closeMenu()">Echipa medicală</a>
   <a href="abonamente.html"       class="mob-link" onclick="closeMenu()">Abonamente</a>
   <a href="programare.html" class="mob-link" onclick="closeMenu()">Programare</a>
