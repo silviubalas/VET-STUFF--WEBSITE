@@ -35,11 +35,20 @@ const FIELD_RULES = {
     'Evaluări detaliate': 'longString',
     'Permisiune publicare': 'booleanOptional',
   },
+  'Mesaje contact': {
+    'Nume': 'string',
+    'Email': 'email',
+    'Telefon': 'stringOptional',
+    'Subiect': 'stringOptional',
+    'Mesaj': 'longString',
+    'Sursa': 'stringOptional',
+  },
 };
 const ALLOWED_TABLES = new Set(Object.keys(FIELD_RULES));
 const REQUIRED_FIELDS = {
   Programari: ['Name', 'Telefon', 'Nume animal', 'Tip animal', 'Serviciu'],
   Newsletter: ['Email'],
+  'Mesaje contact': ['Nume', 'Email', 'Mesaj'],
 };
 
 export default async function handler(req, res) {
