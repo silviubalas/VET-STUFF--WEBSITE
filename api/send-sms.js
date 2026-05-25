@@ -1,17 +1,17 @@
-// Vercel Serverless Function — trimite SMS de confirmare catre client cu codul de abonament
-// Foloseste Twilio REST API cu fetch() nativ. Credentialele sunt in variabile de mediu.
+// Vercel Serverless Function — trimite SMS de confirmare prin SMSlink.ro
+// Credentialele sunt in variabile de mediu: SMSLINK_CONNECTION_ID, SMSLINK_PASSWORD, SMSLINK_SENDER (optional)
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const sid   = process.env.TWILIO_ACCOUNT_SID;
-  const token = process.env.TWILIO_AUTH_TOKEN;
-  const from  = process.env.TWILIO_FROM;
+  const connectionId = process.env.SMSLINK_CONNECTION_ID;
+  const password     = process.env.SMSLINK_PASSWORD;
+  const sender       = process.env.SMSLINK_SENDER || '';
 
-  // Daca Twilio nu e configurat, ignora silentios
-  if (!sid || !token || !from) {
+  // Daca SMSlink nu e configurat, ignora silentios (nu blocheaza inregistrarea)
+  if (!connectionId || !password) {
     return res.status(200).json({ ok: false, reason: 'SMS not configured' });
   }
 
@@ -26,18 +26,18 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Format cod invalid' });
   }
 
-  // Normalizare numar la E.164 (+40XXXXXXXXX)
-  function toE164(nr) {
+  // Normalizare numar la format 40XXXXXXXXX (SMSlink accepta fara +)
+  function toRoFormat(nr) {
     const clean = (nr || '').replace(/[\s\-()+]/g, '');
-    if (clean.startsWith('40')) return '+' + clean;
-    if (clean.startsWith('0'))  return '+4' + clean;
-    return '+40' + clean;
+    if (clean.startsWith('40')) return clean;
+    if (clean.startsWith('0'))  return '4' + clean;
+    return '40' + clean;
   }
 
-  const to = toE164(tel);
+  const to = toRoFormat(tel);
 
-  // Validare: +40 urmat de exact 9 cifre
-  if (!/^\+40\d{9}$/.test(to)) {
+  // Validare: 40 urmat de exact 9 cifre
+  if (!/^40\d{9}$/.test(to)) {
     return res.status(400).json({ error: 'Numar de telefon invalid' });
   }
 
@@ -50,27 +50,32 @@ export default async function handler(req, res) {
     'Ne vedem la clinica!'
   ].join('\n');
 
+  // SMSlink Gateway HTTP API
+  // Doc: https://www.smslink.ro/sms-marketing-gateway-documentatie.html
+  const params = new URLSearchParams({
+    connection_id: connectionId,
+    password: password,
+    to: to,
+    message: body,
+  });
+  if (sender) params.set('sender', sender);
+
   try {
     const response = await fetch(
-      `https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`,
-      {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Basic ' + Buffer.from(`${sid}:${token}`).toString('base64'),
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({ From: from, To: to, Body: body }).toString(),
-      }
+      'https://secure.smslink.ro/sms/gateway/communicate/index.php?' + params.toString(),
+      { method: 'GET' }
     );
 
-    const data = await response.json();
+    const text = (await response.text()).trim();
 
-    if (!response.ok) {
-      console.error('Twilio error:', data);
-      return res.status(500).json({ error: data.message || 'Twilio error' });
+    // SMSlink raspunde "MESSAGE-ID;COD-RASPUNS" (ex: "12345;1") la succes
+    // sau cu un cod de eroare numeric negativ (ex: "-1", "-2", ...) la esec.
+    if (!response.ok || text.startsWith('-') || /^[-]?\d+$/.test(text) && Number(text) < 0) {
+      console.error('SMSlink error:', text);
+      return res.status(500).json({ error: 'SMSlink error', detail: text.slice(0, 200) });
     }
 
-    return res.status(200).json({ ok: true });
+    return res.status(200).json({ ok: true, response: text.slice(0, 200) });
   } catch (err) {
     console.error('SMS fetch error:', err);
     return res.status(500).json({ error: 'Network error' });
