@@ -203,11 +203,21 @@
           <div id="contact-success" style="display:none;margin-top:16px;padding:14px;border-radius:10px;background:#dcfce7;color:#166534;text-align:center;font-weight:800;">Mesajul a fost trimis. Îți răspundem cât de curând.</div>
         </form>
       </div>
-      <div class="card" style="padding:0;overflow:hidden;">
+      <div class="card" style="padding:0;overflow:hidden;display:flex;flex-direction:column;">
         <iframe class="map" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" title="Locație VET STUFF Bacău" src="https://www.google.com/maps?q=Strada%20Miori%C8%9Bei%2010%20Bac%C4%83u&output=embed"></iframe>
         <div style="padding:22px 24px;">
           <h3 style="font-size:1.35rem;color:var(--navy);margin-bottom:8px;">Cum ajungi la clinică</h3>
-          <p style="color:#555;line-height:1.7;">Suntem pe Strada Mioriței nr. 10, într-o zonă accesibilă din Bacău. Pentru indicații rapide, deschide harta pe telefon înainte să pornești.</p>
+          <p style="color:#555;line-height:1.7;margin-bottom:16px;">Suntem pe Strada Mioriței nr. 10, într-o zonă accesibilă din Bacău. Apasă butonul de mai jos pentru rută în Google Maps sau scanează codul QR cu telefonul.</p>
+          <a id="route-btn" href="https://www.google.com/maps/dir/?api=1&destination=Strada+Mioritei+10%2C+Bac%C4%83u%2C+Romania" target="_blank" rel="noopener" class="btn-red" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;padding:13px 22px;font-size:.95rem;">
+            <span aria-hidden="true">📍</span> Deschide ruta în Google Maps
+          </a>
+          <div style="margin-top:22px;padding-top:18px;border-top:1px solid var(--border);display:flex;gap:18px;align-items:center;flex-wrap:wrap;">
+            <div id="route-qr" style="width:128px;height:128px;flex-shrink:0;background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:8px;display:flex;align-items:center;justify-content:center;" aria-label="Cod QR rută Google Maps"></div>
+            <div style="flex:1;min-width:180px;">
+              <strong style="display:block;color:var(--navy);font-size:.95rem;margin-bottom:4px;">Scanează pentru navigație</strong>
+              <p style="color:#666;font-size:.82rem;line-height:1.6;margin:0;">Folosește camera telefonului pentru a scana codul și a deschide ruta direct în Google Maps.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -304,29 +314,61 @@
       const btn = document.getElementById('submit-btn');
       btn.disabled = true;
       btn.textContent = 'Se trimite...';
+      const phone = document.getElementById('phone').value.trim();
+      const topic = document.getElementById('topic').value.trim();
       const fd = new FormData();
       fd.append('Nume', name);
-      fd.append('Telefon', document.getElementById('phone').value.trim());
+      fd.append('Telefon', phone);
       fd.append('Email', email);
-      fd.append('Subiect', document.getElementById('topic').value.trim());
+      fd.append('Subiect', topic);
       fd.append('Mesaj', message);
-      fetch('https://formspree.io/f/mzdkbdzb', { method:'POST', body:fd, headers:{ 'Accept':'application/json' } })
-        .then(r => {
-          if (r.ok) {
-            document.getElementById('contact-success').style.display = 'block';
-            document.querySelectorAll('#contact-form input, #contact-form textarea, #contact-form button').forEach(el => { el.disabled = true; el.style.opacity = '.58'; });
-          } else {
-            btn.disabled = false;
-            btn.textContent = 'Trimite mesajul';
-            alert('A apărut o eroare. Te rugăm să ne contactezi telefonic la +40 7XX XXX XXX sau pe email.');
+
+      // Trimitem în paralel: Formspree (notificare e-mail) + Airtable (persistență)
+      const formspreeReq = fetch('https://formspree.io/f/mzdkbdzb', {
+        method:'POST', body:fd, headers:{ 'Accept':'application/json' }
+      }).then(r => r.ok).catch(() => false);
+
+      const airtableReq = fetch('/api/airtable', {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify({
+          table: 'Mesaje contact',
+          fields: {
+            'Nume': name,
+            'Email': email,
+            'Telefon': phone,
+            'Subiect': topic,
+            'Mesaj': message,
+            'Sursa': 'contact.html'
           }
         })
-        .catch(() => {
+      }).then(r => r.ok).catch(() => false);
+
+      Promise.all([formspreeReq, airtableReq]).then(([fsOk, atOk]) => {
+        // Considerăm succes dacă măcar unul a reușit (mesajul ajunge undeva)
+        if (fsOk || atOk) {
+          document.getElementById('contact-success').style.display = 'block';
+          document.querySelectorAll('#contact-form input, #contact-form textarea, #contact-form button').forEach(el => { el.disabled = true; el.style.opacity = '.58'; });
+        } else {
           btn.disabled = false;
           btn.textContent = 'Trimite mesajul';
-          alert('A apărut o eroare de rețea. Te rugăm să ne contactezi telefonic la +40 7XX XXX XXX sau pe email.');
-        });
+          alert('A apărut o eroare. Te rugăm să ne contactezi telefonic la +40 7XX XXX XXX sau pe email.');
+        }
+      });
     });
+  </script>
+
+  <!-- QR code pentru ruta Google Maps -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <script>
+    (function() {
+      const target = document.getElementById('route-qr');
+      const btn = document.getElementById('route-btn');
+      if (!target || !btn || typeof QRCode === 'undefined') return;
+      QRCode.toString(btn.href, { type: 'svg', margin: 0, width: 112, color: { dark: '#1b3a6b', light: '#ffffff' } }, function(err, svg) {
+        if (!err && svg) target.innerHTML = svg;
+      });
+    })();
   </script>
 </body>
 </html>
