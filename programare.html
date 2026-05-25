@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Programare veterinar Bacău | VET STUFF</title>
+  <meta name="description" content="Programează online o consultație la VET STUFF Bacău. Completează datele animalului, serviciul dorit și data preferată." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://vet-stuff.ro/programare.html" />
+  <meta property="og:title" content="Programare online VET STUFF Bacău" />
+  <meta property="og:description" content="Trimite rapid o cerere de programare pentru consultații, vaccinări, chirurgie, imagistică sau prevenție." />
+  <meta property="og:url" content="https://vet-stuff.ro/programare.html" />
+  <meta property="og:image" content="https://vet-stuff.ro/logo.PNG" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <style>
+    :root { --red:#D42B2B; --navy:#1B3A6B; --gray:#7A8BA0; --light:#F8F7F4; --border:#e5e7eb; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'DM Sans',sans-serif; color:#1a1a1a; background:var(--light); overflow-x:hidden; }
+    h1,h2,h3 { font-family:'Playfair Display',Georgia,serif; letter-spacing:-0.02em; }
+    a { text-decoration:none; }
+    #topbar { background:var(--navy); color:rgba(255,255,255,.88); font-size:.78rem; padding:7px 0; }
+    #navbar { background:#fff; border-bottom:1px solid var(--border); }
+    .nav-link { font-size:.9rem; font-weight:600; color:#222; white-space:nowrap; transition:color .15s; }
+    .nav-link:hover,.nav-link.active { color:var(--red); }
+    .btn-red { display:inline-flex; align-items:center; justify-content:center; gap:7px; background:var(--red); color:#fff; border:none; border-radius:7px; padding:11px 19px; font-size:.88rem; font-weight:800; cursor:pointer; transition:background .16s, transform .16s, box-shadow .16s; box-shadow:0 10px 24px rgba(212,43,43,.18), 0 2px 5px rgba(0,0,0,.08); }
+    .btn-red:hover { background:#b52020; transform:translateY(-1px); box-shadow:0 16px 34px rgba(212,43,43,.24), 0 3px 8px rgba(0,0,0,.1); }
+    .btn-red:focus-visible,.f-input:focus-visible { outline:3px solid rgba(212,43,43,.28); outline-offset:2px; }
+    .hero { position:relative; overflow:hidden; background:var(--navy); color:#fff; padding:70px 16px; }
+    .hero::before { content:""; position:absolute; inset:0; background:radial-gradient(circle at 22% 16%, rgba(212,43,43,.34), transparent 32%), radial-gradient(circle at 88% 20%, rgba(255,255,255,.12), transparent 30%), linear-gradient(135deg, #122a50 0%, #1B3A6B 58%, #20324f 100%); }
+    .hero-inner { position:relative; max-width:1120px; margin:0 auto; display:grid; grid-template-columns:minmax(0,1fr) 360px; gap:38px; align-items:center; }
+    .eyebrow { color:#fca5a5; font-size:.72rem; font-weight:900; letter-spacing:.14em; text-transform:uppercase; margin-bottom:13px; }
+    h1 { font-size:clamp(2.25rem,4.5vw,3.8rem); line-height:1.04; font-weight:900; margin-bottom:18px; }
+    .lead { font-size:1.04rem; line-height:1.75; color:rgba(255,255,255,.78); max-width:650px; }
+    .steps { background:#fff; color:#111; border-radius:14px; padding:24px; box-shadow:0 20px 52px rgba(4,18,43,.25); }
+    .step { display:flex; gap:12px; padding:13px 0; border-bottom:1px solid var(--border); }
+    .step:last-child { border-bottom:0; }
+    .num { width:32px; height:32px; border-radius:50%; background:var(--red); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:900; flex-shrink:0; }
+    .section { padding:64px 16px; scroll-margin-top:120px; }
+    .wrap { max-width:1120px; margin:0 auto; display:grid; grid-template-columns:.82fr 1.18fr; gap:28px; align-items:start; }
+    .card { background:#fff; border:1.5px solid var(--border); border-radius:14px; padding:28px; box-shadow:0 2px 5px rgba(0,0,0,.03), 0 18px 42px rgba(27,58,107,.07); }
+    .f-label { display:block; font-size:.75rem; font-weight:900; letter-spacing:.06em; text-transform:uppercase; color:var(--navy); margin-bottom:7px; }
+    .f-input { width:100%; border:1.5px solid var(--border); border-radius:9px; padding:12px 14px; font-family:inherit; font-size:.94rem; outline:none; background:#fff; transition:border-color .16s, box-shadow .16s; }
+    .f-input:focus { border-color:var(--red); box-shadow:0 0 0 3px rgba(212,43,43,.1); }
+    .f-error { display:none; margin-top:5px; color:var(--red); font-size:.76rem; }
+    .service-chip { display:inline-flex; align-items:center; gap:8px; padding:9px 12px; border:1.5px solid var(--border); border-radius:999px; color:var(--navy); font-size:.86rem; font-weight:800; background:#fff; }
+    footer { background:#111827; color:#fff; padding:34px 16px 24px; }
+    .footer-link { color:rgba(255,255,255,.65); transition:color .15s; }
+    .footer-link:hover { color:#fff; }
+    .footer-heading { font-size:.78rem; font-weight:900; letter-spacing:.1em; text-transform:uppercase; color:#fff; margin-bottom:14px; }
+    @media (max-width:900px) { .hero-inner,.wrap { grid-template-columns:1fr; } }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"name":"Acasă","item":"https://vet-stuff.ro/"},
+      {"@type":"ListItem","position":2,"name":"Programare","item":"https://vet-stuff.ro/programare.html"}
+    ]
+  }
+  </script>
+</head>
+<body>
+  <div id="topbar"><div class="max-w-6xl mx-auto px-4 flex justify-between gap-4"><span>CALL CENTER +40 7XX XXX XXX</span><span>Confirmare în maxim 2 ore în timpul programului</span></div></div>
+  <nav id="navbar">
+    <div class="max-w-6xl mx-auto px-4 flex items-center justify-between gap-6" style="height:96px;">
+      <a href="index.html"><img src="logo.PNG" alt="VET STUFF" style="height:76px;width:auto;" /></a>
+      <div class="hidden md:flex items-center gap-6">
+        <a class="nav-link" href="index.html#despre">Despre noi</a>
+        <a class="nav-link" href="servicii.html">Servicii</a>
+        <a class="nav-link" href="echipa.html">Echipa medicală</a>
+        <a class="nav-link" href="abonamente.html">Abonamente</a>
+        <a class="nav-link active" href="programare.html">Programare</a>
+        <a class="nav-link" href="contact.html">Contact</a>
+      </div>
+      <a href="tel:+407XXXXXXXX" class="btn-red">Sună acum</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="eyebrow">Programare online</div>
+        <h1>Spune-ne ce se întâmplă, iar noi revenim cu un interval potrivit.</h1>
+        <p class="lead">Formularul adună din prima informațiile importante: date de contact, animalul, serviciul dorit și o scurtă descriere. Pentru urgențe, scrie direct pe Messenger sau sună în timpul programului.</p>
+        <div class="flex flex-wrap gap-3 mt-8">
+          <span class="service-chip">Consultații</span>
+          <span class="service-chip">Vaccinări</span>
+          <span class="service-chip">Imagistică</span>
+          <span class="service-chip">Chirurgie</span>
+        </div>
+      </div>
+      <aside class="steps">
+        <div class="step"><div class="num">1</div><div><strong style="color:var(--navy);">Completezi formularul</strong><p style="color:#666;font-size:.9rem;line-height:1.55;">Ne dai contextul medical pe scurt.</p></div></div>
+        <div class="step"><div class="num">2</div><div><strong style="color:var(--navy);">Verificăm disponibilitatea</strong><p style="color:#666;font-size:.9rem;line-height:1.55;">Alegem intervalul potrivit pentru serviciu.</p></div></div>
+        <div class="step"><div class="num">3</div><div><strong style="color:var(--navy);">Confirmăm programarea</strong><p style="color:#666;font-size:.9rem;line-height:1.55;">Primești confirmarea telefonic sau prin mesaj.</p></div></div>
+      </aside>
+    </div>
+  </section>
+
+  <main class="section">
+    <div class="wrap">
+      <aside class="card">
+        <div class="eyebrow">Ajutor rapid</div>
+        <h2 style="font-size:2rem;color:var(--navy);margin-bottom:12px;">Când e urgent?</h2>
+        <p style="color:#555;line-height:1.75;margin-bottom:18px;">Dacă animalul are respirație dificilă, traumă, sângerare, convulsii, abdomen dureros, imposibilitate de urinare sau stare generală foarte alterată, contactează-ne imediat pe Messenger.</p>
+        <a href="https://www.facebook.com/vetstuff" target="_blank" rel="noopener" class="btn-red" style="width:100%;background:var(--navy);">Scrie pe Messenger</a>
+        <div style="height:1px;background:var(--border);margin:24px 0;"></div>
+        <h3 style="font-size:1.3rem;color:var(--navy);margin-bottom:10px;">Pagini utile</h3>
+        <div class="flex flex-col gap-2 text-sm">
+          <a href="servicii.html" style="color:var(--red);font-weight:800;">Toate serviciile veterinare</a>
+          <a href="servicii.html#preturi" style="color:var(--red);font-weight:800;">Prețuri orientative</a>
+          <a href="abonamente.html" style="color:var(--red);font-weight:800;">Planuri de sănătate</a>
+          <a href="contact.html" style="color:var(--red);font-weight:800;">Contact & hartă</a>
+        </div>
+      </aside>
+      <section class="card">
+        <h2 style="font-size:clamp(1.7rem,3vw,2.45rem);color:var(--navy);margin-bottom:18px;">Completează formularul</h2>
+        <form id="booking-form" novalidate>
+          <div class="grid sm:grid-cols-2 gap-4 mb-4">
+            <div><label class="f-label" for="owner-name">Numele tău *</label><input id="owner-name" class="f-input" name="Nume proprietar" autocomplete="name" placeholder="Ion Popescu" /><div class="f-error"></div></div>
+            <div><label class="f-label" for="phone">Telefon *</label><input id="phone" class="f-input" name="Telefon" type="tel" autocomplete="tel" placeholder="07XX XXX XXX" /><div class="f-error"></div></div>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4 mb-4">
+            <div><label class="f-label" for="email">Email</label><input id="email" class="f-input" name="Email" type="email" autocomplete="email" placeholder="email@exemplu.ro" /><div class="f-error"></div></div>
+            <div><label class="f-label" for="pet-name">Numele animalului *</label><input id="pet-name" class="f-input" name="Nume animal" placeholder="Azor, Mițu..." /><div class="f-error"></div></div>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4 mb-4">
+            <div><label class="f-label" for="pet-type">Tipul animalului *</label><select id="pet-type" class="f-input" name="Tip animal"><option value="">Alege</option><option>Câine</option><option>Pisică</option><option>Iepure</option><option>Pasăre</option><option>Reptilă</option><option>Altul</option></select><div class="f-error"></div></div>
+            <div><label class="f-label" for="service">Serviciul dorit *</label><select id="service" class="f-input" name="Serviciu"><option value="">Alege</option><option>Consultație generală</option><option>Vaccinare</option><option>Deparazitare</option><option>Analize laborator</option><option>Imagistică / ecografie</option><option>Chirurgie</option><option>Stomatologie</option><option>Ortopedie</option><option>Dermatologie</option><option>Oftalmologie</option><option>Abonament / plan de sănătate</option><option>Alt serviciu</option></select><div class="f-error"></div></div>
+          </div>
+          <div class="mb-4"><label class="f-label" for="preferred-date">Data preferată</label><input id="preferred-date" class="f-input" name="Data preferată" type="date" /></div>
+          <div class="mb-4"><label class="f-label" for="message">Descrierea problemei</label><textarea id="message" class="f-input" name="Descriere problemă" rows="4" placeholder="Descrie pe scurt motivul vizitei..." style="resize:vertical;"></textarea></div>
+          <label style="display:flex;align-items:flex-start;gap:10px;color:#666;font-size:.82rem;line-height:1.55;margin-bottom:14px;"><input id="gdpr" type="checkbox" style="margin-top:3px;accent-color:var(--red);" /> Accept prelucrarea datelor conform <a href="privacy.html" style="color:var(--red);font-weight:700;text-decoration:underline;">Politicii de confidențialitate</a> și <a href="gdpr.html" style="color:var(--red);font-weight:700;text-decoration:underline;">Notei GDPR</a> VET STUFF *</label>
+          <div id="gdpr-error" style="display:none;color:var(--red);font-size:.78rem;margin-bottom:14px;">Te rugăm să accepți politica de confidențialitate.</div>
+          <button id="submit-btn" type="submit" class="btn-red" style="width:100%;padding:13px;">Trimite programarea</button>
+          <div id="form-success" style="display:none;margin-top:16px;padding:16px;border-radius:12px;background:#dcfce7;color:#166534;text-align:center;font-weight:800;">Programarea a fost trimisă. Te vom contacta pentru confirmare.</div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="max-w-6xl mx-auto">
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-8" style="padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,.12);">
+        <div>
+          <div class="footer-heading">Navigare</div>
+          <ul style="display:flex;flex-direction:column;gap:9px;font-size:.88rem;">
+            <li><a class="footer-link" href="index.html">Acasă</a></li>
+            <li><a class="footer-link" href="servicii.html">Servicii</a></li>
+            <li><a class="footer-link" href="echipa.html">Echipa medicală</a></li>
+            <li><a class="footer-link" href="abonamente.html">Abonamente</a></li>
+            <li><a class="footer-link" href="programare.html">Programare</a></li>
+            <li><a class="footer-link" href="contact.html">Contact</a></li>
+            <li><a class="footer-link" href="blog/index.html">VETSTUFF INFO</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-heading">Contact</div>
+          <p style="font-size:.85rem;color:rgba(255,255,255,.65);line-height:1.75;">Str. Mioriței nr. 10<br/>Bacău, România</p>
+          <a href="mailto:vet.stuff@yahoo.com" class="footer-link" style="display:block;margin-top:8px;font-size:.85rem;">vet.stuff@yahoo.com</a>
+          <a href="tel:+407XXXXXXXX" class="footer-link" style="display:block;margin-top:4px;font-size:.85rem;">+40 7XX XXX XXX</a>
+        </div>
+        <div>
+          <div class="footer-heading">Legal</div>
+          <ul style="display:flex;flex-direction:column;gap:9px;font-size:.88rem;">
+            <li><a class="footer-link" href="terms.html">Termeni și condiții</a></li>
+            <li><a class="footer-link" href="privacy.html">Confidențialitate</a></li>
+            <li><a class="footer-link" href="cookies.html">Politica Cookies</a></li>
+            <li><a class="footer-link" href="gdpr.html">GDPR</a></li>
+          </ul>
+        </div>
+      </div>
+      <div style="padding-top:18px;font-size:.78rem;color:rgba(255,255,255,.5);text-align:center;">© 2026 VET STUFF · Toate drepturile rezervate</div>
+    </div>
+  </footer>
+
+  <div id="cookie-banner" style="display:none; position:fixed; bottom:0; left:0; right:0; z-index:9999; background:#fff; border-top:1.5px solid var(--border); padding:16px 24px; box-shadow:0 -4px 24px rgba(0,0,0,0.08);">
+    <div class="max-w-6xl mx-auto" style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+      <p style="font-size:0.83rem; color:#555; line-height:1.6; margin:0; flex:1; min-width:200px;">
+        Folosim cookies pentru funcționarea corectă a site-ului (formulare, hartă). Nu folosim cookies de tracking sau publicitate.
+        <a href="cookies.html" style="color:var(--red); font-weight:600; margin-left:4px;">Politica Cookies →</a>
+      </p>
+      <div style="display:flex; gap:10px; flex-shrink:0;">
+        <button id="cookie-accept" class="btn-red" style="padding:9px 20px; font-size:0.85rem;">Înțeleg, acceptă</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      if (!localStorage.getItem('cookie-consent')) {
+        document.getElementById('cookie-banner').style.display = 'block';
+      }
+      document.getElementById('cookie-accept').addEventListener('click', function() {
+        localStorage.setItem('cookie-consent', '1');
+        document.getElementById('cookie-banner').style.display = 'none';
+      });
+    })();
+
+    const form = document.getElementById('booking-form');
+    const params = new URLSearchParams(window.location.search);
+    const serviceFromUrl = params.get('serviciu');
+    const serviceMap = {
+      consultatie: 'Consultație generală',
+      vaccinare: 'Vaccinare',
+      analize: 'Analize laborator',
+      imagistica: 'Imagistică / ecografie',
+      chirurgie: 'Chirurgie',
+      stomatologie: 'Stomatologie',
+      ortopedie: 'Ortopedie',
+      dermatologie: 'Dermatologie',
+      oftalmologie: 'Oftalmologie'
+    };
+    if (serviceFromUrl && serviceMap[serviceFromUrl]) {
+      document.getElementById('service').value = serviceMap[serviceFromUrl];
+    }
+    function fieldError(id, msg) {
+      const el = document.getElementById(id);
+      const err = el.parentElement.querySelector('.f-error');
+      err.textContent = msg;
+      err.style.display = 'block';
+      el.style.borderColor = 'var(--red)';
+      el.style.boxShadow = '0 0 0 3px rgba(212,43,43,.1)';
+    }
+    function clearFieldError(id) {
+      const el = document.getElementById(id);
+      const err = el.parentElement.querySelector('.f-error');
+      err.style.display = 'none';
+      el.style.borderColor = '';
+      el.style.boxShadow = '';
+    }
+    ['owner-name','phone','email','pet-name','pet-type','service'].forEach(id => document.getElementById(id).addEventListener('input', () => clearFieldError(id)));
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      let ok = true;
+      const phone = document.getElementById('phone').value.trim().replace(/\s/g,'');
+      if (!document.getElementById('owner-name').value.trim()) { fieldError('owner-name','Introduceți numele dvs.'); ok = false; } else clearFieldError('owner-name');
+      if (!phone) { fieldError('phone','Introduceți un număr de telefon.'); ok = false; }
+      else if (!/^(\+40|0)[0-9]{9}$/.test(phone)) { fieldError('phone','Număr invalid (ex: 0712 345 678).'); ok = false; } else clearFieldError('phone');
+      const email = document.getElementById('email').value.trim();
+      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { fieldError('email','Email invalid.'); ok = false; } else clearFieldError('email');
+      if (!document.getElementById('pet-name').value.trim()) { fieldError('pet-name','Introduceți numele animalului.'); ok = false; } else clearFieldError('pet-name');
+      if (!document.getElementById('pet-type').value) { fieldError('pet-type','Selectați tipul animalului.'); ok = false; } else clearFieldError('pet-type');
+      if (!document.getElementById('service').value) { fieldError('service','Selectați serviciul dorit.'); ok = false; } else clearFieldError('service');
+      const gdpr = document.getElementById('gdpr').checked;
+      document.getElementById('gdpr-error').style.display = gdpr ? 'none' : 'block';
+      if (!gdpr) ok = false;
+      if (!ok) return;
+      const btn = document.getElementById('submit-btn');
+      btn.disabled = true;
+      btn.textContent = 'Se trimite...';
+      const payload = {
+        'Nume proprietar': document.getElementById('owner-name').value.trim(),
+        'Telefon': document.getElementById('phone').value.trim(),
+        'Email': document.getElementById('email').value.trim(),
+        'Nume animal': document.getElementById('pet-name').value.trim(),
+        'Tip animal': document.getElementById('pet-type').value,
+        'Serviciu': document.getElementById('service').value,
+        'Data preferată': document.getElementById('preferred-date').value,
+        'Descriere problemă': document.getElementById('message').value.trim()
+      };
+      const airtableRequest = fetch('/api/airtable', {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify({ table:'Programari', fields:{ 'Name':payload['Nume proprietar'], 'Telefon':payload['Telefon'], 'Email':payload['Email'], 'Nume animal':payload['Nume animal'], 'Tip animal':payload['Tip animal'], 'Serviciu':payload['Serviciu'], 'Data preferată':payload['Data preferată'], 'Descriere':payload['Descriere problemă'] } })
+      });
+      const fd = new FormData();
+      Object.entries(payload).forEach(([key,value]) => fd.append(key,value));
+      const formspreeRequest = fetch('https://formspree.io/f/mzdkbdzb', { method:'POST', body:fd, headers:{ 'Accept':'application/json' } });
+      Promise.allSettled([airtableRequest, formspreeRequest]).then(results => {
+        const anyOk = results.some(r => r.status === 'fulfilled' && r.value && r.value.ok);
+        if (anyOk) {
+          document.getElementById('form-success').style.display = 'block';
+          form.querySelectorAll('input,select,textarea,button').forEach(el => { el.disabled = true; el.style.opacity = '.58'; });
+        } else {
+          btn.disabled = false;
+          btn.textContent = 'Trimite programarea';
+          alert('A apărut o eroare de rețea. Te rugăm să ne contactezi telefonic la +40 7XX XXX XXX.');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
