@@ -7,7 +7,7 @@
 
   <!-- SEO Meta -->
   <meta name="description" content="Servicii veterinare complete în Bacău: consultații generale, chirurgie veterinară, cardiologie, ortopedie, stomatologie, oncologie, dermatologie, imagistică și multe altele. Programează online la VET STUFF." />
-  <meta name="keywords" content="servicii veterinare Bacău, chirurgie veterinară Bacău, cardiologie veterinară Bacău, ortopedie veterinară Bacău, stomatologie veterinară Bacău, oncologie veterinară Bacău, dermatologie veterinară Bacău, imagistică veterinară Bacău, consultații veterinare Bacău, vaccinare câini pisici Bacău, ecografie veterinară Bacău, analize veterinare Bacău, fizioterapie veterinară Bacău, geriatrie veterinară Bacău, VET STUFF Bacău" />
+  <meta name="keywords" content="clinică veterinară Bacău, medic veterinar Bacău, servicii veterinare, chirurgie veterinară, vaccinare câine pisică, ecografie veterinară, VET STUFF" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://vet-stuff.ro/servicii.html" />
 
@@ -41,25 +41,25 @@
       "addressCountry": "RO"
     },
     "medicalSpecialty": [
-      "Chirurgie veterinară Bacău",
-      "Cardiologie veterinară Bacău",
-      "Ortopedie veterinară Bacău",
-      "Stomatologie veterinară Bacău",
-      "Oncologie veterinară Bacău",
-      "Dermatologie veterinară Bacău",
-      "Oftalmologie veterinară Bacău",
-      "Imagistică veterinară Bacău"
+      "Chirurgie veterinară",
+      "Cardiologie veterinară",
+      "Ortopedie veterinară",
+      "Stomatologie veterinară",
+      "Oncologie veterinară",
+      "Dermatologie veterinară",
+      "Oftalmologie veterinară",
+      "Imagistică veterinară"
     ],
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
-      "name": "Servicii veterinare VET STUFF Bacău",
+      "name": "Servicii veterinare VET STUFF",
       "itemListElement": [
-        {"@type":"Offer","itemOffered":{"@type":"Service","name":"Consultații generale veterinare Bacău","description":"Examinare completă, diagnostic precis și plan de tratament personalizat pentru câini, pisici și animale exotice."}},
-        {"@type":"Offer","itemOffered":{"@type":"Service","name":"Chirurgie veterinară Bacău","description":"Sală de operații echipată modern, chirurgi cu experiență internațională pentru intervenții de orice complexitate."}},
-        {"@type":"Offer","itemOffered":{"@type":"Service","name":"Cardiologie veterinară Bacău","description":"Ecocardiografie, electrocardiogramă și monitorizare pentru afecțiuni cardiace la câini și pisici."}},
-        {"@type":"Offer","itemOffered":{"@type":"Service","name":"Ortopedie veterinară Bacău","description":"Diagnostic și tratament al afecțiunilor osoase și articulare, fracturi, displazii, afecțiuni ligamentare."}},
-        {"@type":"Offer","itemOffered":{"@type":"Service","name":"Stomatologie veterinară Bacău","description":"Detartraj, extracții dentare, tratamente dentare complexe și planuri de sănătate orală pentru câini și pisici."}},
-        {"@type":"Offer","itemOffered":{"@type":"Service","name":"Oncologie veterinară Bacău","description":"Citologie, histopatologie, protocoale personalizate de chimioterapie și paliație pentru animale cu afecțiuni oncologice."}}
+        {"@type":"Offer","itemOffered":{"@type":"Service","name":"Consultații generale","description":"Examinare completă, diagnostic precis și plan de tratament personalizat pentru câini, pisici și animale exotice."}},
+        {"@type":"Offer","itemOffered":{"@type":"Service","name":"Chirurgie veterinară","description":"Sală de operații echipată modern, chirurgi cu experiență internațională pentru intervenții de orice complexitate."}},
+        {"@type":"Offer","itemOffered":{"@type":"Service","name":"Cardiologie veterinară","description":"Ecocardiografie, electrocardiogramă și monitorizare pentru afecțiuni cardiace la câini și pisici."}},
+        {"@type":"Offer","itemOffered":{"@type":"Service","name":"Ortopedie veterinară","description":"Diagnostic și tratament al afecțiunilor osoase și articulare, fracturi, displazii, afecțiuni ligamentare."}},
+        {"@type":"Offer","itemOffered":{"@type":"Service","name":"Stomatologie veterinară","description":"Detartraj, extracții dentare, tratamente dentare complexe și planuri de sănătate orală pentru câini și pisici."}},
+        {"@type":"Offer","itemOffered":{"@type":"Service","name":"Oncologie veterinară","description":"Citologie, histopatologie, protocoale personalizate de chimioterapie și paliație pentru animale cu afecțiuni oncologice."}}
       ]
     }
   }
@@ -174,6 +174,44 @@
     .service-detail ul li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--red); flex-shrink: 0; margin-top: 7px; }
     .service-cta { display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 700; color: var(--red); transition: gap 0.2s; }
     .service-cta:hover { gap: 10px; }
+    .service-actions { display:flex; flex-wrap:wrap; gap:14px 18px; align-items:center; margin-top:auto; padding-top:4px; }
+    .price-btn { display:inline-flex; align-items:center; gap:6px; font-size:.82rem; font-weight:800; color:var(--navy); background:#f1f5ff; border:1.5px solid #dbe6ff; padding:7px 13px; border-radius:8px; cursor:pointer; transition:background .15s, color .15s, border-color .15s, transform .15s; }
+    .price-btn:hover { background:var(--navy); color:#fff; border-color:var(--navy); transform:translateY(-1px); }
+    .price-btn::before { content:'💰'; font-size:.95rem; }
+    /* MODAL PRETURI */
+    #price-modal { position:fixed; inset:0; background:rgba(15,23,42,.62); z-index:9998; display:none; align-items:flex-start; justify-content:center; padding:40px 16px; overflow-y:auto; backdrop-filter:blur(4px); }
+    #price-modal.open { display:flex; }
+    .price-modal-box { background:#fff; max-width:780px; width:100%; border-radius:16px; overflow:hidden; box-shadow:0 32px 80px rgba(15,23,42,.45); position:relative; animation:modalIn .22s ease; }
+    @keyframes modalIn { from { transform:translateY(20px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+    .price-modal-head { background:linear-gradient(135deg,#1B3A6B 0%,#122a50 100%); color:#fff; padding:26px 28px; position:relative; }
+    .price-modal-head h3 { font-family:'Playfair Display',Georgia,serif; font-size:1.55rem; font-weight:800; margin:0 0 6px; line-height:1.15; }
+    .price-modal-head p { font-size:.86rem; color:rgba(255,255,255,.78); line-height:1.55; margin:0; }
+    .price-modal-close { position:absolute; top:18px; right:18px; width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,.16); color:#fff; border:none; cursor:pointer; font-size:1.2rem; font-weight:900; display:flex; align-items:center; justify-content:center; transition:background .15s; }
+    .price-modal-close:hover { background:rgba(255,255,255,.32); }
+    .price-modal-body { padding:18px 0 0; max-height:62vh; overflow-y:auto; }
+    .price-modal-row { display:grid; grid-template-columns:1fr auto; gap:18px; padding:14px 28px; border-bottom:1px solid #eef0f5; align-items:start; }
+    .price-modal-row:last-child { border-bottom:0; }
+    .price-modal-row:nth-child(odd) { background:#fafbfd; }
+    .price-modal-name { font-size:.92rem; color:#1a1a1a; font-weight:600; line-height:1.45; }
+    .price-modal-val { color:var(--red); font-weight:900; font-size:.92rem; white-space:nowrap; }
+    .price-modal-foot { padding:18px 28px 22px; background:#fafbfd; border-top:1px solid #eef0f5; display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap; }
+    .price-modal-foot small { color:#888; font-size:.75rem; line-height:1.5; flex:1; min-width:200px; }
+    .price-modal-foot a { background:var(--red); color:#fff; padding:10px 18px; border-radius:8px; font-size:.85rem; font-weight:800; display:inline-flex; align-items:center; gap:6px; }
+    .price-modal-foot a:hover { background:#b52020; }
+    @media (max-width:640px) { .price-modal-row { grid-template-columns:1fr; gap:4px; padding:12px 18px; } .price-modal-head, .price-modal-foot { padding-left:18px; padding-right:18px; } }
+    section[id] { scroll-margin-top: 120px; }
+    .price-board { background:#fff; border:1.5px solid var(--border); border-radius:16px; overflow:hidden; box-shadow:0 2px 5px rgba(0,0,0,0.03),0 18px 42px rgba(27,58,107,0.07); }
+    .price-row { display:grid; grid-template-columns:1fr auto auto; gap:18px; align-items:center; padding:18px 20px; border-bottom:1px solid #edf0f4; }
+    .price-row:last-child { border-bottom:none; }
+    .price-name { font-weight:800; color:var(--navy); font-size:.96rem; }
+    .price-desc { color:#667085; font-size:.84rem; line-height:1.55; margin-top:4px; }
+    .price-pill { justify-self:start; white-space:nowrap; color:var(--red); background:#fff1f1; border:1px solid #ffd6d6; border-radius:999px; padding:6px 12px; font-size:.82rem; font-weight:900; }
+    .price-link { white-space:nowrap; color:var(--navy); font-size:.82rem; font-weight:900; transition:color .15s; }
+    .price-link:hover { color:var(--red); }
+    @media (max-width:700px) {
+      .price-row { grid-template-columns:1fr; gap:10px; }
+      .price-pill,.price-link { justify-self:start; }
+    }
 
     /* Quick anchor nav */
     .anchor-nav { display: flex; flex-wrap: nowrap; gap: 8px; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
@@ -227,7 +265,7 @@
       <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
       CALL CENTER +40 7XX XXX XXX
     </a>
-    <a href="index.html#contact" class="flex items-center gap-1.5 font-medium">
+    <a href="contact.html" class="flex items-center gap-1.5 font-medium">
       <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
       CONTACT
     </a>
@@ -244,15 +282,15 @@
       <a href="servicii.html" class="nav-link active">Servicii</a>
       <a href="echipa.html" class="nav-link">Echipa medicală</a>
       <a href="abonamente.html" class="nav-link">Abonamente</a>
-      <a href="index.html#programare" class="nav-link">Programare</a>
-      <a href="index.html#contact" class="nav-link">Contact</a>
+      <a href="programare.html" class="nav-link">Programare</a>
+      <a href="contact.html" class="nav-link">Contact</a>
       <a href="blog/index.html" class="nav-link">VETSTUFF INFO</a>
       <a href="index.html#urgenta" class="nav-urgenta">
         <span class="pulse-red"></span>Urgență
       </a>
     </div>
     <div class="flex items-center gap-3">
-      <a href="index.html#programare" class="btn-red">
+      <a href="programare.html" class="btn-red">
         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
         Programare
       </a>
@@ -294,12 +332,12 @@
   <a href="servicii.html"         class="mob-link" onclick="closeMenu()" style="color:var(--red);">Servicii</a>
   <a href="echipa.html"           class="mob-link" onclick="closeMenu()">Echipa medicală</a>
   <a href="abonamente.html"       class="mob-link" onclick="closeMenu()">Abonamente</a>
-  <a href="index.html#programare" class="mob-link" onclick="closeMenu()">Programare</a>
-  <a href="index.html#contact"    class="mob-link" onclick="closeMenu()">Contact</a>
+  <a href="programare.html" class="mob-link" onclick="closeMenu()">Programare</a>
+  <a href="contact.html"    class="mob-link" onclick="closeMenu()">Contact</a>
   <a href="blog/index.html" class="mob-link" onclick="closeMenu()">VETSTUFF INFO</a>
   <a href="index.html#urgenta"    class="mob-link" onclick="closeMenu()" style="color:var(--red);">🚨 Urgență</a>
   <div class="mt-6">
-    <a href="index.html#programare" onclick="closeMenu()" class="btn-red w-full justify-center">Programare online</a>
+    <a href="programare.html" onclick="closeMenu()" class="btn-red w-full justify-center">Programare online</a>
   </div>
 </div>
 
@@ -320,7 +358,7 @@
       De la prevenție și consultații de rutină, la chirurgie complexă, cardiologie, oncologie și ortopedie — VET STUFF reunește 16 specialități veterinare sub același acoperiș.
     </p>
     <div style="display:flex;flex-wrap:wrap;gap:12px;">
-      <a href="index.html#programare" class="btn-red" style="font-size:0.95rem; padding:12px 28px;">
+      <a href="programare.html" class="btn-red" style="font-size:0.95rem; padding:12px 28px;">
         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
         Programează o consultație
       </a>
@@ -329,6 +367,117 @@
         +40 7XX XXX XXX
       </a>
     </div>
+  </div>
+</section>
+
+<!-- PREȚURI ORIENTATIVE -->
+<section id="preturi" style="padding:72px 16px 40px;background:#fff;">
+  <div class="max-w-6xl mx-auto">
+    <div style="display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:36px;align-items:start;">
+      <div>
+        <span class="section-subtitle">Prețuri transparente</span>
+        <h2 class="section-title" style="margin-top:4px;text-align:left;">Servicii și prețuri orientative</h2>
+        <p style="font-size:.95rem;color:#555;line-height:1.75;margin-top:14px;max-width:520px;">Modelul bun pe care îl folosesc clinicile bine indexate este simplu: fiecare serviciu important are o denumire clară, un preț de pornire și un buton de programare. Prețul final se confirmă în clinică, după consultație și după alegerea protocolului potrivit.</p>
+        <div style="margin-top:22px;display:flex;flex-wrap:wrap;gap:10px;">
+          <a href="programare.html" class="btn-red">Programează online</a>
+          <a href="abonamente.html" style="display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:1.5px solid var(--navy);border-radius:7px;color:var(--navy);font-size:.86rem;font-weight:800;">Vezi planuri de sănătate</a>
+        </div>
+      </div>
+
+      <div class="price-board">
+        <div class="price-row">
+          <div><div class="price-name">Consultație</div><div class="price-desc">Examinare completă, anamneză, plan de investigații sau tratament.</div></div>
+          <div class="price-pill">de la 190 lei</div>
+          <a class="price-link" href="programare.html?serviciu=consultatie">Programează</a>
+        </div>
+        <div class="price-row">
+          <div><div class="price-name">Vaccinare câine</div><div class="price-desc">Schema de prevenție polivalentă pentru câini.</div></div>
+          <div class="price-pill">de la 120 lei</div>
+          <a class="price-link" href="programare.html?serviciu=vaccinare">Programează</a>
+        </div>
+        <div class="price-row">
+          <div><div class="price-name">Vaccinare pisică</div><div class="price-desc">Schema de prevenție pentru pisici.</div></div>
+          <div class="price-pill">de la 100 lei</div>
+          <a class="price-link" href="programare.html?serviciu=vaccinare">Programează</a>
+        </div>
+        <div class="price-row">
+          <div><div class="price-name">Vaccinare iepure</div><div class="price-desc">Vaccinare pentru iepuri (mixomatoză, RHD).</div></div>
+          <div class="price-pill">de la 120 lei</div>
+          <a class="price-link" href="programare.html?serviciu=vaccinare">Programează</a>
+        </div>
+        <div class="price-row">
+          <div><div class="price-name">Analize de laborator</div><div class="price-desc">Hemoleucogramă, biochimie și profile adaptate vârstei sau simptomelor.</div></div>
+          <div class="price-pill">de la 35 lei</div>
+          <a class="price-link" href="programare.html?serviciu=analize">Programează</a>
+        </div>
+        <div class="price-row">
+          <div><div class="price-name">Imagistică</div><div class="price-desc">Ecografie, radiografie și investigații non-invazive pentru organe interne.</div></div>
+          <div class="price-pill">de la 80 lei</div>
+          <a class="price-link" href="programare.html?serviciu=imagistica">Programează</a>
+        </div>
+        <div class="price-row">
+          <div><div class="price-name">Stomatologie</div><div class="price-desc">Detartraj ultrasonic și tratamente dentare; anestezia se calculează separat.</div></div>
+          <div class="price-pill">de la 100 lei</div>
+          <a class="price-link" href="programare.html?serviciu=stomatologie">Programează</a>
+        </div>
+        <div class="price-row">
+          <div><div class="price-name">Dermatologie</div><div class="price-desc">Diagnostic și tratament pentru afecțiuni cutanate, alergii, otite.</div></div>
+          <div class="price-pill">de la 60 lei</div>
+          <a class="price-link" href="programare.html?serviciu=dermatologie">Programează</a>
+        </div>
+        <div class="price-row">
+          <div><div class="price-name">Oftalmologie</div><div class="price-desc">Consultație și tratamente pentru afecțiuni oculare.</div></div>
+          <div class="price-pill">de la 80 lei</div>
+          <a class="price-link" href="programare.html?serviciu=oftalmologie">Programează</a>
+        </div>
+        <div class="price-row">
+          <div><div class="price-name">Anestezie / Sedare</div><div class="price-desc">Protocol modern de anestezie, monitorizat de medic.</div></div>
+          <div class="price-pill">de la 110 lei</div>
+          <a class="price-link" href="programare.html?serviciu=consultatie">Programează</a>
+        </div>
+        <div class="price-row">
+          <div><div class="price-name">Chirurgie generală</div><div class="price-desc">Intervenții de țesut moale; prețul final depinde de complexitate și consumabile.</div></div>
+          <div class="price-pill">de la 50 lei</div>
+          <a class="price-link" href="programare.html?serviciu=chirurgie">Solicită</a>
+        </div>
+        <div class="price-row">
+          <div><div class="price-name">Ortopedie / Traumatologie / Neurochirurgie</div><div class="price-desc">Intervenții ortopedice complexe, traumatologie și neurochirurgie.</div></div>
+          <div class="price-pill">de la 700 lei</div>
+          <a class="price-link" href="programare.html?serviciu=ortopedie">Solicită</a>
+        </div>
+        <div class="price-row">
+          <div><div class="price-name">Endoscopie</div><div class="price-desc">Investigație endoscopică pentru diagnostic intern.</div></div>
+          <div class="price-pill">de la 900 lei</div>
+          <a class="price-link" href="programare.html?serviciu=imagistica">Solicită</a>
+        </div>
+        <div class="price-row">
+          <div><div class="price-name">Internare</div><div class="price-desc">Monitorizare în clinică, pe zi, în funcție de caz.</div></div>
+          <div class="price-pill">de la 100 lei</div>
+          <a class="price-link" href="contact.html">Detalii</a>
+        </div>
+        <div class="price-row">
+          <div><div class="price-name">Servicii medicale</div><div class="price-desc">Manopere medicale punctuale (injecții, pansamente, recoltări).</div></div>
+          <div class="price-pill">de la 20 lei</div>
+          <a class="price-link" href="programare.html?serviciu=consultatie">Programează</a>
+        </div>
+        <div class="price-row">
+          <div><div class="price-name">Întocmire documentație</div><div class="price-desc">Pașaport, certificate de sănătate, documente de transport.</div></div>
+          <div class="price-pill">de la 35 lei</div>
+          <a class="price-link" href="contact.html">Detalii</a>
+        </div>
+        <div class="price-row">
+          <div><div class="price-name">Eutanasiere</div><div class="price-desc">Procedură umană, în condiții demne, cu consiliere pentru proprietar.</div></div>
+          <div class="price-pill">de la 220 lei</div>
+          <a class="price-link" href="contact.html">Contact</a>
+        </div>
+        <div class="price-row">
+          <div><div class="price-name">Urgențe 24/7</div><div class="price-desc">Evaluare prioritară pentru cazuri acute. Sună sau scrie pe Messenger.</div></div>
+          <div class="price-pill">tarif la caz</div>
+          <a class="price-link" href="https://www.facebook.com/vetstuff" target="_blank" rel="noopener">Messenger</a>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:.78rem;color:var(--gray);line-height:1.65;margin-top:18px;">Notă: prețurile sunt orientative și pot varia în funcție de specie, greutate, produs, complexitatea cazului și recomandarea medicului. Pentru planurile de sănătate, vezi calculatorul dedicat.</p>
   </div>
 </section>
 
@@ -346,7 +495,7 @@
       <!-- Consultații -->
       <div class="service-detail reveal" style="--accent:var(--navy); --icon-bg:#EEF2FF;">
         <div class="icon-wrap">🩺</div>
-        <h2>Consultații generale veterinare Bacău</h2>
+        <h2>Consultații generale</h2>
         <p>Examinarea completă a pacientului este punctul de plecare al oricărei relații medicale. Medicii noștri evaluează starea generală, identifică semnele clinice și stabilesc un plan de tratament personalizat — fără grabă și fără compromisuri.</p>
         <ul>
           <li>Examinare fizică completă (cap-coadă)</li>
@@ -355,13 +504,16 @@
           <li>Consultații pentru câini, pisici și animale exotice</li>
           <li>Consultații de urmărire și control post-tratament</li>
         </ul>
-        <a href="index.html#programare" class="service-cta">Programează o consultație →</a>
+        <div class="service-actions">
+          <a href="programare.html" class="service-cta">Programează →</a>
+          <button class="price-btn" data-prices="consultatii">Vezi prețuri</button>
+        </div>
       </div>
 
       <!-- Analize -->
       <div class="service-detail reveal reveal-d1" style="--accent:#2a7a6e; --icon-bg:#E6F4F2;">
         <div class="icon-wrap">🔬</div>
-        <h2>Analize de laborator veterinare Bacău</h2>
+        <h2>Analize de laborator</h2>
         <p>Laboratorul propriu VET STUFF permite obținerea rezultatelor rapid, fără așteptări de zile întregi. Analizele de sânge, urină și alte investigații de laborator completează tabloul clinic și ghidează tratamentul precis.</p>
         <ul>
           <li>Hemoleucogramă completă și biochimie sanguină</li>
@@ -370,13 +522,16 @@
           <li>Teste rapide pentru afecțiuni infecțioase</li>
           <li>Rezultate în aceeași zi în marea majoritate a cazurilor</li>
         </ul>
-        <a href="index.html#programare" class="service-cta">Programează analize →</a>
+        <div class="service-actions">
+          <a href="programare.html" class="service-cta">Programează →</a>
+          <button class="price-btn" data-prices="analize">Vezi prețuri</button>
+        </div>
       </div>
 
       <!-- Imagistică -->
       <div class="service-detail reveal reveal-d2" style="--accent:#4a3a7a; --icon-bg:#EDE8FF;">
         <div class="icon-wrap">🔭</div>
-        <h2>Imagistică veterinară Bacău</h2>
+        <h2>Imagistică</h2>
         <p>VET STUFF dispune de ecograf propriu pentru investigații rapide la clinică. Pentru investigații avansate — radiografie, CT, RMN — avem acces prin rețeaua noastră de clinici partenere, asigurând continuitate medicală completă.</p>
         <ul>
           <li>Ecografie abdominală și cardiacă — disponibilă la clinică</li>
@@ -385,7 +540,10 @@
           <li>CT și RMN — accesibile prin rețeaua națională</li>
           <li>Interpretare rezultate de către medicii VET STUFF</li>
         </ul>
-        <a href="index.html#programare" class="service-cta">Solicită o investigație →</a>
+        <div class="service-actions">
+          <a href="programare.html" class="service-cta">Programează →</a>
+          <button class="price-btn" data-prices="imagistica">Vezi prețuri</button>
+        </div>
       </div>
 
     </div>
@@ -397,13 +555,13 @@
   <div class="max-w-6xl mx-auto">
     <div style="margin-bottom:40px;" id="chirurgie">
       <span class="section-subtitle">Intervenții chirurgicale</span>
-      <h2 class="section-title" style="margin-top:4px;">Chirurgie veterinară Bacău</h2>
+      <h2 class="section-title" style="margin-top:4px;">Chirurgie veterinară</h2>
       <p style="font-size:0.95rem; color:#555; line-height:1.75; max-width:580px; margin-top:12px;">Sala de operații VET STUFF este echipată modern, cu protocoale stricte de anestezie și monitorizare. Chirurgii noștri au experiență în intervenții de complexitate variată.</p>
     </div>
     <div class="grid md:grid-cols-2 gap-6">
       <div class="service-detail reveal" style="--accent:var(--red); --icon-bg:#FEE2E2;">
         <div class="icon-wrap">⚕️</div>
-        <h2>Chirurgie generală veterinară Bacău</h2>
+        <h2>Chirurgie generală</h2>
         <p>De la sterilizări și intervenții de rutină la operații abdominale complexe, echipa chirurgicală VET STUFF abordează fiecare caz cu protocoale clare de pregătire, anestezie și recuperare postoperatorie.</p>
         <ul>
           <li>Sterilizare câini și pisici (OHE, castrare)</li>
@@ -413,11 +571,14 @@
           <li>Monitorizare completă intraoperatorie și postoperatorie</li>
           <li>Protocoale moderne de analgezie și anestezie</li>
         </ul>
-        <a href="index.html#programare" class="service-cta">Solicită o consultație chirurgicală →</a>
+        <div class="service-actions">
+          <a href="programare.html" class="service-cta">Programează →</a>
+          <button class="price-btn" data-prices="chirurgie">Vezi prețuri</button>
+        </div>
       </div>
       <div class="service-detail reveal reveal-d1" style="--accent:#6b4a2a; --icon-bg:#FDF3E8;">
         <div class="icon-wrap" id="ortopedie">🦴</div>
-        <h2>Ortopedie veterinară Bacău</h2>
+        <h2>Ortopedie</h2>
         <p>Afecțiunile osoase și articulare sunt printre cele mai frecvente cauze de durere cronică la câini și pisici. VET STUFF oferă diagnostic precis și soluții terapeutice pentru o gamă largă de patologii ortopedice.</p>
         <ul>
           <li>Fracturile osoase — diagnostic și tratament chirurgical</li>
@@ -427,7 +588,10 @@
           <li>Fizioterapie și kinetoterapie postoperatorie</li>
           <li>Radiografii articulare și interpretare OFA/BVA</li>
         </ul>
-        <a href="index.html#programare" class="service-cta">Programează consultație ortopedică →</a>
+        <div class="service-actions">
+          <a href="programare.html" class="service-cta">Programează →</a>
+          <button class="price-btn" data-prices="ortopedie">Vezi prețuri</button>
+        </div>
       </div>
     </div>
   </div>
@@ -438,12 +602,12 @@
   <div class="max-w-6xl mx-auto">
     <div style="margin-bottom:40px;" id="cardiologie">
       <span class="section-subtitle">Specialități interne</span>
-      <h2 class="section-title" style="margin-top:4px;">Cardiologie & Oncologie veterinară Bacău</h2>
+      <h2 class="section-title" style="margin-top:4px;">Cardiologie & Oncologie</h2>
     </div>
     <div class="grid md:grid-cols-2 gap-6">
       <div class="service-detail reveal" style="--accent:#8a2a2a; --icon-bg:#FEE2E2;">
         <div class="icon-wrap">❤️</div>
-        <h2>Cardiologie veterinară Bacău</h2>
+        <h2>Cardiologie</h2>
         <p>Afecțiunile cardiace la câini și pisici sunt frecvent subdiagnosticate. VET STUFF oferă investigații cardiologice complete, cu echipamente moderne de ecocardiografie și ECG, pentru o monitorizare riguroasă a pacienților cu risc.</p>
         <ul>
           <li>Ecocardiografie Doppler — evaluare structurală și funcțională</li>
@@ -453,11 +617,11 @@
           <li>Evaluare cardiologică pre-anestezie</li>
           <li>Afecțiuni: endocardioză mitrală, cardiomiopatie, aritmii</li>
         </ul>
-        <a href="index.html#programare" class="service-cta">Programează evaluare cardiologică →</a>
+        <a href="programare.html" class="service-cta">Programează evaluare cardiologică →</a>
       </div>
       <div class="service-detail reveal reveal-d1" style="--accent:#6a2a3a; --icon-bg:#FDE8EE;" id="oncologie">
         <div class="icon-wrap">🎗️</div>
-        <h2>Oncologie veterinară Bacău</h2>
+        <h2>Oncologie</h2>
         <p>Un diagnostic oncologic nu înseamnă neapărat un prognostic sumbru. VET STUFF oferă evaluare completă, staging corect și protocoale terapeutice personalizate — cu accent pe calitatea vieții pacientului.</p>
         <ul>
           <li>Citologie prin puncție-aspirat (FNA) — formațiuni cutanate și interne</li>
@@ -467,7 +631,7 @@
           <li>Îngrijire paliativă și management al durerii cronice</li>
           <li>Monitorizare și urmărire pe termen lung</li>
         </ul>
-        <a href="index.html#programare" class="service-cta">Programează consultație oncologică →</a>
+        <a href="programare.html" class="service-cta">Programează consultație oncologică →</a>
       </div>
     </div>
   </div>
@@ -478,12 +642,12 @@
   <div class="max-w-6xl mx-auto">
     <div style="margin-bottom:40px;" id="stomatologie">
       <span class="section-subtitle">Sănătate orală & Dermatologie</span>
-      <h2 class="section-title" style="margin-top:4px;">Stomatologie & Dermatologie veterinară Bacău</h2>
+      <h2 class="section-title" style="margin-top:4px;">Stomatologie & Dermatologie</h2>
     </div>
     <div class="grid md:grid-cols-2 gap-6">
       <div class="service-detail reveal" style="--accent:#2d5a27; --icon-bg:#E6F4E6;">
         <div class="icon-wrap">🦷</div>
-        <h2>Stomatologie veterinară Bacău</h2>
+        <h2>Stomatologie</h2>
         <p>Sănătatea orală influențează direct calitatea vieții și starea generală a animalului. Problemele dentare netratate pot evolua în infecții grave. VET STUFF oferă soluții complete de stomatologie veterinară.</p>
         <ul>
           <li>Detartraj ultrasonic sub anestezie generală</li>
@@ -493,11 +657,14 @@
           <li>Periaj dentar și sfaturi de igienă orală la domiciliu</li>
           <li>Tratamente dentare pentru câini și pisici de toate vârstele</li>
         </ul>
-        <a href="index.html#programare" class="service-cta">Programează consultație stomatologică →</a>
+        <div class="service-actions">
+          <a href="programare.html" class="service-cta">Programează →</a>
+          <button class="price-btn" data-prices="stomatologie">Vezi prețuri</button>
+        </div>
       </div>
       <div class="service-detail reveal reveal-d1" style="--accent:#6b2a5a; --icon-bg:#F5E6F5;" id="dermatologie">
         <div class="icon-wrap">🩹</div>
-        <h2>Dermatologie veterinară Bacău</h2>
+        <h2>Dermatologie</h2>
         <p>Afecțiunile pielii sunt printre cele mai frecvente motive de consultație veterinară. De la alergii alimentare la parazitoze și boli autoimune — VET STUFF abordează dermatologia cu metodologie completă.</p>
         <ul>
           <li>Alergii cutanate — alimentare, de contact, atopie</li>
@@ -507,7 +674,10 @@
           <li>Afecțiunile urechii — otite externe și medii</li>
           <li>Dermatoscopie și biopsie cutanată la nevoie</li>
         </ul>
-        <a href="index.html#programare" class="service-cta">Programează consultație dermatologică →</a>
+        <div class="service-actions">
+          <a href="programare.html" class="service-cta">Programează →</a>
+          <button class="price-btn" data-prices="dermatologie">Vezi prețuri</button>
+        </div>
       </div>
     </div>
   </div>
@@ -524,7 +694,7 @@
 
       <div class="service-detail reveal" style="--accent:#3d6b3a; --icon-bg:#E6F4E6;">
         <div class="icon-wrap">🛡️</div>
-        <h2>Prevenție & profilaxie veterinară Bacău</h2>
+        <h2>Prevenție & profilaxie</h2>
         <p>Cei mai sănătoși pacienți sunt cei care nu ajung la urgență. VET STUFF pune accent pe prevenție: vaccinări, deparazitări, planuri de sănătate și monitorizare periodică.</p>
         <ul>
           <li>Schema completă de vaccinare — câini, pisici, animale exotice</li>
@@ -533,12 +703,15 @@
           <li>Consiliere adopție și integrare animal nou</li>
           <li>Planuri de sănătate personalizate pe vârstă și rasă</li>
         </ul>
-        <a href="index.html#programare" class="service-cta">Programează un control preventiv →</a>
+        <div class="service-actions">
+          <a href="programare.html" class="service-cta">Programează →</a>
+          <button class="price-btn" data-prices="vaccinari">Vezi prețuri vaccinări</button>
+        </div>
       </div>
 
       <div class="service-detail reveal reveal-d1" style="--accent:#5a3a72; --icon-bg:#EEE6FF;">
         <div class="icon-wrap">🫀</div>
-        <h2>Medicină internă veterinară Bacău</h2>
+        <h2>Medicină internă</h2>
         <p>Bolile interne — digestive, endocrine, renale sau metabolice — necesită o abordare sistematică. VET STUFF evaluează complet, corelând simptomele clinice cu investigațiile de laborator.</p>
         <ul>
           <li>Gastroenterologie — vărsături cronice, diaree, sindroame hepatice</li>
@@ -547,12 +720,12 @@
           <li>Boli infecțioase — parvoviroză, leucoză felină, caliciviroză</li>
           <li>Boli metabolice și de nutriție</li>
         </ul>
-        <a href="index.html#programare" class="service-cta">Programează consultație internă →</a>
+        <a href="programare.html" class="service-cta">Programează consultație internă →</a>
       </div>
 
       <div class="service-detail reveal reveal-d2" style="--accent:#2a6b7a; --icon-bg:#E6F2F5;">
         <div class="icon-wrap">👁️</div>
-        <h2>Oftalmologie veterinară Bacău</h2>
+        <h2>Oftalmologie</h2>
         <p>Ochii sunt printre cele mai delicate organe ale animalului de companie. Afecțiunile oculare necesită diagnostic rapid pentru a preveni pierderea ireversibilă a vederii.</p>
         <ul>
           <li>Examinare oculară completă cu echipamente specializate</li>
@@ -561,12 +734,15 @@
           <li>Glaucom și evaluarea presiunii intraoculare</li>
           <li>Cataractă — diagnostic și referral chirurgical</li>
         </ul>
-        <a href="index.html#programare" class="service-cta">Programează consultație oftalmologică →</a>
+        <div class="service-actions">
+          <a href="programare.html" class="service-cta">Programează →</a>
+          <button class="price-btn" data-prices="oftalmologie">Vezi prețuri</button>
+        </div>
       </div>
 
       <div class="service-detail reveal" style="--accent:#3a5a2a; --icon-bg:#E8F5E6;">
         <div class="icon-wrap">🏃</div>
-        <h2>Fizioterapie & kinetoterapie veterinară Bacău</h2>
+        <h2>Fizioterapie & kinetoterapie</h2>
         <p>Recuperarea postoperatorie și managementul durerii cronice sunt esențiale pentru calitatea vieții. VET STUFF integrează fizioterapia în planul de tratament al pacienților cu mobilitate afectată.</p>
         <ul>
           <li>Kinetoterapie după chirurgie ortopedică</li>
@@ -575,12 +751,12 @@
           <li>Hidroterapie — disponibilă prin parteneri</li>
           <li>Plan de recuperare personalizat și urmărire</li>
         </ul>
-        <a href="index.html#programare" class="service-cta">Programează consultație kinetoterapie →</a>
+        <a href="programare.html" class="service-cta">Programează consultație kinetoterapie →</a>
       </div>
 
       <div class="service-detail reveal reveal-d1" style="--accent:#4a5a6a; --icon-bg:#EEF2F5;">
         <div class="icon-wrap">🐾</div>
-        <h2>Geriatrie veterinară Bacău</h2>
+        <h2>Geriatrie</h2>
         <p>Animalele vârstnice au nevoi medicale specifice. VET STUFF oferă protocoale de monitorizare adaptate seniorilor, cu focus pe calitatea vieții și detectarea precoce a afecțiunilor degenerative.</p>
         <ul>
           <li>Profil geriatric complet — biochimie, hemoleucogramă, urină</li>
@@ -589,12 +765,12 @@
           <li>Afecțiuni cognitive la animalele în vârstă</li>
           <li>Consiliere nutriție adaptată seniorilor</li>
         </ul>
-        <a href="index.html#programare" class="service-cta">Programează profil geriatric →</a>
+        <a href="programare.html" class="service-cta">Programează profil geriatric →</a>
       </div>
 
       <div class="service-detail reveal reveal-d2" style="--accent:var(--red); --icon-bg:#FEE2E2;">
         <div class="icon-wrap">🚨</div>
-        <h2>Urgențe veterinare Bacău</h2>
+        <h2>Urgențe</h2>
         <p>Urgențele nu au program. Dacă animalul tău are nevoie de ajutor imediat, STUFFIE — agentul nostru AI pe Messenger — evaluează situația non-stop și te conectează cu medicul disponibil.</p>
         <ul>
           <li>Disponibil non-stop prin Facebook Messenger</li>
@@ -653,7 +829,7 @@
       </div>
     </div>
     <div style="text-align:center; margin-top:52px;">
-      <a href="index.html#programare" class="btn-red" style="font-size:1rem; padding:14px 36px;">
+      <a href="programare.html" class="btn-red" style="font-size:1rem; padding:14px 36px;">
         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
         Programează o consultație acum
       </a>
@@ -667,7 +843,7 @@
     <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
       <img src="logo.PNG" alt="VET STUFF" style="height:40px; width:auto;" />
       <div class="flex flex-wrap gap-3">
-        <a href="index.html#programare" class="footer-cta-btn">
+        <a href="programare.html" class="footer-cta-btn">
           <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
           Programează o vizită
         </a>
@@ -693,8 +869,8 @@
             <li><a href="index.html#despre"     class="footer-link">Despre noi</a></li>
             <li><a href="servicii.html"         class="footer-link">Servicii</a></li>
             <li><a href="echipa.html"           class="footer-link">Echipa medicală</a></li>
-            <li><a href="index.html#programare" class="footer-link">Programare online</a></li>
-            <li><a href="index.html#contact"    class="footer-link">Contact</a></li>
+            <li><a href="programare.html" class="footer-link">Programare online</a></li>
+            <li><a href="contact.html"    class="footer-link">Contact</a></li>
             <li><a href="feedback.html"         class="footer-link">Feedback</a></li>
             <li><a href="status.html"           class="footer-link">Status abonament</a></li>
           </ul>
@@ -843,6 +1019,334 @@ if (anchorScroll && anchorWrap) {
       document.getElementById('cookie-banner').style.display = 'none';
     });
   })();
+</script>
+
+<!-- MODAL PRETURI -->
+<div id="price-modal" role="dialog" aria-modal="true" aria-labelledby="price-modal-title">
+  <div class="price-modal-box">
+    <div class="price-modal-head">
+      <h3 id="price-modal-title"></h3>
+      <p id="price-modal-sub"></p>
+      <button class="price-modal-close" aria-label="Închide" type="button">×</button>
+    </div>
+    <div class="price-modal-body" id="price-modal-body"></div>
+    <div class="price-modal-foot">
+      <small>Prețurile sunt orientative. Valoarea finală se confirmă în clinică, în funcție de specie, greutate, complexitatea cazului și consumabile.</small>
+      <a href="programare.html">Programează →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+/* DATA DRAFT — preturile sunt placeholder, urmează a fi înlocuite cu cele reale VET STUFF */
+const PRICES = {
+  consultatii: {
+    title: 'Consultații', sub: 'Examinare, anamneză și plan de tratament personalizat.',
+    items: [
+      ['Consultație generală', '190 lei'],
+      ['Consultație medic specialist', '300 lei'],
+      ['Consultație oftalmologică', '250 lei'],
+      ['Consultație dermatologică', '300 lei'],
+      ['Consultație ortopedică', '300 lei'],
+      ['Consultație chirurgicală', '300 lei'],
+      ['Consultație neurologică', '400 lei'],
+      ['Consultație de urgență', '300 lei'],
+      ['Consultație în zile de sărbători legale', '300 lei'],
+      ['Recontrol', 'jumătate din consultație'],
+    ],
+  },
+  analize: {
+    title: 'Analize de laborator', sub: 'Hemoleucogramă, biochimie, profile și teste rapide.',
+    items: [
+      ['Recoltare probe', '50 lei'],
+      ['Hemoleucogramă', '140 lei'],
+      ['Biochimie profil general (13+4 parametri)', '250 lei'],
+      ['Biochimie profil general (15+5 parametri)', '280 lei'],
+      ['Biochimie Comprehensive Profile', '350 lei'],
+      ['Profil renal', '220 lei'],
+      ['Profil hepatic', '220 lei'],
+      ['Profil electroliți', '220 lei'],
+      ['Examen complet de urină', '220 lei'],
+      ['Examen citologic Babesia', '100 lei'],
+      ['Examen coproparazitologic', '150 lei'],
+      ['Parametru unic', '100 lei'],
+      ['Test rapid grupă sânge felin (A+B)', '35 lei'],
+      ['Test rapid grupă sânge canin (DEA1)', '250 lei'],
+      ['CRP', '250 lei'],
+      ['T4 / TSH / Cortizol', '215 lei'],
+      ['CPL-FPL', '215 lei'],
+      ['Test SDMA', '250 lei'],
+      ['Test rapid CHW-Anaplasma-E.canis-Lyme', '195 lei'],
+      ['Test rapid CaniVec 4', '180 lei'],
+      ['Test rapid CPV-CCV-GIA', '165 lei'],
+      ['Test supresie cu dexametazonă', '400 lei'],
+      ['Test stimulare cu ACTH', '400 lei'],
+      ['Test glicemie', '50 lei'],
+      ['Test Giardia', '145 lei'],
+      ['Test rapid CDV / CPV / FPV / Toxoplasma / Babesia', '145 lei'],
+      ['Test rapid FIV-FELV', '145 lei'],
+      ['Test rapid FCOV', '150 lei'],
+    ],
+  },
+  imagistica: {
+    title: 'Imagistică', sub: 'Ecografie, radiografie și investigații non-invazive.',
+    items: [
+      ['Ecografie AFAST', '200 lei'],
+      ['Ecografie TFAST', '175 lei'],
+      ['Ecografie abdominală', '250 lei'],
+      ['Ecografie de gestație', '250 lei'],
+      ['Ecografie oculară', '175 lei'],
+      ['Ecografie de organ', '175 lei'],
+      ['Ecografie de recontrol', '150 lei'],
+      ['Biopsie ecoghidată fără anestezie', '1.000-2.000 lei'],
+      ['Examen radiologic — 1 expunere', '160 lei'],
+      ['Expunere radiologică suplimentară', '80 lei'],
+      ['Radiografie cu substanță de contrast', '250 lei'],
+    ],
+  },
+  chirurgie: {
+    title: 'Chirurgie generală', sub: 'Sterilizări, castrări, hernii, tumori și intervenții abdominale.',
+    items: [
+      ['Sterilizare pisică (anestezie inhalatorie)', '650 lei'],
+      ['Castrare motan (anestezie inhalatorie)', '550 lei'],
+      ['Sterilizare cățea <10 kg', '750 lei'],
+      ['Sterilizare cățea 10-20 kg', '850 lei'],
+      ['Sterilizare cățea 20-30 kg', '980 lei'],
+      ['Sterilizare cățea 30-40 kg', '1.150 lei'],
+      ['Sterilizare cățea >40 kg', '1.200 lei'],
+      ['Castrare câine <10 kg', '650 lei'],
+      ['Castrare câine 10-20 kg', '750 lei'],
+      ['Castrare câine 20-30 kg', '850 lei'],
+      ['Castrare câine 30-40 kg', '950 lei'],
+      ['Castrare câine >40 kg', '1.100 lei'],
+      ['Cezariană pisică', '1.100 lei'],
+      ['Cezariană cățea', '1.200-1.950 lei'],
+      ['Piometru cățea', '1.800-2.900 lei'],
+      ['Piometru pisică', '1.300 lei'],
+      ['Sutură plagă', '400-800 lei'],
+      ['Sutură plagă cu drenaj', '600-1.200 lei'],
+      ['Deschidere abcese', '200 lei'],
+      ['Hematom auricular', '600-1.400 lei'],
+      ['Extirpare lipoame', '600-900 lei'],
+      ['Extirpare tumori mamare cățea', '900-2.000 lei'],
+      ['Extirpare tumori mamare pisică', '600-1.600 lei'],
+      ['Hernie abdominală / ombilicală', '700-1.600 lei'],
+      ['Hernie inghinală', '1.800-2.900 lei'],
+      ['Hernie perianală', '2.000-3.800 lei'],
+      ['Enterotomie / Enterectomie un segment', '1.500-1.800 lei'],
+      ['Gastrotomie / Gastrectomie', '1.800-1.900 lei'],
+      ['Splenectomie', '1.900 lei'],
+      ['Nefrectomie', '2.400 lei'],
+      ['Laparotomie exploratorie', '1.200 lei'],
+      ['Cistotomie litiază urinară', '1.300 lei'],
+      ['Uretrostoma motan / câine', '1.700-2.500 lei'],
+    ],
+  },
+  ortopedie: {
+    title: 'Ortopedie / Traumatologie / Neurochirurgie', sub: 'Fracturi, luxații, ligamente, intervenții complexe.',
+    items: [
+      ['Luxație de patelă — fără deschidere articulație', '2.300-3.850 lei'],
+      ['Luxație de patelă — cu deschidere articulație', '2.200-3.500 lei'],
+      ['Ruptură ligament încrucișat — extracapsular', '2.300-3.700 lei'],
+      ['Ruptură ligament încrucișat — intra-articular', '2.800-4.200 lei'],
+      ['Fractură de femur', '3.500-6.000 lei'],
+      ['Fractură radius și ulna', '3.000-4.500 lei'],
+      ['Fractură bazin', '3.800-5.500 lei'],
+      ['Amputare membru', '1.800-3.000 lei'],
+      ['Ostectomie gât și cap femural', '1.500-2.500 lei'],
+      ['Luxație coxo-femurală (Toggle pin)', '2.700-3.700 lei'],
+      ['Hemilaminectomie', '4.000-7.000 lei'],
+      ['Remediere fracturi mandibulare / maxilare', '1.800-3.000 lei'],
+      ['Îndepărtare plăcuță / sârmă / pin', '700-1.200 lei'],
+    ],
+  },
+  stomatologie: {
+    title: 'Stomatologie', sub: 'Detartraj, extracții și chirurgie orală.',
+    items: [
+      ['Detartraj cu ultrasunete', '400 lei'],
+      ['Extracții dentare', '100-500 lei'],
+      ['Extirpare tumori gingivale', '400 lei'],
+      ['Palatoschizis', '800-1.200 lei'],
+      ['Chirurgie orală', 'de la 320 lei'],
+    ],
+  },
+  dermatologie: {
+    title: 'Dermatologie', sub: 'Diagnostic și tratament pentru afecțiuni cutanate.',
+    items: [
+      ['Consultație dermatologică', '300 lei'],
+      ['Examen lampă Wood', '80 lei'],
+      ['Examen otoscopic', '60 lei'],
+      ['Examen otovideoscopic', '150 lei'],
+      ['Biopsie cutanată', '250-500 lei'],
+      ['Tratament otite', 'de la 60 lei'],
+    ],
+  },
+  oftalmologie: {
+    title: 'Oftalmologie', sub: 'Consultație și intervenții pentru afecțiuni oculare.',
+    items: [
+      ['Consultație oftalmologică', '250 lei'],
+      ['Test Fluoresceină', '80 lei'],
+      ['Ecografie oculară', '175 lei'],
+      ['Ectropion / Entropion', '1.000-1.400 lei'],
+      ['Enucleere glob ocular', '1.200-1.500 lei'],
+      ['Cherry Eye (unilateral)', '1.000 lei'],
+      ['Cherry Eye (bilateral)', '1.500 lei'],
+      ['Tarsorafie', '600-800 lei'],
+      ['Tarsorafie în prolaps glob ocular', '900-1.200 lei'],
+    ],
+  },
+  vaccinari: {
+    title: 'Vaccinări câine / pisică / iepure', sub: 'Schema de prevenție pe specie.',
+    items: [
+      ['Vaccinare antirabică (câine / pisică)', '120 lei'],
+      ['Vaccinare bivalentă DP (câine)', '150 lei'],
+      ['Vaccinare monovalentă Puppy (câine)', '130 lei'],
+      ['Vaccinare polivalentă câine', '150 lei'],
+      ['Vaccinare polivalentă-antirabică câine', '195 lei'],
+      ['Vaccinare tuse de canisă', '150 lei'],
+      ['Vaccinare microsporoză pisică', '100 lei'],
+      ['Vaccinare polivalentă pisică', '150 lei'],
+      ['Vaccinare polivalentă Purevax pisică', '200 lei'],
+      ['Vaccinare polivalentă-antirabică pisică', '195 lei'],
+      ['Vaccinare polivalentă iepure', '120 lei'],
+    ],
+  },
+  anestezie: {
+    title: 'Anestezie / Sedare', sub: 'Anestezie locală, inhalatorie și sedare cu revenire — adaptate greutății.',
+    items: [
+      ['Anestezie locală', '110 lei'],
+      ['Anestezie inhalatorie câine <10 kg', '260 lei'],
+      ['Anestezie inhalatorie câine 10-20 kg', '300 lei'],
+      ['Anestezie inhalatorie câine 20-30 kg', '340 lei'],
+      ['Anestezie inhalatorie câine 30-40 kg', '390 lei'],
+      ['Anestezie inhalatorie câine 40-50 kg', '440 lei'],
+      ['Anestezie inhalatorie câine 50-60 kg', '490 lei'],
+      ['Anestezie inhalatorie câine 60-70 kg', '550 lei'],
+      ['Anestezie inhalatorie câine 70-80 kg', '600 lei'],
+      ['Anestezie inhalatorie câine 80-90 kg', '650 lei'],
+      ['Anestezie inhalatorie câine 90-100 kg', '720 lei'],
+      ['Anestezie inhalatorie pisică', '300 lei'],
+      ['Sedare cu revenire pisică', '220 lei'],
+      ['Sedare cu revenire câine <10 kg', '260 lei'],
+      ['Sedare cu revenire câine 10-20 kg', '300 lei'],
+      ['Sedare cu revenire câine 20-30 kg', '340 lei'],
+      ['Sedare cu revenire câine 30-40 kg', '390 lei'],
+      ['Sedare cu revenire câine 40-50 kg', '440 lei'],
+      ['Sedare cu revenire câine >50 kg', '490-720 lei'],
+    ],
+  },
+  endoscopie: {
+    title: 'Endoscopie', sub: 'Investigații minim-invazive cu sau fără prelevare de probe.',
+    items: [
+      ['Endoscopie de diagnostic', '1.500 lei'],
+      ['Endoscopie de diagnostic cu prelevare probe', '2.000 lei'],
+      ['Polipectomie', '2.500 lei'],
+      ['Extracție corp străin gastric', '1.900 lei'],
+      ['Extracție corp străin esofagian', '2.300 lei'],
+      ['Rinoscopie antero-postretrogradă', '1.300 lei'],
+      ['Rinoscopie cu prelevare probe', '1.500 lei'],
+      ['Bronhoscopie', '1.100 lei'],
+      ['Lavaj bronhoalveolar', '1.350 lei'],
+      ['Otoscopie', '900 lei'],
+      ['Otoscopie cu prelevare probe și lavaj', '1.300 lei'],
+      ['Otoscopie cu extracție corp străin', '1.100 lei'],
+    ],
+  },
+  internare: {
+    title: 'Internare', sub: 'Monitorizare în clinică pe talie, pe zi sau în terapie intensivă.',
+    items: [
+      ['Internare 24h câine talie mică (<10 kg)', '210 lei'],
+      ['Internare 24h câine talie medie (10-30 kg)', '250 lei'],
+      ['Internare 24h câine talie mare (>30 kg)', '280 lei'],
+      ['Internare 24h pisică', '180 lei'],
+      ['Internare 24h pacient contagios', '300 lei'],
+      ['Internare de zi (09:00-21:00)', '100 lei'],
+      ['Internare Terapie Intensivă', '500 lei'],
+    ],
+  },
+  servicii_medicale: {
+    title: 'Servicii medicale', sub: 'Manopere medicale punctuale: injecții, pansamente, sondări, perfuzii.',
+    items: [
+      ['Administrare injectabilă (s.c. / i.m.)', '40-60 lei'],
+      ['Tratament perfuzabil', '150 lei'],
+      ['Hemotransfuzie câine (manoperă, 1 unitate)', '1.050 lei'],
+      ['Hemotransfuzie pisică (manoperă, 1 unitate)', '950 lei'],
+      ['Montare cateter venos central', '800 lei'],
+      ['Montare cateter IV', '45 lei'],
+      ['Administrare tratament oral', '20 lei'],
+      ['Clismă câine / pisică', '350 lei'],
+      ['Clismă dificultate ridicată', '550 lei'],
+      ['Toaletaj urechi', '70 lei'],
+      ['Tăiat unghii', '50 lei'],
+      ['Vidare glande perianale', '80 lei'],
+      ['Puncție abdominală / toracică ecoghidată', '200 lei'],
+      ['Puncție pericardică', '400 lei'],
+      ['Aspirat cu ac fin formațiuni cutanate', '70-150 lei'],
+      ['Extracție corp străin', '100-500 lei'],
+      ['Sondare câine', '200 lei'],
+      ['Sondare motan cu anestezie', '500 lei'],
+      ['Inserție sondă nazogastrică', '160 lei'],
+      ['Inserție sondă esofagogastrică cu sedare', '370 lei'],
+      ['Hrănire pe sondă / zi', '75 lei'],
+      ['Oxigenoterapie / h', '70 lei'],
+      ['Oxigenoterapie / 24h', '250 lei'],
+      ['Nebulizare', '120 lei'],
+      ['Stabilizare și hrănire nou-născuți', '190 lei'],
+      ['Măsurare tensiune arterială', '20 lei'],
+      ['Pansament / Toaletă plagă', '80-200 lei'],
+      ['Bandaj ghipsat', '280 lei'],
+      ['Provocare vomă', '250-300 lei'],
+    ],
+  },
+  documente: {
+    title: 'Documente și microcipare', sub: 'Pașaport, microcip, carnet de sănătate, rețete și adeverințe.',
+    items: [
+      ['Carnet de sănătate', '45 lei'],
+      ['Microcipare + documente', '130 lei'],
+      ['Înregistrare RECS', '50 lei'],
+      ['Pașaport', '130 lei'],
+      ['Eliberare rețetă', '35 lei'],
+      ['Eliberare adeverință', '35 lei'],
+    ],
+  },
+  eutanasie: {
+    title: 'Eutanasie', sub: 'Procedură umană, în condiții demne, cu consiliere pentru proprietar.',
+    items: [
+      ['Eutanasie', '250-500 lei'],
+      ['Preluare cadavru', '220-880 lei'],
+    ],
+  },
+};
+
+(function() {
+  const modal = document.getElementById('price-modal');
+  const titleEl = document.getElementById('price-modal-title');
+  const subEl = document.getElementById('price-modal-sub');
+  const bodyEl = document.getElementById('price-modal-body');
+  const closeBtn = modal.querySelector('.price-modal-close');
+
+  function openModal(key) {
+    const data = PRICES[key];
+    if (!data) return;
+    titleEl.textContent = data.title;
+    subEl.textContent = data.sub || '';
+    bodyEl.innerHTML = data.items.map(([name, price]) =>
+      `<div class="price-modal-row"><div class="price-modal-name">${name}</div><div class="price-modal-val">${price}</div></div>`
+    ).join('');
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.querySelectorAll('.price-btn[data-prices]').forEach(btn => {
+    btn.addEventListener('click', () => openModal(btn.getAttribute('data-prices')));
+  });
+  closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+})();
 </script>
 </body>
 </html>

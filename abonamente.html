@@ -49,6 +49,7 @@
     .btn-red:hover { background: #b52020; transform: translateY(-1px); }
     .nav-urgenta { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 20px; border: 1.5px solid rgba(212,43,43,0.35); font-size: 0.82rem; font-weight: 700; color: var(--red); transition: background 0.15s, color 0.15s; white-space: nowrap; }
     .nav-urgenta:hover { background: var(--red); color: #fff; }
+    section[id] { scroll-margin-top: 120px; }
     .pulse-red { width: 6px; height: 6px; border-radius: 50%; background: var(--red); display: inline-block; animation: pulse-red-anim 1.4s ease-in-out infinite; }
     @keyframes pulse-red-anim { 0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.6);} }
     #mobile-menu { display: none; position: fixed; inset: 0; background: #fff; z-index: 998; flex-direction: column; padding: 80px 24px 24px; gap: 4px; }
@@ -175,7 +176,7 @@
         <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
         CALL CENTER +40 7XX XXX XXX
       </a>
-      <a href="index.html#contact" class="flex items-center gap-1.5 font-medium">
+      <a href="contact.html" class="flex items-center gap-1.5 font-medium">
         <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
         CONTACT
       </a>
@@ -189,13 +190,13 @@
         <a href="servicii.html" class="nav-link">Servicii</a>
         <a href="echipa.html" class="nav-link">Echipa medicală</a>
         <a href="abonamente.html" class="nav-link active">Abonamente</a>
-        <a href="index.html#programare" class="nav-link">Programare</a>
-        <a href="index.html#contact" class="nav-link">Contact</a>
+        <a href="programare.html" class="nav-link">Programare</a>
+        <a href="contact.html" class="nav-link">Contact</a>
         <a href="blog/index.html" class="nav-link">VETSTUFF INFO</a>
         <a href="index.html#urgenta" class="nav-urgenta"><span class="pulse-red"></span>Urgență</a>
       </div>
       <div class="flex items-center gap-3">
-        <a href="index.html#programare" class="btn-red hidden md:inline-flex">
+        <a href="programare.html" class="btn-red hidden md:inline-flex">
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
           Programare
         </a>
@@ -215,11 +216,11 @@
     <a href="servicii.html" class="mob-link" onclick="closeMenu()">Servicii</a>
     <a href="echipa.html" class="mob-link" onclick="closeMenu()">Echipa medicală</a>
     <a href="abonamente.html" class="mob-link" onclick="closeMenu()" style="color:var(--red);">Abonamente</a>
-    <a href="index.html#programare" class="mob-link" onclick="closeMenu()">Programare</a>
-    <a href="index.html#contact" class="mob-link" onclick="closeMenu()">Contact</a>
+    <a href="programare.html" class="mob-link" onclick="closeMenu()">Programare</a>
+    <a href="contact.html" class="mob-link" onclick="closeMenu()">Contact</a>
   <a href="blog/index.html" class="mob-link" onclick="closeMenu()">VETSTUFF INFO</a>
     <a href="index.html#urgenta" class="mob-link" onclick="closeMenu()" style="color:var(--red);">🚨 Urgență</a>
-    <div class="mt-6"><a href="index.html#programare" onclick="closeMenu()" class="btn-red w-full justify-center">Programare online</a></div>
+    <div class="mt-6"><a href="programare.html" onclick="closeMenu()" class="btn-red w-full justify-center">Programare online</a></div>
   </div>
 </header>
 
@@ -240,6 +241,51 @@
       <a href="status.html" style="display:inline-flex;align-items:center;gap:8px;padding:13px 24px;background:rgba(255,255,255,0.1);color:#fff;border:1.5px solid rgba(255,255,255,0.4);border-radius:8px;font-size:0.9rem;font-weight:600;transition:background 0.15s,border-color 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.18)';this.style.borderColor='#fff'" onmouseout="this.style.background='rgba(255,255,255,0.1)';this.style.borderColor='rgba(255,255,255,0.4)'">
         🔍 Ai deja abonament? Verifică status
       </a>
+    </div>
+  </div>
+</section>
+
+<!-- CUM FUNCȚIONEAZĂ PLANURILE ȘI PLATA -->
+<section id="cum-functioneaza" style="padding:64px 16px;background:#fff;">
+  <div class="max-w-6xl mx-auto">
+    <div style="text-align:center;margin-bottom:36px;">
+      <span style="font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--red);">Flux clar</span>
+      <h2 style="font-size:clamp(1.7rem,3vw,2.4rem);font-weight:900;color:var(--navy);margin-top:8px;">De la alegerea planului la activare</h2>
+      <p style="font-size:.94rem;color:#555;line-height:1.75;max-width:660px;margin:12px auto 0;">Planurile VET STUFF sunt gândite diferit de un simplu coș online: prețul final depinde de specie, greutate, produse de deparazitare și opțiunile alese cu medicul. De aceea, fluxul pune întâi siguranța medicală, apoi plata.</p>
+    </div>
+
+    <div class="grid md:grid-cols-4 gap-4">
+      <div style="background:var(--light);border:1.5px solid var(--border);border-radius:14px;padding:24px;">
+        <div style="width:38px;height:38px;border-radius:50%;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;margin-bottom:14px;">1</div>
+        <h3 style="font-size:1.18rem;font-weight:900;color:var(--navy);margin-bottom:8px;">Alegi planul</h3>
+        <p style="font-size:.86rem;color:#555;line-height:1.65;">Silver, Gold sau Platinum, în funcție de nivelul de prevenție dorit.</p>
+      </div>
+      <div style="background:var(--light);border:1.5px solid var(--border);border-radius:14px;padding:24px;">
+        <div style="width:38px;height:38px;border-radius:50%;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;margin-bottom:14px;">2</div>
+        <h3 style="font-size:1.18rem;font-weight:900;color:var(--navy);margin-bottom:8px;">Calculezi estimarea</h3>
+        <p style="font-size:.86rem;color:#555;line-height:1.65;">Calculatorul simulează costurile variabile: deparazitări, analize, anestezie sau opțiuni extra.</p>
+      </div>
+      <div style="background:var(--light);border:1.5px solid var(--border);border-radius:14px;padding:24px;">
+        <div style="width:38px;height:38px;border-radius:50%;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;margin-bottom:14px;">3</div>
+        <h3 style="font-size:1.18rem;font-weight:900;color:var(--navy);margin-bottom:8px;">Confirmăm medical</h3>
+        <p style="font-size:.86rem;color:#555;line-height:1.65;">La prima vizită alegi produsele împreună cu medicul și stabilim valoarea finală a planului.</p>
+      </div>
+      <div style="background:var(--navy);border:1.5px solid var(--navy);border-radius:14px;padding:24px;color:#fff;">
+        <div style="width:38px;height:38px;border-radius:50%;background:#fff;color:var(--red);display:flex;align-items:center;justify-content:center;font-weight:900;margin-bottom:14px;">4</div>
+        <h3 style="font-size:1.18rem;font-weight:900;margin-bottom:8px;">Plată și cod digital</h3>
+        <p style="font-size:.86rem;color:rgba(255,255,255,.72);line-height:1.65;">Plata se poate face integral sau în 3 rate. După activare primești codul și QR-ul pentru status/utilizare.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:28px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;">
+      <div style="border:1.5px solid #c7dbf2;background:#f0f7ff;border-radius:14px;padding:22px;">
+        <h3 style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:900;color:var(--navy);margin-bottom:8px;">Plată simplă, în 3 rate</h3>
+        <p style="font-size:.88rem;color:#445;line-height:1.7;">Plata se face în 3 rate egale, pe parcursul a 60 de zile, direct la clinică sau prin transfer bancar. Plata online securizată va fi disponibilă în curând.</p>
+      </div>
+      <div style="border:1.5px solid #fcd34d;background:#fffbeb;border-radius:14px;padding:22px;">
+        <h3 style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:900;color:#92400e;margin-bottom:8px;">Ce primești după activare</h3>
+        <p style="font-size:.88rem;color:#6b4a16;line-height:1.7;">Cod unic și QR digital, confirmare pe email și SMS, acces la pagina de status a abonamentului și posibilitatea de utilizare a serviciilor direct la clinică.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -740,7 +786,7 @@
     <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
       <img src="logo.PNG" alt="VET STUFF" style="height:40px;width:auto;" />
       <div class="flex flex-wrap gap-3">
-        <a href="index.html#programare" class="footer-cta-btn">Programează o vizită</a>
+        <a href="programare.html" class="footer-cta-btn">Programează o vizită</a>
         <a href="tel:+407XXXXXXXX" class="footer-cta-btn">+40 7XX XXX XXX</a>
       </div>
     </div>
@@ -934,7 +980,7 @@ async function doSubmitForm() {
       fetch('/api/send-sms', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tel, cod })
+        body: JSON.stringify({ tel, cod, nume, plan, animal })
       })
     ]);
 
