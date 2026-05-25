@@ -898,7 +898,13 @@
 
     <!-- Desktop links -->
     <div class="hidden md:flex items-center gap-6">
-      <a href="#despre" class="nav-link">Despre noi</a>
+      <div class="nav-dropdown">
+        <a href="#despre" class="nav-link" aria-haspopup="true">Despre noi</a>
+        <div class="nav-dropdown-panel" role="menu" aria-label="Despre noi">
+          <span class="nav-dd-head">Despre VET STUFF</span>
+          <a href="echipa.html">🩺 Echipa medicală</a>
+        </div>
+      </div>
       <div class="nav-dropdown">
         <a href="servicii.html" class="nav-link" aria-haspopup="true">Servicii</a>
         <div class="nav-dropdown-panel" role="menu" aria-label="Toate serviciile">
@@ -927,7 +933,6 @@
           <a href="servicii.html" class="nav-dd-all">Vezi pagina completă →</a>
         </div>
       </div>
-      <a href="echipa.html" class="nav-link">Echipa medicală</a>
       <a href="abonamente.html" class="nav-link">Abonamente</a>
       <a href="programare.html" class="nav-link">Programare</a>
       <a href="contact.html" class="nav-link">Contact</a>
@@ -961,7 +966,13 @@
       <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
     </svg>
   </button>
-  <a href="#despre"     class="mob-link" onclick="closeMenu()">Despre noi</a>
+  <details>
+    <summary class="mob-link mob-sub-toggle" style="list-style:none;">Despre noi</summary>
+    <div class="mob-sublist">
+      <a href="#despre" onclick="closeMenu()">ℹ️ Despre VET STUFF</a>
+      <a href="echipa.html" onclick="closeMenu()">🩺 Echipa medicală</a>
+    </div>
+  </details>
   <details>
     <summary class="mob-link mob-sub-toggle" style="list-style:none;">Servicii</summary>
     <div class="mob-sublist">
@@ -989,7 +1000,6 @@
       <a href="servicii.html" onclick="closeMenu()" style="font-weight:800; color:var(--navy); margin-top:6px;">Vezi pagina completă →</a>
     </div>
   </details>
-  <a href="echipa.html" class="mob-link" onclick="closeMenu()">Echipa medicală</a>
   <a href="abonamente.html" class="mob-link" onclick="closeMenu()">Abonamente</a>
   <a href="programare.html" class="mob-link" onclick="closeMenu()">Programare</a>
   <a href="contact.html"    class="mob-link" onclick="closeMenu()">Contact</a>

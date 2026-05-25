@@ -225,7 +225,13 @@
   <div class="max-w-5xl mx-auto px-4 flex items-center justify-between" style="height:88px;">
     <a href="index.html"><img src="logo.PNG" alt="VET STUFF" style="height:58px;width:auto;" /></a>
     <div class="hidden md:flex items-center gap-6">
-      <a href="index.html#despre"     class="nav-link">Despre noi</a>
+      <div class="nav-dropdown">
+        <a href="index.html#despre" class="nav-link" aria-haspopup="true">Despre noi</a>
+        <div class="nav-dropdown-panel" role="menu" aria-label="Despre noi">
+          <span class="nav-dd-head">Despre VET STUFF</span>
+          <a href="echipa.html">🩺 Echipa medicală</a>
+        </div>
+      </div>
       <div class="nav-dropdown">
         <a href="servicii.html" class="nav-link" aria-haspopup="true">Servicii</a>
         <div class="nav-dropdown-panel" role="menu" aria-label="Toate serviciile">
@@ -254,7 +260,6 @@
           <a href="servicii.html" class="nav-dd-all">Vezi pagina completă →</a>
         </div>
       </div>
-      <a href="echipa.html"           class="nav-link">Echipa medicală</a>
       <a href="abonamente.html"       class="nav-link">Abonamente</a>
       <a href="index.html#programare" class="nav-link">Programare</a>
       <a href="index.html#contact"    class="nav-link">Contact</a>
@@ -276,7 +281,13 @@
   </div>
 </nav>
 <div id="mobile-menu">
-  <a href="index.html#despre"     class="mob-link" onclick="closeMenu()">Despre noi</a>
+  <details>
+    <summary class="mob-link mob-sub-toggle" style="list-style:none;">Despre noi</summary>
+    <div class="mob-sublist">
+      <a href="index.html#despre" onclick="closeMenu()">ℹ️ Despre VET STUFF</a>
+      <a href="echipa.html" onclick="closeMenu()">🩺 Echipa medicală</a>
+    </div>
+  </details>
   <details>
     <summary class="mob-link mob-sub-toggle" style="list-style:none;">Servicii</summary>
     <div class="mob-sublist">
@@ -304,7 +315,6 @@
       <a href="servicii.html" onclick="closeMenu()" style="font-weight:800; color:var(--navy); margin-top:6px;">Vezi pagina completă →</a>
     </div>
   </details>
-  <a href="echipa.html"           class="mob-link" onclick="closeMenu()">Echipa medicală</a>
   <a href="abonamente.html"       class="mob-link" onclick="closeMenu()">Abonamente</a>
   <a href="index.html#programare" class="mob-link" onclick="closeMenu()">Programare</a>
   <a href="index.html#contact"    class="mob-link" onclick="closeMenu()">Contact</a>

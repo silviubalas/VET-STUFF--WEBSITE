@@ -125,7 +125,13 @@
     <div class="max-w-6xl mx-auto px-4 flex items-center justify-between gap-6" style="height:96px;">
       <a href="index.html"><img src="logo.PNG" alt="VET STUFF" style="height:76px;width:auto;" /></a>
       <div class="hidden md:flex items-center gap-6">
-        <a class="nav-link" href="index.html#despre">Despre noi</a>
+        <div class="nav-dropdown">
+        <a href="index.html#despre" class="nav-link" aria-haspopup="true">Despre noi</a>
+        <div class="nav-dropdown-panel" role="menu" aria-label="Despre noi">
+          <span class="nav-dd-head">Despre VET STUFF</span>
+          <a href="echipa.html">🩺 Echipa medicală</a>
+        </div>
+      </div>
         <div class="nav-dropdown">
         <a href="servicii.html" class="nav-link" aria-haspopup="true">Servicii</a>
         <div class="nav-dropdown-panel" role="menu" aria-label="Toate serviciile">
@@ -154,7 +160,6 @@
           <a href="servicii.html" class="nav-dd-all">Vezi pagina completă →</a>
         </div>
       </div>
-        <a class="nav-link" href="echipa.html">Echipa medicală</a>
         <a class="nav-link" href="abonamente.html">Abonamente</a>
         <a class="nav-link" href="programare.html">Programare</a>
         <a class="nav-link active" href="contact.html">Contact</a>
