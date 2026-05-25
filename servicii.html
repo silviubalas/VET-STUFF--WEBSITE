@@ -34,6 +34,9 @@
     "name": "VET STUFF",
     "url": "https://vet-stuff.ro",
     "telephone": "+407XXXXXXXX",
+    "priceRange": "20 - 7000 RON",
+    "paymentAccepted": "Cash, Card, Transfer bancar",
+    "currenciesAccepted": "RON",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Str. Mioriței nr. 10",
@@ -87,6 +90,46 @@
     "itemListElement": [
       {"@type":"ListItem","position":1,"name":"Acasă","item":"https://vet-stuff.ro/"},
       {"@type":"ListItem","position":2,"name":"Servicii","item":"https://vet-stuff.ro/servicii.html"}
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Servicii veterinare VET STUFF",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"name":"Consultații generale","url":"https://vet-stuff.ro/servicii.html#diagnostic"},
+      {"@type":"ListItem","position":2,"name":"Analize de laborator","url":"https://vet-stuff.ro/servicii.html#diagnostic"},
+      {"@type":"ListItem","position":3,"name":"Imagistică și endoscopie","url":"https://vet-stuff.ro/servicii.html#diagnostic"},
+      {"@type":"ListItem","position":4,"name":"Chirurgie generală","url":"https://vet-stuff.ro/servicii.html#chirurgie"},
+      {"@type":"ListItem","position":5,"name":"Ortopedie și traumatologie","url":"https://vet-stuff.ro/servicii.html#ortopedie"},
+      {"@type":"ListItem","position":6,"name":"Cardiologie","url":"https://vet-stuff.ro/servicii.html#cardiologie"},
+      {"@type":"ListItem","position":7,"name":"Oncologie","url":"https://vet-stuff.ro/servicii.html#oncologie"},
+      {"@type":"ListItem","position":8,"name":"Stomatologie","url":"https://vet-stuff.ro/servicii.html#stomatologie"},
+      {"@type":"ListItem","position":9,"name":"Dermatologie","url":"https://vet-stuff.ro/servicii.html#dermatologie"},
+      {"@type":"ListItem","position":10,"name":"Oftalmologie","url":"https://vet-stuff.ro/servicii.html#altele"},
+      {"@type":"ListItem","position":11,"name":"Prevenție și vaccinări","url":"https://vet-stuff.ro/servicii.html#preventie"},
+      {"@type":"ListItem","position":12,"name":"Internare și monitorizare","url":"https://vet-stuff.ro/servicii.html#altele"},
+      {"@type":"ListItem","position":13,"name":"Urgențe","url":"https://vet-stuff.ro/servicii.html#altele"}
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"Cât durează o consultație veterinară la VET STUFF?","acceptedAnswer":{"@type":"Answer","text":"O consultație generală durează între 20 și 40 de minute. Medicul face examinarea completă, discută istoricul medical și stabilește planul de tratament. Pentru cazuri complexe sau investigații suplimentare durata poate crește."}},
+      {"@type":"Question","name":"Cum mă programez la clinica veterinară VET STUFF din Bacău?","acceptedAnswer":{"@type":"Answer","text":"Cel mai simplu prin formularul de programare online de pe vet-stuff.ro/programare.html. Poți suna și la +40 7XX XXX XXX în timpul programului sau ne poți scrie pe Facebook Messenger."}},
+      {"@type":"Question","name":"Aveți urgențe veterinare în afara programului?","acceptedAnswer":{"@type":"Answer","text":"În afara programului, agentul AI STUFFIE răspunde non-stop pe Facebook Messenger, evaluează simptomele și conectează cu medicul de gardă. Pentru urgențe critice te orientăm și către unitățile de gardă din Bacău."}},
+      {"@type":"Question","name":"Care este programul clinicii?","acceptedAnswer":{"@type":"Answer","text":"Luni-vineri 09:00-19:00 și sâmbătă 10:00-14:00. Duminica și sărbătorile lucrăm la cerere pentru urgențe."}},
+      {"@type":"Question","name":"Cât costă o consultație veterinară?","acceptedAnswer":{"@type":"Answer","text":"Consultația generală pornește de la 190 lei. Prețul final depinde de specie, greutate, complexitatea cazului și de investigațiile necesare. Toate prețurile orientative sunt afișate pe pagina de servicii."}},
+      {"@type":"Question","name":"Aveți abonamente sau planuri de sănătate?","acceptedAnswer":{"@type":"Answer","text":"Da, VET STUFF Care include trei planuri (Silver, Gold, Platinum) cu vaccinări, deparazitări, consultații și reduceri, în rate egale fără dobândă."}},
+      {"@type":"Question","name":"Ce înseamnă servicii prin clinici partenere?","acceptedAnswer":{"@type":"Answer","text":"Pentru proceduri foarte specializate (radiografie, endoscopie, CT, RMN), VET STUFF colaborează cu clinici și laboratoare partenere. Programarea se face prin noi, iar continuitatea medicală este asigurată de medicul tău."}},
+      {"@type":"Question","name":"Tratați și animale exotice — iepuri, rozătoare, păsări?","acceptedAnswer":{"@type":"Answer","text":"Da, oferim consultații și vaccinări pentru iepuri, rozătoare și păsări de companie. Pentru reptile, amfibieni și cazuri foarte specifice, orientăm către colegi specializați în NAC."}}
     ]
   }
   </script>
@@ -225,6 +268,20 @@
     .price-modal-foot a { background:var(--red); color:#fff; padding:10px 18px; border-radius:8px; font-size:.85rem; font-weight:800; display:inline-flex; align-items:center; gap:6px; }
     .price-modal-foot a:hover { background:#b52020; }
     @media (max-width:640px) { .price-modal-row { grid-template-columns:1fr; gap:4px; padding:12px 18px; } .price-modal-head, .price-modal-foot { padding-left:18px; padding-right:18px; } }
+
+    /* FAQ accordion */
+    .faq-list { display:flex; flex-direction:column; gap:10px; }
+    .faq-item { background:#fff; border:1px solid var(--border); border-radius:12px; padding:0; overflow:hidden; transition:box-shadow .2s, border-color .2s; }
+    .faq-item[open] { border-color:#d8e0ec; box-shadow:0 8px 24px rgba(27,58,107,0.06); }
+    .faq-item summary { cursor:pointer; list-style:none; padding:18px 22px; font-weight:700; color:var(--navy); font-size:.98rem; display:flex; justify-content:space-between; align-items:center; gap:12px; }
+    .faq-item summary::-webkit-details-marker { display:none; }
+    .faq-item summary::after { content:'+'; font-size:1.4rem; font-weight:400; color:var(--red); flex-shrink:0; transition:transform .2s; }
+    .faq-item[open] summary::after { content:'−'; transform:rotate(0deg); }
+    .faq-item summary:hover { color:var(--red); }
+    .faq-body { padding:0 22px 20px; color:#555; font-size:.92rem; line-height:1.7; }
+    .faq-body a { color:var(--red); text-decoration:underline; text-underline-offset:3px; }
+    .faq-body a:hover { color:#b52020; }
+
     section[id] { scroll-margin-top: 120px; }
     .price-board { background:#fff; border:1.5px solid var(--border); border-radius:16px; overflow:hidden; box-shadow:0 2px 5px rgba(0,0,0,0.03),0 18px 42px rgba(27,58,107,0.07); }
     .price-row { display:grid; grid-template-columns:1fr auto auto; gap:18px; align-items:center; padding:18px 20px; border-bottom:1px solid #edf0f4; }
@@ -301,7 +358,7 @@
 <nav id="navbar">
   <div class="max-w-6xl mx-auto px-4 flex items-center justify-between" style="height:110px;">
     <a href="index.html" class="flex-shrink-0">
-      <img src="logo.PNG" alt="VET STUFF" style="height:100px; width:auto;" />
+      <img src="logo.PNG" alt="VET STUFF — Clinică veterinară" style="height:100px; width:auto;" />
     </a>
     <div class="hidden md:flex items-center gap-6">
       <a href="index.html#despre" class="nav-link">Despre noi</a>
@@ -924,7 +981,56 @@
         <a href="#preventie" class="footer-link" style="font-size:.9rem;">🛡️ Prevenție & vaccinare</a>
         <a href="#altele" class="footer-link" style="font-size:.9rem;">🐾 Internare, Geriatrie, Urgențe</a>
         <a href="#preturi" class="footer-link" style="font-size:.9rem;">💶 Prețuri orientative</a>
+        <a href="#faq" class="footer-link" style="font-size:.9rem;">❓ Întrebări frecvente</a>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ — Întrebări frecvente -->
+<section id="faq" style="padding:72px 16px 80px; background:var(--light);">
+  <div class="max-w-3xl mx-auto">
+    <div style="text-align:center; margin-bottom:36px;">
+      <span class="section-subtitle">Întrebări frecvente</span>
+      <h2 class="section-title" style="margin-top:4px;">Ce întreabă cel mai des proprietarii</h2>
+      <p style="font-size:.95rem; color:#555; line-height:1.7; margin-top:12px;">Răspunsuri scurte la cele mai comune întrebări despre serviciile, programul și modul nostru de lucru.</p>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Cât durează o consultație veterinară la VET STUFF?</summary>
+        <div class="faq-body">O consultație generală durează între 20 și 40 de minute. Medicul face examinarea completă, discută istoricul medical și stabilește planul de tratament. Pentru cazuri complexe sau investigații suplimentare (analize, ecografie), durata poate crește; te informăm dinainte ca să-ți planifici timpul.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Cum mă programez la clinica veterinară VET STUFF din Bacău?</summary>
+        <div class="faq-body">Cel mai simplu este să folosești <a href="programare.html">formularul de programare online</a>: alegi serviciul, ziua și ora preferată, iar noi confirmăm rapid. Poți suna și la +40 7XX XXX XXX în timpul programului sau ne poți scrie pe Facebook Messenger.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Aveți urgențe veterinare în afara programului?</summary>
+        <div class="faq-body">În timpul programului sunăm la clinică sau scrie pe Messenger. În afara programului, STUFFIE — agentul nostru AI — răspunde non-stop pe <a href="https://www.facebook.com/vetstuff" target="_blank" rel="noopener">Facebook Messenger</a>, evaluează simptomele și te conectează cu medicul de gardă disponibil. Pentru urgențe critice te orientăm și către unitățile de gardă din Bacău.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Care este programul clinicii?</summary>
+        <div class="faq-body">Suntem deschiși de luni până vineri între 09:00–19:00 și sâmbătă 10:00–14:00. Duminica și sărbătorile legale lucrăm la cerere pentru urgențe. Programările confirmate primesc reminder pe email și SMS.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Cât costă o consultație și cum aflu prețul total?</summary>
+        <div class="faq-body">Consultația generală pornește de la 190 lei. Prețul final depinde de specie, greutate, complexitatea cazului și de investigațiile necesare. Toate <a href="#preturi">prețurile orientative pe servicii</a> sunt afișate pe pagină — apasă pe „Vezi prețuri" pe fiecare cartonaș. Confirmarea finală o face medicul, înainte de începerea procedurii.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Aveți abonamente sau planuri de sănătate?</summary>
+        <div class="faq-body">Da. <a href="abonamente.html">VET STUFF Care</a> include trei planuri (Silver, Gold, Platinum) cu vaccinări, deparazitări, consultații și reduceri la celelalte servicii — în rate egale, fără dobândă. Util pentru proprietarii care vor predictibilitate financiară și prevenție riguroasă.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Ce înseamnă „prin clinici partenere" la unele servicii?</summary>
+        <div class="faq-body">Pentru proceduri foarte specializate (radiografie, endoscopie, CT, RMN), VET STUFF colaborează cu clinici și laboratoare partenere din Bacău și București. Programarea o facem noi, iar continuitatea medicală este asigurată de medicul tău de la VET STUFF.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Tratați și animale exotice — iepuri, rozătoare, păsări?</summary>
+        <div class="faq-body">Da, oferim consultații și vaccinări pentru iepuri, rozătoare și păsări de companie. Pentru reptile și amfibieni sau cazuri foarte specifice, te orientăm către colegi specializați în NAC (animale neconvenționale).</div>
+      </details>
+    </div>
+    <div style="text-align:center; margin-top:30px;">
+      <a href="contact.html" style="display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border:1.5px solid var(--navy);border-radius:7px;color:var(--navy);font-size:.88rem;font-weight:700;">Alte întrebări? Scrie-ne</a>
     </div>
   </div>
 </section>
@@ -933,7 +1039,7 @@
 <footer id="footer">
   <div style="border-bottom:1px solid var(--border); padding:22px 0;">
     <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <img src="logo.PNG" alt="VET STUFF" style="height:40px; width:auto;" />
+      <img src="logo.PNG" alt="VET STUFF — Clinică veterinară" style="height:40px; width:auto;" />
       <div class="flex flex-wrap gap-3">
         <a href="programare.html" class="footer-cta-btn">
           <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
@@ -950,7 +1056,7 @@
     <div class="max-w-6xl mx-auto px-4">
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
         <div>
-          <img src="logo.PNG" alt="VET STUFF" style="height:36px; width:auto; margin-bottom:14px;" />
+          <img src="logo.PNG" alt="VET STUFF — Clinică veterinară" style="height:36px; width:auto; margin-bottom:14px;" />
           <p style="font-size:0.85rem; color:#555; line-height:1.75;">Str. Mioriței nr. 10<br/>Bacău, România</p>
           <a href="mailto:vet.stuff@yahoo.com" class="footer-link" style="display:block; margin-top:10px;">vet.stuff@yahoo.com</a>
           <a href="tel:+407XXXXXXXX" class="footer-link" style="display:block; margin-top:4px;">+40 7XX XXX XXX</a>
