@@ -38,8 +38,23 @@
       "@type": "PostalAddress",
       "streetAddress": "Str. Mioriței nr. 10",
       "addressLocality": "Bacău",
+      "addressRegion": "Bacău",
+      "postalCode": "600065",
       "addressCountry": "RO"
     },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 46.5670,
+      "longitude": 26.9146
+    },
+    "areaServed": [
+      {"@type": "City", "name": "Bacău"},
+      {"@type": "AdministrativeArea", "name": "Județul Bacău"}
+    ],
+    "openingHoursSpecification": [
+      {"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"19:00"},
+      {"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"10:00","closes":"14:00"}
+    ],
     "medicalSpecialty": [
       "Chirurgie veterinară",
       "Cardiologie veterinară",
@@ -62,6 +77,17 @@
         {"@type":"Offer","itemOffered":{"@type":"Service","name":"Oncologie veterinară","description":"Citologie, histopatologie, protocoale personalizate de chimioterapie și paliație pentru animale cu afecțiuni oncologice."}}
       ]
     }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"name":"Acasă","item":"https://vet-stuff.ro/"},
+      {"@type":"ListItem","position":2,"name":"Servicii","item":"https://vet-stuff.ro/servicii.html"}
+    ]
   }
   </script>
 
@@ -532,11 +558,12 @@
       <div class="service-detail reveal reveal-d2" style="--accent:#4a3a7a; --icon-bg:#EDE8FF;">
         <div class="icon-wrap">🔭</div>
         <h2>Imagistică</h2>
-        <p>VET STUFF dispune de ecograf propriu pentru investigații rapide la clinică. Pentru investigații avansate — radiografie, CT, RMN — avem acces prin rețeaua noastră de clinici partenere, asigurând continuitate medicală completă.</p>
+        <p>VET STUFF dispune de ecograf propriu pentru investigații rapide la clinică. Pentru investigații avansate — radiografie, endoscopie, CT, RMN — avem acces prin rețeaua noastră de clinici partenere, asigurând continuitate medicală completă.</p>
         <ul>
           <li>Ecografie abdominală și cardiacă — disponibilă la clinică</li>
           <li>Dermatoscopie și otoscopie avansată</li>
           <li>Radiografie disponibilă prin clinici partenere</li>
+          <li>Endoscopie diagnostică prin clinici partenere</li>
           <li>CT și RMN — accesibile prin rețeaua națională</li>
           <li>Interpretare rezultate de către medicii VET STUFF</li>
         </ul>
@@ -768,6 +795,23 @@
         <a href="programare.html" class="service-cta">Programează profil geriatric →</a>
       </div>
 
+      <div class="service-detail reveal" style="--accent:#2a5a7a; --icon-bg:#E6F0F8;">
+        <div class="icon-wrap">🏥</div>
+        <h2>Internare & monitorizare</h2>
+        <p>Pentru pacienții care au nevoie de observație post-operatorie, perfuzii intravenoase sau monitorizare apropiată, VET STUFF oferă internare de zi într-un spațiu liniștit, controlat de echipa medicală.</p>
+        <ul>
+          <li>Internare de zi pentru recuperare post-anestezie</li>
+          <li>Fluidoterapie intravenoasă și administrare medicație</li>
+          <li>Monitorizarea parametrilor vitali</li>
+          <li>Servicii medicale punctuale: injecții, pansamente, recoltări</li>
+          <li>Comunicare directă cu proprietarul pe parcursul internării</li>
+        </ul>
+        <div class="service-actions">
+          <a href="contact.html" class="service-cta">Cere detalii →</a>
+          <button class="price-btn" data-prices="internare">Vezi prețuri</button>
+        </div>
+      </div>
+
       <div class="service-detail reveal reveal-d2" style="--accent:var(--red); --icon-bg:#FEE2E2;">
         <div class="icon-wrap">🚨</div>
         <h2>Urgențe</h2>
@@ -780,6 +824,20 @@
           <li>Sfaturi de prim ajutor până la ajungerea la clinică</li>
         </ul>
         <a href="https://www.facebook.com/vetstuff" target="_blank" rel="noopener" class="service-cta" style="color:var(--red);">Scrie pe Messenger →</a>
+      </div>
+
+      <div class="service-detail reveal reveal-d3" style="--accent:#5a5a6a; --icon-bg:#F0F0F4;">
+        <div class="icon-wrap">🕊️</div>
+        <h2>Despărțire blândă</h2>
+        <p>Când nu mai e nimic de făcut medical, datoria noastră devine alta: să facem despărțirea cât mai puțin dureroasă, cu demnitate, fără frică și fără durere fizică. Discutăm deschis, cu empatie, în ritmul tău.</p>
+        <ul>
+          <li>Consiliere onestă despre calitatea vieții pacientului</li>
+          <li>Procedură realizată cu sedare profundă, fără suferință</li>
+          <li>Spațiu privat, timp pentru rămas-bun</li>
+          <li>Opțiuni pentru îngrijirea respectuoasă a rămășițelor</li>
+          <li>Discuția se face întotdeauna față în față sau telefonic — nu online</li>
+        </ul>
+        <a href="contact.html" class="service-cta" style="color:#5a5a6a;">Vorbește cu un medic →</a>
       </div>
 
     </div>
@@ -833,6 +891,36 @@
         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
         Programează o consultație acum
       </a>
+    </div>
+  </div>
+</section>
+
+<!-- LOCAȚIE + INDEX SERVICII -->
+<section style="padding:64px 16px; background:#fff; border-top:1px solid var(--border);">
+  <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-start">
+    <div>
+      <span class="section-subtitle">Aria deservită</span>
+      <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:1.65rem;font-weight:800;color:var(--navy);margin:6px 0 14px;line-height:1.2;">Aproape de tine, în Bacău</h2>
+      <p style="font-size:0.95rem;color:#555;line-height:1.75;">Cabinetul nostru se află pe Str. Mioriței nr. 10 și deservește proprietarii de animale din municipiul Bacău și din localitățile din județ. Pentru programări, urgențe sau detalii despre un serviciu, scrie-ne sau sună — răspundem rapid.</p>
+      <div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:10px;">
+        <a href="contact.html" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border:1.5px solid var(--navy);border-radius:7px;color:var(--navy);font-size:.86rem;font-weight:700;">Vezi harta și contact</a>
+        <a href="abonamente.html" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border:1.5px solid var(--border);border-radius:7px;color:#444;font-size:.86rem;font-weight:600;">Planuri de sănătate</a>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:0.78rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--red);margin-bottom:14px;">Sări direct la un serviciu</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px 18px;">
+        <a href="#diagnostic" class="footer-link" style="font-size:.9rem;">🩺 Diagnostic & investigații</a>
+        <a href="#chirurgie" class="footer-link" style="font-size:.9rem;">⚕️ Chirurgie generală</a>
+        <a href="#ortopedie" class="footer-link" style="font-size:.9rem;">🦴 Ortopedie</a>
+        <a href="#cardiologie" class="footer-link" style="font-size:.9rem;">❤️ Cardiologie</a>
+        <a href="#oncologie" class="footer-link" style="font-size:.9rem;">🎗️ Oncologie</a>
+        <a href="#stomatologie" class="footer-link" style="font-size:.9rem;">🦷 Stomatologie</a>
+        <a href="#dermatologie" class="footer-link" style="font-size:.9rem;">🩹 Dermatologie</a>
+        <a href="#preventie" class="footer-link" style="font-size:.9rem;">🛡️ Prevenție & vaccinare</a>
+        <a href="#altele" class="footer-link" style="font-size:.9rem;">🐾 Internare, Geriatrie, Urgențe</a>
+        <a href="#preturi" class="footer-link" style="font-size:.9rem;">💶 Prețuri orientative</a>
+      </div>
     </div>
   </div>
 </section>
