@@ -279,6 +279,30 @@
       overflow: hidden;
     }
     .service-detail:hover { box-shadow: 0 8px 32px rgba(27,58,107,0.1); transform: translateY(-2px); }
+    /* Spotlight — atrage atenția când userul ajunge la card din meniul Servicii */
+    @keyframes service-spotlight-pulse {
+      0%, 100% {
+        box-shadow: 0 14px 36px rgba(212,43,43,0.22), 0 0 0 0 rgba(212,43,43,0.45);
+        transform: translateY(-6px);
+      }
+      50% {
+        box-shadow: 0 18px 44px rgba(212,43,43,0.32), 0 0 0 14px rgba(212,43,43,0);
+        transform: translateY(-10px);
+      }
+    }
+    .service-detail.spotlight {
+      animation: service-spotlight-pulse 1.8s ease-in-out infinite;
+      border-color: var(--red);
+      z-index: 5;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .service-detail.spotlight {
+        animation: none;
+        box-shadow: 0 12px 32px rgba(212,43,43,0.25);
+        border-color: var(--red);
+        transform: translateY(-3px);
+      }
+    }
     .service-detail::before {
       content: '';
       position: absolute; top: 0; left: 0; right: 0; height: 4px;
@@ -460,27 +484,27 @@
         <a href="servicii.html" class="nav-link active" aria-haspopup="true">Servicii</a>
         <div class="nav-dropdown-panel" role="menu" aria-label="Toate serviciile">
           <span class="nav-dd-head">Toate serviciile</span>
-          <a href="servicii.html#diagnostic">🔬 Analize laborator</a>
-          <a href="servicii.html#chirurgie">💉 Anestezie & sedare</a>
-          <a href="servicii.html#cardiologie">❤️ Cardiologie</a>
-          <a href="servicii.html#chirurgie">⚕️ Chirurgie generală</a>
-          <a href="servicii.html#diagnostic">🩺 Consultații</a>
+          <a href="servicii.html#srv-analize">🔬 Analize laborator</a>
+          <a href="servicii.html#srv-chirurgie">💉 Anestezie & sedare</a>
+          <a href="servicii.html#srv-cardiologie">❤️ Cardiologie</a>
+          <a href="servicii.html#srv-chirurgie">⚕️ Chirurgie generală</a>
+          <a href="servicii.html#srv-consultatii">🩺 Consultații</a>
           <a href="servicii.html#dermatologie">🩹 Dermatologie</a>
-          <a href="servicii.html#preventie">📄 Documentație & pașaport</a>
-          <a href="servicii.html#diagnostic">🔭 Endoscopie</a>
-          <a href="servicii.html#altele">🕊️ Eutanasiere</a>
-          <a href="servicii.html#altele">🏃 Fizioterapie</a>
+          <a href="servicii.html#srv-despartire">🕊️ Despărțire blândă</a>
+          <a href="servicii.html#srv-preventie">📄 Documentație & pașaport</a>
+          <a href="servicii.html#srv-imagistica">🔭 Endoscopie</a>
+          <a href="servicii.html#srv-fizioterapie">🏃 Fizioterapie</a>
           <a href="servicii.html#geriatrie">🐾 Geriatrie</a>
-          <a href="servicii.html#diagnostic">📡 Imagistică</a>
-          <a href="servicii.html#altele">🏥 Internare</a>
+          <a href="servicii.html#srv-imagistica">📡 Imagistică</a>
+          <a href="servicii.html#srv-internare">🏥 Internare</a>
           <a href="servicii.html#medicina-interna">🫀 Medicină internă</a>
-          <a href="servicii.html#altele">👁️ Oftalmologie</a>
+          <a href="servicii.html#srv-oftalmologie">👁️ Oftalmologie</a>
           <a href="servicii.html#oncologie">🎗️ Oncologie</a>
           <a href="servicii.html#ortopedie">🦴 Ortopedie</a>
-          <a href="servicii.html#preventie">🛡️ Prevenție & vaccinare</a>
-          <a href="servicii.html#altele">💊 Servicii medicale</a>
-          <a href="servicii.html#stomatologie">🦷 Stomatologie</a>
-          <a href="servicii.html#altele">🚨 Urgențe</a>
+          <a href="servicii.html#srv-preventie">🛡️ Prevenție & vaccinare</a>
+          <a href="servicii.html#srv-internare">💊 Servicii medicale</a>
+          <a href="servicii.html#srv-stomatologie">🦷 Stomatologie</a>
+          <a href="servicii.html#srv-urgente">🚨 Urgențe</a>
           <a href="servicii.html" class="nav-dd-all">Vezi pagina completă →</a>
         </div>
       </div>
@@ -536,29 +560,29 @@
   </button>
   <a href="index.html#despre"     class="mob-link" onclick="closeMenu()">Despre noi</a>
   <details>
-    <summary class="mob-link mob-sub-toggle" style="color:var(--red); list-style:none;">Servicii</summary>
+    <summary class="mob-link mob-sub-toggle" style="list-style:none;">Servicii</summary>
     <div class="mob-sublist">
-      <a href="servicii.html#diagnostic" onclick="closeMenu()">🔬 Analize laborator</a>
-      <a href="servicii.html#chirurgie" onclick="closeMenu()">💉 Anestezie & sedare</a>
-      <a href="servicii.html#cardiologie" onclick="closeMenu()">❤️ Cardiologie</a>
-      <a href="servicii.html#chirurgie" onclick="closeMenu()">⚕️ Chirurgie</a>
-      <a href="servicii.html#diagnostic" onclick="closeMenu()">🩺 Consultații</a>
+      <a href="servicii.html#srv-analize" onclick="closeMenu()">🔬 Analize laborator</a>
+      <a href="servicii.html#srv-chirurgie" onclick="closeMenu()">💉 Anestezie & sedare</a>
+      <a href="servicii.html#srv-cardiologie" onclick="closeMenu()">❤️ Cardiologie</a>
+      <a href="servicii.html#srv-chirurgie" onclick="closeMenu()">⚕️ Chirurgie</a>
+      <a href="servicii.html#srv-consultatii" onclick="closeMenu()">🩺 Consultații</a>
       <a href="servicii.html#dermatologie" onclick="closeMenu()">🩹 Dermatologie</a>
-      <a href="servicii.html#preventie" onclick="closeMenu()">📄 Documentație</a>
-      <a href="servicii.html#diagnostic" onclick="closeMenu()">🔭 Endoscopie</a>
-      <a href="servicii.html#altele" onclick="closeMenu()">🕊️ Eutanasiere</a>
-      <a href="servicii.html#altele" onclick="closeMenu()">🏃 Fizioterapie</a>
+      <a href="servicii.html#srv-despartire" onclick="closeMenu()">🕊️ Despărțire blândă</a>
+      <a href="servicii.html#srv-preventie" onclick="closeMenu()">📄 Documentație</a>
+      <a href="servicii.html#srv-imagistica" onclick="closeMenu()">🔭 Endoscopie</a>
+      <a href="servicii.html#srv-fizioterapie" onclick="closeMenu()">🏃 Fizioterapie</a>
       <a href="servicii.html#geriatrie" onclick="closeMenu()">🐾 Geriatrie</a>
-      <a href="servicii.html#diagnostic" onclick="closeMenu()">📡 Imagistică</a>
-      <a href="servicii.html#altele" onclick="closeMenu()">🏥 Internare</a>
+      <a href="servicii.html#srv-imagistica" onclick="closeMenu()">📡 Imagistică</a>
+      <a href="servicii.html#srv-internare" onclick="closeMenu()">🏥 Internare</a>
       <a href="servicii.html#medicina-interna" onclick="closeMenu()">🫀 Medicină internă</a>
-      <a href="servicii.html#altele" onclick="closeMenu()">👁️ Oftalmologie</a>
+      <a href="servicii.html#srv-oftalmologie" onclick="closeMenu()">👁️ Oftalmologie</a>
       <a href="servicii.html#oncologie" onclick="closeMenu()">🎗️ Oncologie</a>
       <a href="servicii.html#ortopedie" onclick="closeMenu()">🦴 Ortopedie</a>
-      <a href="servicii.html#preventie" onclick="closeMenu()">🛡️ Prevenție & vaccinare</a>
-      <a href="servicii.html#altele" onclick="closeMenu()">💊 Servicii medicale</a>
-      <a href="servicii.html#stomatologie" onclick="closeMenu()">🦷 Stomatologie</a>
-      <a href="servicii.html#altele" onclick="closeMenu()">🚨 Urgențe</a>
+      <a href="servicii.html#srv-preventie" onclick="closeMenu()">🛡️ Prevenție & vaccinare</a>
+      <a href="servicii.html#srv-internare" onclick="closeMenu()">💊 Servicii medicale</a>
+      <a href="servicii.html#srv-stomatologie" onclick="closeMenu()">🦷 Stomatologie</a>
+      <a href="servicii.html#srv-urgente" onclick="closeMenu()">🚨 Urgențe</a>
       <a href="servicii.html" onclick="closeMenu()" style="font-weight:800; color:var(--navy); margin-top:6px;">Vezi pagina completă →</a>
     </div>
   </details>
@@ -725,7 +749,7 @@
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
 
       <!-- Consultații -->
-      <div class="service-detail reveal" style="--accent:var(--navy); --icon-bg:#EEF2FF;">
+      <div class="service-detail reveal" style="--accent:var(--navy); --icon-bg:#EEF2FF;" id="srv-consultatii">
         <div class="icon-wrap">🩺</div>
         <h2>Consultații generale</h2>
         <p>Examinarea completă a pacientului este punctul de plecare al oricărei relații medicale. Medicii noștri evaluează starea generală, identifică semnele clinice și stabilesc un plan de tratament personalizat — fără grabă și fără compromisuri.</p>
@@ -743,7 +767,7 @@
       </div>
 
       <!-- Analize -->
-      <div class="service-detail reveal reveal-d1" style="--accent:#2a7a6e; --icon-bg:#E6F4F2;">
+      <div class="service-detail reveal reveal-d1" style="--accent:#2a7a6e; --icon-bg:#E6F4F2;" id="srv-analize">
         <div class="icon-wrap">🔬</div>
         <h2>Analize de laborator</h2>
         <p>Laboratorul propriu VET STUFF permite obținerea rezultatelor rapid, fără așteptări de zile întregi. Analizele de sânge, urină și alte investigații de laborator completează tabloul clinic și ghidează tratamentul precis.</p>
@@ -761,7 +785,7 @@
       </div>
 
       <!-- Imagistică -->
-      <div class="service-detail reveal reveal-d2" style="--accent:#4a3a7a; --icon-bg:#EDE8FF;">
+      <div class="service-detail reveal reveal-d2" style="--accent:#4a3a7a; --icon-bg:#EDE8FF;" id="srv-imagistica">
         <div class="icon-wrap">🔭</div>
         <h2>Imagistică</h2>
         <p>VET STUFF dispune de ecograf propriu pentru investigații rapide la clinică. Pentru investigații avansate — radiografie, endoscopie, CT, RMN — avem acces prin rețeaua noastră de clinici partenere, asigurând continuitate medicală completă.</p>
@@ -793,7 +817,7 @@
       <p style="font-size:0.95rem; color:#555; line-height:1.75; max-width:580px; margin-top:12px;">Sala de operații VET STUFF este echipată modern, cu protocoale stricte de anestezie și monitorizare. Chirurgii noștri au experiență în intervenții de complexitate variată.</p>
     </div>
     <div class="grid md:grid-cols-2 gap-6">
-      <div class="service-detail reveal" style="--accent:var(--red); --icon-bg:#FEE2E2;">
+      <div class="service-detail reveal" style="--accent:var(--red); --icon-bg:#FEE2E2;" id="srv-chirurgie">
         <div class="icon-wrap">⚕️</div>
         <h2>Chirurgie generală</h2>
         <p>De la sterilizări și intervenții de rutină la operații abdominale complexe, echipa chirurgicală VET STUFF abordează fiecare caz cu protocoale clare de pregătire, anestezie și recuperare postoperatorie.</p>
@@ -811,8 +835,8 @@
           <button class="price-btn" data-prices="anestezie">Prețuri anestezie</button>
         </div>
       </div>
-      <div class="service-detail reveal reveal-d1" style="--accent:#6b4a2a; --icon-bg:#FDF3E8;">
-        <div class="icon-wrap" id="ortopedie">🦴</div>
+      <div class="service-detail reveal reveal-d1" style="--accent:#6b4a2a; --icon-bg:#FDF3E8;" id="ortopedie">
+        <div class="icon-wrap">🦴</div>
         <h2>Ortopedie</h2>
         <p>Afecțiunile osoase și articulare sunt printre cele mai frecvente cauze de durere cronică la câini și pisici. VET STUFF oferă diagnostic precis și soluții terapeutice pentru o gamă largă de patologii ortopedice.</p>
         <ul>
@@ -840,7 +864,7 @@
       <h2 class="section-title" style="margin-top:4px;">Cardiologie & Oncologie</h2>
     </div>
     <div class="grid md:grid-cols-2 gap-6">
-      <div class="service-detail reveal" style="--accent:#8a2a2a; --icon-bg:#FEE2E2;">
+      <div class="service-detail reveal" style="--accent:#8a2a2a; --icon-bg:#FEE2E2;" id="srv-cardiologie">
         <div class="icon-wrap">❤️</div>
         <h2>Cardiologie</h2>
         <p>Afecțiunile cardiace la câini și pisici sunt frecvent subdiagnosticate. VET STUFF oferă investigații cardiologice complete, cu echipamente moderne de ecocardiografie și ECG, pentru o monitorizare riguroasă a pacienților cu risc.</p>
@@ -888,7 +912,7 @@
       <h2 class="section-title" style="margin-top:4px;">Stomatologie & Dermatologie</h2>
     </div>
     <div class="grid md:grid-cols-2 gap-6">
-      <div class="service-detail reveal" style="--accent:#2d5a27; --icon-bg:#E6F4E6;">
+      <div class="service-detail reveal" style="--accent:#2d5a27; --icon-bg:#E6F4E6;" id="srv-stomatologie">
         <div class="icon-wrap">🦷</div>
         <h2>Stomatologie</h2>
         <p>Sănătatea orală influențează direct calitatea vieții și starea generală a animalului. Problemele dentare netratate pot evolua în infecții grave. VET STUFF oferă soluții complete de stomatologie veterinară.</p>
@@ -935,7 +959,7 @@
     </div>
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="altele">
 
-      <div class="service-detail reveal" style="--accent:#3d6b3a; --icon-bg:#E6F4E6;">
+      <div class="service-detail reveal" style="--accent:#3d6b3a; --icon-bg:#E6F4E6;" id="srv-preventie">
         <div class="icon-wrap">🛡️</div>
         <h2>Prevenție & profilaxie</h2>
         <p>Cei mai sănătoși pacienți sunt cei care nu ajung la urgență. VET STUFF pune accent pe prevenție: vaccinări, deparazitări, planuri de sănătate și monitorizare periodică.</p>
@@ -974,7 +998,7 @@
         </div>
       </div>
 
-      <div class="service-detail reveal reveal-d2" style="--accent:#2a6b7a; --icon-bg:#E6F2F5;">
+      <div class="service-detail reveal reveal-d2" style="--accent:#2a6b7a; --icon-bg:#E6F2F5;" id="srv-oftalmologie">
         <div class="icon-wrap">👁️</div>
         <h2>Oftalmologie</h2>
         <p>Ochii sunt printre cele mai delicate organe ale animalului de companie. Afecțiunile oculare necesită diagnostic rapid pentru a preveni pierderea ireversibilă a vederii.</p>
@@ -991,7 +1015,7 @@
         </div>
       </div>
 
-      <div class="service-detail reveal" style="--accent:#3a5a2a; --icon-bg:#E8F5E6;">
+      <div class="service-detail reveal" style="--accent:#3a5a2a; --icon-bg:#E8F5E6;" id="srv-fizioterapie">
         <div class="icon-wrap">🏃</div>
         <h2>Fizioterapie & kinetoterapie</h2>
         <p>Recuperarea postoperatorie și managementul durerii cronice sunt esențiale pentru calitatea vieții. VET STUFF integrează fizioterapia în planul de tratament al pacienților cu mobilitate afectată.</p>
@@ -1030,7 +1054,7 @@
         </div>
       </div>
 
-      <div class="service-detail reveal" style="--accent:#2a5a7a; --icon-bg:#E6F0F8;">
+      <div class="service-detail reveal" style="--accent:#2a5a7a; --icon-bg:#E6F0F8;" id="srv-internare">
         <div class="icon-wrap">🏥</div>
         <h2>Internare & monitorizare</h2>
         <p>Pentru pacienții care au nevoie de observație post-operatorie, perfuzii intravenoase sau monitorizare apropiată, VET STUFF oferă internare de zi într-un spațiu liniștit, controlat de echipa medicală.</p>
@@ -1048,7 +1072,7 @@
         </div>
       </div>
 
-      <div class="service-detail reveal reveal-d2" style="--accent:var(--red); --icon-bg:#FEE2E2;">
+      <div class="service-detail reveal reveal-d2" style="--accent:var(--red); --icon-bg:#FEE2E2;" id="srv-urgente">
         <div class="icon-wrap">🚨</div>
         <h2>Urgențe</h2>
         <p>Urgențele nu au program. Dacă animalul tău are nevoie de ajutor imediat, STUFFIE — agentul nostru AI pe Messenger — evaluează situația non-stop și te conectează cu medicul disponibil.</p>
@@ -1062,7 +1086,7 @@
         <a href="https://www.facebook.com/vetstuff" target="_blank" rel="noopener" class="service-cta" style="color:var(--red);">Scrie pe Messenger →</a>
       </div>
 
-      <div class="service-detail reveal reveal-d3" style="--accent:#5a5a6a; --icon-bg:#F0F0F4;">
+      <div class="service-detail reveal reveal-d3" style="--accent:#5a5a6a; --icon-bg:#F0F0F4;" id="srv-despartire">
         <div class="icon-wrap">🕊️</div>
         <h2>Despărțire blândă</h2>
         <p>Când nu mai e nimic de făcut medical, datoria noastră devine alta: să facem despărțirea cât mai puțin dureroasă, cu demnitate, fără frică și fără durere fizică. Discutăm deschis, cu empatie, în ritmul tău.</p>
@@ -1805,6 +1829,44 @@ const PRICES = {
   closeBtn.addEventListener('click', closeModal);
   modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+})();
+</script>
+
+<script>
+/* Spotlight pe cardul țintă când ajungi din meniul Servicii cu scroll */
+(function() {
+  function spotlightFromHash() {
+    const hash = location.hash;
+    if (!hash || hash.length < 2) return;
+    const id = decodeURIComponent(hash.slice(1));
+    const target = document.getElementById(id);
+    if (!target || !target.classList || !target.classList.contains('service-detail')) return;
+    // Curăță orice spotlight anterior
+    document.querySelectorAll('.service-detail.spotlight').forEach(el => el.classList.remove('spotlight'));
+    // Scroll lin la card, apoi aplică efectul
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Așteptăm puțin ca scroll-ul să se așeze înainte de a porni animația
+    setTimeout(() => {
+      target.classList.add('spotlight');
+      const clear = () => {
+        target.classList.remove('spotlight');
+        target.removeEventListener('mouseenter', clear);
+        target.removeEventListener('click', clear);
+        target.removeEventListener('touchstart', clear);
+        target.removeEventListener('focusin', clear);
+      };
+      target.addEventListener('mouseenter', clear, { once: true });
+      target.addEventListener('click', clear, { once: true });
+      target.addEventListener('touchstart', clear, { once: true, passive: true });
+      target.addEventListener('focusin', clear, { once: true });
+    }, 350);
+  }
+  window.addEventListener('hashchange', spotlightFromHash);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', spotlightFromHash);
+  } else {
+    spotlightFromHash();
+  }
 })();
 </script>
 </body>
