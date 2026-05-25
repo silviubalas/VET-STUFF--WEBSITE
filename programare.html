@@ -11,7 +11,7 @@
   <meta property="og:description" content="Trimite rapid o cerere de programare pentru consultații, vaccinări, chirurgie, imagistică sau prevenție." />
   <meta property="og:url" content="https://vet-stuff.ro/programare.html" />
   <meta property="og:image" content="https://vet-stuff.ro/logo.PNG" />
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/css/tailwind.generated.css">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
@@ -22,7 +22,7 @@
     :root { --red:#D42B2B; --navy:#1B3A6B; --gray:#7A8BA0; --light:#F8F7F4; --border:#e5e7eb; }
     * { box-sizing:border-box; margin:0; padding:0; }
     body { font-family:'DM Sans',sans-serif; color:#1a1a1a; background:var(--light); overflow-x:hidden; }
-    h1,h2,h3 { font-family:'Playfair Display',Georgia,serif; letter-spacing:-0.02em; }
+    h1,h2,h3 { font-family:'Playfair Display',Georgia,serif; letter-spacing:0; }
     a { text-decoration:none; }
     #topbar { background:var(--navy); color:rgba(255,255,255,.88); font-size:.78rem; padding:7px 0; }
     #navbar { background:#fff; border-bottom:1px solid var(--border); }
@@ -117,7 +117,7 @@
   </script>
 </head>
 <body>
-  <div id="topbar"><div class="max-w-6xl mx-auto px-4 flex justify-between gap-4"><span>CALL CENTER +40 7XX XXX XXX</span><span>Confirmare în maxim 2 ore în timpul programului</span></div></div>
+  <div id="topbar"><div class="max-w-6xl mx-auto px-4 flex justify-between gap-4"><span>PROGRAMĂRI ONLINE</span><span>Confirmare în maxim 2 ore în timpul programului</span></div></div>
   <nav id="navbar">
     <div class="max-w-6xl mx-auto px-4 flex items-center justify-between gap-6" style="height:96px;">
       <a href="index.html"><img src="logo.PNG" alt="VET STUFF" style="height:76px;width:auto;" /></a>
@@ -161,7 +161,7 @@
         <a class="nav-link active" href="programare.html">Programare</a>
         <a class="nav-link" href="contact.html">Contact</a>
       </div>
-      <a href="tel:+407XXXXXXXX" class="btn-red">Sună acum</a>
+      <a href="contact.html#contact" class="btn-red">Sună acum</a>
     </div>
   </nav>
 
@@ -170,7 +170,7 @@
       <div>
         <div class="eyebrow">Programare online</div>
         <h1>Spune-ne ce se întâmplă, iar noi revenim cu un interval potrivit.</h1>
-        <p class="lead">Formularul adună din prima informațiile importante: date de contact, animalul, serviciul dorit și o scurtă descriere. Pentru urgențe, scrie direct pe Messenger sau sună în timpul programului.</p>
+        <p class="lead">Formularul adună din prima informațiile importante: date de contact, animalul, serviciul dorit și o scurtă descriere. Pentru urgențe, scrie direct pe Messenger sau folosește formularul de contact.</p>
         <div class="flex flex-wrap gap-3 mt-8">
           <span class="service-chip">Consultații</span>
           <span class="service-chip">Vaccinări</span>
@@ -181,7 +181,7 @@
       <aside class="steps">
         <div class="step"><div class="num">1</div><div><strong style="color:var(--navy);">Completezi formularul</strong><p style="color:#666;font-size:.9rem;line-height:1.55;">Ne dai contextul medical pe scurt.</p></div></div>
         <div class="step"><div class="num">2</div><div><strong style="color:var(--navy);">Verificăm disponibilitatea</strong><p style="color:#666;font-size:.9rem;line-height:1.55;">Alegem intervalul potrivit pentru serviciu.</p></div></div>
-        <div class="step"><div class="num">3</div><div><strong style="color:var(--navy);">Confirmăm programarea</strong><p style="color:#666;font-size:.9rem;line-height:1.55;">Primești confirmarea telefonic sau prin mesaj.</p></div></div>
+        <div class="step"><div class="num">3</div><div><strong style="color:var(--navy);">Confirmăm programarea</strong><p style="color:#666;font-size:.9rem;line-height:1.55;">Primești confirmarea prin email, SMS sau mesaj.</p></div></div>
       </aside>
     </div>
   </section>
@@ -205,6 +205,7 @@
       <section class="card">
         <h2 style="font-size:clamp(1.7rem,3vw,2.45rem);color:var(--navy);margin-bottom:18px;">Completează formularul</h2>
         <form id="booking-form" novalidate>
+          <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;" />
           <div class="grid sm:grid-cols-2 gap-4 mb-4">
             <div><label class="f-label" for="owner-name">Numele tău *</label><input id="owner-name" class="f-input" name="Nume proprietar" autocomplete="name" placeholder="Ion Popescu" /><div class="f-error"></div></div>
             <div><label class="f-label" for="phone">Telefon *</label><input id="phone" class="f-input" name="Telefon" type="tel" autocomplete="tel" placeholder="07XX XXX XXX" /><div class="f-error"></div></div>
@@ -247,7 +248,7 @@
           <div class="footer-heading">Contact</div>
           <p style="font-size:.85rem;color:rgba(255,255,255,.65);line-height:1.75;">Str. Mioriței nr. 10<br/>Bacău, România</p>
           <a href="mailto:vet.stuff@yahoo.com" class="footer-link" style="display:block;margin-top:8px;font-size:.85rem;">vet.stuff@yahoo.com</a>
-          <a href="tel:+407XXXXXXXX" class="footer-link" style="display:block;margin-top:4px;font-size:.85rem;">+40 7XX XXX XXX</a>
+          <a href="contact.html#contact" class="footer-link" style="display:block;margin-top:4px;font-size:.85rem;">Formular & Messenger</a>
         </div>
         <div>
           <div class="footer-heading">Legal</div>
@@ -348,24 +349,23 @@
         'Data preferată': document.getElementById('preferred-date').value,
         'Descriere problemă': document.getElementById('message').value.trim()
       };
-      const airtableRequest = fetch('/api/airtable', {
+      fetch('/api/airtable', {
         method:'POST',
         headers:{ 'Content-Type':'application/json' },
-        body: JSON.stringify({ table:'Programari', fields:{ 'Name':payload['Nume proprietar'], 'Telefon':payload['Telefon'], 'Email':payload['Email'], 'Nume animal':payload['Nume animal'], 'Tip animal':payload['Tip animal'], 'Serviciu':payload['Serviciu'], 'Data preferată':payload['Data preferată'], 'Descriere':payload['Descriere problemă'] } })
-      });
-      const fd = new FormData();
-      Object.entries(payload).forEach(([key,value]) => fd.append(key,value));
-      const formspreeRequest = fetch('https://formspree.io/f/mzdkbdzb', { method:'POST', body:fd, headers:{ 'Accept':'application/json' } });
-      Promise.allSettled([airtableRequest, formspreeRequest]).then(results => {
-        const anyOk = results.some(r => r.status === 'fulfilled' && r.value && r.value.ok);
-        if (anyOk) {
+        body: JSON.stringify({ table:'Programari', fields:{ 'Name':payload['Nume proprietar'], 'Telefon':payload['Telefon'], 'Email':payload['Email'], 'Nume animal':payload['Nume animal'], 'Tip animal':payload['Tip animal'], 'Serviciu':payload['Serviciu'], 'Data preferată':payload['Data preferată'], 'Descriere':payload['Descriere problemă'], 'website': form.elements.website?.value || '' } })
+      }).then(response => {
+        if (response.ok) {
           document.getElementById('form-success').style.display = 'block';
           form.querySelectorAll('input,select,textarea,button').forEach(el => { el.disabled = true; el.style.opacity = '.58'; });
         } else {
           btn.disabled = false;
           btn.textContent = 'Trimite programarea';
-          alert('A apărut o eroare de rețea. Te rugăm să ne contactezi telefonic la +40 7XX XXX XXX.');
+          alert('A apărut o eroare. Te rugăm să ne scrii pe Messenger sau pe email.');
         }
+      }).catch(() => {
+        btn.disabled = false;
+        btn.textContent = 'Trimite programarea';
+        alert('A apărut o eroare de rețea. Te rugăm să ne scrii pe Messenger sau pe email.');
       });
     });
   </script>

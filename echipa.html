@@ -28,18 +28,11 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="favicon-192x192.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/css/tailwind.generated.css">
+  <script>document.documentElement.classList.add('js');</script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
-
-  <script>
-    tailwind.config = {
-      theme: { extend: { colors: { brand: '#D42B2B', navy: '#1B3A6B', muted: '#7A8BA0' } } }
-    }
-  </script>
-
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -143,7 +136,7 @@
       font-size: clamp(2rem, 4vw, 3rem);
       font-weight: 800;
       color: #fff;
-      letter-spacing: -0.02em;
+      letter-spacing:0;
     }
     .page-banner p {
       color: rgba(255,255,255,0.65);
@@ -208,7 +201,7 @@
     .doctor-name {
       font-family: 'Playfair Display', Georgia, serif;
       font-size: 1.4rem; font-weight: 800; color: var(--red);
-      margin-bottom: 6px; letter-spacing: -0.01em;
+      margin-bottom: 6px; letter-spacing:0;
     }
     .doctor-title {
       font-size: 0.88rem; font-weight: 700; color: var(--navy);
@@ -276,7 +269,9 @@
     #scroll-top:hover { background: var(--red); }
 
     /* ── REVEAL ── */
-    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .reveal { opacity: 1; transform: translateY(0); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .js .reveal { opacity: 0; transform: translateY(20px); }
+    .js .reveal.visible,
     .reveal.visible { opacity: 1; transform: translateY(0); }
     .reveal-d1 { transition-delay: 0.07s; }
     .reveal-d2 { transition-delay: 0.14s; }
@@ -295,9 +290,9 @@
 <header id="site-header">
 <div id="topbar">
   <div class="max-w-6xl mx-auto px-4 flex items-center justify-between">
-    <a href="tel:+407XXXXXXXX" class="flex items-center gap-1.5 font-medium">
+    <a href="contact.html#contact" class="flex items-center gap-1.5 font-medium">
       <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
-      CALL CENTER +40 7XX XXX XXX
+      PROGRAMĂRI ONLINE
     </a>
     <a href="index.html#contact" class="flex items-center gap-1.5 font-medium">
       <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
@@ -440,7 +435,7 @@
     <!-- ── SECȚIUNEA 1: Echipa VET STUFF ── -->
     <div class="reveal">
       <div class="section-label">Clinica VET STUFF · Bacău</div>
-      <h2 style="font-size:clamp(1.6rem,3vw,2.2rem); font-weight:800; color:var(--navy); letter-spacing:-0.02em; margin-bottom:8px;">
+      <h2 style="font-size:clamp(1.6rem,3vw,2.2rem); font-weight:800; color:var(--navy); letter-spacing:0; margin-bottom:8px;">
         Medicii noștri
       </h2>
       <p style="color:#555; font-size:0.95rem; line-height:1.7; max-width:600px; margin-bottom:40px;">
@@ -483,7 +478,7 @@
     <!-- ── SECȚIUNEA 2: Medici colaboratori ── -->
     <div class="reveal">
       <div class="section-label">Rețea națională</div>
-      <h2 style="font-size:clamp(1.6rem,3vw,2.2rem); font-weight:800; color:var(--navy); letter-spacing:-0.02em; margin-bottom:8px;">
+      <h2 style="font-size:clamp(1.6rem,3vw,2.2rem); font-weight:800; color:var(--navy); letter-spacing:0; margin-bottom:8px;">
         Medici colaboratori
       </h2>
       <p style="color:#555; font-size:0.95rem; line-height:1.7; max-width:600px; margin-bottom:40px;">
@@ -560,9 +555,9 @@
           <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
           Programează o vizită
         </a>
-        <a href="tel:+407XXXXXXXX" class="footer-cta-btn">
+        <a href="contact.html#contact" class="footer-cta-btn">
           <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
-          +40 7XX XXX XXX
+          Formular & Messenger
         </a>
       </div>
     </div>
@@ -575,7 +570,7 @@
           <img src="logo.PNG" alt="VET STUFF" style="height:36px; width:auto; margin-bottom:14px;" />
           <p style="font-size:0.85rem; color:#555; line-height:1.75;">Str. Mioriței nr. 10<br/>Bacău, România</p>
           <a href="mailto:vet.stuff@yahoo.com" class="footer-link" style="display:block; margin-top:10px;">vet.stuff@yahoo.com</a>
-          <a href="tel:+407XXXXXXXX" class="footer-link" style="display:block; margin-top:4px;">+40 7XX XXX XXX</a>
+          <a href="contact.html#contact" class="footer-link" style="display:block; margin-top:4px;">Formular & Messenger</a>
         </div>
         <div>
           <div class="footer-heading">Navigare</div>

@@ -2,6 +2,7 @@
 // Returneaza intentionat 200 chiar daca telefonul nu exista, ca sa nu expuna date.
 
 import { getSmsLinkConfig, phoneLastNine, sendSmsLink } from './_smslink.js';
+import { enforceOrigin, getClientIp, isHoneypotFilled, rateLimit, verifyTurnstile } from './_security.js';
 
 const AIRTABLE_BASE = 'appGhcW1B4iDA4cUY';
 const TABLE = 'Abonamente';
@@ -9,6 +10,14 @@ const TABLE = 'Abonamente';
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+  if (!enforceOrigin(req, res)) return;
+  if (!rateLimit(req, res, 'resend-code-sms', { max: 3, windowMs: 60 * 60 * 1000 })) return;
+  if (isHoneypotFilled(req.body || {})) return res.status(200).json({ ok: true });
+
+  const captcha = await verifyTurnstile(req.body?.turnstileToken, getClientIp(req));
+  if (!captcha.ok) {
+    return res.status(400).json({ error: captcha.error || 'Captcha failed' });
   }
 
   if (!getSmsLinkConfig().configured) {

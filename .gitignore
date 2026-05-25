@@ -1,5 +1,6 @@
 .DS_Store
 *.DS_Store
+node_modules/
 Captură*
 front-end skill.md
 chatbot-veterinar.html

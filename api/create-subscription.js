@@ -1,4 +1,6 @@
 import { randomInt } from 'node:crypto';
+import { notifySubscriptionLead, sendSubscriptionConfirmationEmail, sendSubscriptionSms } from './_notifications.js';
+import { enforceOrigin, getClientIp, isHoneypotFilled, rateLimit, verifyTurnstile } from './_security.js';
 
 const AIRTABLE_BASE = 'appGhcW1B4iDA4cUY';
 const TABLE_SUBSCRIPTIONS = 'Abonamente';
@@ -9,6 +11,17 @@ const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+  if (!enforceOrigin(req, res)) return;
+  if (!rateLimit(req, res, 'create-subscription', { max: 6, windowMs: 30 * 60 * 1000 })) return;
+
+  if (isHoneypotFilled(req.body || {})) {
+    return res.status(200).json({ ok: true });
+  }
+
+  const captcha = await verifyTurnstile(req.body?.turnstileToken, getClientIp(req));
+  if (!captcha.ok) {
+    return res.status(400).json({ error: captcha.error || 'Captcha failed' });
   }
 
   const token = process.env.AIRTABLE_TOKEN;
@@ -57,6 +70,40 @@ export default async function handler(req, res) {
     }
 
     await createRecord(token, TABLE_USAGE, usageFields);
+
+    const notificationResults = await Promise.allSettled([
+      notifySubscriptionLead({
+        '_subject': 'Abonament — cerere nouă (' + cod + ')',
+        'Cod abonament': cod,
+        'Plan': input.plan,
+        'Nume': input.nume,
+        'Telefon': input.tel,
+        'Email': input.email,
+        'Animal': input.animal,
+        'Rasă': input.rasa,
+        'Mesaj': input.mesaj,
+      }),
+      sendSubscriptionConfirmationEmail({
+        email: input.email,
+        nume: input.nume,
+        plan: input.plan,
+        animal: input.animal,
+        cod,
+      }),
+      sendSubscriptionSms({
+        tel: input.tel,
+        cod,
+        plan: input.plan,
+        animal: input.animal,
+      }),
+    ]);
+
+    notificationResults.forEach((result, index) => {
+      if (result.status === 'fulfilled' && result.value?.ok !== false) return;
+      const label = ['formspree', 'email', 'sms'][index] || 'notification';
+      const error = result.status === 'rejected' ? result.reason : result.value;
+      console.error('[create-subscription] notification failed', label, error);
+    });
 
     return res.status(200).json({ ok: true, cod });
   } catch (err) {

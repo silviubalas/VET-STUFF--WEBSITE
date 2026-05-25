@@ -33,7 +33,6 @@
     "@type": "MedicalClinic",
     "name": "VET STUFF",
     "url": "https://vet-stuff.ro",
-    "telephone": "+407XXXXXXXX",
     "priceRange": "20 - 7000 RON",
     "paymentAccepted": "Cash, Card, Transfer bancar",
     "currenciesAccepted": "RON",
@@ -123,7 +122,7 @@
     "@type": "FAQPage",
     "mainEntity": [
       {"@type":"Question","name":"Cât durează o consultație veterinară la VET STUFF?","acceptedAnswer":{"@type":"Answer","text":"O consultație generală durează între 20 și 40 de minute. Medicul face examinarea completă, discută istoricul medical și stabilește planul de tratament. Pentru cazuri complexe sau investigații suplimentare durata poate crește."}},
-      {"@type":"Question","name":"Cum mă programez la clinica veterinară VET STUFF din Bacău?","acceptedAnswer":{"@type":"Answer","text":"Cel mai simplu prin formularul de programare online de pe vet-stuff.ro/programare.html. Poți suna și la +40 7XX XXX XXX în timpul programului sau ne poți scrie pe Facebook Messenger."}},
+      {"@type":"Question","name":"Cum mă programez la clinica veterinară VET STUFF din Bacău?","acceptedAnswer":{"@type":"Answer","text":"Cel mai simplu prin formularul de programare online de pe vet-stuff.ro/programare.html. Ne poți scrie pe Facebook Messenger sau poți folosi formularul de programare online."}},
       {"@type":"Question","name":"Aveți urgențe veterinare în afara programului?","acceptedAnswer":{"@type":"Answer","text":"În afara programului, agentul AI STUFFIE răspunde non-stop pe Facebook Messenger, evaluează simptomele și conectează cu medicul de gardă. Pentru urgențe critice te orientăm și către unitățile de gardă din Bacău."}},
       {"@type":"Question","name":"Care este programul clinicii?","acceptedAnswer":{"@type":"Answer","text":"Luni-vineri 09:00-19:00 și sâmbătă 10:00-14:00. Duminica și sărbătorile lucrăm la cerere pentru urgențe."}},
       {"@type":"Question","name":"Cât costă o consultație veterinară?","acceptedAnswer":{"@type":"Answer","text":"Consultația generală pornește de la 190 lei. Prețul final depinde de specie, greutate, complexitatea cazului și de investigațiile necesare. Toate prețurile orientative sunt afișate pe pagina de servicii."}},
@@ -133,18 +132,11 @@
     ]
   }
   </script>
-
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/css/tailwind.generated.css">
+  <script>document.documentElement.classList.add('js');</script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
-
-  <script>
-    tailwind.config = {
-      theme: { extend: { colors: { brand: '#D42B2B', navy: '#1B3A6B', muted: '#7A8BA0' } } }
-    }
-  </script>
-
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -258,7 +250,9 @@
     .mob-link:hover { color: var(--red); padding-left: 8px; }
 
     /* Reveal */
-    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .reveal { opacity: 1; transform: translateY(0); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .js .reveal { opacity: 0; transform: translateY(20px); }
+    .js .reveal.visible,
     .reveal.visible { opacity: 1; transform: translateY(0); }
     .reveal-d1 { transition-delay: 0.07s; }
     .reveal-d2 { transition-delay: 0.14s; }
@@ -266,7 +260,7 @@
 
     /* Section title */
     .section-subtitle { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--red); margin-bottom: 8px; display: block; }
-    .section-title { font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; color: var(--navy); letter-spacing: -0.02em; line-height: 1.15; }
+    .section-title { font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; color: var(--navy); letter-spacing:0; line-height: 1.15; }
 
     /* Service detail card */
     .service-detail {
@@ -462,9 +456,9 @@
 
 <div id="topbar">
   <div class="max-w-6xl mx-auto px-4 flex items-center justify-between">
-    <a href="tel:+407XXXXXXXX" class="flex items-center gap-1.5 font-medium">
+    <a href="contact.html#contact" class="flex items-center gap-1.5 font-medium">
       <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
-      CALL CENTER +40 7XX XXX XXX
+      PROGRAMĂRI ONLINE
     </a>
     <a href="contact.html" class="flex items-center gap-1.5 font-medium">
       <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
@@ -617,7 +611,7 @@
       <span style="width:6px;height:6px;border-radius:50%;background:#22c55e;display:inline-block;"></span>
       16 specialități · Bacău
     </div>
-    <h1 style="font-family:'Playfair Display',Georgia,serif; font-size:clamp(2.2rem,4.5vw,3.5rem); font-weight:900; color:#fff; line-height:1.1; letter-spacing:-0.02em; margin-bottom:16px; max-width:700px;">
+    <h1 style="font-family:'Playfair Display',Georgia,serif; font-size:clamp(2.2rem,4.5vw,3.5rem); font-weight:900; color:#fff; line-height:1.1; letter-spacing:0; margin-bottom:16px; max-width:700px;">
       Servicii veterinare complete în Bacău
     </h1>
     <p style="font-size:1rem; color:rgba(255,255,255,0.7); line-height:1.75; max-width:560px; margin-bottom:36px;">
@@ -628,9 +622,9 @@
         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
         Programează o consultație
       </a>
-      <a href="tel:+407XXXXXXXX" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border:1.5px solid rgba(255,255,255,0.3);border-radius:6px;color:#fff;font-size:0.9rem;font-weight:600;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'">
+      <a href="contact.html#contact" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border:1.5px solid rgba(255,255,255,0.3);border-radius:6px;color:#fff;font-size:0.9rem;font-weight:600;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'">
         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
-        +40 7XX XXX XXX
+        Formular & Messenger
       </a>
     </div>
   </div>
@@ -1090,7 +1084,7 @@
           <li>Disponibil non-stop prin Facebook Messenger</li>
           <li>STUFFIE evaluează simptomele și prioritizează cazul</li>
           <li>Conectare directă cu medicul de gardă</li>
-          <li>În timpul programului: sună la +40 7XX XXX XXX</li>
+          <li>În timpul programului: scrie-ne pe Messenger sau folosește formularul online</li>
           <li>Sfaturi de prim ajutor până la ajungerea la clinică</li>
         </ul>
         <a href="https://www.facebook.com/vetstuff" target="_blank" rel="noopener" class="service-cta" style="color:var(--red);">Scrie pe Messenger →</a>
@@ -1105,7 +1099,7 @@
           <li>Procedură realizată cu sedare profundă, fără suferință</li>
           <li>Spațiu privat, timp pentru rămas-bun</li>
           <li>Opțiuni pentru îngrijirea respectuoasă a rămășițelor</li>
-          <li>Discuția se face întotdeauna față în față sau telefonic — nu online</li>
+          <li>Discuția se face întotdeauna față în față sau direct cu echipa medicală — nu prin formular automat</li>
         </ul>
         <a href="contact.html" class="service-cta" style="color:#5a5a6a;">Vorbește cu un medic →</a>
       </div>
@@ -1129,7 +1123,7 @@
         </div>
         <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin-bottom:8px;">Pasul 1</div>
         <h3 style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:8px;">Programezi</h3>
-        <p style="font-size:0.83rem;color:#666;line-height:1.65;">Online, telefonic sau pe Messenger — în câteva minute, la ora care ți se potrivește.</p>
+        <p style="font-size:0.83rem;color:#666;line-height:1.65;">Online sau pe Messenger — în câteva minute, la ora care ți se potrivește.</p>
       </div>
       <div class="reveal reveal-d2" style="text-align:center;padding:0 20px;position:relative;z-index:1;">
         <div style="width:72px;height:72px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 4px 16px rgba(27,58,107,0.3);">
@@ -1171,7 +1165,7 @@
     <div>
       <span class="section-subtitle">Aria deservită</span>
       <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:1.65rem;font-weight:800;color:var(--navy);margin:6px 0 14px;line-height:1.2;">Aproape de tine, în Bacău</h2>
-      <p style="font-size:0.95rem;color:#555;line-height:1.75;">Cabinetul nostru se află pe Str. Mioriței nr. 10 și deservește proprietarii de animale din municipiul Bacău și din localitățile din județ. Pentru programări, urgențe sau detalii despre un serviciu, scrie-ne sau sună — răspundem rapid.</p>
+      <p style="font-size:0.95rem;color:#555;line-height:1.75;">Cabinetul nostru se află pe Str. Mioriței nr. 10 și deservește proprietarii de animale din municipiul Bacău și din localitățile din județ. Pentru programări, urgențe sau detalii despre un serviciu, scrie-ne pe Messenger sau folosește formularul online — răspundem rapid.</p>
       <div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:10px;">
         <a href="contact.html" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border:1.5px solid var(--navy);border-radius:7px;color:var(--navy);font-size:.86rem;font-weight:700;">Vezi harta și contact</a>
         <a href="abonamente.html" style="display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border:1.5px solid var(--border);border-radius:7px;color:#444;font-size:.86rem;font-weight:600;">Planuri de sănătate</a>
@@ -1213,11 +1207,11 @@
       </details>
       <details class="faq-item">
         <summary>Cum mă programez la clinica veterinară VET STUFF din Bacău?</summary>
-        <div class="faq-body">Cel mai simplu este să folosești <a href="programare.html">formularul de programare online</a>: alegi serviciul, ziua și ora preferată, iar noi confirmăm rapid. Poți suna și la +40 7XX XXX XXX în timpul programului sau ne poți scrie pe Facebook Messenger.</div>
+        <div class="faq-body">Cel mai simplu este să folosești <a href="programare.html">formularul de programare online</a>: alegi serviciul, ziua și ora preferată, iar noi confirmăm rapid. Ne poți scrie pe Facebook Messenger sau poți folosi formularul de programare online.</div>
       </details>
       <details class="faq-item">
         <summary>Aveți urgențe veterinare în afara programului?</summary>
-        <div class="faq-body">În timpul programului sunăm la clinică sau scrie pe Messenger. În afara programului, STUFFIE — agentul nostru AI — răspunde non-stop pe <a href="https://www.facebook.com/vetstuff" target="_blank" rel="noopener">Facebook Messenger</a>, evaluează simptomele și te conectează cu medicul de gardă disponibil. Pentru urgențe critice te orientăm și către unitățile de gardă din Bacău.</div>
+        <div class="faq-body">În timpul programului folosește formularul online sau scrie pe Messenger. În afara programului, STUFFIE — agentul nostru AI — răspunde non-stop pe <a href="https://www.facebook.com/vetstuff" target="_blank" rel="noopener">Facebook Messenger</a>, evaluează simptomele și te conectează cu medicul de gardă disponibil. Pentru urgențe critice te orientăm și către unitățile de gardă din Bacău.</div>
       </details>
       <details class="faq-item">
         <summary>Care este programul clinicii?</summary>
@@ -1256,9 +1250,9 @@
           <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
           Programează o vizită
         </a>
-        <a href="tel:+407XXXXXXXX" class="footer-cta-btn">
+        <a href="contact.html#contact" class="footer-cta-btn">
           <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
-          +40 7XX XXX XXX
+          Formular & Messenger
         </a>
       </div>
     </div>
@@ -1270,7 +1264,7 @@
           <img src="logo.PNG" alt="VET STUFF — Clinică veterinară" style="height:36px; width:auto; margin-bottom:14px;" />
           <p style="font-size:0.85rem; color:#555; line-height:1.75;">Str. Mioriței nr. 10<br/>Bacău, România</p>
           <a href="mailto:vet.stuff@yahoo.com" class="footer-link" style="display:block; margin-top:10px;">vet.stuff@yahoo.com</a>
-          <a href="tel:+407XXXXXXXX" class="footer-link" style="display:block; margin-top:4px;">+40 7XX XXX XXX</a>
+          <a href="contact.html#contact" class="footer-link" style="display:block; margin-top:4px;">Formular & Messenger</a>
         </div>
         <div>
           <div class="footer-heading">Navigare</div>
@@ -1447,7 +1441,7 @@ if (anchorScroll && anchorWrap) {
 </div>
 
 <script>
-/* DATA DRAFT — preturile sunt placeholder, urmează a fi înlocuite cu cele reale VET STUFF */
+/* DATE PRETURI — mentine sincronizat cu lista interna VET STUFF */
 const PRICES = {
   consultatii: {
     title: 'Consultații', sub: 'Examinare, anamneză și plan de tratament personalizat.',

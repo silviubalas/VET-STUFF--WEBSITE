@@ -2,5 +2,7 @@ User-agent: *
 Allow: /
 
 Disallow: /feedback.html
+Disallow: /status.html
+Disallow: /u.html
 
 Sitemap: https://vet-stuff.ro/sitemap.xml

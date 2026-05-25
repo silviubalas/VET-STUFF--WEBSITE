@@ -11,7 +11,7 @@
   <meta property="og:description" content="Găsește rapid clinica VET STUFF din Bacău și trimite-ne un mesaj pentru programări sau întrebări." />
   <meta property="og:url" content="https://vet-stuff.ro/contact.html" />
   <meta property="og:image" content="https://vet-stuff.ro/logo.PNG" />
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/css/tailwind.generated.css">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
@@ -23,7 +23,7 @@
     * { box-sizing:border-box; margin:0; padding:0; }
     html { scroll-behavior:smooth; }
     body { font-family:'DM Sans',sans-serif; color:#1a1a1a; background:var(--light); overflow-x:hidden; }
-    h1,h2,h3 { font-family:'Playfair Display',Georgia,serif; letter-spacing:-0.02em; }
+    h1,h2,h3 { font-family:'Playfair Display',Georgia,serif; letter-spacing:0; }
     a { text-decoration:none; }
     #topbar { background:var(--navy); color:rgba(255,255,255,.88); font-size:.78rem; padding:7px 0; }
     #navbar { background:#fff; border-bottom:1px solid var(--border); }
@@ -120,7 +120,7 @@
   </script>
 </head>
 <body>
-  <div id="topbar"><div class="max-w-6xl mx-auto px-4 flex justify-between gap-4"><span>CALL CENTER +40 7XX XXX XXX</span><span>Str. Mioriței nr. 10, Bacău</span></div></div>
+  <div id="topbar"><div class="max-w-6xl mx-auto px-4 flex justify-between gap-4"><span>PROGRAMĂRI ONLINE</span><span>Str. Mioriței nr. 10, Bacău</span></div></div>
   <nav id="navbar">
     <div class="max-w-6xl mx-auto px-4 flex items-center justify-between gap-6" style="height:96px;">
       <a href="index.html"><img src="logo.PNG" alt="VET STUFF" style="height:76px;width:auto;" /></a>
@@ -173,7 +173,7 @@
       <div>
         <div class="eyebrow">Contact VET STUFF</div>
         <h1>Suntem aproape când ai nevoie de un medic veterinar în Bacău.</h1>
-        <p class="lead">Trimite-ne un mesaj, sună-ne în timpul programului sau scrie pe Messenger pentru orientare rapidă. Pentru programări, pagina dedicată te ajută să ne dai toate detaliile din prima.</p>
+        <p class="lead">Trimite-ne un mesaj prin formular sau scrie pe Messenger pentru orientare rapidă. Pentru programări, pagina dedicată te ajută să ne dai toate detaliile din prima.</p>
         <div class="flex flex-wrap gap-3 mt-8">
           <a href="programare.html" class="btn-red">Programează o consultație</a>
           <a href="https://www.facebook.com/vetstuff" target="_blank" rel="noopener" class="btn-red" style="background:#1B3A6B;border:1.5px solid rgba(255,255,255,.24);">Scrie pe Messenger</a>
@@ -181,20 +181,21 @@
       </div>
       <aside class="info-panel">
         <div class="info-row"><div class="icon">📍</div><div><strong style="color:var(--navy);">Adresă</strong><p style="color:#555;line-height:1.55;margin-top:3px;">Str. Mioriței nr. 10<br/>Bacău</p></div></div>
-        <div class="info-row"><div class="icon">☎</div><div><strong style="color:var(--navy);">Telefon</strong><p style="margin-top:3px;"><a href="tel:+407XXXXXXXX" style="color:var(--red);font-weight:800;">+40 7XX XXX XXX</a></p></div></div>
+        <div class="info-row"><div class="icon">☎</div><div><strong style="color:var(--navy);">Programări</strong><p style="margin-top:3px;"><a href="contact.html#contact" style="color:var(--red);font-weight:800;">Formular & Messenger</a></p></div></div>
         <div class="info-row"><div class="icon">✉</div><div><strong style="color:var(--navy);">Email</strong><p style="margin-top:3px;"><a href="mailto:vet.stuff@yahoo.com" style="color:var(--red);font-weight:800;">vet.stuff@yahoo.com</a></p></div></div>
         <div class="info-row"><div class="icon">🕐</div><div><strong style="color:var(--navy);">Program</strong><p style="color:#555;line-height:1.55;margin-top:3px;">Luni-Vineri 09:00-20:00<br/>Sâmbătă 09:00-14:00</p></div></div>
       </aside>
     </div>
   </section>
 
-  <main class="section">
+  <main id="contact" class="section">
     <div class="wrap grid2">
       <div class="card">
         <div class="eyebrow">Mesaj rapid</div>
         <h2 style="font-size:clamp(1.6rem,3vw,2.35rem);color:var(--navy);margin-bottom:12px;">Trimite-ne întrebarea ta</h2>
         <p style="color:#555;line-height:1.75;margin-bottom:24px;">Pentru consultații și investigații, folosește pagina de programare. Pentru întrebări generale, completează formularul de aici.</p>
         <form id="contact-form" novalidate>
+          <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;" />
           <div class="mb-4"><label class="f-label" for="name">Nume *</label><input id="name" class="f-input" name="Nume" autocomplete="name" placeholder="Numele tău" /><div class="f-error"></div></div>
           <div class="grid sm:grid-cols-2 gap-4">
             <div class="mb-4"><label class="f-label" for="phone">Telefon</label><input id="phone" class="f-input" name="Telefon" type="tel" autocomplete="tel" placeholder="07XX XXX XXX" /><div class="f-error"></div></div>
@@ -249,7 +250,7 @@
           <div class="footer-heading">Contact</div>
           <p style="font-size:.85rem;color:rgba(255,255,255,.65);line-height:1.75;">Str. Mioriței nr. 10<br/>Bacău, România</p>
           <a href="mailto:vet.stuff@yahoo.com" class="footer-link" style="display:block;margin-top:8px;font-size:.85rem;">vet.stuff@yahoo.com</a>
-          <a href="tel:+407XXXXXXXX" class="footer-link" style="display:block;margin-top:4px;font-size:.85rem;">+40 7XX XXX XXX</a>
+          <a href="contact.html#contact" class="footer-link" style="display:block;margin-top:4px;font-size:.85rem;">Formular & Messenger</a>
         </div>
         <div>
           <div class="footer-heading">Legal</div>
@@ -323,19 +324,7 @@
       btn.textContent = 'Se trimite...';
       const phone = document.getElementById('phone').value.trim();
       const topic = document.getElementById('topic').value.trim();
-      const fd = new FormData();
-      fd.append('Nume', name);
-      fd.append('Telefon', phone);
-      fd.append('Email', email);
-      fd.append('Subiect', topic);
-      fd.append('Mesaj', message);
-
-      // Trimitem în paralel: Formspree (notificare e-mail) + Airtable (persistență)
-      const formspreeReq = fetch('https://formspree.io/f/mzdkbdzb', {
-        method:'POST', body:fd, headers:{ 'Accept':'application/json' }
-      }).then(r => r.ok).catch(() => false);
-
-      const airtableReq = fetch('/api/airtable', {
+      fetch('/api/airtable', {
         method:'POST',
         headers:{ 'Content-Type':'application/json' },
         body: JSON.stringify({
@@ -346,21 +335,23 @@
             'Telefon': phone,
             'Subiect': topic,
             'Mesaj': message,
-            'Sursa': 'contact.html'
+            'Sursa': 'contact.html',
+            'website': this.elements.website?.value || ''
           }
         })
-      }).then(r => r.ok).catch(() => false);
-
-      Promise.all([formspreeReq, airtableReq]).then(([fsOk, atOk]) => {
-        // Considerăm succes dacă măcar unul a reușit (mesajul ajunge undeva)
-        if (fsOk || atOk) {
+      }).then(response => {
+        if (response.ok) {
           document.getElementById('contact-success').style.display = 'block';
           document.querySelectorAll('#contact-form input, #contact-form textarea, #contact-form button').forEach(el => { el.disabled = true; el.style.opacity = '.58'; });
         } else {
           btn.disabled = false;
           btn.textContent = 'Trimite mesajul';
-          alert('A apărut o eroare. Te rugăm să ne contactezi telefonic la +40 7XX XXX XXX sau pe email.');
+          alert('A apărut o eroare. Te rugăm să ne scrii pe Messenger sau pe email.');
         }
+      }).catch(() => {
+        btn.disabled = false;
+        btn.textContent = 'Trimite mesajul';
+        alert('A apărut o eroare. Te rugăm să ne scrii pe Messenger sau pe email.');
       });
     });
   </script>

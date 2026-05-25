@@ -6,9 +6,19 @@
 const AIRTABLE_BASE = 'appGhcW1B4iDA4cUY';
 const TABLE = 'Abonamente';
 
+import { enforceOrigin, getClientIp, isHoneypotFilled, rateLimit, verifyTurnstile } from './_security.js';
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+  if (!enforceOrigin(req, res)) return;
+  if (!rateLimit(req, res, 'resend-code', { max: 3, windowMs: 60 * 60 * 1000 })) return;
+  if (isHoneypotFilled(req.body || {})) return res.status(200).json({ ok: true });
+
+  const captcha = await verifyTurnstile(req.body?.turnstileToken, getClientIp(req));
+  if (!captcha.ok) {
+    return res.status(400).json({ error: captcha.error || 'Captcha failed' });
   }
 
   const airtableToken = process.env.AIRTABLE_TOKEN;
@@ -108,7 +118,7 @@ export default async function handler(req, res) {
   <hr style="border:none;border-top:1px solid #e5e7eb;margin:32px 0;">
   <p style="font-size:13px;color:#9ca3af;text-align:center;">
     VET STUFF — Clinică Veterinară Bacău<br>
-    Dacă ai întrebări, ne poți contacta la +40 7XX XXX XXX
+    Pentru întrebări, răspunde la acest email sau scrie-ne pe Messenger.
   </p>
 </body>
 </html>`;

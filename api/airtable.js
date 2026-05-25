@@ -1,6 +1,9 @@
 // Vercel Serverless Function — proxy spre Airtable
 // Tokenul Airtable este pastrat ca variabila de mediu AIRTABLE_TOKEN si nu ajunge niciodata in browser.
 
+import { enforceOrigin, getClientIp, isHoneypotFilled, rateLimit, verifyTurnstile } from './_security.js';
+import { notifyFormspree } from './_notifications.js';
+
 const AIRTABLE_BASE = 'appGhcW1B4iDA4cUY';
 const FIELD_RULES = {
   Programari: {
@@ -55,6 +58,17 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
+  if (!enforceOrigin(req, res)) return;
+  if (!rateLimit(req, res, 'airtable', { max: 12, windowMs: 15 * 60 * 1000 })) return;
+
+  if (isHoneypotFilled(req.body || {})) {
+    return res.status(200).json({ ok: true });
+  }
+
+  const captcha = await verifyTurnstile(req.body?.turnstileToken, getClientIp(req));
+  if (!captcha.ok) {
+    return res.status(400).json({ error: captcha.error || 'Captcha failed' });
+  }
 
   const token = process.env.AIRTABLE_TOKEN;
   if (!token) {
@@ -103,10 +117,24 @@ export default async function handler(req, res) {
       console.error('[airtable] error', airtableRes.status, text.slice(0, 500));
       return res.status(airtableRes.status).json({ error: 'Airtable error' });
     }
+
+    notifyFormspree(formSubject(table), cleanFields).catch(err => {
+      console.error('[airtable] form notification failed', err?.message || err);
+    });
+
     return res.status(200).json({ ok: true });
   } catch (err) {
     return res.status(502).json({ error: 'Upstream fetch failed' });
   }
+}
+
+function formSubject(table) {
+  return {
+    Programari: 'Programare online — VET STUFF',
+    Newsletter: 'Newsletter — abonare nouă',
+    Feedback: 'Feedback — VET STUFF',
+    'Mesaje contact': 'Mesaj contact — VET STUFF',
+  }[table] || `Formular ${table} — VET STUFF`;
 }
 
 function sanitizeFields(table, fields) {
