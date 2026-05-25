@@ -307,6 +307,46 @@
       white-space: nowrap;
     }
     .anchor-pill:hover { border-color: var(--red); color: var(--red); background: rgba(212,43,43,0.04); }
+    .anchor-pill.all-pill { background: var(--red); color: #fff; border-color: var(--red); font-weight: 800; }
+    .anchor-pill.all-pill:hover { background: #b52020; border-color: #b52020; color: #fff; }
+
+    /* All services dropdown panel */
+    .all-services { position: relative; }
+    .all-services > summary { list-style: none; cursor: pointer; }
+    .all-services > summary::-webkit-details-marker { display: none; }
+    .all-services > summary::after { content: ' ▾'; font-size: .8em; }
+    .all-services[open] > summary::after { content: ' ▴'; }
+    .all-services-panel {
+      position: absolute; top: calc(100% + 10px); right: 0;
+      background: #fff; border: 1.5px solid var(--border); border-radius: 14px;
+      box-shadow: 0 12px 36px rgba(27,58,107,0.14), 0 2px 6px rgba(0,0,0,0.04);
+      padding: 22px; min-width: min(720px, 92vw); max-width: 92vw;
+      z-index: 80; max-height: 70vh; overflow-y: auto;
+    }
+    .all-services-panel h4 {
+      font-family: 'DM Sans', sans-serif; font-size: .78rem; font-weight: 800;
+      letter-spacing: .08em; text-transform: uppercase; color: var(--red);
+      margin: 0 0 8px;
+    }
+    .all-services-panel .as-cat { margin-bottom: 16px; }
+    .all-services-panel .as-cat:last-child { margin-bottom: 0; }
+    .all-services-panel .as-cat > a {
+      display: block; font-weight: 800; font-size: .95rem; color: var(--navy);
+      margin-bottom: 6px; transition: color .15s;
+    }
+    .all-services-panel .as-cat > a:hover { color: var(--red); }
+    .all-services-panel .as-sub {
+      display: flex; flex-wrap: wrap; gap: 6px 14px;
+      font-size: .82rem; color: #555; line-height: 1.65;
+    }
+    .all-services-panel .as-sub span { white-space: nowrap; }
+    .all-services-panel .as-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px 28px;
+    }
+    @media (max-width: 600px) {
+      .all-services-panel { left: 0; right: 0; min-width: 0; }
+    }
 
     /* Scroll hint wrapper */
     .anchor-nav-wrap { position: relative; }
@@ -388,8 +428,80 @@
 
 <!-- ANCHOR NAV — parte din header sticky -->
 <div style="background:#fff; border-bottom:1px solid var(--border); padding:10px 0;">
-  <div class="max-w-6xl mx-auto px-4">
-    <div class="anchor-nav-wrap" id="anchor-wrap">
+  <div class="max-w-6xl mx-auto px-4" style="display:flex; align-items:center; gap:12px;">
+    <details class="all-services" id="all-services-dd">
+      <summary class="anchor-pill all-pill">📋 Vezi toate serviciile</summary>
+      <div class="all-services-panel" role="menu" aria-label="Toate serviciile">
+        <h4>Toate serviciile veterinare VET STUFF</h4>
+        <div class="as-grid">
+          <div class="as-cat">
+            <a href="#diagnostic">🩺 Diagnostic & Investigații</a>
+            <div class="as-sub"><span>Consultații</span><span>Analize</span><span>Imagistică</span><span>Endoscopie</span></div>
+          </div>
+          <div class="as-cat">
+            <a href="#chirurgie">⚕️ Chirurgie & Anestezie</a>
+            <div class="as-sub"><span>Sterilizări</span><span>Castrări</span><span>Țesut moale</span><span>Anestezie</span></div>
+          </div>
+          <div class="as-cat">
+            <a href="#ortopedie">🦴 Ortopedie & Traumatologie</a>
+            <div class="as-sub"><span>Fracturi</span><span>LCA</span><span>Displazie</span><span>Neurochirurgie</span></div>
+          </div>
+          <div class="as-cat">
+            <a href="#cardiologie">❤️ Cardiologie</a>
+            <div class="as-sub"><span>Ecocardiografie</span><span>ECG</span><span>Pre-anestezie</span><span>Boli cronice</span></div>
+          </div>
+          <div class="as-cat">
+            <a href="#oncologie">🎗️ Oncologie</a>
+            <div class="as-sub"><span>Citologie FNA</span><span>Biopsii</span><span>Chimioterapie</span><span>Paliație</span></div>
+          </div>
+          <div class="as-cat">
+            <a href="#stomatologie">🦷 Stomatologie</a>
+            <div class="as-sub"><span>Detartraj</span><span>Extracții</span><span>Chirurgie orală</span></div>
+          </div>
+          <div class="as-cat">
+            <a href="#dermatologie">🩹 Dermatologie</a>
+            <div class="as-sub"><span>Alergii</span><span>Otite</span><span>Parazitoze</span><span>Biopsie cutanată</span></div>
+          </div>
+          <div class="as-cat">
+            <a href="#preventie">🛡️ Prevenție & Profilaxie</a>
+            <div class="as-sub"><span>Vaccinări</span><span>Deparazitare</span><span>Pașaport</span><span>Microcip</span></div>
+          </div>
+          <div class="as-cat">
+            <a href="#medicina-interna">🫀 Medicină internă</a>
+            <div class="as-sub"><span>Gastroenterologie</span><span>Endocrinologie</span><span>Renale</span><span>Pulmonare</span><span>Infecțioase</span></div>
+          </div>
+          <div class="as-cat">
+            <a href="#altele">👁️ Oftalmologie</a>
+            <div class="as-sub"><span>Examen ocular</span><span>Ulcere</span><span>Glaucom</span><span>Cataractă</span></div>
+          </div>
+          <div class="as-cat">
+            <a href="#altele">🏃 Fizioterapie & Kinetoterapie</a>
+            <div class="as-sub"><span>Recuperare</span><span>Artroză</span><span>Hidroterapie</span></div>
+          </div>
+          <div class="as-cat">
+            <a href="#geriatrie">🐾 Geriatrie</a>
+            <div class="as-sub"><span>Profil senior</span><span>Cardio</span><span>Renal</span><span>Hepatic</span><span>Nutriție</span></div>
+          </div>
+          <div class="as-cat">
+            <a href="#altele">🏥 Internare & Monitorizare</a>
+            <div class="as-sub"><span>Internare de zi</span><span>Terapie intensivă</span><span>Perfuzii</span><span>Injecții</span><span>Pansamente</span></div>
+          </div>
+          <div class="as-cat">
+            <a href="#altele">🚨 Urgențe</a>
+            <div class="as-sub"><span>Messenger 24/7</span><span>STUFFIE AI</span><span>Medic de gardă</span></div>
+          </div>
+          <div class="as-cat">
+            <a href="#altele">🕊️ Despărțire blândă</a>
+            <div class="as-sub"><span>Consiliere</span><span>Procedură demnă</span><span>Îngrijire rămășițe</span></div>
+          </div>
+          <div class="as-cat">
+            <a href="#preturi">💶 Prețuri orientative</a>
+            <div class="as-sub"><span>Tabel complet</span><span>Modale per categorie</span></div>
+          </div>
+        </div>
+      </div>
+    </details>
+    <div class="anchor-nav-wrap" id="anchor-wrap" style="flex:1; min-width:0;">
     <div class="anchor-nav" id="anchor-scroll">
       <a href="#diagnostic" class="anchor-pill">🩺 Diagnostic</a>
       <a href="#chirurgie" class="anchor-pill">⚕️ Chirurgie</a>
@@ -399,11 +511,30 @@
       <a href="#oncologie" class="anchor-pill">🎗️ Oncologie</a>
       <a href="#dermatologie" class="anchor-pill">🩹 Dermatologie</a>
       <a href="#preventie" class="anchor-pill">🛡️ Prevenție</a>
-      <a href="#altele" class="anchor-pill">🐾 Altele</a>
+      <a href="#medicina-interna" class="anchor-pill">🫀 Medicină internă</a>
+      <a href="#geriatrie" class="anchor-pill">🐾 Geriatrie</a>
+      <a href="#altele" class="anchor-pill">🏥 Altele</a>
     </div>
     </div>
   </div>
 </div>
+<script>
+// Close all-services dropdown when clicking outside or pressing Escape
+(function(){
+  var dd = document.getElementById('all-services-dd');
+  if (!dd) return;
+  document.addEventListener('click', function(e){
+    if (dd.open && !dd.contains(e.target)) dd.open = false;
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && dd.open) dd.open = false;
+  });
+  // Close on anchor click inside panel
+  dd.querySelectorAll('.as-cat > a').forEach(function(a){
+    a.addEventListener('click', function(){ dd.open = false; });
+  });
+})();
+</script>
 
 <div id="mobile-menu">
   <button onclick="closeMenu()" aria-label="Închide meniu" style="position:absolute;top:20px;right:20px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:none;background:transparent;cursor:pointer;color:var(--navy);border-radius:50%;transition:background 0.2s;">
@@ -703,7 +834,11 @@
           <li>Evaluare cardiologică pre-anestezie</li>
           <li>Afecțiuni: endocardioză mitrală, cardiomiopatie, aritmii</li>
         </ul>
-        <a href="programare.html" class="service-cta">Programează evaluare cardiologică →</a>
+        <div class="service-actions">
+          <a href="programare.html" class="service-cta">Programează →</a>
+          <button class="price-btn" data-prices="cardiologie">Prețuri cardiologie</button>
+          <button class="price-btn" data-prices="imagistica">Ecografie & radiografie</button>
+        </div>
       </div>
       <div class="service-detail reveal reveal-d1" style="--accent:#6a2a3a; --icon-bg:#FDE8EE;" id="oncologie">
         <div class="icon-wrap">🎗️</div>
@@ -717,7 +852,11 @@
           <li>Îngrijire paliativă și management al durerii cronice</li>
           <li>Monitorizare și urmărire pe termen lung</li>
         </ul>
-        <a href="programare.html" class="service-cta">Programează consultație oncologică →</a>
+        <div class="service-actions">
+          <a href="programare.html" class="service-cta">Programează →</a>
+          <button class="price-btn" data-prices="oncologie">Prețuri oncologie</button>
+          <button class="price-btn" data-prices="chirurgie">Chirurgie tumorală</button>
+        </div>
       </div>
     </div>
   </div>
@@ -796,18 +935,25 @@
         </div>
       </div>
 
-      <div class="service-detail reveal reveal-d1" style="--accent:#5a3a72; --icon-bg:#EEE6FF;">
+      <div class="service-detail reveal reveal-d1" style="--accent:#5a3a72; --icon-bg:#EEE6FF;" id="medicina-interna">
         <div class="icon-wrap">🫀</div>
         <h2>Medicină internă</h2>
-        <p>Bolile interne — digestive, endocrine, renale sau metabolice — necesită o abordare sistematică. VET STUFF evaluează complet, corelând simptomele clinice cu investigațiile de laborator.</p>
+        <p>Bolile interne — digestive, endocrine, renale, pulmonare sau infecțioase — necesită o abordare sistematică. VET STUFF evaluează complet, corelând simptomele clinice cu investigațiile de laborator și imagistică.</p>
         <ul>
-          <li>Gastroenterologie — vărsături cronice, diaree, sindroame hepatice</li>
-          <li>Endocrinologie — diabet zaharat, hipotiroidism, Cushing</li>
-          <li>Uronefrologie — insuficiență renală, afecțiuni ale vezicii</li>
-          <li>Boli infecțioase — parvoviroză, leucoză felină, caliciviroză</li>
-          <li>Boli metabolice și de nutriție</li>
+          <li>Consultație gastroenterologică — vărsături cronice, diaree, sindroame hepatice</li>
+          <li>Consultație endocrinologică — diabet, hipotiroidism, Cushing, Addison</li>
+          <li>Ecografie de organ și ecografie abdominală pentru evaluare internă</li>
+          <li>Boli pulmonare — bronhoscopie, lavaj bronhoalveolar, radiografie torace</li>
+          <li>Boli renale — profil renal, SDMA, ecografie renală, monitorizare IRC</li>
+          <li>Boli infecțioase — teste rapide CDV/CPV/FPV, FIV-FELV, FCOV, Babesia</li>
+          <li>Analize specifice — biochimie comprehensivă, electroliți, CRP, T4/TSH</li>
         </ul>
-        <a href="programare.html" class="service-cta">Programează consultație internă →</a>
+        <div class="service-actions">
+          <a href="programare.html" class="service-cta">Programează →</a>
+          <button class="price-btn" data-prices="medicina_interna">Prețuri medicină internă</button>
+          <button class="price-btn" data-prices="analize">Analize specifice</button>
+          <button class="price-btn" data-prices="imagistica">Ecografie de organ</button>
+        </div>
       </div>
 
       <div class="service-detail reveal reveal-d2" style="--accent:#2a6b7a; --icon-bg:#E6F2F5;">
@@ -841,18 +987,29 @@
         <a href="programare.html" class="service-cta">Programează consultație kinetoterapie →</a>
       </div>
 
-      <div class="service-detail reveal reveal-d1" style="--accent:#4a5a6a; --icon-bg:#EEF2F5;">
+      <div class="service-detail reveal reveal-d1" style="--accent:#4a5a6a; --icon-bg:#EEF2F5;" id="geriatrie">
         <div class="icon-wrap">🐾</div>
         <h2>Geriatrie</h2>
-        <p>Animalele vârstnice au nevoi medicale specifice. VET STUFF oferă protocoale de monitorizare adaptate seniorilor, cu focus pe calitatea vieții și detectarea precoce a afecțiunilor degenerative.</p>
+        <p>Animalele vârstnice au nevoi medicale specifice. VET STUFF oferă protocoale de monitorizare adaptate seniorilor, cu focus pe calitatea vieții, detectarea precoce a afecțiunilor degenerative și controale periodice planificate.</p>
         <ul>
-          <li>Profil geriatric complet — biochimie, hemoleucogramă, urină</li>
-          <li>Monitorizare funcție renală, hepatică și cardiacă</li>
-          <li>Management durere cronică articulară</li>
-          <li>Afecțiuni cognitive la animalele în vârstă</li>
-          <li>Consiliere nutriție adaptată seniorilor</li>
+          <li>Consultație geriatrică — evaluare clinică completă pentru pacient senior</li>
+          <li>Analize de sânge geriatric — hemoleucogramă completă</li>
+          <li>Profil biochimic complet — funcție renală, hepatică, electroliți, glicemie</li>
+          <li>Evaluare cardiologică — ecocardiografie, ECG, tensiune arterială</li>
+          <li>Ecografie abdominală — evaluare organe interne</li>
+          <li>Evaluare renală — profil renal, SDMA, sumar urină</li>
+          <li>Evaluare hepatică — profil hepatic, ecografie de organ</li>
+          <li>Monitorizare boli cronice (diabet, IRC, cardiopatii)</li>
+          <li>Management durere cronică articulară (artroză)</li>
+          <li>Recomandări nutriționale adaptate pacientului senior</li>
+          <li>Controale periodice planificate (la 6 luni)</li>
         </ul>
-        <a href="programare.html" class="service-cta">Programează profil geriatric →</a>
+        <div class="service-actions">
+          <a href="programare.html" class="service-cta">Programează →</a>
+          <button class="price-btn" data-prices="geriatrie">Profil geriatric — prețuri</button>
+          <button class="price-btn" data-prices="analize">Analize de sânge</button>
+          <button class="price-btn" data-prices="imagistica">Ecografie</button>
+        </div>
       </div>
 
       <div class="service-detail reveal" style="--accent:#2a5a7a; --icon-bg:#E6F0F8;">
@@ -979,7 +1136,9 @@
         <a href="#stomatologie" class="footer-link" style="font-size:.9rem;">🦷 Stomatologie</a>
         <a href="#dermatologie" class="footer-link" style="font-size:.9rem;">🩹 Dermatologie</a>
         <a href="#preventie" class="footer-link" style="font-size:.9rem;">🛡️ Prevenție & vaccinare</a>
-        <a href="#altele" class="footer-link" style="font-size:.9rem;">🐾 Internare, Geriatrie, Urgențe</a>
+        <a href="#medicina-interna" class="footer-link" style="font-size:.9rem;">🫀 Medicină internă</a>
+        <a href="#geriatrie" class="footer-link" style="font-size:.9rem;">🐾 Geriatrie</a>
+        <a href="#altele" class="footer-link" style="font-size:.9rem;">🏥 Internare & Urgențe</a>
         <a href="#preturi" class="footer-link" style="font-size:.9rem;">💶 Prețuri orientative</a>
         <a href="#faq" class="footer-link" style="font-size:.9rem;">❓ Întrebări frecvente</a>
       </div>
@@ -1512,6 +1671,90 @@ const PRICES = {
     items: [
       ['Eutanasie', '250-500 lei'],
       ['Preluare cadavru', '220-880 lei'],
+    ],
+  },
+  medicina_interna: {
+    title: 'Medicină internă', sub: 'Consultații și investigații pentru afecțiuni gastroenterologice, endocrine, renale, pulmonare și infecțioase.',
+    items: [
+      ['Consultație medic specialist', '300 lei'],
+      ['Consultație gastroenterologică (evaluare + plan)', '300 lei'],
+      ['Consultație endocrinologică (evaluare + plan)', '300 lei'],
+      ['Ecografie abdominală', '250 lei'],
+      ['Ecografie de organ (renal, hepatic, splenic)', '175 lei'],
+      ['Biochimie profil general (15+5 parametri)', '280 lei'],
+      ['Biochimie Comprehensive Profile', '350 lei'],
+      ['Profil renal', '220 lei'],
+      ['Profil hepatic', '220 lei'],
+      ['Profil electroliți', '220 lei'],
+      ['Test SDMA (funcție renală)', '250 lei'],
+      ['T4 / TSH / Cortizol (endocrin)', '215 lei'],
+      ['Test supresie cu dexametazonă', '400 lei'],
+      ['Test stimulare cu ACTH', '400 lei'],
+      ['CPL-FPL (pancreas)', '215 lei'],
+      ['CRP (markeri inflamație)', '250 lei'],
+      ['Test glicemie', '50 lei'],
+      ['Test rapid CDV / CPV / FPV / Babesia', '145 lei'],
+      ['Test rapid FIV-FELV (leucoză + imunodeficiență felină)', '145 lei'],
+      ['Test rapid FCOV (coronaviroză felină)', '150 lei'],
+      ['Bronhoscopie (boli pulmonare)', '1.100 lei'],
+      ['Lavaj bronhoalveolar', '1.350 lei'],
+      ['Endoscopie de diagnostic cu prelevare probe', '2.000 lei'],
+    ],
+  },
+  geriatrie: {
+    title: 'Geriatrie — pacient senior', sub: 'Protocol complet pentru animalele în vârstă: evaluare cardiacă, renală, hepatică și monitorizare boli cronice.',
+    items: [
+      ['Consultație geriatrică (medic specialist)', '300 lei'],
+      ['Recontrol geriatric', '150 lei'],
+      ['Hemoleucogramă', '140 lei'],
+      ['Biochimie Comprehensive Profile (geriatric)', '350 lei'],
+      ['Profil renal', '220 lei'],
+      ['Profil hepatic', '220 lei'],
+      ['Profil electroliți', '220 lei'],
+      ['Test SDMA (renal precoce)', '250 lei'],
+      ['Examen complet de urină', '220 lei'],
+      ['Ecografie abdominală', '250 lei'],
+      ['Ecografie cardiacă (eco Doppler)', '175 lei'],
+      ['Examen radiologic — 1 expunere', '160 lei'],
+      ['Măsurare tensiune arterială', '20 lei'],
+      ['T4 / TSH / Cortizol (endocrin senior)', '215 lei'],
+      ['Detartraj cu ultrasunete (igienă orală senior)', '400 lei'],
+      ['Consiliere nutriție pacient senior', 'inclusă în consultație'],
+    ],
+  },
+  cardiologie: {
+    title: 'Cardiologie', sub: 'Evaluare cardiacă completă: ecocardiografie, ECG, monitorizare și ajustare tratament.',
+    items: [
+      ['Consultație medic specialist', '300 lei'],
+      ['Ecografie cardiacă (TFAST)', '175 lei'],
+      ['Ecografie cardiacă Doppler', '250 lei'],
+      ['Electrocardiogramă (ECG)', '120 lei'],
+      ['Examen radiologic torace', '160 lei'],
+      ['Măsurare tensiune arterială', '20 lei'],
+      ['Hemoleucogramă (pre-anestezie / monitorizare)', '140 lei'],
+      ['Profil renal (monitorizare tratament cardiac)', '220 lei'],
+      ['Profil electroliți', '220 lei'],
+      ['Evaluare cardiologică pre-anestezie', '350 lei'],
+      ['Recontrol cardiologic', '150 lei'],
+    ],
+  },
+  oncologie: {
+    title: 'Oncologie', sub: 'Diagnostic, staging și tratament oncologic — citologie, biopsii, chirurgie tumorală și paliație.',
+    items: [
+      ['Consultație medic specialist', '300 lei'],
+      ['Aspirat cu ac fin (FNA) formațiuni cutanate', '70-150 lei'],
+      ['Puncție abdominală / toracică ecoghidată', '200 lei'],
+      ['Biopsie ecoghidată fără anestezie', '1.000-2.000 lei'],
+      ['Biopsie cutanată', '250-500 lei'],
+      ['Ecografie abdominală (staging)', '250 lei'],
+      ['Examen radiologic — 1 expunere (staging)', '160 lei'],
+      ['Hemoleucogramă (monitorizare)', '140 lei'],
+      ['Biochimie Comprehensive Profile', '350 lei'],
+      ['Extirpare lipoame', '600-900 lei'],
+      ['Extirpare tumori mamare cățea', '900-2.000 lei'],
+      ['Extirpare tumori mamare pisică', '600-1.600 lei'],
+      ['Extirpare tumori gingivale', '400 lei'],
+      ['Îngrijire paliativă (consultație + plan)', '300 lei'],
     ],
   },
 };
