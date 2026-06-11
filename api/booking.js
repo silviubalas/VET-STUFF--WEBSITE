@@ -107,9 +107,7 @@ async function handlePost(req, res) {
       return res.status(409).json({ ok: false, error: 'Slotul nu mai este disponibil. Alege alt interval.' });
     }
 
-    const match = await ensureCrmEntities(body.value);
-    const rawPayload = redactWebsitePayload(req.body || {});
-    const baseRequestPayload = {
+    const payload = {
       owner_name: body.value.ownerName,
       owner_phone: body.value.phone,
       owner_email: body.value.email || null,
@@ -124,106 +122,28 @@ async function handlePost(req, res) {
       message: body.value.message || null,
       source: 'website',
       status: 'new',
-      owner_id: match.owner.id,
-      patient_id: match.patient.id,
-      match_summary: match.summary,
-      website_payload_raw: rawPayload,
-      request_ip: getClientIp(req) || null,
-      user_agent: cleanString(req.headers['user-agent'] || '', 300, true) || null,
     };
 
-    const duplicateAppointment = await findDuplicateAppointment({
-      patientId: match.patient.id,
-      doctorName: matchingSlot.doctorName,
-      preferredAt: matchingSlot.start,
-      durationMinutes: matchingSlot.durationMinutes,
+    // Website-ul trimite DOAR o cerere (lead). Owner / patient / programarea NU se
+    // creeaza aici - se inregistreaza exclusiv din CRM, pre-completate din aceste date.
+    const created = await supabaseFetch('appointment_requests', {
+      method: 'POST',
+      body: payload,
+      headers: { Prefer: 'return=representation' },
     });
-    if (duplicateAppointment) {
-      const duplicateSource = await findRequestForAppointment(duplicateAppointment.id);
-      const duplicateRequest = await createAppointmentRequestRecord({
-        ...baseRequestPayload,
-        status: 'duplicate',
-        pending_appointment_id: duplicateAppointment.id,
-        duplicate_of_request_id: duplicateSource?.id || null,
-        duplicate_reason: 'same_patient_doctor_slot',
-        api_response: {
-          status: 'duplicate',
-          duplicateAppointmentId: duplicateAppointment.id,
-          duplicateRequestId: duplicateSource?.id || null,
-          checkedAt: new Date().toISOString(),
-        },
-      });
+    const request = Array.isArray(created) ? created[0] : created;
 
-      await createCrmInboxNotification({
-        requestId: duplicateRequest?.id,
-        appointmentId: duplicateAppointment.id,
-        patientId: match.patient.id,
-        severity: 'medium',
-        title: 'Cerere online duplicat posibil',
-        body: `${body.value.ownerName} a trimis o cerere pentru ${body.value.patientName}, dar slotul există deja în CRM.`,
-      });
-
-      return res.status(409).json({
-        ok: false,
-        requestId: duplicateRequest?.id || null,
-        appointmentId: duplicateAppointment.id,
-        error: 'Există deja o cerere sau programare pentru acest pacient la intervalul ales.',
-      });
-    }
-
-    const request = await createAppointmentRequestRecord(baseRequestPayload);
-    let appointment = null;
-    try {
-      appointment = await createPendingAppointmentFromRequest({
-        request,
-        requestPayload: baseRequestPayload,
-        match,
-        slot: matchingSlot,
-      });
-
-      await updateAppointmentRequestRecord(request.id, {
-        pending_appointment_id: appointment.id,
-        api_response: {
-          status: 'pending_appointment_created',
-          appointmentId: appointment.id,
-          appointmentStatus: appointment.status || 'pending',
-          checkedAt: new Date().toISOString(),
-        },
-      });
-    } catch (err) {
-      if (request?.id) {
-        await updateAppointmentRequestRecord(request.id, {
-          status: 'error',
-          error: String(err?.message || err).slice(0, 700),
-          api_response: {
-            status: 'error',
-            checkedAt: new Date().toISOString(),
-          },
-        });
-      }
-      throw err;
-    }
-
-    await createCrmInboxNotification({
-      requestId: request.id,
-      appointmentId: appointment.id,
-      patientId: match.patient.id,
-      title: 'Cerere nouă de programare online',
-      body: `${body.value.ownerName} cere ${matchingSlot.serviceLabel} pentru ${body.value.patientName} la ${formatRoDateTime(matchingSlot.start)}.`,
-    });
-
-    notifyClinicLead({ ...baseRequestPayload, request_id: request?.id, appointment_id: appointment?.id }).catch(err => {
+    notifyClinicLead({ ...payload, request_id: request?.id }).catch(err => {
       console.error('[booking:notify]', err?.message || err);
     });
 
-    syncAirtableLead({ ...baseRequestPayload, request_id: request?.id, appointment_id: appointment?.id }).catch(err => {
+    syncAirtableLead({ ...payload, request_id: request?.id }).catch(err => {
       console.error('[booking:airtable]', err?.message || err);
     });
 
     return res.status(200).json({
       ok: true,
       requestId: request?.id || null,
-      appointmentId: appointment?.id || null,
       message: 'Cererea a fost trimisă. Echipa VET STUFF o confirmă din CRM.',
     });
   } catch (err) {
@@ -343,216 +263,6 @@ async function loadHeldRequests(from, to) {
     `&preferred_at=lt.${encodeURIComponent(to)}`,
     '&status=in.(new,in_review,accepted)',
   ].join(''));
-}
-
-async function ensureCrmEntities(value) {
-  const ownerMatch = await findExistingOwner({
-    phone: value.phone,
-    email: value.email,
-  });
-  const owner = ownerMatch.owner || await createOwnerFromWebsite(value);
-  if (!owner?.id) throw new Error('Owner could not be resolved');
-
-  const patientMatch = await findExistingPatient(owner.id, value.patientName);
-  const patient = patientMatch.patient || await createPatientFromWebsite(owner.id, value);
-  if (!patient?.id) throw new Error('Patient could not be resolved');
-
-  return {
-    owner,
-    patient,
-    summary: {
-      owner: {
-        id: owner.id,
-        status: ownerMatch.owner ? 'existing' : 'created_unverified',
-        matchedBy: ownerMatch.matchedBy,
-      },
-      patient: {
-        id: patient.id,
-        status: patientMatch.patient ? 'existing' : 'created_unverified',
-        matchedBy: patientMatch.patient ? 'owner_patient_name' : null,
-      },
-    },
-  };
-}
-
-async function findExistingOwner({ phone, email }) {
-  const candidates = [];
-  if (phone) {
-    candidates.push(...asList(await supabaseFetch([
-      'owners',
-      '?select=*',
-      `&phone=eq.${encodeURIComponent(phone)}`,
-      '&limit=5',
-    ].join(''))).map(owner => ({ owner, matchedBy: 'phone' })));
-  }
-  if (email) {
-    candidates.push(...asList(await supabaseFetch([
-      'owners',
-      '?select=*',
-      `&email=eq.${encodeURIComponent(email)}`,
-      '&limit=5',
-    ].join(''))).map(owner => ({ owner, matchedBy: 'email' })));
-  }
-
-  const unique = [];
-  for (const candidate of candidates) {
-    if (candidate.owner?.id && !unique.some(item => item.owner.id === candidate.owner.id)) unique.push(candidate);
-  }
-  const exactBoth = unique.find(item => (
-    normalizePhoneLoose(item.owner.phone) === normalizePhoneLoose(phone) &&
-    (!email || normalizeEmailLoose(item.owner.email) === normalizeEmailLoose(email))
-  ));
-  const selected = exactBoth || unique[0] || null;
-  if (!selected) return { owner: null, matchedBy: [] };
-
-  const matchedBy = unique
-    .filter(item => item.owner.id === selected.owner.id)
-    .map(item => item.matchedBy);
-  return { owner: selected.owner, matchedBy: [...new Set(matchedBy)] };
-}
-
-async function createOwnerFromWebsite(value) {
-  const rows = await supabaseFetch('owners', {
-    method: 'POST',
-    headers: { Prefer: 'return=representation' },
-    body: {
-      full_name: value.ownerName,
-      phone: value.phone,
-      email: value.email || null,
-      source: 'website',
-      alert_note: 'Client creat din website - neverificat',
-      notes: 'Creat automat din formularul public de programare. Verifică datele la confirmarea cererii.',
-    },
-  });
-  return asList(rows)[0] || null;
-}
-
-async function findExistingPatient(ownerId, patientName) {
-  const rows = await supabaseFetch([
-    'patients',
-    '?select=*',
-    `&owner_id=eq.${encodeURIComponent(ownerId)}`,
-    '&limit=100',
-  ].join(''));
-  const normalized = normalizeName(patientName);
-  const patient = asList(rows).find(item => normalizeName(item.name) === normalized) || null;
-  return { patient };
-}
-
-async function createPatientFromWebsite(ownerId, value) {
-  const rows = await supabaseFetch('patients', {
-    method: 'POST',
-    headers: { Prefer: 'return=representation' },
-    body: {
-      owner_id: ownerId,
-      name: value.patientName,
-      species: value.species,
-      notes: 'Pacient creat din website - neverificat. Verifică numele/specia la confirmarea cererii.',
-    },
-  });
-  return asList(rows)[0] || null;
-}
-
-async function findDuplicateAppointment({ patientId, doctorName, preferredAt, durationMinutes }) {
-  if (!patientId || !preferredAt) return null;
-  const targetStart = new Date(preferredAt).getTime();
-  const from = new Date(targetStart - durationMinutes * 60000).toISOString();
-  const to = new Date(targetStart + durationMinutes * 60000).toISOString();
-  const rows = await supabaseFetch([
-    'appointments',
-    '?select=id,patient_id,doctor,scheduled_at,duration_minutes,status',
-    `&patient_id=eq.${encodeURIComponent(patientId)}`,
-    `&scheduled_at=gte.${encodeURIComponent(from)}`,
-    `&scheduled_at=lt.${encodeURIComponent(to)}`,
-    '&status=neq.cancelled',
-  ].join(''));
-
-  return asList(rows).find(item => (
-    sameDoctor(item.doctor, doctorName) &&
-    rangesOverlap(targetStart, durationMinutes, new Date(item.scheduled_at).getTime(), Number(item.duration_minutes) || 30)
-  )) || null;
-}
-
-async function findRequestForAppointment(appointmentId) {
-  if (!appointmentId) return null;
-  const rows = await supabaseFetch([
-    'appointment_requests',
-    '?select=id,status',
-    `&pending_appointment_id=eq.${encodeURIComponent(appointmentId)}`,
-    '&limit=1',
-  ].join(''));
-  return asList(rows)[0] || null;
-}
-
-async function createAppointmentRequestRecord(payload) {
-  const rows = await supabaseFetch('appointment_requests', {
-    method: 'POST',
-    body: payload,
-    headers: { Prefer: 'return=representation' },
-  });
-  return asList(rows)[0] || null;
-}
-
-async function updateAppointmentRequestRecord(id, patch) {
-  if (!id) return null;
-  const rows = await supabaseFetch(`appointment_requests?id=eq.${encodeURIComponent(id)}`, {
-    method: 'PATCH',
-    body: { ...patch, updated_at: new Date().toISOString() },
-    headers: { Prefer: 'return=representation' },
-  });
-  return asList(rows)[0] || null;
-}
-
-async function createPendingAppointmentFromRequest({ request, requestPayload, match, slot }) {
-  const rows = await supabaseFetch('appointments', {
-    method: 'POST',
-    headers: { Prefer: 'return=representation' },
-    body: {
-      patient_id: match.patient.id,
-      doctor: slot.doctorName,
-      scheduled_at: slot.start,
-      duration_minutes: slot.durationMinutes,
-      type: slot.serviceKey,
-      status: 'pending',
-      notes: buildPendingAppointmentNotes({ request, requestPayload, match, slot }),
-    },
-  });
-  return asList(rows)[0] || null;
-}
-
-function buildPendingAppointmentNotes({ request, requestPayload, match, slot }) {
-  return [
-    'Cerere online din website - necesita confirmare manuala.',
-    `ID cerere: ${request?.id || 'n/a'}`,
-    `Client: ${requestPayload.owner_name} (${requestPayload.owner_phone}${requestPayload.owner_email ? `, ${requestPayload.owner_email}` : ''})`,
-    `Pacient: ${requestPayload.patient_name} (${requestPayload.patient_species || 'specie nementionata'})`,
-    `Serviciu: ${slot.serviceLabel || slot.serviceKey}`,
-    requestPayload.message ? `Mesaj client: ${requestPayload.message}` : '',
-    `Matching: ${JSON.stringify(match.summary)}`,
-    `Payload website: ${JSON.stringify(requestPayload.website_payload_raw || {})}`,
-  ].filter(Boolean).join('\n');
-}
-
-async function createCrmInboxNotification({ requestId, appointmentId, patientId, title, body, severity = 'high' }) {
-  try {
-    await supabaseFetch('inbox_notifications', {
-      method: 'POST',
-      headers: { Prefer: 'return=minimal' },
-      body: {
-        user_id: null,
-        kind: 'online_booking_request',
-        severity,
-        title,
-        body,
-        link: '/programari',
-        patient_id: patientId || null,
-        appointment_id: appointmentId || null,
-        dedupe_key: requestId ? `appointment_request:${requestId}` : null,
-      },
-    });
-  } catch (err) {
-    console.error('[booking:inbox]', err?.message || err);
-  }
 }
 
 function buildDayAvailability({ dateKey, clinic, timezone, doctors, service, appointments, heldRequests }) {
@@ -818,24 +528,6 @@ function normalizePhoneLoose(value) {
 
 function normalizeEmailLoose(value) {
   return String(value || '').trim().toLowerCase();
-}
-
-function redactWebsitePayload(payload) {
-  const clone = { ...(payload || {}) };
-  delete clone.turnstileToken;
-  delete clone['cf-turnstile-response'];
-  delete clone.website;
-  return clone;
-}
-
-function formatRoDateTime(value) {
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return String(value || '');
-  return new Intl.DateTimeFormat('ro-RO', {
-    timeZone: DEFAULT_TIMEZONE,
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  }).format(date);
 }
 
 function rangesOverlap(aStart, aDuration, bStart, bDuration) {
