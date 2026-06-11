@@ -4,136 +4,233 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Programare veterinar Bacău | VET STUFF</title>
-  <meta name="description" content="Programează online o consultație la VET STUFF Bacău. Completează datele animalului, serviciul dorit și data preferată." />
+  <meta name="description" content="Programează online o consultație la VET STUFF Bacău. Alege specia, serviciul, medicul, data și ora disponibile." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://vet-stuff.ro/programare.html" />
   <meta property="og:title" content="Programare online VET STUFF Bacău" />
-  <meta property="og:description" content="Trimite rapid o cerere de programare pentru consultații, vaccinări, chirurgie, imagistică sau prevenție." />
+  <meta property="og:description" content="Alege un interval disponibil din calendarul VET STUFF. Cererea intră în CRM și este confirmată de echipă." />
   <meta property="og:url" content="https://vet-stuff.ro/programare.html" />
   <meta property="og:image" content="https://vet-stuff.ro/logo.PNG" />
   <link rel="stylesheet" href="assets/css/tailwind.generated.css">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <style>
-    :root { --red:#D42B2B; --navy:#1B3A6B; --gray:#7A8BA0; --light:#F8F7F4; --border:#e5e7eb; }
+    :root {
+      --red:#D42B2B;
+      --red-dark:#B52020;
+      --navy:#1B3A6B;
+      --teal:#37858B;
+      --teal-dark:#2D7076;
+      --ink:#2F343A;
+      --muted:#767B82;
+      --soft:#F7F8F8;
+      --panel:#FFFFFF;
+      --border:#E3E8EA;
+      --shadow:0 18px 44px rgba(27,58,107,.10), 0 2px 7px rgba(0,0,0,.04);
+    }
     * { box-sizing:border-box; margin:0; padding:0; }
-    body { font-family:'DM Sans',sans-serif; color:#1a1a1a; background:var(--light); overflow-x:hidden; }
-    h1,h2,h3 { font-family:'Playfair Display',Georgia,serif; letter-spacing:0; }
+    html { scroll-behavior:smooth; }
+    body { font-family:'DM Sans',sans-serif; color:var(--ink); background:var(--soft); overflow-x:hidden; }
+    h1,h2,h3 { font-family:'DM Sans',sans-serif; letter-spacing:0; }
     a { text-decoration:none; }
+    button,input,select,textarea { font:inherit; }
     #topbar { background:var(--navy); color:rgba(255,255,255,.88); font-size:.78rem; padding:7px 0; }
-    #navbar { background:#fff; border-bottom:1px solid var(--border); }
-    .nav-link { font-size:.9rem; font-weight:600; color:#222; white-space:nowrap; transition:color .15s; }
+    #navbar { background:#fff; border-bottom:1px solid var(--border); position:sticky; top:0; z-index:50; }
+    .nav-link { font-size:.9rem; font-weight:700; color:#222; white-space:nowrap; transition:color .15s; }
     .nav-link:hover,.nav-link.active { color:var(--red); }
-
-    /* Nav dropdown — Servicii mega menu */
-    .nav-dropdown { position: relative; display: inline-block; }
-    .nav-dropdown > .nav-link { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
-    .nav-dropdown > .nav-link::after { content: '▾'; font-size: .7em; transition: transform .18s; }
+    .nav-dropdown { position:relative; display:inline-block; }
+    .nav-dropdown > .nav-link { display:inline-flex; align-items:center; gap:4px; cursor:pointer; }
+    .nav-dropdown > .nav-link::after { content:'▾'; font-size:.7em; transition:transform .18s; }
     .nav-dropdown:hover > .nav-link::after,
-    .nav-dropdown:focus-within > .nav-link::after { transform: rotate(180deg); }
+    .nav-dropdown:focus-within > .nav-link::after { transform:rotate(180deg); }
     .nav-dropdown-panel {
-      position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%) translateY(8px);
-      background: #fff; border: 1.5px solid var(--border); border-radius: 12px;
-      box-shadow: 0 14px 40px rgba(27,58,107,0.16), 0 2px 6px rgba(0,0,0,0.04);
-      padding: 12px 0; min-width: 260px;
-      max-height: min(560px, 75vh); overflow-y: auto; overscroll-behavior: contain;
-      opacity: 0; visibility: hidden; pointer-events: none;
-      transition: opacity .18s, transform .18s, visibility .18s;
-      z-index: 1100;
+      position:absolute; top:calc(100% + 6px); left:50%; transform:translateX(-50%) translateY(8px);
+      background:#fff; border:1.5px solid var(--border); border-radius:12px;
+      box-shadow:0 14px 40px rgba(27,58,107,.16), 0 2px 6px rgba(0,0,0,.04);
+      padding:12px 0; min-width:260px; max-height:min(560px, 75vh); overflow-y:auto;
+      opacity:0; visibility:hidden; pointer-events:none; transition:opacity .18s, transform .18s, visibility .18s; z-index:1100;
     }
     .nav-dropdown:hover .nav-dropdown-panel,
     .nav-dropdown:focus-within .nav-dropdown-panel {
-      opacity: 1; visibility: visible; pointer-events: auto;
-      transform: translateX(-50%) translateY(0);
+      opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%) translateY(0);
     }
     .nav-dd-head {
-      display: block; padding: 4px 22px 10px; font-size: .7rem; font-weight: 800;
-      letter-spacing: .08em; text-transform: uppercase; color: var(--red);
-      border-bottom: 1px solid var(--border); margin-bottom: 6px;
+      display:block; padding:4px 22px 10px; font-size:.7rem; font-weight:900; letter-spacing:.08em;
+      text-transform:uppercase; color:var(--red); border-bottom:1px solid var(--border); margin-bottom:6px;
     }
     .nav-dropdown-panel a:not(.nav-dd-all) {
-      display: block; padding: 7px 22px; font-size: .88rem; color: #333;
-      white-space: nowrap; transition: background .12s, color .12s; font-weight: 500;
+      display:block; padding:7px 22px; font-size:.88rem; color:#333; white-space:nowrap; transition:background .12s, color .12s; font-weight:600;
     }
-    .nav-dropdown-panel a:not(.nav-dd-all):hover { background: #f1f5ff; color: var(--red); }
-    .nav-dd-all {
-      display: block; padding: 11px 22px 4px; margin-top: 8px;
-      border-top: 1px solid var(--border); font-weight: 800; color: var(--navy);
-      font-size: .86rem; transition: color .12s;
+    .nav-dropdown-panel a:not(.nav-dd-all):hover { background:#F1F6F7; color:var(--red); }
+    .nav-dd-all { display:block; padding:11px 22px 4px; margin-top:8px; border-top:1px solid var(--border); font-weight:900; color:var(--navy); font-size:.86rem; }
+    .btn-red {
+      display:inline-flex; align-items:center; justify-content:center; gap:7px; background:var(--red); color:#fff; border:0; border-radius:8px;
+      padding:11px 19px; font-size:.88rem; font-weight:900; cursor:pointer; transition:background .16s, transform .16s, box-shadow .16s;
+      box-shadow:0 10px 24px rgba(212,43,43,.18), 0 2px 5px rgba(0,0,0,.08);
     }
-    .nav-dd-all:hover { color: var(--red); }
-    .nav-dropdown-panel::-webkit-scrollbar { width: 8px; }
-    .nav-dropdown-panel::-webkit-scrollbar-track { background: #f7f7fa; border-radius: 0 12px 12px 0; }
-    .nav-dropdown-panel::-webkit-scrollbar-thumb { background: #d0d4dc; border-radius: 4px; }
-    .nav-dropdown-panel::-webkit-scrollbar-thumb:hover { background: #aab0bd; }
-    .nav-dropdown-panel { scrollbar-width: thin; scrollbar-color: #d0d4dc #f7f7fa; }
-    .nav-dropdown::before { content: ''; position: absolute; top: 100%; left: 0; right: 0; height: 12px; }
-    .mob-sublist { padding: 4px 0 8px 16px; display: flex; flex-direction: column; gap: 0; }
-    .mob-sublist a { font-size: .9rem; padding: 7px 4px; color: #444; }
-    .mob-sublist a:hover { color: var(--red); }
-    .mob-sub-toggle { display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
-    .mob-sub-toggle::after { content: '▾'; font-size: .8em; transition: transform .2s; }
-    details[open] > .mob-sub-toggle::after { transform: rotate(180deg); }
-    .btn-red { display:inline-flex; align-items:center; justify-content:center; gap:7px; background:var(--red); color:#fff; border:none; border-radius:7px; padding:11px 19px; font-size:.88rem; font-weight:800; cursor:pointer; transition:background .16s, transform .16s, box-shadow .16s; box-shadow:0 10px 24px rgba(212,43,43,.18), 0 2px 5px rgba(0,0,0,.08); }
-    .btn-red:hover { background:#b52020; transform:translateY(-1px); box-shadow:0 16px 34px rgba(212,43,43,.24), 0 3px 8px rgba(0,0,0,.1); }
-    .btn-red:focus-visible,.f-input:focus-visible { outline:3px solid rgba(212,43,43,.28); outline-offset:2px; }
-    .hero { position:relative; overflow:hidden; background:var(--navy); color:#fff; padding:70px 16px; }
-    .hero::before { content:""; position:absolute; inset:0; background:radial-gradient(circle at 22% 16%, rgba(212,43,43,.34), transparent 32%), radial-gradient(circle at 88% 20%, rgba(255,255,255,.12), transparent 30%), linear-gradient(135deg, #122a50 0%, #1B3A6B 58%, #20324f 100%); }
-    .hero-inner { position:relative; max-width:1120px; margin:0 auto; display:grid; grid-template-columns:minmax(0,1fr) 360px; gap:38px; align-items:center; }
-    .eyebrow { color:#fca5a5; font-size:.72rem; font-weight:900; letter-spacing:.14em; text-transform:uppercase; margin-bottom:13px; }
-    h1 { font-size:clamp(2.25rem,4.5vw,3.8rem); line-height:1.04; font-weight:900; margin-bottom:18px; }
-    .lead { font-size:1.04rem; line-height:1.75; color:rgba(255,255,255,.78); max-width:650px; }
-    .steps { background:#fff; color:#111; border-radius:14px; padding:24px; box-shadow:0 20px 52px rgba(4,18,43,.25); }
-    .step { display:flex; gap:12px; padding:13px 0; border-bottom:1px solid var(--border); }
-    .step:last-child { border-bottom:0; }
-    .num { width:32px; height:32px; border-radius:50%; background:var(--red); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:900; flex-shrink:0; }
-    .section { padding:64px 16px; scroll-margin-top:120px; }
-    .wrap { max-width:1120px; margin:0 auto; display:grid; grid-template-columns:.82fr minmax(0,1.18fr); gap:28px; align-items:start; }
-    .wrap > * { min-width:0; }
-    .card { min-width:0; background:#fff; border:1.5px solid var(--border); border-radius:14px; padding:28px; box-shadow:0 2px 5px rgba(0,0,0,.03), 0 18px 42px rgba(27,58,107,.07); }
-    .f-label { display:block; font-size:.75rem; font-weight:900; letter-spacing:.06em; text-transform:uppercase; color:var(--navy); margin-bottom:7px; }
-    .f-input { width:100%; border:1.5px solid var(--border); border-radius:9px; padding:12px 14px; font-family:inherit; font-size:.94rem; outline:none; background:#fff; transition:border-color .16s, box-shadow .16s; }
-    .f-input:focus { border-color:var(--red); box-shadow:0 0 0 3px rgba(212,43,43,.1); }
-    .f-error { display:none; margin-top:5px; color:var(--red); font-size:.76rem; }
-    .service-chip { display:inline-flex; align-items:center; gap:8px; padding:9px 12px; border:1.5px solid var(--border); border-radius:999px; color:var(--navy); font-size:.86rem; font-weight:800; background:#fff; }
-    .booking-calendar { min-width:0; max-width:100%; overflow:hidden; border:1.5px solid var(--border); border-radius:12px; padding:16px; background:#f8fafc; margin-bottom:18px; }
-    .booking-calendar-head { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; margin-bottom:12px; }
-    .booking-status { color:#667085; font-size:.8rem; line-height:1.45; text-align:right; max-width:260px; }
-    .booking-days { min-width:0; max-width:100%; display:flex; gap:8px; overflow-x:auto; padding-bottom:8px; margin-bottom:12px; scrollbar-width:thin; }
-    .booking-day-btn,
-    .booking-slot-btn {
-      border:1.5px solid var(--border);
-      background:#fff;
-      color:#1f2937;
-      border-radius:8px;
-      font-family:inherit;
-      cursor:pointer;
-      transition:border-color .15s, background .15s, color .15s, transform .15s;
+    .btn-red:hover { background:var(--red-dark); transform:translateY(-1px); }
+    .booking-shell { max-width:1120px; margin:0 auto; padding:28px 16px 72px; }
+    .booking-top { display:flex; align-items:center; justify-content:space-between; gap:18px; margin:4px 0 26px; }
+    .booking-kicker { color:var(--muted); font-weight:700; font-size:.95rem; }
+    .booking-help {
+      display:inline-flex; align-items:center; gap:8px; background:#fff; border:1px solid var(--border); border-radius:999px;
+      color:var(--navy); font-size:.86rem; font-weight:800; padding:9px 13px;
     }
-    .booking-day-btn { min-width:106px; padding:10px 12px; text-align:left; }
-    .booking-day-btn strong,
-    .booking-slot-btn strong { display:block; color:var(--navy); font-size:.88rem; }
-    .booking-day-btn span,
-    .booking-slot-btn span { display:block; color:#667085; font-size:.76rem; margin-top:2px; }
-    .booking-day-btn.active,
-    .booking-slot-btn.active { border-color:var(--red); background:#fff5f5; color:var(--red); }
-    .booking-day-btn:disabled { opacity:.5; cursor:not-allowed; }
-    .booking-slots { min-width:0; display:grid; grid-template-columns:repeat(auto-fit, minmax(min(176px, 100%), 1fr)); gap:9px; }
-    .booking-slot-btn { padding:11px 12px; text-align:left; }
-    .booking-slot-btn:hover:not(:disabled),
-    .booking-day-btn:hover:not(:disabled) { border-color:var(--red); transform:translateY(-1px); }
-    .booking-empty { color:#667085; font-size:.86rem; line-height:1.55; background:#fff; border:1px dashed var(--border); border-radius:8px; padding:12px; }
-    .booking-error { display:none; color:var(--red); font-size:.78rem; margin-top:8px; }
-    .manual-date-wrap { display:none; margin-bottom:16px; }
+    .progress-wrap { flex:1; min-width:190px; max-width:720px; }
+    .progress-label { display:flex; align-items:center; justify-content:space-between; color:var(--muted); font-size:.92rem; font-weight:700; margin-bottom:10px; }
+    .progress-track { height:8px; border-radius:999px; background:#EDEFF0; overflow:hidden; }
+    .progress-bar { height:100%; width:16.666%; background:var(--teal); border-radius:999px; transition:width .25s ease; }
+    .booking-card {
+      background:var(--panel); border:1px solid var(--border); border-radius:18px; box-shadow:var(--shadow);
+      padding:34px; min-height:560px;
+    }
+    .wizard-head { margin-bottom:26px; }
+    .back-btn {
+      display:inline-flex; align-items:center; gap:8px; border:0; background:transparent; color:#70757B; font-weight:700;
+      margin-bottom:18px; cursor:pointer; padding:4px 0;
+    }
+    .wizard-title { font-size:clamp(2rem,4.2vw,3.1rem); line-height:1.08; color:#3B3D41; font-weight:900; margin-bottom:12px; }
+    .wizard-subtitle { color:var(--muted); font-size:1.14rem; line-height:1.55; }
+    .choice-grid { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:18px; }
+    .choice-grid.three { grid-template-columns:repeat(3, minmax(0,1fr)); }
+    .choice-grid.four { grid-template-columns:repeat(4, minmax(0,1fr)); }
+    .choice-card {
+      min-height:156px; border:2px solid var(--border); border-radius:12px; background:#fff; color:#45484D; cursor:pointer;
+      padding:22px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; gap:12px;
+      transition:border-color .16s, box-shadow .16s, transform .16s, background .16s;
+    }
+    .choice-card:hover { border-color:#B6D3D6; transform:translateY(-1px); }
+    .choice-card.active { border-color:var(--teal); background:#F2FAFB; box-shadow:0 12px 28px rgba(55,133,139,.14); }
+    .choice-icon {
+      width:68px; height:68px; border-radius:50%; display:grid; place-items:center; color:var(--teal);
+      background:#F1F7F8; border:1px solid #DDEDEE;
+    }
+    .choice-card.active .choice-icon { background:#E6F4F5; border-color:var(--teal); }
+    .choice-icon svg { width:38px; height:38px; stroke:currentColor; fill:none; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round; }
+    .choice-title { font-size:1.22rem; font-weight:900; color:#3D4045; }
+    .choice-meta { font-size:.9rem; color:var(--teal); font-weight:800; line-height:1.3; }
+    .show-more {
+      border:0; background:transparent; color:var(--teal); font-size:1rem; font-weight:800; cursor:pointer; margin-top:16px; padding:6px 0;
+    }
+    .form-grid { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:18px; }
+    .field.full { grid-column:1 / -1; }
+    .f-label { display:block; color:#404349; font-size:1rem; font-weight:900; margin-bottom:8px; }
+    .f-input {
+      width:100%; border:1.5px solid var(--border); border-radius:10px; background:#fff; color:#333;
+      padding:15px 17px; min-height:58px; outline:none; transition:border-color .15s, box-shadow .15s;
+    }
+    .f-input:focus { border-color:var(--teal); box-shadow:0 0 0 4px rgba(55,133,139,.14); }
+    textarea.f-input { min-height:132px; resize:vertical; line-height:1.55; }
+    .f-error { display:none; color:var(--red); font-size:.84rem; font-weight:700; margin-top:7px; }
+    .field.invalid .f-input { border-color:var(--red); box-shadow:0 0 0 4px rgba(212,43,43,.10); }
+    .field.invalid .f-error { display:block; }
+    .doctor-row {
+      display:flex; gap:14px; overflow-x:auto; padding:4px 0 12px; scroll-snap-type:x proximity; scrollbar-width:thin;
+      border-bottom:1px solid var(--border); margin-bottom:20px;
+    }
+    .doctor-card {
+      flex:0 0 158px; min-height:198px; border:2px solid var(--border); border-radius:12px; background:#fff; cursor:pointer;
+      display:flex; flex-direction:column; align-items:center; justify-content:space-between; gap:12px; padding:18px 12px; scroll-snap-align:start;
+      transition:border-color .16s, box-shadow .16s, transform .16s, background .16s;
+    }
+    .doctor-card.active { border-color:var(--teal); background:#F2FAFB; box-shadow:0 12px 28px rgba(55,133,139,.14); }
+    .doctor-avatar {
+      width:86px; height:86px; border-radius:50%; display:grid; place-items:center; background:#E8F3F4; color:var(--teal);
+      font-size:1.55rem; font-weight:900; border:3px solid #D4E9EB;
+    }
+    .doctor-card.active .doctor-avatar { border-color:var(--teal); }
+    .doctor-name { font-size:1rem; font-weight:900; line-height:1.25; text-align:center; color:#41444A; }
+    .doctor-spec { font-size:.86rem; color:var(--muted); text-align:center; line-height:1.3; }
+    .selected-pill { border-radius:999px; background:var(--teal); color:#fff; font-weight:900; padding:7px 18px; font-size:.88rem; }
+    .availability-note { text-align:center; color:#85898E; font-size:.95rem; margin:8px 0 22px; }
+    .calendar-grid { display:grid; grid-template-columns:minmax(0,.95fr) minmax(280px,.95fr); gap:28px; align-items:start; }
+    .section-label { display:flex; align-items:center; gap:8px; color:#404349; font-size:1.05rem; font-weight:900; margin-bottom:12px; }
+    .mini-calendar { border:1.5px solid var(--border); border-radius:12px; background:#fff; padding:16px; }
+    .month-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+    .month-title { font-size:1.05rem; font-weight:900; color:#4A4D52; }
+    .round-btn {
+      width:38px; height:38px; border-radius:50%; border:2px solid #B9D7DA; background:#fff; color:var(--teal);
+      display:grid; place-items:center; cursor:pointer; font-size:1.2rem; line-height:1;
+    }
+    .weekdays,.days-grid { display:grid; grid-template-columns:repeat(7, 1fr); text-align:center; gap:7px; }
+    .weekdays { color:#85898E; font-weight:800; margin-bottom:10px; }
+    .day-btn {
+      aspect-ratio:1; border:0; border-radius:10px; background:#fff; color:#4B4F55; cursor:pointer; font-weight:800;
+      display:grid; place-items:center; position:relative;
+    }
+    .day-btn.other { color:#BFC4C7; }
+    .day-btn:disabled { color:#C6CBCD; cursor:not-allowed; background:#fff; }
+    .day-btn.has-slots::after { content:""; width:5px; height:5px; border-radius:50%; background:#B8DADD; position:absolute; bottom:7px; }
+    .day-btn.active { background:var(--teal); color:#fff; box-shadow:0 6px 16px rgba(55,133,139,.22); }
+    .day-btn.active::after { background:#fff; }
+    .time-panel { min-height:260px; }
+    .time-grid { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:10px; }
+    .time-btn {
+      min-height:54px; border:1.5px solid var(--border); border-radius:10px; background:#fff; color:#3F4349; cursor:pointer;
+      font-weight:900; transition:border-color .15s, background .15s, color .15s;
+    }
+    .time-btn span { display:block; color:var(--muted); font-size:.73rem; font-weight:800; margin-top:2px; }
+    .time-btn.active { background:var(--teal); color:#fff; border-color:var(--teal); }
+    .time-btn.active span { color:rgba(255,255,255,.82); }
+    .empty-time {
+      border:1.5px dashed var(--border); border-radius:12px; padding:24px; color:#85898E; text-align:center; line-height:1.55;
+      background:#fff; font-weight:700;
+    }
+    .account-tabs { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); background:#F5F7F7; border-radius:12px; padding:6px; margin-bottom:24px; }
+    .account-tab {
+      border:0; background:transparent; border-radius:9px; min-height:78px; color:#6F7378; font-weight:900; cursor:pointer;
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px;
+    }
+    .account-tab.active { background:var(--teal); color:#fff; box-shadow:0 8px 18px rgba(55,133,139,.22); }
+    .summary-grid { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:14px; }
+    .summary-item { border:1px solid var(--border); border-radius:12px; background:#FAFCFC; padding:16px; }
+    .summary-item small { display:block; color:#85898E; font-size:.78rem; font-weight:900; text-transform:uppercase; letter-spacing:.04em; margin-bottom:6px; }
+    .summary-item strong { color:#3D4045; line-height:1.35; }
+    .gdpr-line { display:flex; gap:11px; color:#60656B; line-height:1.55; font-size:.94rem; margin:22px 0 6px; }
+    .gdpr-line input { width:18px; height:18px; margin-top:3px; accent-color:var(--teal); flex-shrink:0; }
+    .gdpr-line a { color:var(--teal); font-weight:900; text-decoration:underline; }
+    .wizard-actions { display:flex; gap:14px; margin-top:30px; }
+    .wizard-actions .primary {
+      flex:1; border:0; background:linear-gradient(90deg, #C9312D 0%, #E95367 100%); color:#fff; border-radius:12px;
+      min-height:60px; font-weight:900; font-size:1.04rem; cursor:pointer; box-shadow:0 12px 26px rgba(212,43,43,.18);
+    }
+    .wizard-actions .primary:disabled { opacity:.45; cursor:not-allowed; box-shadow:none; }
+    .wizard-actions .secondary {
+      border:1.5px solid var(--border); background:#fff; color:#4D5359; border-radius:12px; min-height:60px; padding:0 24px; font-weight:900; cursor:pointer;
+    }
+    .status-box { margin-top:18px; padding:16px; border-radius:12px; font-weight:900; text-align:center; display:none; }
+    .status-box.success { display:block; background:#DCFCE7; color:#166534; }
+    .status-box.error { display:block; background:#FEF2F2; color:#B91C1C; }
+    .quick-help { margin-top:22px; border-radius:14px; background:#EEF8F9; border:1px solid #D9ECEE; padding:18px; color:#486067; line-height:1.55; }
     footer { background:#111827; color:#fff; padding:34px 16px 24px; }
     .footer-link { color:rgba(255,255,255,.65); transition:color .15s; }
     .footer-link:hover { color:#fff; }
     .footer-heading { font-size:.78rem; font-weight:900; letter-spacing:.1em; text-transform:uppercase; color:#fff; margin-bottom:14px; }
-    @media (max-width:900px) { .hero-inner,.wrap { grid-template-columns:1fr; } }
+    @media (max-width:960px) {
+      .booking-top { align-items:flex-start; flex-direction:column; }
+      .progress-wrap { width:100%; max-width:none; }
+      .choice-grid,.choice-grid.three,.choice-grid.four,.calendar-grid,.summary-grid { grid-template-columns:1fr; }
+      .booking-card { padding:24px; }
+      .time-grid { grid-template-columns:repeat(2, minmax(0,1fr)); }
+    }
+    @media (max-width:640px) {
+      #navbar .max-w-6xl { height:auto !important; padding-top:12px; padding-bottom:12px; }
+      #navbar img { height:58px !important; }
+      #topbar .max-w-6xl { flex-direction:column; gap:3px; }
+      .booking-shell { padding:20px 12px 48px; }
+      .booking-card { border-radius:14px; padding:20px; min-height:520px; }
+      .wizard-title { font-size:2rem; }
+      .wizard-subtitle { font-size:1rem; }
+      .form-grid,.account-tabs { grid-template-columns:1fr; }
+      .doctor-card { flex-basis:142px; min-height:188px; }
+      .time-grid { grid-template-columns:1fr; }
+      .wizard-actions { flex-direction:column-reverse; }
+      .wizard-actions .secondary { width:100%; }
+    }
   </style>
   <script type="application/ld+json">
   {
@@ -147,46 +244,43 @@
   </script>
 </head>
 <body>
-  <div id="topbar"><div class="max-w-6xl mx-auto px-4 flex justify-between gap-4"><span>PROGRAMĂRI ONLINE</span><span>Confirmare în maxim 2 ore în timpul programului</span></div></div>
+  <div id="topbar">
+    <div class="max-w-6xl mx-auto px-4 flex justify-between gap-4">
+      <span>PROGRAMĂRI ONLINE</span>
+      <span>Confirmare în maxim 2 ore în timpul programului</span>
+    </div>
+  </div>
   <nav id="navbar">
     <div class="max-w-6xl mx-auto px-4 flex items-center justify-between gap-6" style="height:96px;">
       <a href="index.html"><img src="logo.PNG" alt="VET STUFF" style="height:76px;width:auto;" /></a>
       <div class="hidden md:flex items-center gap-6">
         <div class="nav-dropdown">
-        <a href="index.html#despre" class="nav-link" aria-haspopup="true">Despre noi</a>
-        <div class="nav-dropdown-panel" role="menu" aria-label="Despre noi">
-          <span class="nav-dd-head">Despre VET STUFF</span>
-          <a href="echipa.html">🩺 Echipa medicală</a>
+          <a href="index.html#despre" class="nav-link" aria-haspopup="true">Despre noi</a>
+          <div class="nav-dropdown-panel" role="menu" aria-label="Despre noi">
+            <span class="nav-dd-head">Despre VET STUFF</span>
+            <a href="echipa.html">Echipa medicală</a>
+          </div>
         </div>
-      </div>
         <div class="nav-dropdown">
-        <a href="servicii.html" class="nav-link" aria-haspopup="true">Servicii</a>
-        <div class="nav-dropdown-panel" role="menu" aria-label="Toate serviciile">
-          <span class="nav-dd-head">Toate serviciile</span>
-          <a href="servicii.html#srv-analize">🔬 Analize laborator</a>
-          <a href="servicii.html#srv-chirurgie">💉 Anestezie & sedare</a>
-          <a href="servicii.html#srv-cardiologie">❤️ Cardiologie</a>
-          <a href="servicii.html#srv-chirurgie">⚕️ Chirurgie generală</a>
-          <a href="servicii.html#srv-consultatii">🩺 Consultații</a>
-          <a href="servicii.html#dermatologie">🩹 Dermatologie</a>
-          <a href="servicii.html#srv-despartire">🕊️ Despărțire blândă</a>
-          <a href="servicii.html#srv-preventie">📄 Documentație & pașaport</a>
-          <a href="servicii.html#srv-imagistica">🔭 Endoscopie</a>
-          <a href="servicii.html#srv-fizioterapie">🏃 Fizioterapie</a>
-          <a href="servicii.html#geriatrie">🐾 Geriatrie</a>
-          <a href="servicii.html#srv-imagistica">📡 Imagistică</a>
-          <a href="servicii.html#srv-internare">🏥 Internare</a>
-          <a href="servicii.html#medicina-interna">🫀 Medicină internă</a>
-          <a href="servicii.html#srv-oftalmologie">👁️ Oftalmologie</a>
-          <a href="servicii.html#oncologie">🎗️ Oncologie</a>
-          <a href="servicii.html#ortopedie">🦴 Ortopedie</a>
-          <a href="servicii.html#srv-preventie">🛡️ Prevenție & vaccinare</a>
-          <a href="servicii.html#srv-internare">💊 Servicii medicale</a>
-          <a href="servicii.html#srv-stomatologie">🦷 Stomatologie</a>
-          <a href="servicii.html#srv-urgente">🚨 Urgențe</a>
-          <a href="servicii.html" class="nav-dd-all">Vezi pagina completă →</a>
+          <a href="servicii.html" class="nav-link" aria-haspopup="true">Servicii</a>
+          <div class="nav-dropdown-panel" role="menu" aria-label="Toate serviciile">
+            <span class="nav-dd-head">Toate serviciile</span>
+            <a href="servicii.html#srv-analize">Analize laborator</a>
+            <a href="servicii.html#srv-chirurgie">Anestezie & sedare</a>
+            <a href="servicii.html#srv-cardiologie">Cardiologie</a>
+            <a href="servicii.html#srv-chirurgie">Chirurgie generală</a>
+            <a href="servicii.html#srv-consultatii">Consultații</a>
+            <a href="servicii.html#dermatologie">Dermatologie</a>
+            <a href="servicii.html#srv-imagistica">Imagistică</a>
+            <a href="servicii.html#srv-internare">Internare</a>
+            <a href="servicii.html#srv-oftalmologie">Oftalmologie</a>
+            <a href="servicii.html#ortopedie">Ortopedie</a>
+            <a href="servicii.html#srv-preventie">Prevenție & vaccinare</a>
+            <a href="servicii.html#srv-stomatologie">Stomatologie</a>
+            <a href="servicii.html#srv-urgente">Urgențe</a>
+            <a href="servicii.html" class="nav-dd-all">Vezi pagina completă →</a>
+          </div>
         </div>
-      </div>
         <a class="nav-link" href="abonamente.html">Abonamente</a>
         <a class="nav-link active" href="programare.html">Programare</a>
         <a class="nav-link" href="contact.html">Contact</a>
@@ -196,82 +290,29 @@
     </div>
   </nav>
 
-  <section class="hero">
-    <div class="hero-inner">
-      <div>
-        <div class="eyebrow">Programare online</div>
-        <h1>Spune-ne ce se întâmplă, iar noi revenim cu un interval potrivit.</h1>
-        <p class="lead">Formularul adună din prima informațiile importante: date de contact, animalul, serviciul dorit și o scurtă descriere. Pentru urgențe, scrie direct pe Messenger sau folosește formularul de contact.</p>
-        <div class="flex flex-wrap gap-3 mt-8">
-          <span class="service-chip">Consultații</span>
-          <span class="service-chip">Vaccinări</span>
-          <span class="service-chip">Imagistică</span>
-          <span class="service-chip">Chirurgie</span>
+  <main class="booking-shell">
+    <div class="booking-top">
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span id="progress-text">Pas 1 din 6</span>
+          <span id="progress-title">Specia animalului</span>
         </div>
+        <div class="progress-track"><div class="progress-bar" id="progress-bar"></div></div>
       </div>
-      <aside class="steps">
-        <div class="step"><div class="num">1</div><div><strong style="color:var(--navy);">Completezi formularul</strong><p style="color:#666;font-size:.9rem;line-height:1.55;">Ne dai contextul medical pe scurt.</p></div></div>
-        <div class="step"><div class="num">2</div><div><strong style="color:var(--navy);">Verificăm disponibilitatea</strong><p style="color:#666;font-size:.9rem;line-height:1.55;">Alegem intervalul potrivit pentru serviciu.</p></div></div>
-        <div class="step"><div class="num">3</div><div><strong style="color:var(--navy);">Confirmăm programarea</strong><p style="color:#666;font-size:.9rem;line-height:1.55;">Primești confirmarea prin email, SMS sau mesaj.</p></div></div>
-      </aside>
+      <a class="booking-help" href="contact.html#contact">Urgență? Sună clinica</a>
     </div>
-  </section>
 
-  <main class="section">
-    <div class="wrap">
-      <aside class="card">
-        <div class="eyebrow">Ajutor rapid</div>
-        <h2 style="font-size:2rem;color:var(--navy);margin-bottom:12px;">Când e urgent?</h2>
-        <p style="color:#555;line-height:1.75;margin-bottom:18px;">Dacă animalul are respirație dificilă, traumă, sângerare, convulsii, abdomen dureros, imposibilitate de urinare sau stare generală foarte alterată, contactează-ne imediat pe Messenger.</p>
-        <a href="https://www.facebook.com/vetstuff" target="_blank" rel="noopener" class="btn-red" style="width:100%;background:var(--navy);">Scrie pe Messenger</a>
-        <div style="height:1px;background:var(--border);margin:24px 0;"></div>
-        <h3 style="font-size:1.3rem;color:var(--navy);margin-bottom:10px;">Pagini utile</h3>
-        <div class="flex flex-col gap-2 text-sm">
-          <a href="servicii.html" style="color:var(--red);font-weight:800;">Toate serviciile veterinare</a>
-          <a href="servicii.html#preturi" style="color:var(--red);font-weight:800;">Prețuri orientative</a>
-          <a href="abonamente.html" style="color:var(--red);font-weight:800;">Planuri de sănătate</a>
-          <a href="contact.html" style="color:var(--red);font-weight:800;">Contact & hartă</a>
-        </div>
-      </aside>
-      <section class="card">
-        <h2 style="font-size:clamp(1.7rem,3vw,2.45rem);color:var(--navy);margin-bottom:18px;">Completează formularul</h2>
-        <form id="booking-form" novalidate>
-          <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;" />
-          <div class="grid sm:grid-cols-2 gap-4 mb-4">
-            <div><label class="f-label" for="owner-name">Numele tău *</label><input id="owner-name" class="f-input" name="Nume proprietar" autocomplete="name" placeholder="Ion Popescu" /><div class="f-error"></div></div>
-            <div><label class="f-label" for="phone">Telefon *</label><input id="phone" class="f-input" name="Telefon" type="tel" autocomplete="tel" placeholder="07XX XXX XXX" /><div class="f-error"></div></div>
-          </div>
-          <div class="grid sm:grid-cols-2 gap-4 mb-4">
-            <div><label class="f-label" for="email">Email</label><input id="email" class="f-input" name="Email" type="email" autocomplete="email" placeholder="email@exemplu.ro" /><div class="f-error"></div></div>
-            <div><label class="f-label" for="pet-name">Numele animalului *</label><input id="pet-name" class="f-input" name="Nume animal" placeholder="Azor, Mițu..." /><div class="f-error"></div></div>
-          </div>
-          <div class="grid sm:grid-cols-2 gap-4 mb-4">
-            <div><label class="f-label" for="pet-type">Tipul animalului *</label><select id="pet-type" class="f-input" name="Tip animal"><option value="">Alege</option><option value="caine">Câine</option><option value="pisica">Pisică</option><option value="iepure">Iepure</option><option value="pasare">Pasăre</option><option value="reptila">Reptilă</option><option value="altul">Altul</option></select><div class="f-error"></div></div>
-            <div><label class="f-label" for="service">Serviciul dorit *</label><select id="service" class="f-input" name="Serviciu"><option value="">Alege</option><option value="consultatie_generala">Consultație generală</option><option value="vaccinare">Vaccinare</option><option value="deparazitare_interna">Deparazitare</option><option value="analize">Analize laborator</option><option value="ecografie_toracica">Imagistică / ecografie</option><option value="consultatie_chirurgie">Chirurgie</option><option value="stomatologie">Stomatologie</option><option value="ortopedie">Ortopedie</option><option value="dermatologie">Dermatologie</option><option value="oftalmologie">Oftalmologie</option></select><div class="f-error"></div></div>
-          </div>
-          <div class="booking-calendar" id="booking-calendar">
-            <div class="booking-calendar-head">
-              <label class="f-label" style="margin:0;">Medic și interval disponibil *</label>
-              <div class="booking-status" id="booking-status">Alege serviciul pentru a încărca locurile disponibile.</div>
-            </div>
-            <div class="booking-days" id="booking-days" aria-label="Zile disponibile"></div>
-            <div class="booking-slots" id="booking-slots" aria-label="Intervale disponibile"></div>
-            <input id="preferred-date" name="Data preferată" type="hidden" />
-            <input id="preferred-at" name="Interval ales" type="hidden" />
-            <input id="doctor-id" name="Medic ID" type="hidden" />
-            <input id="doctor-name" name="Medic" type="hidden" />
-            <input id="duration-minutes" name="Durată" type="hidden" />
-            <div id="slot-error" class="booking-error">Alege un interval disponibil din calendar.</div>
-          </div>
-          <div class="manual-date-wrap" id="manual-date-wrap"><label class="f-label" for="manual-preferred-date">Data preferată</label><input id="manual-preferred-date" class="f-input" type="date" /></div>
-          <div class="mb-4"><label class="f-label" for="message">Descrierea problemei</label><textarea id="message" class="f-input" name="Descriere problemă" rows="4" placeholder="Descrie pe scurt motivul vizitei..." style="resize:vertical;"></textarea></div>
-          <label style="display:flex;align-items:flex-start;gap:10px;color:#666;font-size:.82rem;line-height:1.55;margin-bottom:14px;"><input id="gdpr" type="checkbox" style="margin-top:3px;accent-color:var(--red);" /> Accept prelucrarea datelor conform <a href="privacy.html" style="color:var(--red);font-weight:700;text-decoration:underline;">Politicii de confidențialitate</a> și <a href="gdpr.html" style="color:var(--red);font-weight:700;text-decoration:underline;">Notei GDPR</a> VET STUFF *</label>
-          <div id="gdpr-error" style="display:none;color:var(--red);font-size:.78rem;margin-bottom:14px;">Te rugăm să accepți politica de confidențialitate.</div>
-          <button id="submit-btn" type="submit" class="btn-red" style="width:100%;padding:13px;">Trimite programarea</button>
-          <div id="form-success" style="display:none;margin-top:16px;padding:16px;border-radius:12px;background:#dcfce7;color:#166534;text-align:center;font-weight:800;">Cererea a fost trimisă. Echipa VET STUFF o confirmă din CRM.</div>
-        </form>
-      </section>
-    </div>
+    <section class="booking-card" aria-live="polite">
+      <form id="booking-wizard" novalidate>
+        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;" />
+        <div id="wizard-content"></div>
+        <div id="status-box" class="status-box"></div>
+        <div class="wizard-actions" id="wizard-actions"></div>
+      </form>
+      <div class="quick-help">
+        Pentru urgențe medicale, traumă, convulsii, respirație dificilă sau stare generală alterată, contactează-ne direct telefonic sau pe Messenger.
+      </div>
+    </section>
   </main>
 
   <footer>
@@ -312,273 +353,700 @@
   <div id="cookie-banner" style="display:none; position:fixed; bottom:0; left:0; right:0; z-index:9999; background:#fff; border-top:1.5px solid var(--border); padding:16px 24px; box-shadow:0 -4px 24px rgba(0,0,0,0.08);">
     <div class="max-w-6xl mx-auto" style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
       <p style="font-size:0.83rem; color:#555; line-height:1.6; margin:0; flex:1; min-width:200px;">
-        Folosim cookies pentru funcționarea corectă a site-ului (formulare, hartă). Nu folosim cookies de tracking sau publicitate.
-        <a href="cookies.html" style="color:var(--red); font-weight:600; margin-left:4px;">Politica Cookies →</a>
+        Folosim cookies pentru funcționarea corectă a site-ului. Nu folosim cookies de tracking sau publicitate.
+        <a href="cookies.html" style="color:var(--red); font-weight:700; margin-left:4px;">Politica Cookies →</a>
       </p>
-      <div style="display:flex; gap:10px; flex-shrink:0;">
-        <button id="cookie-accept" class="btn-red" style="padding:9px 20px; font-size:0.85rem;">Înțeleg, acceptă</button>
-      </div>
+      <button id="cookie-accept" class="btn-red" style="padding:9px 20px; font-size:0.85rem;">Înțeleg, acceptă</button>
     </div>
   </div>
 
   <script>
-    (function() {
-      if (!localStorage.getItem('cookie-consent')) {
-        document.getElementById('cookie-banner').style.display = 'block';
-      }
-      document.getElementById('cookie-accept').addEventListener('click', function() {
+    const stepMeta = [
+      { title: 'Specia animalului', heading: 'Ce fel de animal ai?', sub: 'Selectează specia pentru a vedea serviciile potrivite.' },
+      { title: 'Serviciul dorit', heading: 'Ce serviciu cauți?', sub: 'Alege tipul de consultație sau procedură.' },
+      { title: 'Datele animalului', heading: 'Pentru cine programezi?', sub: 'Introdu datele animalului.' },
+      { title: 'Data și ora', heading: 'Când dorești să vii?', sub: 'Alege data și ora pentru programare.' },
+      { title: 'Datele tale', heading: 'Datele tale', sub: 'Alege cum dorești să te înregistrăm pentru programare.' },
+      { title: 'Confirmare', heading: 'Verifică programarea', sub: 'Trimite cererea către echipa VET STUFF.' },
+    ];
+    const fallbackServices = [
+      { key:'consultatie_generala', label:'Consultație generală', price:'de la 150 lei' },
+      { key:'vaccinare', label:'Vaccinare', price:'de la 120 lei' },
+      { key:'deparazitare_interna', label:'Deparazitare', price:'de la 80 lei' },
+      { key:'analize', label:'Analize laborator', price:'de la 120 lei' },
+      { key:'ecografie_toracica', label:'Imagistică / ecografie', price:'de la 180 lei' },
+      { key:'consultatie_chirurgie', label:'Chirurgie', price:'la recomandare' },
+      { key:'stomatologie', label:'Stomatologie', price:'de la 200 lei' },
+      { key:'ortopedie', label:'Ortopedie', price:'de la 180 lei' },
+      { key:'dermatologie', label:'Dermatologie', price:'de la 180 lei' },
+      { key:'oftalmologie', label:'Oftalmologie', price:'de la 180 lei' },
+    ];
+    const servicePrices = Object.fromEntries(fallbackServices.map(item => [item.key, item.price]));
+    const speciesOptions = [
+      { key:'caine', label:'Câine', icon:'dog' },
+      { key:'pisica', label:'Pisică', icon:'cat' },
+      { key:'exotic', label:'Alt animal', icon:'paw' },
+    ];
+    const state = {
+      step: 1,
+      species: '',
+      serviceKey: '',
+      serviceTouched: false,
+      patientName: '',
+      breed: '',
+      age: '',
+      patientNotes: '',
+      ownerMode: 'visitor',
+      ownerFirstName: '',
+      ownerLastName: '',
+      phone: '',
+      email: '',
+      existingCode: '',
+      password: '',
+      passwordConfirm: '',
+      gdpr: false,
+      showAllServices: false,
+      services: fallbackServices,
+      doctors: [],
+      days: [],
+      selectedDoctorId: 'any',
+      selectedDate: '',
+      selectedSlot: null,
+      selectedMonth: new Date(),
+      loadingAvailability: false,
+      submitting: false,
+      success: false,
+      error: '',
+    };
+
+    const contentEl = document.getElementById('wizard-content');
+    const actionsEl = document.getElementById('wizard-actions');
+    const statusBox = document.getElementById('status-box');
+    const progressText = document.getElementById('progress-text');
+    const progressTitle = document.getElementById('progress-title');
+    const progressBar = document.getElementById('progress-bar');
+    const form = document.getElementById('booking-wizard');
+
+    (function initCookieBanner() {
+      const banner = document.getElementById('cookie-banner');
+      const accept = document.getElementById('cookie-accept');
+      if (!localStorage.getItem('cookie-consent')) banner.style.display = 'block';
+      accept.addEventListener('click', () => {
         localStorage.setItem('cookie-consent', '1');
-        document.getElementById('cookie-banner').style.display = 'none';
+        banner.style.display = 'none';
       });
     })();
 
-    const form = document.getElementById('booking-form');
-    const serviceSelect = document.getElementById('service');
-    const statusEl = document.getElementById('booking-status');
-    const daysEl = document.getElementById('booking-days');
-    const slotsEl = document.getElementById('booking-slots');
-    const slotError = document.getElementById('slot-error');
-    const manualDateWrap = document.getElementById('manual-date-wrap');
-    const bookingState = {
-      manualMode: false,
-      days: [],
-      selectedDay: '',
-      selectedSlot: null
-    };
-
     const params = new URLSearchParams(window.location.search);
     const serviceMap = {
-      consultatie: 'consultatie_generala',
-      vaccinare: 'vaccinare',
-      analize: 'analize',
-      imagistica: 'ecografie_toracica',
-      chirurgie: 'consultatie_chirurgie',
-      stomatologie: 'stomatologie',
-      ortopedie: 'ortopedie',
-      dermatologie: 'dermatologie',
-      oftalmologie: 'oftalmologie'
+      consultatie:'consultatie_generala',
+      vaccinare:'vaccinare',
+      analize:'analize',
+      imagistica:'ecografie_toracica',
+      chirurgie:'consultatie_chirurgie',
+      stomatologie:'stomatologie',
+      ortopedie:'ortopedie',
+      dermatologie:'dermatologie',
+      oftalmologie:'oftalmologie',
     };
     const serviceFromUrl = params.get('serviciu');
-    if (serviceFromUrl && serviceMap[serviceFromUrl]) serviceSelect.value = serviceMap[serviceFromUrl];
+    if (serviceFromUrl && serviceMap[serviceFromUrl]) {
+      state.serviceKey = serviceMap[serviceFromUrl];
+      state.serviceTouched = true;
+    }
 
-    function fieldError(id, msg) {
-      const el = document.getElementById(id);
-      const err = el?.parentElement?.querySelector('.f-error');
-      if (err) {
-        err.textContent = msg;
-        err.style.display = 'block';
+    function render() {
+      const meta = stepMeta[state.step - 1];
+      progressText.textContent = `Pas ${state.step} din 6`;
+      progressTitle.textContent = meta.title;
+      progressBar.style.width = `${(state.step / 6) * 100}%`;
+      statusBox.className = 'status-box';
+      statusBox.textContent = '';
+      if (state.error) {
+        statusBox.className = 'status-box error';
+        statusBox.textContent = state.error;
       }
-      if (el) {
-        el.style.borderColor = 'var(--red)';
-        el.style.boxShadow = '0 0 0 3px rgba(212,43,43,.1)';
+      if (state.success) {
+        statusBox.className = 'status-box success';
+        statusBox.textContent = 'Cererea a fost trimisă. Echipa VET STUFF o confirmă din CRM.';
       }
+      contentEl.innerHTML = `
+        <div class="wizard-head">
+          ${state.step > 1 && !state.success ? '<button class="back-btn" type="button" data-action="back">← Înapoi</button>' : ''}
+          <h1 class="wizard-title">${escapeHtml(meta.heading)}</h1>
+          <p class="wizard-subtitle">${escapeHtml(meta.sub)}</p>
+        </div>
+        ${state.success ? renderSuccessSummary() : renderStep()}
+      `;
+      actionsEl.innerHTML = state.success ? '' : renderActions();
     }
-    function clearFieldError(id) {
-      const el = document.getElementById(id);
-      const err = el?.parentElement?.querySelector('.f-error');
-      if (err) err.style.display = 'none';
-      if (el) {
-        el.style.borderColor = '';
-        el.style.boxShadow = '';
+
+    function renderStep() {
+      if (state.step === 1) return renderSpeciesStep();
+      if (state.step === 2) return renderServiceStep();
+      if (state.step === 3) return renderPatientStep();
+      if (state.step === 4) return renderAvailabilityStep();
+      if (state.step === 5) return renderOwnerStep();
+      return renderSummaryStep();
+    }
+
+    function renderSpeciesStep() {
+      return `<div class="choice-grid three">
+        ${speciesOptions.map(option => `
+          <button class="choice-card ${state.species === option.key ? 'active' : ''}" type="button" data-species="${option.key}">
+            <span class="choice-icon">${iconSvg(option.icon)}</span>
+            <span class="choice-title">${escapeHtml(option.label)}</span>
+          </button>
+        `).join('')}
+      </div>`;
+    }
+
+    function renderServiceStep() {
+      const services = (state.showAllServices ? state.services : state.services.slice(0, 8));
+      return `
+        <p style="color:var(--muted);font-size:1rem;margin-bottom:18px;">Alege un serviciu:</p>
+        <div class="choice-grid four">
+          ${services.map(service => `
+            <button class="choice-card ${state.serviceTouched && state.serviceKey === service.key ? 'active' : ''}" type="button" data-service="${escapeAttr(service.key)}">
+              <span class="choice-title">${escapeHtml(service.label)}</span>
+              <span class="choice-meta">${escapeHtml(servicePrices[service.key] || service.category || 'la recomandare')}</span>
+            </button>
+          `).join('')}
+        </div>
+        ${state.services.length > 8 ? `<button type="button" class="show-more" data-action="toggle-services">${state.showAllServices ? 'Arată mai puține' : 'Arată toate serviciile'} →</button>` : ''}
+      `;
+    }
+
+    function renderPatientStep() {
+      return `<div class="form-grid">
+        ${fieldHtml('patientName', 'Numele animalului *', 'Max, Mitu...', state.patientName, 'text')}
+        ${fieldHtml('breed', 'Rasa (opțional)', 'Ex: Labrador', state.breed, 'text')}
+        ${fieldHtml('age', 'Vârsta (opțional)', 'Ex: 3 ani', state.age, 'text')}
+        <div class="field full">
+          <label class="f-label" for="patientNotes">Mențiuni despre starea lui ${escapeHtml(state.patientName || 'animalului')} (opțional)</label>
+          <textarea class="f-input" id="patientNotes" data-field="patientNotes" placeholder="Ex: Are alergii, este timid cu străinii, motivul vizitei...">${escapeHtml(state.patientNotes)}</textarea>
+          <div class="f-error">Completează informația corect.</div>
+        </div>
+      </div>`;
+    }
+
+    function renderAvailabilityStep() {
+      const slots = availableSlotsForDate(state.selectedDate);
+      return `
+        <div class="section-label">${iconSvg('doctor')} Preferi un medic anume? <span style="color:var(--muted);font-weight:700;">(opțional)</span></div>
+        <div class="doctor-row">
+          ${renderDoctorCard({ id:'any', name:'Oricine disponibil', specialization:'Cel mai apropiat interval' })}
+          ${state.doctors.map(doctor => renderDoctorCard(doctor)).join('')}
+        </div>
+        <p class="availability-note">${state.loadingAvailability ? 'Se încarcă orele disponibile...' : 'Orele afișate sunt cele reale, disponibile în acest moment.'}</p>
+        <div class="calendar-grid">
+          <div>
+            <div class="section-label">${iconSvg('calendar')} Data</div>
+            ${renderCalendar()}
+          </div>
+          <div class="time-panel">
+            <div class="section-label">${iconSvg('clock')} Ora</div>
+            ${slots.length ? `
+              <div class="time-grid">
+                ${slots.map(slot => `
+                  <button class="time-btn ${state.selectedSlot?.id === slot.id ? 'active' : ''}" type="button" data-slot="${escapeAttr(slot.id)}">
+                    ${escapeHtml(slot.time)}
+                    ${state.selectedDoctorId === 'any' ? `<span>${escapeHtml(shortDoctorName(slot.doctorName))}</span>` : ''}
+                  </button>
+                `).join('')}
+              </div>
+              <p style="color:var(--muted);font-weight:700;margin-top:14px;">Sloturile care nu apar sunt deja ocupate sau blocate de cereri în așteptare.</p>
+            ` : `
+              <div class="empty-time">
+                Nu mai sunt ore disponibile pentru această zi${state.selectedDoctorId !== 'any' ? ' la medicul selectat' : ''}.<br>
+                Încearcă altă dată sau alege Oricine disponibil.
+              </div>
+            `}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderDoctorCard(doctor) {
+      const active = state.selectedDoctorId === doctor.id;
+      const initials = doctor.id === 'any' ? '∞' : doctorInitials(doctor.name);
+      return `
+        <button class="doctor-card ${active ? 'active' : ''}" type="button" data-doctor="${escapeAttr(doctor.id)}">
+          <span class="doctor-avatar">${escapeHtml(initials)}</span>
+          <span>
+            <span class="doctor-name">${escapeHtml(doctor.name)}</span>
+            <span class="doctor-spec">${escapeHtml(doctor.specialization || 'Medic veterinar')}</span>
+          </span>
+          ${active ? '<span class="selected-pill">Selectat</span>' : '<span style="height:32px;"></span>'}
+        </button>
+      `;
+    }
+
+    function renderCalendar() {
+      const monthDate = new Date(state.selectedMonth.getFullYear(), state.selectedMonth.getMonth(), 1);
+      const monthTitle = new Intl.DateTimeFormat('ro-RO', { month:'long', year:'numeric' }).format(monthDate);
+      const cells = calendarCells(monthDate);
+      return `<div class="mini-calendar">
+        <div class="month-head">
+          <button class="round-btn" type="button" data-action="prev-month">‹</button>
+          <div class="month-title">${escapeHtml(monthTitle)}</div>
+          <button class="round-btn" type="button" data-action="next-month">›</button>
+        </div>
+        <div class="weekdays"><span>lu</span><span>ma</span><span>mi</span><span>jo</span><span>vi</span><span>sâ</span><span>du</span></div>
+        <div class="days-grid">
+          ${cells.map(cell => {
+            const count = availableSlotsForDate(cell.key).length;
+            const active = state.selectedDate === cell.key;
+            return `<button class="day-btn ${cell.inMonth ? '' : 'other'} ${count ? 'has-slots' : ''} ${active ? 'active' : ''}" type="button" data-date="${cell.key}" ${count ? '' : 'disabled'}>${cell.day}</button>`;
+          }).join('')}
+        </div>
+      </div>`;
+    }
+
+    function renderOwnerStep() {
+      const helper = {
+        visitor: 'Programează rapid fără a crea un cont.',
+        new: 'Datele vor fi salvate pe cererea de programare și verificate de echipă.',
+        existing: 'Te identificăm în CRM după telefon și email.',
+      }[state.ownerMode];
+      return `
+        <div class="account-tabs">
+          ${accountTab('visitor', 'Vizitator')}
+          ${accountTab('new', 'Client nou')}
+          ${accountTab('existing', 'Client existent')}
+        </div>
+        <p style="color:var(--muted);font-size:1rem;margin-bottom:18px;">${escapeHtml(helper)}</p>
+        <div class="form-grid">
+          ${fieldHtml('ownerLastName', 'Nume *', 'Ex: Popescu', state.ownerLastName, 'text')}
+          ${fieldHtml('ownerFirstName', 'Prenume *', 'Ex: Ion', state.ownerFirstName, 'text')}
+          ${fieldHtml('phone', 'Telefon de contact *', '07xx xxx xxx', state.phone, 'tel', 'full')}
+          ${fieldHtml('email', 'Email *', 'email@exemplu.ro', state.email, 'email', 'full')}
+          ${state.ownerMode === 'existing' ? fieldHtml('existingCode', 'Cod client / observație (opțional)', 'Dacă îl ai la îndemână', state.existingCode, 'text', 'full') : ''}
+        </div>
+      `;
+    }
+
+    function accountTab(mode, label) {
+      return `<button type="button" class="account-tab ${state.ownerMode === mode ? 'active' : ''}" data-account-mode="${mode}">
+        ${iconSvg(mode === 'existing' ? 'users' : mode === 'new' ? 'user-plus' : 'user')}
+        <span>${escapeHtml(label)}</span>
+      </button>`;
+    }
+
+    function renderSummaryStep() {
+      const slot = state.selectedSlot;
+      return `
+        <div class="summary-grid">
+          ${summaryItem('Animal', `${speciesLabel(state.species)} · ${state.patientName}`)}
+          ${summaryItem('Serviciu', selectedService()?.label || state.serviceKey)}
+          ${summaryItem('Medic', slot?.doctorName || 'Oricine disponibil')}
+          ${summaryItem('Interval', slot ? `${formatDate(slot.start)} · ${slot.time}` : 'Neales')}
+          ${summaryItem('Proprietar', `${state.ownerLastName} ${state.ownerFirstName}`.trim())}
+          ${summaryItem('Contact', `${state.phone} · ${state.email}`)}
+        </div>
+        <label class="gdpr-line">
+          <input type="checkbox" ${state.gdpr ? 'checked' : ''} data-field="gdpr">
+          <span>Am citit și sunt de acord cu <a href="terms.html">Termenii și condițiile</a>, <a href="privacy.html">Politica de confidențialitate</a> și <a href="gdpr.html">Nota GDPR</a>.</span>
+        </label>
+      `;
+    }
+
+    function renderSuccessSummary() {
+      return `<div class="summary-grid">
+        ${summaryItem('Status', 'Cerere trimisă în CRM')}
+        ${summaryItem('Următorul pas', 'Echipa VET STUFF verifică și confirmă programarea')}
+        ${summaryItem('Animal', `${speciesLabel(state.species)} · ${state.patientName}`)}
+        ${summaryItem('Interval', state.selectedSlot ? `${formatDate(state.selectedSlot.start)} · ${state.selectedSlot.time}` : 'Ales de echipă')}
+      </div>`;
+    }
+
+    function renderActions() {
+      const canNext = canContinue();
+      if (state.step === 6) {
+        return `
+          <button class="secondary" type="button" data-action="back">Înapoi</button>
+          <button class="primary" type="submit" ${canNext && !state.submitting ? '' : 'disabled'}>${state.submitting ? 'Se trimite...' : 'Trimite cererea'} →</button>
+        `;
       }
+      return `
+        ${state.step > 1 ? '<button class="secondary" type="button" data-action="back">Înapoi</button>' : ''}
+        <button class="primary" type="button" data-action="next" ${canNext ? '' : 'disabled'}>Continuă →</button>
+      `;
     }
-    function serviceLabel() {
-      return serviceSelect.options[serviceSelect.selectedIndex]?.textContent || serviceSelect.value;
+
+    function fieldHtml(key, label, placeholder, value, type = 'text', span = '') {
+      return `<div class="field ${span === 'full' ? 'full' : ''}" data-field-wrap="${key}">
+        <label class="f-label" for="${key}">${escapeHtml(label)}</label>
+        <input class="f-input" id="${key}" data-field="${key}" type="${type}" value="${escapeAttr(value || '')}" placeholder="${escapeAttr(placeholder)}" autocomplete="${autocompleteFor(key)}">
+        <div class="f-error">${escapeHtml(errorFor(key))}</div>
+      </div>`;
     }
-    function setSelectedSlot(slot) {
-      bookingState.selectedSlot = slot;
-      document.getElementById('preferred-date').value = slot ? slot.date : '';
-      document.getElementById('preferred-at').value = slot ? slot.start : '';
-      document.getElementById('doctor-id').value = slot ? slot.doctorId : '';
-      document.getElementById('doctor-name').value = slot ? slot.doctorName : '';
-      document.getElementById('duration-minutes').value = slot ? String(slot.durationMinutes) : '';
-      slotError.style.display = 'none';
-      renderSlots();
+
+    function summaryItem(label, value) {
+      return `<div class="summary-item"><small>${escapeHtml(label)}</small><strong>${escapeHtml(value || '-')}</strong></div>`;
     }
-    function setManualMode(message) {
-      bookingState.manualMode = true;
-      bookingState.days = [];
-      bookingState.selectedDay = '';
-      setSelectedSlot(null);
-      manualDateWrap.style.display = 'block';
-      daysEl.innerHTML = '';
-      slotsEl.innerHTML = '<div class="booking-empty">Calendarul live nu este disponibil momentan. Trimite cererea, iar echipa verifică manual disponibilitatea.</div>';
-      statusEl.textContent = message || 'Calendar live indisponibil.';
+
+    function canContinue() {
+      if (state.step === 1) return Boolean(state.species);
+      if (state.step === 2) return Boolean(state.serviceTouched && state.serviceKey);
+      if (state.step === 3) return Boolean(state.patientName.trim());
+      if (state.step === 4) return Boolean(state.selectedSlot);
+      if (state.step === 5) return ownerValid();
+      if (state.step === 6) return ownerValid() && state.gdpr && !state.submitting;
+      return false;
     }
-    function updateServiceOptions(services, selectedKey) {
-      if (!Array.isArray(services) || !services.length) return;
-      const previous = serviceSelect.value || selectedKey;
-      serviceSelect.innerHTML = '<option value="">Alege</option>' + services.map(service => (
-        `<option value="${escapeAttr(service.key)}">${escapeHtml(service.label)}</option>`
-      )).join('');
-      serviceSelect.value = previous && services.some(service => service.key === previous) ? previous : selectedKey || services[0].key;
+
+    function ownerValid() {
+      return Boolean(
+        state.ownerFirstName.trim() &&
+        state.ownerLastName.trim() &&
+        validPhone(state.phone) &&
+        validEmail(state.email)
+      );
     }
+
+    function nextStep() {
+      if (!canContinue()) {
+        markInvalidFields();
+        return;
+      }
+      state.error = '';
+      state.step = Math.min(6, state.step + 1);
+      if (state.step === 4) ensureDateSelection();
+      window.scrollTo({ top: document.querySelector('.booking-shell').offsetTop - 90, behavior:'smooth' });
+      render();
+    }
+
+    function previousStep() {
+      state.error = '';
+      state.step = Math.max(1, state.step - 1);
+      window.scrollTo({ top: document.querySelector('.booking-shell').offsetTop - 90, behavior:'smooth' });
+      render();
+    }
+
+    function markInvalidFields() {
+      document.querySelectorAll('.field').forEach(item => item.classList.remove('invalid'));
+      if (state.step === 3 && !state.patientName.trim()) setInvalid('patientName');
+      if (state.step === 5 || state.step === 6) {
+        if (!state.ownerFirstName.trim()) setInvalid('ownerFirstName');
+        if (!state.ownerLastName.trim()) setInvalid('ownerLastName');
+        if (!validPhone(state.phone)) setInvalid('phone');
+        if (!validEmail(state.email)) setInvalid('email');
+      }
+      if (state.step === 6 && !state.gdpr) state.error = 'Te rugăm să accepți termenii și politica de confidențialitate.';
+      render();
+    }
+
+    function setInvalid(key) {
+      const wrap = document.querySelector(`[data-field-wrap="${key}"]`);
+      if (wrap) wrap.classList.add('invalid');
+    }
+
     async function loadAvailability() {
-      bookingState.manualMode = false;
-      setSelectedSlot(null);
-      manualDateWrap.style.display = 'none';
-      statusEl.textContent = 'Se încarcă locurile disponibile...';
-      daysEl.innerHTML = '';
-      slotsEl.innerHTML = '<div class="booking-empty">Căutăm sloturi libere în calendarul VET STUFF.</div>';
+      state.loadingAvailability = true;
+      render();
       try {
-        const url = '/api/booking?days=14' + (serviceSelect.value ? '&service=' + encodeURIComponent(serviceSelect.value) : '');
-        const response = await fetch(url);
+        const service = state.serviceKey ? `&service=${encodeURIComponent(state.serviceKey)}` : '';
+        const response = await fetch(`/api/booking?days=21${service}`);
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data.ok) throw new Error(data.error || 'Calendar indisponibil');
+        state.services = normalizeServices(data.services);
+        if (!state.serviceKey && data.selectedServiceKey) state.serviceKey = data.selectedServiceKey;
+        state.doctors = Array.isArray(data.doctors) ? data.doctors : [];
+        state.days = Array.isArray(data.days) ? data.days : [];
+        state.loadingAvailability = false;
+        ensureDateSelection();
+      } catch (err) {
+        state.loadingAvailability = false;
+        state.error = 'Calendarul live nu este disponibil momentan. Încearcă din nou sau contactează clinica.';
+        console.error('[booking calendar]', err);
+      }
+      render();
+    }
+
+    function normalizeServices(services) {
+      const source = Array.isArray(services) && services.length ? services : fallbackServices;
+      return source.map(service => ({
+        key: service.key,
+        label: service.label,
+        category: service.category,
+        price: servicePrices[service.key] || service.price || 'la recomandare',
+      }));
+    }
+
+    function ensureDateSelection() {
+      if (!state.days.length) return;
+      const currentSlots = availableSlotsForDate(state.selectedDate);
+      if (state.selectedDate && currentSlots.length) return;
+      const first = state.days.find(day => availableSlotsForDate(day.date).length);
+      state.selectedDate = first?.date || state.days[0]?.date || '';
+      state.selectedSlot = null;
+      if (state.selectedDate) {
+        const parsed = parseDateKey(state.selectedDate);
+        state.selectedMonth = new Date(parsed.getFullYear(), parsed.getMonth(), 1);
+      }
+    }
+
+    function availableSlotsForDate(dateKey) {
+      if (!dateKey) return [];
+      const day = state.days.find(item => item.date === dateKey);
+      const slots = day?.slots || [];
+      return slots
+        .filter(slot => state.selectedDoctorId === 'any' || slot.doctorId === state.selectedDoctorId)
+        .sort((a, b) => new Date(a.start) - new Date(b.start) || String(a.doctorName).localeCompare(String(b.doctorName), 'ro'));
+    }
+
+    function calendarCells(monthDate) {
+      const first = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1);
+      const start = new Date(first);
+      const mondayOffset = (first.getDay() + 6) % 7;
+      start.setDate(first.getDate() - mondayOffset);
+      return Array.from({ length:42 }, (_, index) => {
+        const date = new Date(start);
+        date.setDate(start.getDate() + index);
+        return {
+          key: dateKey(date),
+          day: date.getDate(),
+          inMonth: date.getMonth() === monthDate.getMonth(),
+        };
+      });
+    }
+
+    async function submitBooking() {
+      if (!canContinue()) {
+        markInvalidFields();
+        return;
+      }
+      state.submitting = true;
+      state.error = '';
+      render();
+      try {
+        const response = await fetch('/api/booking', {
+          method:'POST',
+          headers:{ 'Content-Type':'application/json' },
+          body: JSON.stringify({
+            ownerName: `${state.ownerLastName.trim()} ${state.ownerFirstName.trim()}`.trim(),
+            phone: state.phone.trim(),
+            email: state.email.trim(),
+            patientName: state.patientName.trim(),
+            species: state.species,
+            serviceKey: state.serviceKey,
+            doctorId: state.selectedSlot.doctorId,
+            preferredAt: state.selectedSlot.start,
+            message: composeMessage(),
+            website: form.elements.website?.value || '',
+          }),
+        });
         const data = await response.json().catch(() => ({}));
         if (!response.ok || !data.ok) {
-          setManualMode(data.error || 'Calendar live indisponibil.');
-          return;
-        }
-        updateServiceOptions(data.services, data.selectedServiceKey);
-        bookingState.days = Array.isArray(data.days) ? data.days : [];
-        const firstWithSlots = bookingState.days.find(day => day.slots?.length);
-        bookingState.selectedDay = firstWithSlots?.date || bookingState.days[0]?.date || '';
-        statusEl.textContent = firstWithSlots
-          ? 'Alege un interval. Cererea intră în CRM și este confirmată de echipă.'
-          : 'Nu am găsit sloturi libere pentru serviciul ales în următoarele zile.';
-        renderDays();
-        renderSlots();
-      } catch {
-        setManualMode('Calendar live indisponibil.');
-      }
-    }
-    function renderDays() {
-      if (!bookingState.days.length) {
-        daysEl.innerHTML = '';
-        return;
-      }
-      daysEl.innerHTML = bookingState.days.map(day => {
-        const count = day.slots?.length || 0;
-        const active = day.date === bookingState.selectedDay ? ' active' : '';
-        return `<button class="booking-day-btn${active}" type="button" data-date="${escapeAttr(day.date)}" ${count ? '' : 'disabled'}><strong>${escapeHtml(day.shortLabel || day.label)}</strong><span>${count ? `${count} locuri` : 'Fără locuri'}</span></button>`;
-      }).join('');
-      daysEl.querySelectorAll('button[data-date]').forEach(button => {
-        button.addEventListener('click', () => {
-          bookingState.selectedDay = button.dataset.date;
-          setSelectedSlot(null);
-          renderDays();
-          renderSlots();
-        });
-      });
-    }
-    function renderSlots() {
-      const day = bookingState.days.find(item => item.date === bookingState.selectedDay);
-      if (!day || !day.slots?.length) {
-        slotsEl.innerHTML = '<div class="booking-empty">Alege altă zi sau alt serviciu. Pentru urgențe, scrie direct pe Messenger.</div>';
-        return;
-      }
-      slotsEl.innerHTML = day.slots.map(slot => {
-        const active = bookingState.selectedSlot?.id === slot.id ? ' active' : '';
-        return `<button class="booking-slot-btn${active}" type="button" data-slot="${escapeAttr(slot.id)}"><strong>${escapeHtml(slot.time)} · ${escapeHtml(slot.doctorName)}</strong><span>${escapeHtml(slot.doctorSpecialization || 'Medic veterinar')} · ${slot.durationMinutes} min</span></button>`;
-      }).join('');
-      slotsEl.querySelectorAll('button[data-slot]').forEach(button => {
-        button.addEventListener('click', () => {
-          const slot = day.slots.find(item => item.id === button.dataset.slot);
-          if (slot) setSelectedSlot(slot);
-        });
-      });
-    }
-    ['owner-name','phone','email','pet-name','pet-type','service'].forEach(id => {
-      document.getElementById(id)?.addEventListener('input', () => clearFieldError(id));
-    });
-    serviceSelect.addEventListener('change', () => {
-      clearFieldError('service');
-      loadAvailability();
-    });
-
-    form.addEventListener('submit', async e => {
-      e.preventDefault();
-      let ok = true;
-      const phone = document.getElementById('phone').value.trim().replace(/\s/g,'');
-      if (!document.getElementById('owner-name').value.trim()) { fieldError('owner-name','Introduceți numele dvs.'); ok = false; } else clearFieldError('owner-name');
-      if (!phone) { fieldError('phone','Introduceți un număr de telefon.'); ok = false; }
-      else if (!/^(\+40|0)[0-9]{9}$/.test(phone)) { fieldError('phone','Număr invalid (ex: 0712 345 678).'); ok = false; } else clearFieldError('phone');
-      const email = document.getElementById('email').value.trim();
-      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { fieldError('email','Email invalid.'); ok = false; } else clearFieldError('email');
-      if (!document.getElementById('pet-name').value.trim()) { fieldError('pet-name','Introduceți numele animalului.'); ok = false; } else clearFieldError('pet-name');
-      if (!document.getElementById('pet-type').value) { fieldError('pet-type','Selectați tipul animalului.'); ok = false; } else clearFieldError('pet-type');
-      if (!serviceSelect.value) { fieldError('service','Selectați serviciul dorit.'); ok = false; } else clearFieldError('service');
-      if (!bookingState.manualMode && !bookingState.selectedSlot) {
-        slotError.style.display = 'block';
-        ok = false;
-      }
-      const gdpr = document.getElementById('gdpr').checked;
-      document.getElementById('gdpr-error').style.display = gdpr ? 'none' : 'block';
-      if (!gdpr) ok = false;
-      if (!ok) return;
-
-      const btn = document.getElementById('submit-btn');
-      btn.disabled = true;
-      btn.textContent = 'Se trimite...';
-
-      try {
-        const response = bookingState.manualMode
-          ? await submitManualLead()
-          : await submitCrmBookingRequest();
-        if (response.ok) {
-          document.getElementById('form-success').style.display = 'block';
-          form.querySelectorAll('input,select,textarea,button').forEach(el => { el.disabled = true; el.style.opacity = '.58'; });
-          return;
-        }
-        const data = await response.json().catch(() => ({}));
-        if (response.status === 409) {
-          slotError.textContent = data.error || 'Slotul nu mai este disponibil. Alege alt interval.';
-          slotError.style.display = 'block';
-          await loadAvailability();
-        } else {
-          alert(data.error || 'A apărut o eroare. Te rugăm să ne scrii pe Messenger sau pe email.');
-        }
-      } catch {
-        alert('A apărut o eroare de rețea. Te rugăm să ne scrii pe Messenger sau pe email.');
-      }
-      btn.disabled = false;
-      btn.textContent = 'Trimite programarea';
-    });
-
-    function submitCrmBookingRequest() {
-      return fetch('/api/booking', {
-        method:'POST',
-        headers:{ 'Content-Type':'application/json' },
-        body: JSON.stringify({
-          ownerName: document.getElementById('owner-name').value.trim(),
-          phone: document.getElementById('phone').value.trim(),
-          email: document.getElementById('email').value.trim(),
-          patientName: document.getElementById('pet-name').value.trim(),
-          species: document.getElementById('pet-type').value,
-          serviceKey: serviceSelect.value,
-          doctorId: document.getElementById('doctor-id').value,
-          preferredAt: document.getElementById('preferred-at').value,
-          message: document.getElementById('message').value.trim(),
-          website: form.elements.website?.value || ''
-        })
-      });
-    }
-    function submitManualLead() {
-      return fetch('/api/airtable', {
-        method:'POST',
-        headers:{ 'Content-Type':'application/json' },
-        body: JSON.stringify({
-          table:'Programari',
-          fields:{
-            'Name': document.getElementById('owner-name').value.trim(),
-            'Telefon': document.getElementById('phone').value.trim(),
-            'Email': document.getElementById('email').value.trim(),
-            'Nume animal': document.getElementById('pet-name').value.trim(),
-            'Tip animal': document.getElementById('pet-type').value,
-            'Serviciu': serviceLabel(),
-            'Data preferată': document.getElementById('manual-preferred-date').value,
-            'Descriere': document.getElementById('message').value.trim(),
-            'website': form.elements.website?.value || ''
+          if (response.status === 409) {
+            state.error = data.error || 'Slotul nu mai este disponibil. Alege alt interval.';
+            state.step = 4;
+            state.selectedSlot = null;
+            await loadAvailability();
+          } else {
+            state.error = data.error || 'Cererea nu a putut fi trimisă.';
           }
-        })
-      });
+          state.submitting = false;
+          render();
+          return;
+        }
+        state.success = true;
+        state.submitting = false;
+        render();
+      } catch {
+        state.submitting = false;
+        state.error = 'A apărut o eroare de rețea. Te rugăm să ne contactezi telefonic sau pe Messenger.';
+        render();
+      }
     }
+
+    function composeMessage() {
+      return [
+        state.patientNotes ? `Mențiuni: ${state.patientNotes.trim()}` : '',
+        state.breed ? `Rasă: ${state.breed.trim()}` : '',
+        state.age ? `Vârstă: ${state.age.trim()}` : '',
+        state.ownerMode ? `Tip înregistrare: ${accountModeLabel(state.ownerMode)}` : '',
+        state.existingCode ? `Cod/observație client existent: ${state.existingCode.trim()}` : '',
+      ].filter(Boolean).join('\n');
+    }
+
+    document.addEventListener('click', event => {
+      const action = event.target.closest('[data-action]')?.dataset.action;
+      if (action === 'next') nextStep();
+      if (action === 'back') previousStep();
+      if (action === 'toggle-services') {
+        state.showAllServices = !state.showAllServices;
+        render();
+      }
+      if (action === 'prev-month') {
+        state.selectedMonth = new Date(state.selectedMonth.getFullYear(), state.selectedMonth.getMonth() - 1, 1);
+        render();
+      }
+      if (action === 'next-month') {
+        state.selectedMonth = new Date(state.selectedMonth.getFullYear(), state.selectedMonth.getMonth() + 1, 1);
+        render();
+      }
+      const species = event.target.closest('[data-species]')?.dataset.species;
+      if (species) {
+        state.species = species;
+        render();
+      }
+      const service = event.target.closest('[data-service]')?.dataset.service;
+      if (service) {
+        state.serviceKey = service;
+        state.serviceTouched = true;
+        state.selectedSlot = null;
+        state.selectedDate = '';
+        loadAvailability();
+      }
+      const doctor = event.target.closest('[data-doctor]')?.dataset.doctor;
+      if (doctor) {
+        state.selectedDoctorId = doctor;
+        state.selectedSlot = null;
+        ensureDateSelection();
+        render();
+      }
+      const date = event.target.closest('[data-date]')?.dataset.date;
+      if (date) {
+        state.selectedDate = date;
+        state.selectedSlot = null;
+        render();
+      }
+      const slotId = event.target.closest('[data-slot]')?.dataset.slot;
+      if (slotId) {
+        const slot = availableSlotsForDate(state.selectedDate).find(item => item.id === slotId);
+        if (slot) {
+          state.selectedSlot = slot;
+          render();
+        }
+      }
+      const accountMode = event.target.closest('[data-account-mode]')?.dataset.accountMode;
+      if (accountMode) {
+        state.ownerMode = accountMode;
+        render();
+      }
+    });
+
+    document.addEventListener('input', event => {
+      const key = event.target.dataset.field;
+      if (!key || !(key in state)) return;
+      if (event.target.type === 'checkbox') state[key] = event.target.checked;
+      else state[key] = event.target.value;
+      state.error = '';
+      renderActionsOnly();
+    });
+
+    document.addEventListener('change', event => {
+      const key = event.target.dataset.field;
+      if (!key || !(key in state)) return;
+      if (event.target.type === 'checkbox') state[key] = event.target.checked;
+      else state[key] = event.target.value;
+      state.error = '';
+      renderActionsOnly();
+    });
+
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      submitBooking();
+    });
+
+    function renderActionsOnly() {
+      actionsEl.innerHTML = state.success ? '' : renderActions();
+      if (state.error) {
+        state.error = '';
+        statusBox.className = 'status-box';
+        statusBox.textContent = '';
+      }
+    }
+
+    function selectedService() {
+      return state.services.find(service => service.key === state.serviceKey) || fallbackServices.find(service => service.key === state.serviceKey);
+    }
+
+    function accountModeLabel(mode) {
+      if (mode === 'new') return 'Client nou';
+      if (mode === 'existing') return 'Client existent';
+      return 'Vizitator';
+    }
+
+    function speciesLabel(value) {
+      return speciesOptions.find(item => item.key === value)?.label || value || 'Animal';
+    }
+
+    function validPhone(value) {
+      return /^(\+40|0)[0-9]{9}$/.test(String(value || '').replace(/\s/g, ''));
+    }
+
+    function validEmail(value) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || '').trim());
+    }
+
+    function errorFor(key) {
+      if (key === 'phone') return 'Număr invalid (ex: 0712 345 678).';
+      if (key === 'email') return 'Email invalid.';
+      return 'Câmp obligatoriu.';
+    }
+
+    function autocompleteFor(key) {
+      if (key === 'ownerFirstName') return 'given-name';
+      if (key === 'ownerLastName') return 'family-name';
+      if (key === 'phone') return 'tel';
+      if (key === 'email') return 'email';
+      return 'off';
+    }
+
+    function parseDateKey(key) {
+      const [year, month, day] = String(key || '').split('-').map(Number);
+      return new Date(year, month - 1, day);
+    }
+
+    function dateKey(date) {
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    }
+
+    function formatDate(value) {
+      return new Intl.DateTimeFormat('ro-RO', {
+        weekday:'short',
+        day:'numeric',
+        month:'long',
+        timeZone:'Europe/Bucharest',
+      }).format(new Date(value));
+    }
+
+    function doctorInitials(name) {
+      const parts = String(name || '').replace(/^Dr\.?\s*/i, '').split(/\s+/).filter(Boolean);
+      return parts.slice(0, 2).map(part => part[0]).join('').toUpperCase() || 'VS';
+    }
+
+    function shortDoctorName(name) {
+      return String(name || '').replace(/^Dr\.?\s*/i, '').split(/\s+/).slice(0, 2).join(' ');
+    }
+
+    function iconSvg(name) {
+      const icons = {
+        dog:'<svg viewBox="0 0 24 24"><path d="M5 11V8l3-3 4 3 4-3 3 3v3"/><path d="M6 11h12l-1 7H7l-1-7Z"/><path d="M9 14h.01M15 14h.01M11 17h2"/></svg>',
+        cat:'<svg viewBox="0 0 24 24"><path d="M5 8 8 4l2 3h4l2-3 3 4v7a7 7 0 0 1-14 0V8Z"/><path d="M9 13h.01M15 13h.01M11 16h2"/></svg>',
+        paw:'<svg viewBox="0 0 24 24"><circle cx="6.5" cy="10" r="2"/><circle cx="10" cy="6.5" r="2"/><circle cx="14" cy="6.5" r="2"/><circle cx="17.5" cy="10" r="2"/><path d="M8 17c0-2.2 1.8-4 4-4s4 1.8 4 4c0 1.7-1.3 3-3 3h-2c-1.7 0-3-1.3-3-3Z"/></svg>',
+        doctor:'<svg viewBox="0 0 24 24"><path d="M7 4v4a5 5 0 0 0 10 0V4"/><path d="M7 4H5m12 0h2"/><path d="M12 13v3a4 4 0 0 0 8 0v-2"/><circle cx="20" cy="12" r="2"/></svg>',
+        calendar:'<svg viewBox="0 0 24 24"><path d="M7 3v4M17 3v4"/><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16"/></svg>',
+        clock:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/></svg>',
+        user:'<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/></svg>',
+        'user-plus':'<svg viewBox="0 0 24 24"><circle cx="10" cy="8" r="4"/><path d="M3 21a7 7 0 0 1 14 0"/><path d="M19 8v6M16 11h6"/></svg>',
+        users:'<svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0"/><path d="M16 5a4 4 0 0 1 0 6"/><path d="M18 14a6 6 0 0 1 4 6"/></svg>',
+      };
+      return icons[name] || icons.paw;
+    }
+
     function escapeHtml(value) {
       return String(value || '').replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[char]));
     }
+
     function escapeAttr(value) {
       return escapeHtml(value).replace(/`/g, '&#96;');
     }
 
+    render();
     loadAvailability();
   </script>
 </body>
