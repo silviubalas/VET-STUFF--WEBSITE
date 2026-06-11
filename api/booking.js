@@ -1,5 +1,6 @@
 import { enforceOrigin, getClientIp, isHoneypotFilled, rateLimit, verifyTurnstile } from './_security.js';
 import { notifyFormspree } from './_notifications.js';
+import { verifyAccountToken, patientBelongsToOwners, supabaseEnv } from './_accounts.js';
 
 const DEFAULT_TIMEZONE = 'Europe/Bucharest';
 const WEEKDAY_IDS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
@@ -126,6 +127,18 @@ async function handlePost(req, res) {
 
     // Website-ul trimite DOAR o cerere (lead). Owner / patient / programarea NU se
     // creeaza aici - se inregistreaza exclusiv din CRM, pre-completate din aceste date.
+    // Excepție controlată: client logat care a ales un animal EXISTENT. Atașăm
+    // owner_id/patient_id doar după verificarea token-ului semnat + apartenența animalului
+    // (nu se creează nimic, doar se leagă de fișe care există deja în CRM).
+    const account = verifyAccountToken(req.body?.accountToken);
+    if (account?.ownerIds?.length && req.body?.patientId) {
+      const owned = await patientBelongsToOwners(supabaseEnv(), req.body.patientId, account.ownerIds);
+      if (owned) {
+        payload.owner_id = owned.owner_id;
+        payload.patient_id = owned.id;
+      }
+    }
+
     const created = await supabaseFetch('appointment_requests', {
       method: 'POST',
       body: payload,
