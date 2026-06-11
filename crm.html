@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VET STUFF CRM | Autentificare platformă clinică veterinară</title>
+  <meta name="description" content="VET STUFF CRM este platforma internă de lucru pentru echipa clinicii veterinare VET STUFF Bacău: programări, pacienți, fișe medicale, vaccinuri, facturi și comunicare cu clienții." />
+  <meta name="keywords" content="VET STUFF CRM, CRM veterinar, platformă clinică veterinară, software veterinar Bacău, autentificare VET STUFF" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://vet-stuff.ro/crm.html" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://vet-stuff.ro/crm.html" />
+  <meta property="og:title" content="VET STUFF CRM" />
+  <meta property="og:description" content="Punctul public de acces către platforma internă VET STUFF CRM. Datele clinicii sunt protejate prin autentificare." />
+  <meta property="og:image" content="https://vet-stuff.ro/imagini/slide1.webp" />
+  <meta property="og:locale" content="ro_RO" />
+  <meta property="og:site_name" content="VET STUFF" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="VET STUFF CRM" />
+  <meta name="twitter:description" content="Platforma internă VET STUFF pentru managementul clinicii veterinare." />
+  <meta name="twitter:image" content="https://vet-stuff.ro/imagini/slide1.webp" />
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="favicon-192x192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/css/tailwind.generated.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "VET STUFF CRM",
+    "url": "https://vet-stuff.ro/crm.html",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "description": "Platforma internă VET STUFF pentru programări, pacienți, fișe medicale, vaccinuri, facturi și comunicare cu clienții.",
+    "publisher": {
+      "@type": "VeterinaryCare",
+      "name": "VET STUFF",
+      "url": "https://vet-stuff.ro"
+    },
+    "isAccessibleForFree": false
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"name":"Acasă","item":"https://vet-stuff.ro/"},
+      {"@type":"ListItem","position":2,"name":"VET STUFF CRM","item":"https://vet-stuff.ro/crm.html"}
+    ]
+  }
+  </script>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; color: #1a1a1a; background: #f6f8fc; overflow-x: hidden; }
+    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; letter-spacing: 0; }
+    :root {
+      --red: #D42B2B;
+      --navy: #1B3A6B;
+      --gray: #7A8BA0;
+      --border: #e5e7eb;
+      --soft: #F8F7F4;
+    }
+    #topbar {
+      background: var(--navy);
+      font-size: .78rem;
+      color: rgba(255,255,255,.86);
+      padding: 7px 0;
+    }
+    #topbar a { color: rgba(255,255,255,.86); }
+    #topbar a:hover { color: #fff; }
+    #navbar {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      box-shadow: 0 8px 24px rgba(27,58,107,.06);
+    }
+    .nav-link {
+      font-size: .9rem;
+      font-weight: 600;
+      color: #222;
+      white-space: nowrap;
+      transition: color .15s;
+    }
+    .nav-link:hover,
+    .nav-link.active { color: var(--red); }
+    .btn-red,
+    .btn-navy {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 0 18px;
+      border-radius: 7px;
+      font-size: .9rem;
+      font-weight: 800;
+      text-decoration: none;
+      transition: background .15s, color .15s, border-color .15s, transform .15s;
+      white-space: nowrap;
+    }
+    .btn-red {
+      background: var(--red);
+      color: #fff;
+      border: 1.5px solid var(--red);
+    }
+    .btn-red:hover { background: #b52020; border-color: #b52020; transform: translateY(-1px); }
+    .btn-navy {
+      background: #fff;
+      color: var(--navy);
+      border: 1.5px solid rgba(27,58,107,.22);
+    }
+    .btn-navy:hover { border-color: var(--navy); transform: translateY(-1px); }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(27,58,107,.96), rgba(27,58,107,.82)),
+        url('imagini/slide1.webp') center/cover no-repeat;
+      color: #fff;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 80% 20%, rgba(212,43,43,.32), transparent 32%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      min-height: 520px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr);
+      gap: 44px;
+      align-items: center;
+      padding: 74px 16px;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #FCA5A5;
+      font-size: .76rem;
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      max-width: 760px;
+      font-size: clamp(2.25rem, 5vw, 4.4rem);
+      line-height: 1.02;
+      font-weight: 900;
+      margin-bottom: 20px;
+    }
+    .hero p {
+      max-width: 650px;
+      color: rgba(255,255,255,.86);
+      font-size: 1.08rem;
+      line-height: 1.75;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+    .product-card {
+      background: rgba(255,255,255,.96);
+      color: var(--navy);
+      border: 1px solid rgba(255,255,255,.42);
+      border-radius: 24px;
+      padding: 26px;
+      box-shadow: 0 28px 80px rgba(0,0,0,.22);
+    }
+    .product-window {
+      border: 1px solid #E3E9F2;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #fff;
+      margin-bottom: 20px;
+    }
+    .window-bar {
+      height: 42px;
+      background: #64C4D2;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 14px;
+    }
+    .dot { width: 12px; height: 12px; border-radius: 50%; background: #ef4444; }
+    .dot:nth-child(2) { background: #facc15; }
+    .dot:nth-child(3) { background: #22c55e; }
+    .product-body { padding: 20px; display: grid; gap: 12px; }
+    .mini-row {
+      display: grid;
+      grid-template-columns: 42px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 13px;
+      border: 1px solid #EEF1F6;
+      border-radius: 14px;
+      background: #FAFBFE;
+    }
+    .mini-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: #FAECE7;
+      color: var(--red);
+      font-weight: 900;
+    }
+    .mini-row strong { display: block; color: var(--navy); font-size: .95rem; }
+    .mini-row span { display: block; color: var(--gray); font-size: .78rem; margin-top: 3px; }
+    .mini-pill {
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: #EEF1F8;
+      color: var(--navy);
+      font-size: .72rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    .section {
+      padding: 72px 16px;
+    }
+    .section-title {
+      font-size: clamp(1.9rem, 3.5vw, 3rem);
+      color: var(--navy);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+    .section-lead {
+      max-width: 720px;
+      color: #526176;
+      font-size: 1rem;
+      line-height: 1.75;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 34px;
+    }
+    .feature-card,
+    .notice-card {
+      background: #fff;
+      border: 1px solid #E5EAF2;
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 12px 30px rgba(27,58,107,.06);
+    }
+    .feature-card h3,
+    .notice-card h2 {
+      color: var(--navy);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.02rem;
+      font-weight: 900;
+      margin-bottom: 9px;
+    }
+    .feature-card p,
+    .notice-card p {
+      color: #526176;
+      font-size: .92rem;
+      line-height: 1.65;
+    }
+    .security-band {
+      background: #fff;
+      border-top: 1px solid #E5EAF2;
+      border-bottom: 1px solid #E5EAF2;
+    }
+    .notice-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(300px, .65fr);
+      gap: 22px;
+      align-items: stretch;
+    }
+    .login-panel {
+      background: var(--navy);
+      color: #fff;
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 22px 60px rgba(27,58,107,.22);
+    }
+    .login-panel h2 {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.28rem;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+    .login-panel p { color: rgba(255,255,255,.75); line-height: 1.65; margin-bottom: 22px; }
+    .login-panel .btn-red { width: 100%; min-height: 48px; }
+    footer {
+      background: #111827;
+      color: #fff;
+      padding: 34px 16px 24px;
+    }
+    .footer-link { color: rgba(255,255,255,.68); transition: color .15s; }
+    .footer-link:hover { color: #fff; }
+    .footer-heading {
+      font-size: .78rem;
+      font-weight: 900;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: #fff;
+      margin-bottom: 14px;
+    }
+    @media (max-width: 900px) {
+      .hero-inner,
+      .feature-grid,
+      .notice-grid { grid-template-columns: 1fr; }
+      .hero-inner { padding: 54px 16px; }
+      .product-card { order: -1; }
+    }
+    @media (max-width: 640px) {
+      .hero-actions,
+      .nav-actions { flex-direction: column; align-items: stretch; }
+      .btn-red,
+      .btn-navy { width: 100%; }
+      .product-card,
+      .feature-card,
+      .notice-card,
+      .login-panel { border-radius: 16px; padding: 20px; }
+      .mini-row { grid-template-columns: 1fr; }
+      .mini-pill { justify-self: start; }
+    }
+  </style>
+</head>
+<body>
+  <div id="topbar">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <a href="index.html">VET STUFF · Clinică veterinară Bacău</a>
+      <span>CRM-ul este disponibil doar pentru utilizatori autorizați</span>
+    </div>
+  </div>
+
+  <nav id="navbar">
+    <div class="max-w-6xl mx-auto px-4 flex items-center justify-between gap-6" style="min-height:92px;">
+      <a href="index.html" aria-label="VET STUFF acasă">
+        <img src="logo.PNG" alt="VET STUFF" style="height:74px;width:auto;" />
+      </a>
+      <div class="hidden md:flex items-center gap-6">
+        <a class="nav-link" href="index.html#despre">Despre noi</a>
+        <a class="nav-link" href="servicii.html">Servicii</a>
+        <a class="nav-link" href="abonamente.html">Abonamente</a>
+        <a class="nav-link" href="programare.html">Programare</a>
+        <a class="nav-link" href="contact.html">Contact</a>
+        <a class="nav-link active" href="crm.html">CRM</a>
+      </div>
+      <div class="nav-actions flex items-center gap-3">
+        <a class="btn-navy" href="index.html">Website</a>
+        <a class="btn-red" href="https://crm.vet-stuff.ro" rel="noopener">Autentificare CRM</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div class="hero-inner max-w-6xl mx-auto">
+        <div>
+          <div class="eyebrow">VET STUFF CRM</div>
+          <h1>Platforma internă pentru managementul clinicii VET STUFF.</h1>
+          <p>
+            Accesul către dashboard, programări, pacienți, fișe medicale, vaccinuri, facturi și comunicarea cu clienții este protejat prin autentificare. Această pagină este doar punctul public de intrare către CRM.
+          </p>
+          <div class="hero-actions">
+            <a class="btn-red" href="https://crm.vet-stuff.ro" rel="noopener">Autentificare CRM</a>
+            <a class="btn-navy" href="programare.html">Programare online clienți</a>
+          </div>
+        </div>
+
+        <div class="product-card" aria-label="Previzualizare VET STUFF CRM">
+          <div class="product-window">
+            <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+            <div class="product-body">
+              <div class="mini-row">
+                <div class="mini-icon">VS</div>
+                <div><strong>Programări</strong><span>Calendar clinică, statusuri și medici</span></div>
+                <div class="mini-pill">astăzi</div>
+              </div>
+              <div class="mini-row">
+                <div class="mini-icon">FM</div>
+                <div><strong>Fișe medicale</strong><span>Istoric pacient, tratamente și recomandări</span></div>
+                <div class="mini-pill">privat</div>
+              </div>
+              <div class="mini-row">
+                <div class="mini-icon">SMS</div>
+                <div><strong>Notificări clienți</strong><span>Email, SMS și reminders configurabile</span></div>
+                <div class="mini-pill">automat</div>
+              </div>
+            </div>
+          </div>
+          <p style="color:#526176;line-height:1.65;font-size:.92rem;">
+            Datele operaționale ale clinicii nu sunt publice și nu sunt indexate de motoarele de căutare. Accesul se face doar cu utilizator autorizat.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="max-w-6xl mx-auto">
+        <p class="eyebrow" style="color:var(--red);">Ce gestionează CRM-ul</p>
+        <h2 class="section-title">Un singur loc pentru activitatea zilnică a clinicii.</h2>
+        <p class="section-lead">
+          VET STUFF CRM este construit pentru fluxul real al unei clinici veterinare: de la programare și consultație până la facturare, reminders și comunicarea cu proprietarii.
+        </p>
+
+        <div class="feature-grid">
+          <article class="feature-card">
+            <h3>Programări și sarcini</h3>
+            <p>Calendar, taskuri, statusuri, medici și activitatea zilnică a echipei într-un dashboard compact.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Pacienți și clienți</h3>
+            <p>Fișe pentru animale, proprietari, istoric medical, vaccinuri, deparazitări și documente asociate.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Comunicare și notificări</h3>
+            <p>Mesaje email și SMS, template-uri, reminders pentru programări și notificări personalizabile.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Fișe medicale</h3>
+            <p>Consultații, diagnostice, tratamente, recomandări, planuri de sănătate și documente printabile.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Facturi și gestiune</h3>
+            <p>Restanțe, servicii, produse, stocuri și raportare operațională pentru echipa clinicii.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Integrări</h3>
+            <p>Zona pregătită pentru servicii externe precum e-Factura, notificări, automatizări și importuri.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section security-band">
+      <div class="max-w-6xl mx-auto notice-grid">
+        <div class="notice-card">
+          <h2>De ce această pagină apare pe Google, dar CRM-ul nu?</h2>
+          <p>
+            Google poate indexa această pagină publică pentru ca utilizatorii autorizați să găsească rapid punctul oficial de acces. Interiorul CRM-ului rămâne separat, protejat prin autentificare și nu trebuie indexat public.
+          </p>
+        </div>
+        <div class="login-panel">
+          <h2>Acces echipă VET STUFF</h2>
+          <p>Intră în platforma CRM doar dacă ai cont activ în clinica VET STUFF.</p>
+          <a class="btn-red" href="https://crm.vet-stuff.ro" rel="noopener">Autentificare CRM</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="max-w-6xl mx-auto">
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-8" style="padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,.12);">
+        <div>
+          <div class="footer-heading">Navigare</div>
+          <ul style="display:flex;flex-direction:column;gap:9px;font-size:.88rem;">
+            <li><a class="footer-link" href="index.html">Acasă</a></li>
+            <li><a class="footer-link" href="servicii.html">Servicii</a></li>
+            <li><a class="footer-link" href="echipa.html">Echipa medicală</a></li>
+            <li><a class="footer-link" href="abonamente.html">Abonamente</a></li>
+            <li><a class="footer-link" href="programare.html">Programare</a></li>
+            <li><a class="footer-link" href="contact.html">Contact</a></li>
+            <li><a class="footer-link" href="crm.html">VET STUFF CRM</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-heading">Contact</div>
+          <p style="font-size:.85rem;color:rgba(255,255,255,.65);line-height:1.75;">Str. Mioriței nr. 10<br/>Bacău, România</p>
+          <a href="mailto:vet.stuff@yahoo.com" class="footer-link" style="display:block;margin-top:8px;font-size:.85rem;">vet.stuff@yahoo.com</a>
+          <a href="contact.html#contact" class="footer-link" style="display:block;margin-top:4px;font-size:.85rem;">Formular & Messenger</a>
+        </div>
+        <div>
+          <div class="footer-heading">Legal</div>
+          <ul style="display:flex;flex-direction:column;gap:9px;font-size:.88rem;">
+            <li><a class="footer-link" href="terms.html">Termeni și condiții</a></li>
+            <li><a class="footer-link" href="privacy.html">Confidențialitate</a></li>
+            <li><a class="footer-link" href="cookies.html">Politica Cookies</a></li>
+            <li><a class="footer-link" href="gdpr.html">GDPR</a></li>
+          </ul>
+        </div>
+      </div>
+      <div style="padding-top:18px;font-size:.78rem;color:rgba(255,255,255,.5);text-align:center;">© 2026 VET STUFF · Toate drepturile rezervate</div>
+    </div>
+  </footer>
+</body>
+</html>
