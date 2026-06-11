@@ -92,13 +92,43 @@
     .step:last-child { border-bottom:0; }
     .num { width:32px; height:32px; border-radius:50%; background:var(--red); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:900; flex-shrink:0; }
     .section { padding:64px 16px; scroll-margin-top:120px; }
-    .wrap { max-width:1120px; margin:0 auto; display:grid; grid-template-columns:.82fr 1.18fr; gap:28px; align-items:start; }
-    .card { background:#fff; border:1.5px solid var(--border); border-radius:14px; padding:28px; box-shadow:0 2px 5px rgba(0,0,0,.03), 0 18px 42px rgba(27,58,107,.07); }
+    .wrap { max-width:1120px; margin:0 auto; display:grid; grid-template-columns:.82fr minmax(0,1.18fr); gap:28px; align-items:start; }
+    .wrap > * { min-width:0; }
+    .card { min-width:0; background:#fff; border:1.5px solid var(--border); border-radius:14px; padding:28px; box-shadow:0 2px 5px rgba(0,0,0,.03), 0 18px 42px rgba(27,58,107,.07); }
     .f-label { display:block; font-size:.75rem; font-weight:900; letter-spacing:.06em; text-transform:uppercase; color:var(--navy); margin-bottom:7px; }
     .f-input { width:100%; border:1.5px solid var(--border); border-radius:9px; padding:12px 14px; font-family:inherit; font-size:.94rem; outline:none; background:#fff; transition:border-color .16s, box-shadow .16s; }
     .f-input:focus { border-color:var(--red); box-shadow:0 0 0 3px rgba(212,43,43,.1); }
     .f-error { display:none; margin-top:5px; color:var(--red); font-size:.76rem; }
     .service-chip { display:inline-flex; align-items:center; gap:8px; padding:9px 12px; border:1.5px solid var(--border); border-radius:999px; color:var(--navy); font-size:.86rem; font-weight:800; background:#fff; }
+    .booking-calendar { min-width:0; max-width:100%; overflow:hidden; border:1.5px solid var(--border); border-radius:12px; padding:16px; background:#f8fafc; margin-bottom:18px; }
+    .booking-calendar-head { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; margin-bottom:12px; }
+    .booking-status { color:#667085; font-size:.8rem; line-height:1.45; text-align:right; max-width:260px; }
+    .booking-days { min-width:0; max-width:100%; display:flex; gap:8px; overflow-x:auto; padding-bottom:8px; margin-bottom:12px; scrollbar-width:thin; }
+    .booking-day-btn,
+    .booking-slot-btn {
+      border:1.5px solid var(--border);
+      background:#fff;
+      color:#1f2937;
+      border-radius:8px;
+      font-family:inherit;
+      cursor:pointer;
+      transition:border-color .15s, background .15s, color .15s, transform .15s;
+    }
+    .booking-day-btn { min-width:106px; padding:10px 12px; text-align:left; }
+    .booking-day-btn strong,
+    .booking-slot-btn strong { display:block; color:var(--navy); font-size:.88rem; }
+    .booking-day-btn span,
+    .booking-slot-btn span { display:block; color:#667085; font-size:.76rem; margin-top:2px; }
+    .booking-day-btn.active,
+    .booking-slot-btn.active { border-color:var(--red); background:#fff5f5; color:var(--red); }
+    .booking-day-btn:disabled { opacity:.5; cursor:not-allowed; }
+    .booking-slots { min-width:0; display:grid; grid-template-columns:repeat(auto-fit, minmax(min(176px, 100%), 1fr)); gap:9px; }
+    .booking-slot-btn { padding:11px 12px; text-align:left; }
+    .booking-slot-btn:hover:not(:disabled),
+    .booking-day-btn:hover:not(:disabled) { border-color:var(--red); transform:translateY(-1px); }
+    .booking-empty { color:#667085; font-size:.86rem; line-height:1.55; background:#fff; border:1px dashed var(--border); border-radius:8px; padding:12px; }
+    .booking-error { display:none; color:var(--red); font-size:.78rem; margin-top:8px; }
+    .manual-date-wrap { display:none; margin-bottom:16px; }
     footer { background:#111827; color:#fff; padding:34px 16px 24px; }
     .footer-link { color:rgba(255,255,255,.65); transition:color .15s; }
     .footer-link:hover { color:#fff; }
@@ -216,15 +246,29 @@
             <div><label class="f-label" for="pet-name">Numele animalului *</label><input id="pet-name" class="f-input" name="Nume animal" placeholder="Azor, Mițu..." /><div class="f-error"></div></div>
           </div>
           <div class="grid sm:grid-cols-2 gap-4 mb-4">
-            <div><label class="f-label" for="pet-type">Tipul animalului *</label><select id="pet-type" class="f-input" name="Tip animal"><option value="">Alege</option><option>Câine</option><option>Pisică</option><option>Iepure</option><option>Pasăre</option><option>Reptilă</option><option>Altul</option></select><div class="f-error"></div></div>
-            <div><label class="f-label" for="service">Serviciul dorit *</label><select id="service" class="f-input" name="Serviciu"><option value="">Alege</option><option>Consultație generală</option><option>Vaccinare</option><option>Deparazitare</option><option>Analize laborator</option><option>Imagistică / ecografie</option><option>Chirurgie</option><option>Stomatologie</option><option>Ortopedie</option><option>Dermatologie</option><option>Oftalmologie</option><option>Abonament / plan de sănătate</option><option>Alt serviciu</option></select><div class="f-error"></div></div>
+            <div><label class="f-label" for="pet-type">Tipul animalului *</label><select id="pet-type" class="f-input" name="Tip animal"><option value="">Alege</option><option value="caine">Câine</option><option value="pisica">Pisică</option><option value="iepure">Iepure</option><option value="pasare">Pasăre</option><option value="reptila">Reptilă</option><option value="altul">Altul</option></select><div class="f-error"></div></div>
+            <div><label class="f-label" for="service">Serviciul dorit *</label><select id="service" class="f-input" name="Serviciu"><option value="">Alege</option><option value="consultatie_generala">Consultație generală</option><option value="vaccinare">Vaccinare</option><option value="deparazitare_interna">Deparazitare</option><option value="analize">Analize laborator</option><option value="ecografie_toracica">Imagistică / ecografie</option><option value="consultatie_chirurgie">Chirurgie</option><option value="stomatologie">Stomatologie</option><option value="ortopedie">Ortopedie</option><option value="dermatologie">Dermatologie</option><option value="oftalmologie">Oftalmologie</option></select><div class="f-error"></div></div>
           </div>
-          <div class="mb-4"><label class="f-label" for="preferred-date">Data preferată</label><input id="preferred-date" class="f-input" name="Data preferată" type="date" /></div>
+          <div class="booking-calendar" id="booking-calendar">
+            <div class="booking-calendar-head">
+              <label class="f-label" style="margin:0;">Medic și interval disponibil *</label>
+              <div class="booking-status" id="booking-status">Alege serviciul pentru a încărca locurile disponibile.</div>
+            </div>
+            <div class="booking-days" id="booking-days" aria-label="Zile disponibile"></div>
+            <div class="booking-slots" id="booking-slots" aria-label="Intervale disponibile"></div>
+            <input id="preferred-date" name="Data preferată" type="hidden" />
+            <input id="preferred-at" name="Interval ales" type="hidden" />
+            <input id="doctor-id" name="Medic ID" type="hidden" />
+            <input id="doctor-name" name="Medic" type="hidden" />
+            <input id="duration-minutes" name="Durată" type="hidden" />
+            <div id="slot-error" class="booking-error">Alege un interval disponibil din calendar.</div>
+          </div>
+          <div class="manual-date-wrap" id="manual-date-wrap"><label class="f-label" for="manual-preferred-date">Data preferată</label><input id="manual-preferred-date" class="f-input" type="date" /></div>
           <div class="mb-4"><label class="f-label" for="message">Descrierea problemei</label><textarea id="message" class="f-input" name="Descriere problemă" rows="4" placeholder="Descrie pe scurt motivul vizitei..." style="resize:vertical;"></textarea></div>
           <label style="display:flex;align-items:flex-start;gap:10px;color:#666;font-size:.82rem;line-height:1.55;margin-bottom:14px;"><input id="gdpr" type="checkbox" style="margin-top:3px;accent-color:var(--red);" /> Accept prelucrarea datelor conform <a href="privacy.html" style="color:var(--red);font-weight:700;text-decoration:underline;">Politicii de confidențialitate</a> și <a href="gdpr.html" style="color:var(--red);font-weight:700;text-decoration:underline;">Notei GDPR</a> VET STUFF *</label>
           <div id="gdpr-error" style="display:none;color:var(--red);font-size:.78rem;margin-bottom:14px;">Te rugăm să accepți politica de confidențialitate.</div>
           <button id="submit-btn" type="submit" class="btn-red" style="width:100%;padding:13px;">Trimite programarea</button>
-          <div id="form-success" style="display:none;margin-top:16px;padding:16px;border-radius:12px;background:#dcfce7;color:#166534;text-align:center;font-weight:800;">Programarea a fost trimisă. Te vom contacta pentru confirmare.</div>
+          <div id="form-success" style="display:none;margin-top:16px;padding:16px;border-radius:12px;background:#dcfce7;color:#166534;text-align:center;font-weight:800;">Cererea a fost trimisă. Echipa VET STUFF o confirmă din CRM.</div>
         </form>
       </section>
     </div>
@@ -289,39 +333,159 @@
     })();
 
     const form = document.getElementById('booking-form');
-    const params = new URLSearchParams(window.location.search);
-    const serviceFromUrl = params.get('serviciu');
-    const serviceMap = {
-      consultatie: 'Consultație generală',
-      vaccinare: 'Vaccinare',
-      analize: 'Analize laborator',
-      imagistica: 'Imagistică / ecografie',
-      chirurgie: 'Chirurgie',
-      stomatologie: 'Stomatologie',
-      ortopedie: 'Ortopedie',
-      dermatologie: 'Dermatologie',
-      oftalmologie: 'Oftalmologie'
+    const serviceSelect = document.getElementById('service');
+    const statusEl = document.getElementById('booking-status');
+    const daysEl = document.getElementById('booking-days');
+    const slotsEl = document.getElementById('booking-slots');
+    const slotError = document.getElementById('slot-error');
+    const manualDateWrap = document.getElementById('manual-date-wrap');
+    const bookingState = {
+      manualMode: false,
+      days: [],
+      selectedDay: '',
+      selectedSlot: null
     };
-    if (serviceFromUrl && serviceMap[serviceFromUrl]) {
-      document.getElementById('service').value = serviceMap[serviceFromUrl];
-    }
+
+    const params = new URLSearchParams(window.location.search);
+    const serviceMap = {
+      consultatie: 'consultatie_generala',
+      vaccinare: 'vaccinare',
+      analize: 'analize',
+      imagistica: 'ecografie_toracica',
+      chirurgie: 'consultatie_chirurgie',
+      stomatologie: 'stomatologie',
+      ortopedie: 'ortopedie',
+      dermatologie: 'dermatologie',
+      oftalmologie: 'oftalmologie'
+    };
+    const serviceFromUrl = params.get('serviciu');
+    if (serviceFromUrl && serviceMap[serviceFromUrl]) serviceSelect.value = serviceMap[serviceFromUrl];
+
     function fieldError(id, msg) {
       const el = document.getElementById(id);
-      const err = el.parentElement.querySelector('.f-error');
-      err.textContent = msg;
-      err.style.display = 'block';
-      el.style.borderColor = 'var(--red)';
-      el.style.boxShadow = '0 0 0 3px rgba(212,43,43,.1)';
+      const err = el?.parentElement?.querySelector('.f-error');
+      if (err) {
+        err.textContent = msg;
+        err.style.display = 'block';
+      }
+      if (el) {
+        el.style.borderColor = 'var(--red)';
+        el.style.boxShadow = '0 0 0 3px rgba(212,43,43,.1)';
+      }
     }
     function clearFieldError(id) {
       const el = document.getElementById(id);
-      const err = el.parentElement.querySelector('.f-error');
-      err.style.display = 'none';
-      el.style.borderColor = '';
-      el.style.boxShadow = '';
+      const err = el?.parentElement?.querySelector('.f-error');
+      if (err) err.style.display = 'none';
+      if (el) {
+        el.style.borderColor = '';
+        el.style.boxShadow = '';
+      }
     }
-    ['owner-name','phone','email','pet-name','pet-type','service'].forEach(id => document.getElementById(id).addEventListener('input', () => clearFieldError(id)));
-    form.addEventListener('submit', e => {
+    function serviceLabel() {
+      return serviceSelect.options[serviceSelect.selectedIndex]?.textContent || serviceSelect.value;
+    }
+    function setSelectedSlot(slot) {
+      bookingState.selectedSlot = slot;
+      document.getElementById('preferred-date').value = slot ? slot.date : '';
+      document.getElementById('preferred-at').value = slot ? slot.start : '';
+      document.getElementById('doctor-id').value = slot ? slot.doctorId : '';
+      document.getElementById('doctor-name').value = slot ? slot.doctorName : '';
+      document.getElementById('duration-minutes').value = slot ? String(slot.durationMinutes) : '';
+      slotError.style.display = 'none';
+      renderSlots();
+    }
+    function setManualMode(message) {
+      bookingState.manualMode = true;
+      bookingState.days = [];
+      bookingState.selectedDay = '';
+      setSelectedSlot(null);
+      manualDateWrap.style.display = 'block';
+      daysEl.innerHTML = '';
+      slotsEl.innerHTML = '<div class="booking-empty">Calendarul live nu este disponibil momentan. Trimite cererea, iar echipa verifică manual disponibilitatea.</div>';
+      statusEl.textContent = message || 'Calendar live indisponibil.';
+    }
+    function updateServiceOptions(services, selectedKey) {
+      if (!Array.isArray(services) || !services.length) return;
+      const previous = serviceSelect.value || selectedKey;
+      serviceSelect.innerHTML = '<option value="">Alege</option>' + services.map(service => (
+        `<option value="${escapeAttr(service.key)}">${escapeHtml(service.label)}</option>`
+      )).join('');
+      serviceSelect.value = previous && services.some(service => service.key === previous) ? previous : selectedKey || services[0].key;
+    }
+    async function loadAvailability() {
+      bookingState.manualMode = false;
+      setSelectedSlot(null);
+      manualDateWrap.style.display = 'none';
+      statusEl.textContent = 'Se încarcă locurile disponibile...';
+      daysEl.innerHTML = '';
+      slotsEl.innerHTML = '<div class="booking-empty">Căutăm sloturi libere în calendarul VET STUFF.</div>';
+      try {
+        const url = '/api/booking?days=14' + (serviceSelect.value ? '&service=' + encodeURIComponent(serviceSelect.value) : '');
+        const response = await fetch(url);
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data.ok) {
+          setManualMode(data.error || 'Calendar live indisponibil.');
+          return;
+        }
+        updateServiceOptions(data.services, data.selectedServiceKey);
+        bookingState.days = Array.isArray(data.days) ? data.days : [];
+        const firstWithSlots = bookingState.days.find(day => day.slots?.length);
+        bookingState.selectedDay = firstWithSlots?.date || bookingState.days[0]?.date || '';
+        statusEl.textContent = firstWithSlots
+          ? 'Alege un interval. Cererea intră în CRM și este confirmată de echipă.'
+          : 'Nu am găsit sloturi libere pentru serviciul ales în următoarele zile.';
+        renderDays();
+        renderSlots();
+      } catch {
+        setManualMode('Calendar live indisponibil.');
+      }
+    }
+    function renderDays() {
+      if (!bookingState.days.length) {
+        daysEl.innerHTML = '';
+        return;
+      }
+      daysEl.innerHTML = bookingState.days.map(day => {
+        const count = day.slots?.length || 0;
+        const active = day.date === bookingState.selectedDay ? ' active' : '';
+        return `<button class="booking-day-btn${active}" type="button" data-date="${escapeAttr(day.date)}" ${count ? '' : 'disabled'}><strong>${escapeHtml(day.shortLabel || day.label)}</strong><span>${count ? `${count} locuri` : 'Fără locuri'}</span></button>`;
+      }).join('');
+      daysEl.querySelectorAll('button[data-date]').forEach(button => {
+        button.addEventListener('click', () => {
+          bookingState.selectedDay = button.dataset.date;
+          setSelectedSlot(null);
+          renderDays();
+          renderSlots();
+        });
+      });
+    }
+    function renderSlots() {
+      const day = bookingState.days.find(item => item.date === bookingState.selectedDay);
+      if (!day || !day.slots?.length) {
+        slotsEl.innerHTML = '<div class="booking-empty">Alege altă zi sau alt serviciu. Pentru urgențe, scrie direct pe Messenger.</div>';
+        return;
+      }
+      slotsEl.innerHTML = day.slots.map(slot => {
+        const active = bookingState.selectedSlot?.id === slot.id ? ' active' : '';
+        return `<button class="booking-slot-btn${active}" type="button" data-slot="${escapeAttr(slot.id)}"><strong>${escapeHtml(slot.time)} · ${escapeHtml(slot.doctorName)}</strong><span>${escapeHtml(slot.doctorSpecialization || 'Medic veterinar')} · ${slot.durationMinutes} min</span></button>`;
+      }).join('');
+      slotsEl.querySelectorAll('button[data-slot]').forEach(button => {
+        button.addEventListener('click', () => {
+          const slot = day.slots.find(item => item.id === button.dataset.slot);
+          if (slot) setSelectedSlot(slot);
+        });
+      });
+    }
+    ['owner-name','phone','email','pet-name','pet-type','service'].forEach(id => {
+      document.getElementById(id)?.addEventListener('input', () => clearFieldError(id));
+    });
+    serviceSelect.addEventListener('change', () => {
+      clearFieldError('service');
+      loadAvailability();
+    });
+
+    form.addEventListener('submit', async e => {
       e.preventDefault();
       let ok = true;
       const phone = document.getElementById('phone').value.trim().replace(/\s/g,'');
@@ -332,43 +496,90 @@
       if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { fieldError('email','Email invalid.'); ok = false; } else clearFieldError('email');
       if (!document.getElementById('pet-name').value.trim()) { fieldError('pet-name','Introduceți numele animalului.'); ok = false; } else clearFieldError('pet-name');
       if (!document.getElementById('pet-type').value) { fieldError('pet-type','Selectați tipul animalului.'); ok = false; } else clearFieldError('pet-type');
-      if (!document.getElementById('service').value) { fieldError('service','Selectați serviciul dorit.'); ok = false; } else clearFieldError('service');
+      if (!serviceSelect.value) { fieldError('service','Selectați serviciul dorit.'); ok = false; } else clearFieldError('service');
+      if (!bookingState.manualMode && !bookingState.selectedSlot) {
+        slotError.style.display = 'block';
+        ok = false;
+      }
       const gdpr = document.getElementById('gdpr').checked;
       document.getElementById('gdpr-error').style.display = gdpr ? 'none' : 'block';
       if (!gdpr) ok = false;
       if (!ok) return;
+
       const btn = document.getElementById('submit-btn');
       btn.disabled = true;
       btn.textContent = 'Se trimite...';
-      const payload = {
-        'Nume proprietar': document.getElementById('owner-name').value.trim(),
-        'Telefon': document.getElementById('phone').value.trim(),
-        'Email': document.getElementById('email').value.trim(),
-        'Nume animal': document.getElementById('pet-name').value.trim(),
-        'Tip animal': document.getElementById('pet-type').value,
-        'Serviciu': document.getElementById('service').value,
-        'Data preferată': document.getElementById('preferred-date').value,
-        'Descriere problemă': document.getElementById('message').value.trim()
-      };
-      fetch('/api/airtable', {
-        method:'POST',
-        headers:{ 'Content-Type':'application/json' },
-        body: JSON.stringify({ table:'Programari', fields:{ 'Name':payload['Nume proprietar'], 'Telefon':payload['Telefon'], 'Email':payload['Email'], 'Nume animal':payload['Nume animal'], 'Tip animal':payload['Tip animal'], 'Serviciu':payload['Serviciu'], 'Data preferată':payload['Data preferată'], 'Descriere':payload['Descriere problemă'], 'website': form.elements.website?.value || '' } })
-      }).then(response => {
+
+      try {
+        const response = bookingState.manualMode
+          ? await submitManualLead()
+          : await submitCrmBookingRequest();
         if (response.ok) {
           document.getElementById('form-success').style.display = 'block';
           form.querySelectorAll('input,select,textarea,button').forEach(el => { el.disabled = true; el.style.opacity = '.58'; });
-        } else {
-          btn.disabled = false;
-          btn.textContent = 'Trimite programarea';
-          alert('A apărut o eroare. Te rugăm să ne scrii pe Messenger sau pe email.');
+          return;
         }
-      }).catch(() => {
-        btn.disabled = false;
-        btn.textContent = 'Trimite programarea';
+        const data = await response.json().catch(() => ({}));
+        if (response.status === 409) {
+          slotError.textContent = data.error || 'Slotul nu mai este disponibil. Alege alt interval.';
+          slotError.style.display = 'block';
+          await loadAvailability();
+        } else {
+          alert(data.error || 'A apărut o eroare. Te rugăm să ne scrii pe Messenger sau pe email.');
+        }
+      } catch {
         alert('A apărut o eroare de rețea. Te rugăm să ne scrii pe Messenger sau pe email.');
-      });
+      }
+      btn.disabled = false;
+      btn.textContent = 'Trimite programarea';
     });
+
+    function submitCrmBookingRequest() {
+      return fetch('/api/booking', {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify({
+          ownerName: document.getElementById('owner-name').value.trim(),
+          phone: document.getElementById('phone').value.trim(),
+          email: document.getElementById('email').value.trim(),
+          patientName: document.getElementById('pet-name').value.trim(),
+          species: document.getElementById('pet-type').value,
+          serviceKey: serviceSelect.value,
+          doctorId: document.getElementById('doctor-id').value,
+          preferredAt: document.getElementById('preferred-at').value,
+          message: document.getElementById('message').value.trim(),
+          website: form.elements.website?.value || ''
+        })
+      });
+    }
+    function submitManualLead() {
+      return fetch('/api/airtable', {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify({
+          table:'Programari',
+          fields:{
+            'Name': document.getElementById('owner-name').value.trim(),
+            'Telefon': document.getElementById('phone').value.trim(),
+            'Email': document.getElementById('email').value.trim(),
+            'Nume animal': document.getElementById('pet-name').value.trim(),
+            'Tip animal': document.getElementById('pet-type').value,
+            'Serviciu': serviceLabel(),
+            'Data preferată': document.getElementById('manual-preferred-date').value,
+            'Descriere': document.getElementById('message').value.trim(),
+            'website': form.elements.website?.value || ''
+          }
+        })
+      });
+    }
+    function escapeHtml(value) {
+      return String(value || '').replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[char]));
+    }
+    function escapeAttr(value) {
+      return escapeHtml(value).replace(/`/g, '&#96;');
+    }
+
+    loadAvailability();
   </script>
 </body>
 </html>
