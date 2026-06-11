@@ -209,6 +209,14 @@
     .status-box.success { display:block; background:#DCFCE7; color:#166534; }
     .status-box.error { display:block; background:#FEF2F2; color:#B91C1C; }
     .quick-help { margin-top:22px; border-radius:14px; background:#EEF8F9; border:1px solid #D9ECEE; padding:18px; color:#486067; line-height:1.55; }
+    .id-help { color:var(--muted); font-size:1rem; margin-bottom:18px; line-height:1.55; }
+    .id-error { color:var(--red); font-weight:800; margin-top:14px; }
+    .id-ok { color:var(--teal-dark); font-weight:800; margin-bottom:12px; }
+    .login-btn { margin-top:18px; border:0; background:var(--teal); color:#fff; border-radius:10px; min-height:52px; padding:0 28px; font-weight:900; font-size:1rem; cursor:pointer; }
+    .login-btn:hover { background:var(--teal-dark); }
+    .login-btn:disabled { opacity:.6; cursor:not-allowed; }
+    .pet-grid { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:16px; }
+    @media (max-width:640px) { .pet-grid { grid-template-columns:1fr; } }
     footer { background:#111827; color:#fff; padding:34px 16px 24px; }
     .footer-link { color:rgba(255,255,255,.65); transition:color .15s; }
     .footer-link:hover { color:#fff; }
@@ -365,13 +373,13 @@
 
   <script>
     const stepMeta = [
-      { title: 'Specia animalului', heading: 'Ce fel de animal ai?', sub: 'Selectează specia pentru a vedea serviciile potrivite.' },
-      { title: 'Serviciul dorit', heading: 'Ce serviciu cauți?', sub: 'Alege tipul de consultație sau procedură.' },
-      { title: 'Datele animalului', heading: 'Pentru cine programezi?', sub: 'Introdu datele animalului.' },
+      { title: 'Cine ești', heading: 'Cum dorești să programezi?', sub: 'Alege cum te identificăm pentru programare.' },
+      { title: 'Animalul', heading: 'Pentru cine programezi?', sub: 'Alege animalul sau adaugă unul nou.' },
+      { title: 'Serviciul', heading: 'Ce serviciu cauți?', sub: 'Alege tipul de consultație sau procedură.' },
       { title: 'Data și ora', heading: 'Când dorești să vii?', sub: 'Alege data și ora pentru programare.' },
-      { title: 'Datele tale', heading: 'Datele tale', sub: 'Alege cum dorești să te înregistrăm pentru programare.' },
       { title: 'Confirmare', heading: 'Verifică programarea', sub: 'Trimite cererea către echipa VET STUFF.' },
     ];
+    const TOTAL_STEPS = 5;
     const fallbackServices = [
       { key:'consultatie_generala', label:'Consultație generală', price:'de la 150 lei' },
       { key:'vaccinare', label:'Vaccinare', price:'de la 120 lei' },
@@ -392,34 +400,22 @@
     ];
     const state = {
       step: 1,
-      species: '',
-      serviceKey: '',
-      serviceTouched: false,
-      patientName: '',
-      breed: '',
-      age: '',
-      patientNotes: '',
-      ownerMode: 'visitor',
-      ownerFirstName: '',
-      ownerLastName: '',
-      phone: '',
-      email: '',
-      existingCode: '',
-      password: '',
-      passwordConfirm: '',
-      gdpr: false,
-      showAllServices: false,
-      services: fallbackServices,
-      doctors: [],
-      days: [],
-      selectedDoctorId: 'any',
-      selectedDate: '',
-      selectedSlot: null,
-      selectedMonth: new Date(),
-      loadingAvailability: false,
-      submitting: false,
-      success: false,
-      error: '',
+      ownerMode: 'visitor',          // visitor | new | existing
+      ownerLastName: '', ownerFirstName: '', phone: '', email: '',
+      password: '', passwordConfirm: '',
+      signupBusy: false, signupError: '', signupDone: false,
+      loginBusy: false, loginError: '',
+      account: null,                 // { token, ownerName, phone, email, linked, pets:[] }
+      accountToken: '',
+      petMode: '',                   // '' | 'existing' | 'new'
+      selectedPetId: '',
+      species: '', patientName: '', breed: '', age: '', patientNotes: '',
+      serviceKey: '', serviceTouched: false, showAllServices: false,
+      services: fallbackServices, servicesLoaded: false,
+      doctors: [], days: [],
+      selectedDoctorId: 'any', selectedDate: '', selectedSlot: null,
+      selectedMonth: new Date(), loadingAvailability: false,
+      gdpr: false, submitting: false, success: false, error: '',
     };
 
     const contentEl = document.getElementById('wizard-content');
@@ -442,15 +438,9 @@
 
     const params = new URLSearchParams(window.location.search);
     const serviceMap = {
-      consultatie:'consultatie_generala',
-      vaccinare:'vaccinare',
-      analize:'analize',
-      imagistica:'ecografie_toracica',
-      chirurgie:'consultatie_chirurgie',
-      stomatologie:'stomatologie',
-      ortopedie:'ortopedie',
-      dermatologie:'dermatologie',
-      oftalmologie:'oftalmologie',
+      consultatie:'consultatie_generala', vaccinare:'vaccinare', analize:'analize',
+      imagistica:'ecografie_toracica', chirurgie:'consultatie_chirurgie', stomatologie:'stomatologie',
+      ortopedie:'ortopedie', dermatologie:'dermatologie', oftalmologie:'oftalmologie',
     };
     const serviceFromUrl = params.get('serviciu');
     if (serviceFromUrl && serviceMap[serviceFromUrl]) {
@@ -460,19 +450,13 @@
 
     function render() {
       const meta = stepMeta[state.step - 1];
-      progressText.textContent = `Pas ${state.step} din 6`;
+      progressText.textContent = `Pas ${state.step} din ${TOTAL_STEPS}`;
       progressTitle.textContent = meta.title;
-      progressBar.style.width = `${(state.step / 6) * 100}%`;
+      progressBar.style.width = `${(state.step / TOTAL_STEPS) * 100}%`;
       statusBox.className = 'status-box';
       statusBox.textContent = '';
-      if (state.error) {
-        statusBox.className = 'status-box error';
-        statusBox.textContent = state.error;
-      }
-      if (state.success) {
-        statusBox.className = 'status-box success';
-        statusBox.textContent = 'Cererea a fost trimisă. Echipa VET STUFF o confirmă din CRM.';
-      }
+      if (state.error) { statusBox.className = 'status-box error'; statusBox.textContent = state.error; }
+      if (state.success) { statusBox.className = 'status-box success'; statusBox.textContent = 'Cererea a fost trimisă. Echipa VET STUFF o confirmă din CRM.'; }
       contentEl.innerHTML = `
         <div class="wizard-head">
           ${state.step > 1 && !state.success ? '<button class="back-btn" type="button" data-action="back">← Înapoi</button>' : ''}
@@ -485,23 +469,112 @@
     }
 
     function renderStep() {
-      if (state.step === 1) return renderSpeciesStep();
-      if (state.step === 2) return renderServiceStep();
-      if (state.step === 3) return renderPatientStep();
+      if (state.step === 1) return renderIdentityStep();
+      if (state.step === 2) return renderAnimalStep();
+      if (state.step === 3) return renderServiceStep();
       if (state.step === 4) return renderAvailabilityStep();
-      if (state.step === 5) return renderOwnerStep();
       return renderSummaryStep();
     }
 
-    function renderSpeciesStep() {
-      return `<div class="choice-grid three">
-        ${speciesOptions.map(option => `
-          <button class="choice-card ${state.species === option.key ? 'active' : ''}" type="button" data-species="${option.key}">
-            <span class="choice-icon">${iconSvg(option.icon)}</span>
-            <span class="choice-title">${escapeHtml(option.label)}</span>
-          </button>
-        `).join('')}
+    function renderIdentityStep() {
+      const tabs = `<div class="account-tabs">
+        ${accountTab('visitor', 'Vizitator')}
+        ${accountTab('new', 'Client nou')}
+        ${accountTab('existing', 'Client existent')}
       </div>`;
+      let body = '';
+      if (state.ownerMode === 'visitor') {
+        body = `<p class="id-help">Programează rapid fără a crea un cont.</p>
+          <div class="form-grid">
+            ${fieldHtml('ownerLastName', 'Nume *', 'Ex: Popescu', state.ownerLastName)}
+            ${fieldHtml('ownerFirstName', 'Prenume *', 'Ex: Ion', state.ownerFirstName)}
+            ${fieldHtml('phone', 'Telefon de contact *', '07xx xxx xxx', state.phone, 'tel', 'full')}
+            ${fieldHtml('email', 'Email *', 'email@exemplu.ro', state.email, 'email', 'full')}
+          </div>`;
+      } else if (state.ownerMode === 'new') {
+        body = `<p class="id-help">Creează un cont ca să-ți gestionezi programările data viitoare.</p>
+          <div class="form-grid">
+            ${fieldHtml('ownerLastName', 'Nume *', 'Ex: Popescu', state.ownerLastName)}
+            ${fieldHtml('ownerFirstName', 'Prenume *', 'Ex: Ion', state.ownerFirstName)}
+            ${fieldHtml('phone', 'Telefon *', '07xx xxx xxx', state.phone, 'tel', 'full')}
+            ${fieldHtml('email', 'Email *', 'email@exemplu.ro', state.email, 'email', 'full')}
+            ${fieldHtml('password', 'Parolă *', 'Minim 6 caractere', state.password, 'password')}
+            ${fieldHtml('passwordConfirm', 'Confirmă parola *', 'Repetă parola', state.passwordConfirm, 'password')}
+          </div>
+          ${state.signupDone ? '<p class="id-ok">✓ Cont creat. Verifică emailul pentru confirmare.</p>' : ''}
+          ${state.signupError ? `<p class="id-error">${escapeHtml(state.signupError)}</p>` : ''}`;
+      } else {
+        if (state.account) {
+          const pets = state.account.pets || [];
+          body = `<p class="id-ok">✓ Conectat ca <strong>${escapeHtml(state.account.ownerName || state.account.email)}</strong></p>`;
+          if (state.account.linked) {
+            body += `<p class="id-help">${pets.length} ${pets.length === 1 ? 'animal găsit' : 'animale găsite'} în fișa ta. Le alegi la pasul următor.</p>`;
+          } else {
+            body += `<p class="id-help">Contul tău nu are încă animale înregistrate la clinică. Completează datele și adaugă animalul ca nou.</p>
+              <div class="form-grid">
+                ${fieldHtml('ownerLastName', 'Nume *', 'Ex: Popescu', state.ownerLastName)}
+                ${fieldHtml('ownerFirstName', 'Prenume *', 'Ex: Ion', state.ownerFirstName)}
+                ${fieldHtml('phone', 'Telefon *', '07xx xxx xxx', state.phone, 'tel', 'full')}
+              </div>`;
+          }
+          body += `<button type="button" class="show-more" data-action="logout">Schimbă contul →</button>`;
+        } else {
+          body = `<p class="id-help">Conectează-te cu emailul și parola contului tău.</p>
+            <div class="form-grid">
+              ${fieldHtml('email', 'Email *', 'email@exemplu.ro', state.email, 'email', 'full')}
+              ${fieldHtml('password', 'Parolă *', 'Parola ta', state.password, 'password', 'full')}
+            </div>
+            ${state.loginError ? `<p class="id-error">${escapeHtml(state.loginError)}</p>` : ''}
+            <button type="button" class="login-btn" data-action="login" ${state.loginBusy ? 'disabled' : ''}>${state.loginBusy ? 'Se conectează...' : 'Conectează-te'}</button>`;
+        }
+      }
+      return tabs + body;
+    }
+
+    function isExistingLinked() {
+      return state.ownerMode === 'existing' && state.account && state.account.linked;
+    }
+
+    function renderAnimalStep() {
+      let html = '';
+      if (isExistingLinked()) {
+        const pets = state.account.pets || [];
+        html += `<p class="id-help">Alege animalul pentru această programare.</p><div class="pet-grid">
+          ${pets.map(pet => `
+            <button class="choice-card ${state.petMode === 'existing' && state.selectedPetId === pet.id ? 'active' : ''}" type="button" data-pet="${escapeAttr(pet.id)}">
+              <span class="choice-icon">${iconSvg(pet.species === 'pisica' ? 'cat' : pet.species === 'caine' ? 'dog' : 'paw')}</span>
+              <span class="choice-title">${escapeHtml(pet.name)}</span>
+              <span class="choice-meta">${escapeHtml(speciesLabel(pet.species))}${pet.breed ? ' · ' + escapeHtml(pet.breed) : ''}</span>
+            </button>`).join('')}
+          <button class="choice-card ${state.petMode === 'new' ? 'active' : ''}" type="button" data-pet="__new__">
+            <span class="choice-icon">${iconSvg('user-plus')}</span>
+            <span class="choice-title">Animal nou</span>
+            <span class="choice-meta">Adaugă un animal</span>
+          </button>
+        </div>`;
+      }
+      const showNew = !isExistingLinked() || state.petMode === 'new';
+      if (showNew) {
+        html += `<div style="margin-top:${isExistingLinked() ? '26px' : '0'}">
+          <div class="choice-grid three" style="margin-bottom:22px;">
+            ${speciesOptions.map(option => `
+              <button class="choice-card ${state.species === option.key ? 'active' : ''}" type="button" data-species="${option.key}">
+                <span class="choice-icon">${iconSvg(option.icon)}</span>
+                <span class="choice-title">${escapeHtml(option.label)}</span>
+              </button>`).join('')}
+          </div>
+          <div class="form-grid">
+            ${fieldHtml('patientName', 'Numele animalului *', 'Max, Mitu...', state.patientName)}
+            ${fieldHtml('breed', 'Rasa (opțional)', 'Ex: Labrador', state.breed)}
+            ${fieldHtml('age', 'Vârsta (opțional)', 'Ex: 3 ani', state.age)}
+            <div class="field full">
+              <label class="f-label" for="patientNotes">Mențiuni (opțional)</label>
+              <textarea class="f-input" id="patientNotes" data-field="patientNotes" placeholder="Ex: alergii, este timid, motivul vizitei...">${escapeHtml(state.patientNotes)}</textarea>
+            </div>
+          </div>
+        </div>`;
+      }
+      return html;
     }
 
     function renderServiceStep() {
@@ -513,24 +586,10 @@
             <button class="choice-card ${state.serviceTouched && state.serviceKey === service.key ? 'active' : ''}" type="button" data-service="${escapeAttr(service.key)}">
               <span class="choice-title">${escapeHtml(service.label)}</span>
               <span class="choice-meta">${escapeHtml(servicePrices[service.key] || service.category || 'la recomandare')}</span>
-            </button>
-          `).join('')}
+            </button>`).join('')}
         </div>
         ${state.services.length > 8 ? `<button type="button" class="show-more" data-action="toggle-services">${state.showAllServices ? 'Arată mai puține' : 'Arată toate serviciile'} →</button>` : ''}
       `;
-    }
-
-    function renderPatientStep() {
-      return `<div class="form-grid">
-        ${fieldHtml('patientName', 'Numele animalului *', 'Max, Mitu...', state.patientName, 'text')}
-        ${fieldHtml('breed', 'Rasa (opțional)', 'Ex: Labrador', state.breed, 'text')}
-        ${fieldHtml('age', 'Vârsta (opțional)', 'Ex: 3 ani', state.age, 'text')}
-        <div class="field full">
-          <label class="f-label" for="patientNotes">Mențiuni despre starea lui ${escapeHtml(state.patientName || 'animalului')} (opțional)</label>
-          <textarea class="f-input" id="patientNotes" data-field="patientNotes" placeholder="Ex: Are alergii, este timid cu străinii, motivul vizitei...">${escapeHtml(state.patientNotes)}</textarea>
-          <div class="f-error">Completează informația corect.</div>
-        </div>
-      </div>`;
     }
 
     function renderAvailabilityStep() {
@@ -555,8 +614,7 @@
                   <button class="time-btn ${state.selectedSlot?.id === slot.id ? 'active' : ''}" type="button" data-slot="${escapeAttr(slot.id)}">
                     ${escapeHtml(slot.time)}
                     ${state.selectedDoctorId === 'any' ? `<span>${escapeHtml(shortDoctorName(slot.doctorName))}</span>` : ''}
-                  </button>
-                `).join('')}
+                  </button>`).join('')}
               </div>
               <p style="color:var(--muted);font-weight:700;margin-top:14px;">Sloturile care nu apar sunt deja ocupate sau blocate de cereri în așteptare.</p>
             ` : `
@@ -606,46 +664,16 @@
       </div>`;
     }
 
-    function renderOwnerStep() {
-      const helper = {
-        visitor: 'Programează rapid fără a crea un cont.',
-        new: 'Datele vor fi salvate pe cererea de programare și verificate de echipă.',
-        existing: 'Te identificăm în CRM după telefon și email.',
-      }[state.ownerMode];
-      return `
-        <div class="account-tabs">
-          ${accountTab('visitor', 'Vizitator')}
-          ${accountTab('new', 'Client nou')}
-          ${accountTab('existing', 'Client existent')}
-        </div>
-        <p style="color:var(--muted);font-size:1rem;margin-bottom:18px;">${escapeHtml(helper)}</p>
-        <div class="form-grid">
-          ${fieldHtml('ownerLastName', 'Nume *', 'Ex: Popescu', state.ownerLastName, 'text')}
-          ${fieldHtml('ownerFirstName', 'Prenume *', 'Ex: Ion', state.ownerFirstName, 'text')}
-          ${fieldHtml('phone', 'Telefon de contact *', '07xx xxx xxx', state.phone, 'tel', 'full')}
-          ${fieldHtml('email', 'Email *', 'email@exemplu.ro', state.email, 'email', 'full')}
-          ${state.ownerMode === 'existing' ? fieldHtml('existingCode', 'Cod client / observație (opțional)', 'Dacă îl ai la îndemână', state.existingCode, 'text', 'full') : ''}
-        </div>
-      `;
-    }
-
-    function accountTab(mode, label) {
-      return `<button type="button" class="account-tab ${state.ownerMode === mode ? 'active' : ''}" data-account-mode="${mode}">
-        ${iconSvg(mode === 'existing' ? 'users' : mode === 'new' ? 'user-plus' : 'user')}
-        <span>${escapeHtml(label)}</span>
-      </button>`;
-    }
-
     function renderSummaryStep() {
       const slot = state.selectedSlot;
       return `
         <div class="summary-grid">
-          ${summaryItem('Animal', `${speciesLabel(state.species)} · ${state.patientName}`)}
+          ${summaryItem('Animal', `${speciesLabel(displaySpecies())} · ${displayPatientName()}`)}
           ${summaryItem('Serviciu', selectedService()?.label || state.serviceKey)}
           ${summaryItem('Medic', slot?.doctorName || 'Oricine disponibil')}
           ${summaryItem('Interval', slot ? `${formatDate(slot.start)} · ${slot.time}` : 'Neales')}
-          ${summaryItem('Proprietar', `${state.ownerLastName} ${state.ownerFirstName}`.trim())}
-          ${summaryItem('Contact', `${state.phone} · ${state.email}`)}
+          ${summaryItem('Proprietar', displayOwnerName())}
+          ${summaryItem('Contact', `${displayPhone()} · ${displayEmail()}`)}
         </div>
         <label class="gdpr-line">
           <input type="checkbox" ${state.gdpr ? 'checked' : ''} data-field="gdpr">
@@ -658,22 +686,23 @@
       return `<div class="summary-grid">
         ${summaryItem('Status', 'Cerere trimisă în CRM')}
         ${summaryItem('Următorul pas', 'Echipa VET STUFF verifică și confirmă programarea')}
-        ${summaryItem('Animal', `${speciesLabel(state.species)} · ${state.patientName}`)}
+        ${summaryItem('Animal', `${speciesLabel(displaySpecies())} · ${displayPatientName()}`)}
         ${summaryItem('Interval', state.selectedSlot ? `${formatDate(state.selectedSlot.start)} · ${state.selectedSlot.time}` : 'Ales de echipă')}
       </div>`;
     }
 
     function renderActions() {
       const canNext = canContinue();
-      if (state.step === 6) {
+      if (state.step === TOTAL_STEPS) {
         return `
           <button class="secondary" type="button" data-action="back">Înapoi</button>
           <button class="primary" type="submit" ${canNext && !state.submitting ? '' : 'disabled'}>${state.submitting ? 'Se trimite...' : 'Trimite cererea'} →</button>
         `;
       }
+      const nextLabel = (state.step === 1 && state.ownerMode === 'new') ? (state.signupBusy ? 'Se creează contul...' : 'Creează cont și continuă') : 'Continuă';
       return `
         ${state.step > 1 ? '<button class="secondary" type="button" data-action="back">Înapoi</button>' : ''}
-        <button class="primary" type="button" data-action="next" ${canNext ? '' : 'disabled'}>Continuă →</button>
+        <button class="primary" type="button" data-action="next" ${canNext && !state.signupBusy ? '' : 'disabled'}>${nextLabel} →</button>
       `;
     }
 
@@ -685,36 +714,69 @@
       </div>`;
     }
 
+    function accountTab(mode, label) {
+      return `<button type="button" class="account-tab ${state.ownerMode === mode ? 'active' : ''}" data-account-mode="${mode}">
+        ${iconSvg(mode === 'existing' ? 'users' : mode === 'new' ? 'user-plus' : 'user')}
+        <span>${escapeHtml(label)}</span>
+      </button>`;
+    }
+
     function summaryItem(label, value) {
       return `<div class="summary-item"><small>${escapeHtml(label)}</small><strong>${escapeHtml(value || '-')}</strong></div>`;
     }
 
+    // ---- display helpers (per mode) ----
+    function selectedPet() { return (state.account?.pets || []).find(p => p.id === state.selectedPetId) || null; }
+    function usingExistingPet() { return state.petMode === 'existing' && Boolean(state.selectedPetId); }
+    function displaySpecies() { return usingExistingPet() ? (selectedPet()?.species || '') : state.species; }
+    function displayPatientName() { return usingExistingPet() ? (selectedPet()?.name || '') : state.patientName; }
+    function displayOwnerName() {
+      if (isExistingLinked()) return state.account.ownerName || `${state.ownerLastName} ${state.ownerFirstName}`.trim() || state.account.email;
+      return `${state.ownerLastName} ${state.ownerFirstName}`.trim();
+    }
+    function displayPhone() { return isExistingLinked() ? (state.account.phone || state.phone) : state.phone; }
+    function displayEmail() { return state.account ? state.account.email : state.email; }
+
+    // ---- validation ----
     function canContinue() {
-      if (state.step === 1) return Boolean(state.species);
-      if (state.step === 2) return Boolean(state.serviceTouched && state.serviceKey);
-      if (state.step === 3) return Boolean(state.patientName.trim());
+      if (state.step === 1) return identityValid();
+      if (state.step === 2) {
+        if (isExistingLinked()) {
+          if (state.petMode === 'existing') return Boolean(state.selectedPetId);
+          if (state.petMode === 'new') return Boolean(state.species && state.patientName.trim());
+          return false;
+        }
+        return Boolean(state.species && state.patientName.trim());
+      }
+      if (state.step === 3) return Boolean(state.serviceTouched && state.serviceKey);
       if (state.step === 4) return Boolean(state.selectedSlot);
-      if (state.step === 5) return ownerValid();
-      if (state.step === 6) return ownerValid() && state.gdpr && !state.submitting;
+      if (state.step === 5) return identityValid() && state.gdpr && !state.submitting;
       return false;
     }
 
-    function ownerValid() {
-      return Boolean(
-        state.ownerFirstName.trim() &&
-        state.ownerLastName.trim() &&
-        validPhone(state.phone) &&
-        validEmail(state.email)
-      );
+    function identityValid() {
+      if (state.ownerMode === 'visitor') {
+        return Boolean(state.ownerLastName.trim() && state.ownerFirstName.trim() && validPhone(state.phone) && validEmail(state.email));
+      }
+      if (state.ownerMode === 'new') {
+        return Boolean(state.ownerLastName.trim() && state.ownerFirstName.trim() && validPhone(state.phone) && validEmail(state.email)
+          && state.password.length >= 6 && state.password === state.passwordConfirm);
+      }
+      // existing
+      if (!state.account) return false;
+      if (state.account.linked) return true;
+      return Boolean(state.ownerLastName.trim() && state.ownerFirstName.trim() && validPhone(state.phone));
     }
 
-    function nextStep() {
-      if (!canContinue()) {
-        markInvalidFields();
-        return;
+    async function nextStep() {
+      if (!canContinue()) { markInvalidFields(); return; }
+      if (state.step === 1 && state.ownerMode === 'new' && !state.signupDone) {
+        const ok = await doSignup();
+        if (!ok) return;
       }
       state.error = '';
-      state.step = Math.min(6, state.step + 1);
+      state.step = Math.min(TOTAL_STEPS, state.step + 1);
+      if (state.step === 3) ensureServicesLoaded();
       if (state.step === 4) ensureDateSelection();
       window.scrollTo({ top: document.querySelector('.booking-shell').offsetTop - 90, behavior:'smooth' });
       render();
@@ -729,20 +791,83 @@
 
     function markInvalidFields() {
       document.querySelectorAll('.field').forEach(item => item.classList.remove('invalid'));
-      if (state.step === 3 && !state.patientName.trim()) setInvalid('patientName');
-      if (state.step === 5 || state.step === 6) {
-        if (!state.ownerFirstName.trim()) setInvalid('ownerFirstName');
-        if (!state.ownerLastName.trim()) setInvalid('ownerLastName');
-        if (!validPhone(state.phone)) setInvalid('phone');
-        if (!validEmail(state.email)) setInvalid('email');
+      if (state.step === 1) {
+        if (state.ownerMode !== 'existing' || (state.account && !state.account.linked)) {
+          if (!state.ownerLastName.trim()) setInvalid('ownerLastName');
+          if (!state.ownerFirstName.trim()) setInvalid('ownerFirstName');
+          if (!validPhone(state.phone)) setInvalid('phone');
+        }
+        if (state.ownerMode === 'visitor' || state.ownerMode === 'new') {
+          if (!validEmail(state.email)) setInvalid('email');
+        }
+        if (state.ownerMode === 'new') {
+          if (state.password.length < 6) setInvalid('password');
+          if (state.password !== state.passwordConfirm) setInvalid('passwordConfirm');
+        }
       }
-      if (state.step === 6 && !state.gdpr) state.error = 'Te rugăm să accepți termenii și politica de confidențialitate.';
+      if (state.step === 2 && (!isExistingLinked() || state.petMode === 'new') && !state.patientName.trim()) setInvalid('patientName');
+      if (state.step === 5 && !state.gdpr) state.error = 'Te rugăm să accepți termenii și politica de confidențialitate.';
       render();
     }
 
     function setInvalid(key) {
       const wrap = document.querySelector(`[data-field-wrap="${key}"]`);
       if (wrap) wrap.classList.add('invalid');
+    }
+
+    async function doSignup() {
+      state.signupBusy = true; state.signupError = ''; render();
+      try {
+        const response = await fetch('/api/account', {
+          method:'POST', headers:{ 'Content-Type':'application/json' },
+          body: JSON.stringify({
+            action:'signup',
+            email: state.email.trim(),
+            password: state.password,
+            fullName: `${state.ownerLastName.trim()} ${state.ownerFirstName.trim()}`.trim(),
+            phone: state.phone.trim(),
+            website: form.elements.website?.value || '',
+          }),
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data.ok) {
+          state.signupBusy = false;
+          state.signupError = data.error || 'Contul nu a putut fi creat.';
+          render();
+          return false;
+        }
+        state.signupBusy = false; state.signupDone = true;
+        return true;
+      } catch {
+        state.signupBusy = false; state.signupError = 'Eroare de rețea. Încearcă din nou.'; render();
+        return false;
+      }
+    }
+
+    async function doLogin() {
+      if (!validEmail(state.email) || !state.password) { state.loginError = 'Introdu emailul și parola.'; render(); return; }
+      state.loginBusy = true; state.loginError = ''; render();
+      try {
+        const response = await fetch('/api/account', {
+          method:'POST', headers:{ 'Content-Type':'application/json' },
+          body: JSON.stringify({ action:'login', email: state.email.trim(), password: state.password }),
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data.ok) {
+          state.loginBusy = false; state.loginError = data.error || 'Conectare eșuată.'; render();
+          return;
+        }
+        state.account = {
+          token: data.token, ownerName: data.ownerName || '', phone: data.ownerPhone || '',
+          email: data.email || state.email.trim(), linked: Boolean(data.linked), pets: data.pets || [],
+        };
+        state.accountToken = data.token || '';
+        state.password = ''; state.petMode = ''; state.selectedPetId = '';
+        state.loginBusy = false;
+        render();
+      } catch {
+        state.loginBusy = false; state.loginError = 'Eroare de rețea. Încearcă din nou.'; render();
+      }
     }
 
     async function loadAvailability() {
@@ -754,6 +879,7 @@
         const data = await response.json().catch(() => ({}));
         if (!response.ok || !data.ok) throw new Error(data.error || 'Calendar indisponibil');
         state.services = normalizeServices(data.services);
+        state.servicesLoaded = true;
         if (!state.serviceKey && data.selectedServiceKey) state.serviceKey = data.selectedServiceKey;
         state.doctors = Array.isArray(data.doctors) ? data.doctors : [];
         state.days = Array.isArray(data.days) ? data.days : [];
@@ -767,12 +893,14 @@
       render();
     }
 
+    function ensureServicesLoaded() {
+      if (!state.servicesLoaded) loadAvailability();
+    }
+
     function normalizeServices(services) {
       const source = Array.isArray(services) && services.length ? services : fallbackServices;
       return source.map(service => ({
-        key: service.key,
-        label: service.label,
-        category: service.category,
+        key: service.key, label: service.label, category: service.category,
         price: servicePrices[service.key] || service.price || 'la recomandare',
       }));
     }
@@ -807,36 +935,29 @@
       return Array.from({ length:42 }, (_, index) => {
         const date = new Date(start);
         date.setDate(start.getDate() + index);
-        return {
-          key: dateKey(date),
-          day: date.getDate(),
-          inMonth: date.getMonth() === monthDate.getMonth(),
-        };
+        return { key: dateKey(date), day: date.getDate(), inMonth: date.getMonth() === monthDate.getMonth() };
       });
     }
 
     async function submitBooking() {
-      if (!canContinue()) {
-        markInvalidFields();
-        return;
-      }
-      state.submitting = true;
-      state.error = '';
-      render();
+      if (!canContinue()) { markInvalidFields(); return; }
+      if (!state.selectedSlot) { state.error = 'Alege un interval.'; state.step = 4; render(); return; }
+      state.submitting = true; state.error = ''; render();
       try {
         const response = await fetch('/api/booking', {
-          method:'POST',
-          headers:{ 'Content-Type':'application/json' },
+          method:'POST', headers:{ 'Content-Type':'application/json' },
           body: JSON.stringify({
-            ownerName: `${state.ownerLastName.trim()} ${state.ownerFirstName.trim()}`.trim(),
-            phone: state.phone.trim(),
-            email: state.email.trim(),
-            patientName: state.patientName.trim(),
-            species: state.species,
+            ownerName: displayOwnerName(),
+            phone: displayPhone().trim(),
+            email: displayEmail().trim(),
+            patientName: displayPatientName().trim(),
+            species: displaySpecies(),
             serviceKey: state.serviceKey,
             doctorId: state.selectedSlot.doctorId,
             preferredAt: state.selectedSlot.start,
             message: composeMessage(),
+            accountToken: state.accountToken || '',
+            patientId: usingExistingPet() ? state.selectedPetId : '',
             website: form.elements.website?.value || '',
           }),
         });
@@ -844,19 +965,14 @@
         if (!response.ok || !data.ok) {
           if (response.status === 409) {
             state.error = data.error || 'Slotul nu mai este disponibil. Alege alt interval.';
-            state.step = 4;
-            state.selectedSlot = null;
+            state.step = 4; state.selectedSlot = null;
             await loadAvailability();
           } else {
             state.error = data.error || 'Cererea nu a putut fi trimisă.';
           }
-          state.submitting = false;
-          render();
-          return;
+          state.submitting = false; render(); return;
         }
-        state.success = true;
-        state.submitting = false;
-        render();
+        state.success = true; state.submitting = false; render();
       } catch {
         state.submitting = false;
         state.error = 'A apărut o eroare de rețea. Te rugăm să ne contactezi telefonic sau pe Messenger.';
@@ -867,10 +983,10 @@
     function composeMessage() {
       return [
         state.patientNotes ? `Mențiuni: ${state.patientNotes.trim()}` : '',
-        state.breed ? `Rasă: ${state.breed.trim()}` : '',
-        state.age ? `Vârstă: ${state.age.trim()}` : '',
-        state.ownerMode ? `Tip înregistrare: ${accountModeLabel(state.ownerMode)}` : '',
-        state.existingCode ? `Cod/observație client existent: ${state.existingCode.trim()}` : '',
+        (!usingExistingPet() && state.breed) ? `Rasă: ${state.breed.trim()}` : '',
+        (!usingExistingPet() && state.age) ? `Vârstă: ${state.age.trim()}` : '',
+        `Tip înregistrare: ${accountModeLabel(state.ownerMode)}`,
+        usingExistingPet() ? 'Animal existent ales de client (cont).' : 'Animal nou — de înregistrat la cabinet.',
       ].filter(Boolean).join('\n');
     }
 
@@ -878,56 +994,46 @@
       const action = event.target.closest('[data-action]')?.dataset.action;
       if (action === 'next') nextStep();
       if (action === 'back') previousStep();
-      if (action === 'toggle-services') {
-        state.showAllServices = !state.showAllServices;
+      if (action === 'login') doLogin();
+      if (action === 'logout') { state.account = null; state.accountToken = ''; state.petMode = ''; state.selectedPetId = ''; render(); }
+      if (action === 'toggle-services') { state.showAllServices = !state.showAllServices; render(); }
+      if (action === 'prev-month') { state.selectedMonth = new Date(state.selectedMonth.getFullYear(), state.selectedMonth.getMonth() - 1, 1); render(); }
+      if (action === 'next-month') { state.selectedMonth = new Date(state.selectedMonth.getFullYear(), state.selectedMonth.getMonth() + 1, 1); render(); }
+
+      const accountMode = event.target.closest('[data-account-mode]')?.dataset.accountMode;
+      if (accountMode) { state.ownerMode = accountMode; state.error = ''; render(); }
+
+      const pet = event.target.closest('[data-pet]')?.dataset.pet;
+      if (pet) {
+        if (pet === '__new__') { state.petMode = 'new'; state.selectedPetId = ''; }
+        else {
+          state.petMode = 'existing'; state.selectedPetId = pet;
+          const p = (state.account?.pets || []).find(x => x.id === pet);
+          if (p) { state.species = p.species || ''; state.patientName = p.name || ''; state.breed = p.breed || ''; }
+        }
         render();
       }
-      if (action === 'prev-month') {
-        state.selectedMonth = new Date(state.selectedMonth.getFullYear(), state.selectedMonth.getMonth() - 1, 1);
-        render();
-      }
-      if (action === 'next-month') {
-        state.selectedMonth = new Date(state.selectedMonth.getFullYear(), state.selectedMonth.getMonth() + 1, 1);
-        render();
-      }
+
       const species = event.target.closest('[data-species]')?.dataset.species;
-      if (species) {
-        state.species = species;
-        render();
-      }
+      if (species) { state.species = species; if (isExistingLinked()) state.petMode = 'new'; render(); }
+
       const service = event.target.closest('[data-service]')?.dataset.service;
       if (service) {
-        state.serviceKey = service;
-        state.serviceTouched = true;
-        state.selectedSlot = null;
-        state.selectedDate = '';
+        state.serviceKey = service; state.serviceTouched = true;
+        state.selectedSlot = null; state.selectedDate = '';
         loadAvailability();
       }
+
       const doctor = event.target.closest('[data-doctor]')?.dataset.doctor;
-      if (doctor) {
-        state.selectedDoctorId = doctor;
-        state.selectedSlot = null;
-        ensureDateSelection();
-        render();
-      }
+      if (doctor) { state.selectedDoctorId = doctor; state.selectedSlot = null; ensureDateSelection(); render(); }
+
       const date = event.target.closest('[data-date]')?.dataset.date;
-      if (date) {
-        state.selectedDate = date;
-        state.selectedSlot = null;
-        render();
-      }
+      if (date) { state.selectedDate = date; state.selectedSlot = null; render(); }
+
       const slotId = event.target.closest('[data-slot]')?.dataset.slot;
       if (slotId) {
         const slot = availableSlotsForDate(state.selectedDate).find(item => item.id === slotId);
-        if (slot) {
-          state.selectedSlot = slot;
-          render();
-        }
-      }
-      const accountMode = event.target.closest('[data-account-mode]')?.dataset.accountMode;
-      if (accountMode) {
-        state.ownerMode = accountMode;
-        render();
+        if (slot) { state.selectedSlot = slot; render(); }
       }
     });
 
@@ -958,18 +1064,11 @@
       renderActionsOnly();
     });
 
-    form.addEventListener('submit', event => {
-      event.preventDefault();
-      submitBooking();
-    });
+    form.addEventListener('submit', event => { event.preventDefault(); submitBooking(); });
 
     function renderActionsOnly() {
       actionsEl.innerHTML = state.success ? '' : renderActions();
-      if (state.error) {
-        state.error = '';
-        statusBox.className = 'status-box';
-        statusBox.textContent = '';
-      }
+      if (state.error) { state.error = ''; statusBox.className = 'status-box'; statusBox.textContent = ''; }
     }
 
     function selectedService() {
@@ -977,8 +1076,8 @@
     }
 
     function accountModeLabel(mode) {
-      if (mode === 'new') return 'Client nou';
-      if (mode === 'existing') return 'Client existent';
+      if (mode === 'new') return 'Client nou (cont creat)';
+      if (mode === 'existing') return 'Client existent (cont)';
       return 'Vizitator';
     }
 
@@ -986,25 +1085,24 @@
       return speciesOptions.find(item => item.key === value)?.label || value || 'Animal';
     }
 
-    function validPhone(value) {
-      return /^(\+40|0)[0-9]{9}$/.test(String(value || '').replace(/\s/g, ''));
-    }
+    function validPhone(value) { return /^(\+40|0)[0-9]{9}$/.test(String(value || '').replace(/\s/g, '')); }
+    function validEmail(value) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || '').trim()); }
 
-    function validEmail(value) {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || '').trim());
-    }
-
-    const VALIDATED_FIELDS = ['patientName', 'ownerFirstName', 'ownerLastName', 'phone', 'email'];
+    const VALIDATED_FIELDS = ['patientName', 'ownerFirstName', 'ownerLastName', 'phone', 'email', 'password', 'passwordConfirm'];
 
     function fieldIsValid(key) {
       if (key === 'phone') return validPhone(state.phone);
       if (key === 'email') return validEmail(state.email);
+      if (key === 'password') return state.password.length >= 6;
+      if (key === 'passwordConfirm') return state.passwordConfirm.length >= 6 && state.passwordConfirm === state.password;
       return Boolean(String(state[key] || '').trim());
     }
 
     function errorFor(key) {
       if (key === 'phone') return 'Număr invalid (ex: 0712 345 678).';
       if (key === 'email') return 'Email invalid.';
+      if (key === 'password') return 'Minim 6 caractere.';
+      if (key === 'passwordConfirm') return 'Parolele nu coincid.';
       return 'Câmp obligatoriu.';
     }
 
@@ -1013,6 +1111,8 @@
       if (key === 'ownerLastName') return 'family-name';
       if (key === 'phone') return 'tel';
       if (key === 'email') return 'email';
+      if (key === 'password') return 'new-password';
+      if (key === 'passwordConfirm') return 'new-password';
       return 'off';
     }
 
@@ -1020,25 +1120,16 @@
       const [year, month, day] = String(key || '').split('-').map(Number);
       return new Date(year, month - 1, day);
     }
-
     function dateKey(date) {
       return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
     }
-
     function formatDate(value) {
-      return new Intl.DateTimeFormat('ro-RO', {
-        weekday:'short',
-        day:'numeric',
-        month:'long',
-        timeZone:'Europe/Bucharest',
-      }).format(new Date(value));
+      return new Intl.DateTimeFormat('ro-RO', { weekday:'short', day:'numeric', month:'long', timeZone:'Europe/Bucharest' }).format(new Date(value));
     }
-
     function doctorInitials(name) {
       const parts = String(name || '').replace(/^Dr\.?\s*/i, '').split(/\s+/).filter(Boolean);
       return parts.slice(0, 2).map(part => part[0]).join('').toUpperCase() || 'VS';
     }
-
     function shortDoctorName(name) {
       return String(name || '').replace(/^Dr\.?\s*/i, '').split(/\s+/).slice(0, 2).join(' ');
     }
@@ -1061,13 +1152,11 @@
     function escapeHtml(value) {
       return String(value || '').replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[char]));
     }
-
     function escapeAttr(value) {
       return escapeHtml(value).replace(/`/g, '&#96;');
     }
 
     render();
-    loadAvailability();
   </script>
 </body>
 </html>

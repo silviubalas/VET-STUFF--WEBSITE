@@ -149,7 +149,9 @@ export async function loginClientAccount(env, { email, password }) {
   return {
     ok: true,
     token,
+    email: verifiedEmail,
     ownerName: ownerList[0]?.full_name || '',
+    ownerPhone: ownerList[0]?.phone || '',
     linked: ownerIds.length > 0,
     pets,
   };
