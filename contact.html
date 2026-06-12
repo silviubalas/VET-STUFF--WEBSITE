@@ -100,6 +100,8 @@
     .f-label { display:block; font-size:.75rem; font-weight:900; letter-spacing:.06em; text-transform:uppercase; color:var(--navy); margin-bottom:7px; }
     .f-input { width:100%; border:1.5px solid var(--border); border-radius:9px; padding:12px 14px; font-family:inherit; font-size:.94rem; outline:none; background:#fff; transition:border-color .16s, box-shadow .16s; }
     .f-input:focus { border-color:var(--red); box-shadow:0 0 0 3px rgba(212,43,43,.1); }
+    select.f-input { appearance:none; -webkit-appearance:none; cursor:pointer; padding-right:40px; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%231B3A6B' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; }
+    .info-sub { color:#7A8BA0; font-size:.78rem; line-height:1.5; margin-top:2px; }
     .f-error { display:none; margin-top:5px; color:var(--red); font-size:.76rem; }
     .map { width:100%; min-height:380px; border:0; display:block; filter:saturate(.86) contrast(.96); }
     footer { background:#111827; color:#fff; padding:34px 16px 24px; }
@@ -190,43 +192,71 @@
   </section>
 
   <main id="contact" class="section">
-    <div class="wrap grid2">
-      <div class="card">
-        <div class="eyebrow">Mesaj rapid</div>
-        <h2 style="font-size:clamp(1.6rem,3vw,2.35rem);color:var(--navy);margin-bottom:12px;">Trimite-ne întrebarea ta</h2>
-        <p style="color:#555;line-height:1.75;margin-bottom:24px;">Pentru consultații și investigații, folosește pagina de programare. Pentru întrebări generale, completează formularul de aici.</p>
-        <form id="contact-form" novalidate>
-          <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;" />
-          <div class="mb-4"><label class="f-label" for="name">Nume *</label><input id="name" class="f-input" name="Nume" autocomplete="name" placeholder="Numele tău" /><div class="f-error"></div></div>
-          <div class="grid sm:grid-cols-2 gap-4">
-            <div class="mb-4"><label class="f-label" for="phone">Telefon</label><input id="phone" class="f-input" name="Telefon" type="tel" autocomplete="tel" placeholder="07XX XXX XXX" /><div class="f-error"></div></div>
-            <div class="mb-4"><label class="f-label" for="email">Email *</label><input id="email" class="f-input" name="Email" type="email" autocomplete="email" required placeholder="email@exemplu.ro" /><div class="f-error"></div></div>
-          </div>
-          <div class="mb-4"><label class="f-label" for="topic">Subiect</label><input id="topic" class="f-input" name="Subiect" placeholder="Despre ce este vorba?" /></div>
-          <div class="mb-4"><label class="f-label" for="message">Mesaj *</label><textarea id="message" class="f-input" name="Mesaj" rows="5" required placeholder="Scrie mesajul aici..." style="resize:vertical;"></textarea><div class="f-error"></div></div>
-          <label style="display:flex;align-items:flex-start;gap:10px;color:#666;font-size:.82rem;line-height:1.55;margin-bottom:14px;"><input id="gdpr" type="checkbox" style="margin-top:3px;accent-color:var(--red);" /> Accept prelucrarea datelor conform <a href="privacy.html" style="color:var(--red);font-weight:700;text-decoration:underline;">Politicii de confidențialitate</a> și <a href="gdpr.html" style="color:var(--red);font-weight:700;text-decoration:underline;">Notei GDPR</a> VET STUFF *</label>
-          <div id="gdpr-error" style="display:none;color:var(--red);font-size:.78rem;margin-bottom:14px;">Te rugăm să accepți politica de confidențialitate.</div>
-          <button id="submit-btn" class="btn-red" type="submit" style="width:100%;">Trimite mesajul</button>
-          <div id="contact-success" style="display:none;margin-top:16px;padding:14px;border-radius:10px;background:#dcfce7;color:#166534;text-align:center;font-weight:800;">Mesajul a fost trimis. Îți răspundem cât de curând.</div>
-        </form>
+    <div class="wrap">
+      <div style="text-align:center;max-width:660px;margin:0 auto 38px;">
+        <div class="eyebrow" style="color:var(--red);">Contact</div>
+        <h2 style="font-size:clamp(1.8rem,3.4vw,2.7rem);color:var(--navy);margin-bottom:10px;">Contactează-ne</h2>
+        <p style="color:#555;line-height:1.75;">Suntem aici să te ajutăm. Completează formularul și te contactăm cât mai rapid.</p>
       </div>
-      <div class="card" style="padding:0;overflow:hidden;display:flex;flex-direction:column;">
-        <iframe class="map" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" title="Locație VET STUFF Bacău" src="https://www.google.com/maps?q=Strada%20Miori%C8%9Bei%2010%20Bac%C4%83u&output=embed"></iframe>
-        <div style="padding:22px 24px;">
-          <h3 style="font-size:1.35rem;color:var(--navy);margin-bottom:8px;">Cum ajungi la clinică</h3>
-          <p style="color:#555;line-height:1.7;margin-bottom:16px;">Suntem pe Strada Mioriței nr. 10, într-o zonă accesibilă din Bacău. Apasă butonul de mai jos pentru rută în Google Maps sau scanează codul QR cu telefonul.</p>
-          <a id="route-btn" href="https://www.google.com/maps/dir/?api=1&destination=Strada+Mioritei+10%2C+Bac%C4%83u%2C+Romania" target="_blank" rel="noopener" class="btn-red" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;padding:13px 22px;font-size:.95rem;">
-            <span aria-hidden="true">📍</span> Deschide ruta în Google Maps
-          </a>
-          <div style="margin-top:22px;padding-top:18px;border-top:1px solid var(--border);display:flex;gap:18px;align-items:center;flex-wrap:wrap;">
-            <div style="width:128px;height:128px;flex-shrink:0;background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:8px;display:flex;align-items:center;justify-content:center;">
-              <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=0&color=1b3a6b&data=https%3A%2F%2Fwww.google.com%2Fmaps%2Fdir%2F%3Fapi%3D1%26destination%3DStrada%2BMioritei%2B10%252C%2BBac%25C4%2583u%252C%2BRomania" alt="Cod QR pentru rută Google Maps către VET STUFF" width="112" height="112" loading="lazy" style="display:block;width:112px;height:112px;" />
-            </div>
-            <div style="flex:1;min-width:180px;">
-              <strong style="display:block;color:var(--navy);font-size:.95rem;margin-bottom:4px;">Scanează pentru navigație</strong>
-              <p style="color:#666;font-size:.82rem;line-height:1.6;margin:0;">Folosește camera telefonului pentru a scana codul și a deschide ruta direct în Google Maps.</p>
+      <div class="grid2">
+        <!-- Stânga: carduri info + hartă -->
+        <div>
+          <div class="card" style="margin-bottom:26px;">
+            <div class="info-row"><div class="icon">📍</div><div><strong style="color:var(--navy);">Adresă</strong><p style="color:#555;line-height:1.55;margin-top:3px;">Str. Mioriței nr. 10<br/>Bacău, România</p></div></div>
+            <div class="info-row"><div class="icon">✉</div><div><strong style="color:var(--navy);">Email</strong><p style="margin-top:3px;"><a href="mailto:vet.stuff@yahoo.com" style="color:var(--red);font-weight:800;">vet.stuff@yahoo.com</a></p><p class="info-sub">Răspundem cât mai repede</p></div></div>
+            <div class="info-row"><div class="icon">💬</div><div><strong style="color:var(--navy);">Messenger</strong><p style="margin-top:3px;"><a href="https://www.facebook.com/vetstuff" target="_blank" rel="noopener" style="color:var(--red);font-weight:800;">facebook.com/vetstuff</a></p><p class="info-sub">Întrebări rapide & STUFFIE 24/7</p></div></div>
+            <div class="info-row"><div class="icon">🕐</div><div><strong style="color:var(--navy);">Program</strong><p style="color:#555;line-height:1.55;margin-top:3px;">Luni-Vineri 09:00-20:00<br/>Sâmbătă 09:00-14:00</p></div></div>
+          </div>
+          <div class="card" style="padding:0;overflow:hidden;">
+            <iframe class="map" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" title="Locație VET STUFF Bacău" src="https://www.google.com/maps?q=Strada%20Miori%C8%9Bei%2010%20Bac%C4%83u&output=embed"></iframe>
+            <div style="padding:18px 22px;">
+              <a id="route-btn" href="https://www.google.com/maps/dir/?api=1&destination=Strada+Mioritei+10%2C+Bac%C4%83u%2C+Romania" target="_blank" rel="noopener" class="btn-red" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;padding:12px 20px;font-size:.92rem;">
+                <span aria-hidden="true">📍</span> Deschide ruta în Google Maps
+              </a>
             </div>
           </div>
+        </div>
+
+        <!-- Dreapta: formular -->
+        <div class="card">
+          <h2 style="font-size:clamp(1.4rem,2.6vw,1.9rem);color:var(--navy);margin-bottom:20px;">Trimite-ne un mesaj</h2>
+          <form id="contact-form" novalidate>
+            <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;" />
+            <div class="mb-4"><label class="f-label" for="reason">Motivul contactării *</label>
+              <select id="reason" class="f-input" name="Motiv" required>
+                <option value="" disabled selected>Alege motivul</option>
+                <option>Întrebare generală</option>
+                <option>Programare / Consultație</option>
+                <option>Informații prețuri / Abonamente</option>
+                <option>Feedback / Sugestie</option>
+                <option>Reclamație</option>
+                <option>Parteneriat / Colaborare</option>
+                <option>Altceva</option>
+              </select>
+              <div class="f-error"></div>
+            </div>
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div class="mb-4"><label class="f-label" for="name">Nume *</label><input id="name" class="f-input" name="Nume" autocomplete="name" placeholder="Numele tău" /><div class="f-error"></div></div>
+              <div class="mb-4"><label class="f-label" for="phone">Telefon</label><input id="phone" class="f-input" name="Telefon" type="tel" autocomplete="tel" placeholder="07XX XXX XXX" /><div class="f-error"></div></div>
+            </div>
+            <div class="mb-4"><label class="f-label" for="email">Email *</label><input id="email" class="f-input" name="Email" type="email" autocomplete="email" required placeholder="email@exemplu.ro" /><div class="f-error"></div></div>
+            <div class="mb-4"><label class="f-label" for="source">Cum ai aflat de noi?</label>
+              <select id="source" class="f-input" name="Sursa">
+                <option value="" disabled selected>Selectează</option>
+                <option>Google</option>
+                <option>Facebook / Instagram</option>
+                <option>Recomandare de la un prieten</option>
+                <option>Petshop / partener</option>
+                <option>Altă sursă</option>
+              </select>
+            </div>
+            <div class="mb-4"><label class="f-label" for="topic">Subiect</label><input id="topic" class="f-input" name="Subiect" placeholder="Despre ce este vorba?" /></div>
+            <div class="mb-4"><label class="f-label" for="message">Mesaj *</label><textarea id="message" class="f-input" name="Mesaj" rows="5" required placeholder="Descrie întrebarea, problema sau mesajul tău..." style="resize:vertical;"></textarea><div class="f-error"></div></div>
+            <label style="display:flex;align-items:flex-start;gap:10px;color:#666;font-size:.82rem;line-height:1.55;margin-bottom:14px;"><input id="gdpr" type="checkbox" style="margin-top:3px;accent-color:var(--red);" /> Accept prelucrarea datelor conform <a href="privacy.html" style="color:var(--red);font-weight:700;text-decoration:underline;">Politicii de confidențialitate</a> și <a href="gdpr.html" style="color:var(--red);font-weight:700;text-decoration:underline;">Notei GDPR</a> VET STUFF *</label>
+            <div id="gdpr-error" style="display:none;color:var(--red);font-size:.78rem;margin-bottom:14px;">Te rugăm să accepți politica de confidențialitate.</div>
+            <button id="submit-btn" class="btn-red" type="submit" style="width:100%;">Trimite mesajul</button>
+            <div id="contact-success" style="display:none;margin-top:16px;padding:14px;border-radius:10px;background:#dcfce7;color:#166534;text-align:center;font-weight:800;">Mesajul a fost trimis. Îți răspundem cât de curând.</div>
+          </form>
         </div>
       </div>
     </div>
@@ -305,13 +335,16 @@
       el.style.boxShadow = '';
     }
     ['name','email','message'].forEach(id => document.getElementById(id).addEventListener('input', () => clearFieldError(id)));
+    document.getElementById('reason').addEventListener('change', () => clearFieldError('reason'));
 
     document.getElementById('contact-form').addEventListener('submit', function(e) {
       e.preventDefault();
       let ok = true;
+      const reason = document.getElementById('reason').value.trim();
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
       const message = document.getElementById('message').value.trim();
+      if (!reason) { fieldError('reason','Alege motivul contactării.'); ok = false; } else clearFieldError('reason');
       if (!name) { fieldError('name','Introduceți numele dvs.'); ok = false; } else clearFieldError('name');
       if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { fieldError('email','Email invalid.'); ok = false; } else clearFieldError('email');
       if (!message) { fieldError('message','Scrieți un mesaj.'); ok = false; } else clearFieldError('message');
@@ -325,6 +358,9 @@
       btn.textContent = 'Se trimite...';
       const phone = document.getElementById('phone').value.trim();
       const topic = document.getElementById('topic').value.trim();
+      const source = document.getElementById('source').value.trim();
+      // Mapăm în coloanele existente Airtable: Motivul → Subiect, Cum ai aflat → Sursa.
+      const subiect = topic ? `${reason} — ${topic}` : reason;
       fetch('/api/airtable', {
         method:'POST',
         headers:{ 'Content-Type':'application/json' },
@@ -334,9 +370,9 @@
             'Nume': name,
             'Email': email,
             'Telefon': phone,
-            'Subiect': topic,
+            'Subiect': subiect,
             'Mesaj': message,
-            'Sursa': 'contact.html',
+            'Sursa': source || 'contact.html',
             'website': this.elements.website?.value || ''
           }
         })
