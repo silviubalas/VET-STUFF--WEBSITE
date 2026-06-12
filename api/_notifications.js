@@ -113,6 +113,64 @@ export async function notifySubscriptionLead(fields) {
   return notifyFormspree(fields?._subject || 'VET STUFF — formular abonament', fields);
 }
 
+// Notificare generică pentru clinică (orice formular de pe website: contact,
+// feedback, newsletter) trimisă direct prin Resend. Randează câmpurile ca tabel.
+// Canal sigur, verificat (independent de Formspree).
+export async function sendClinicFormEmail({ subject, heading, fields, replyToEmail }) {
+  const token = process.env.RESEND_API_KEY;
+  if (!token) return { ok: false, skipped: true, reason: 'RESEND_API_KEY missing' };
+
+  const to = String(process.env.CLINIC_NOTIFY_EMAIL || 'vet.stuff@yahoo.com').trim();
+  const replyTo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(replyToEmail || ''))
+    ? String(replyToEmail)
+    : undefined;
+
+  const rowsHtml = Object.entries(fields || {})
+    .filter(([, v]) => v !== undefined && v !== null && String(v).trim() !== '')
+    .map(([k, v]) => `
+      <tr>
+        <td style="padding:8px 12px; color:#6b7280; font-size:13px; white-space:nowrap; vertical-align:top;">${escapeHtml(k)}</td>
+        <td style="padding:8px 12px; color:#1f2937; font-size:14px; font-weight:600;">${escapeHtml(String(v)).replace(/\n/g, '<br>')}</td>
+      </tr>`).join('');
+
+  const html = `
+<!DOCTYPE html>
+<html>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width:600px; margin:0 auto; padding:24px; color:#1f2937; line-height:1.5;">
+  <div style="text-align:center; padding:20px 0; border-bottom:2px solid #E31B23;">
+    <h1 style="color:#E31B23; margin:0; font-size:22px;">VET STUFF</h1>
+    <p style="color:#6b7280; margin:6px 0 0; font-size:13px;">${escapeHtml(heading || 'Mesaj nou de pe website')}</p>
+  </div>
+  <table style="width:100%; border-collapse:collapse; background:#f9fafb; border:1px solid #e5e7eb; border-radius:10px; margin:20px 0;">
+    ${rowsHtml}
+  </table>
+  <hr style="border:none; border-top:1px solid #e5e7eb; margin:24px 0;">
+  <p style="font-size:12px; color:#9ca3af; text-align:center;">Trimis automat de pe www.vet-stuff.ro</p>
+</body>
+</html>`;
+
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'VET STUFF <noreply@vet-stuff.ro>',
+        to: [to],
+        ...(replyTo ? { reply_to: replyTo } : {}),
+        subject: subject || 'Mesaj nou de pe website — VET STUFF',
+        html,
+      }),
+    });
+    if (!res.ok) {
+      const text = await res.text();
+      return { ok: false, status: res.status, error: text.slice(0, 500) };
+    }
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, status: 502, error: String(err?.message || err) };
+  }
+}
+
 // Notifică clinica (vet.stuff@yahoo.com) direct prin Resend când vine o cerere
 // de programare de pe website. Canal sigur, verificat (independent de Formspree).
 export async function sendClinicBookingEmail(fields) {

@@ -2,7 +2,7 @@
 // Tokenul Airtable este pastrat ca variabila de mediu AIRTABLE_TOKEN si nu ajunge niciodata in browser.
 
 import { enforceOrigin, getClientIp, isHoneypotFilled, rateLimit, verifyTurnstile } from './_security.js';
-import { notifyFormspree } from './_notifications.js';
+import { notifyFormspree, sendClinicFormEmail } from './_notifications.js';
 
 const AIRTABLE_BASE = 'appGhcW1B4iDA4cUY';
 const FIELD_RULES = {
@@ -118,9 +118,25 @@ export default async function handler(req, res) {
       return res.status(airtableRes.status).json({ error: 'Airtable error' });
     }
 
-    notifyFormspree(formSubject(table), cleanFields).catch(err => {
-      console.error('[airtable] form notification failed', err?.message || err);
-    });
+    // IMPORTANT: pe Vercel funcția se îngheață după răspuns → notificările pornite
+    // fără await nu se executau (clinica nu primea email la contact/feedback/newsletter).
+    // Trimitem email direct prin Resend (sigur) + Formspree (backup), awaited.
+    const replyToEmail = cleanFields.Email || cleanFields.email || '';
+    const [clinicEmail, formspree] = await Promise.allSettled([
+      sendClinicFormEmail({
+        subject: formSubject(table),
+        heading: formHeading(table),
+        fields: cleanFields,
+        replyToEmail,
+      }),
+      notifyFormspree(formSubject(table), cleanFields),
+    ]);
+    if (clinicEmail.status === 'rejected' || clinicEmail.value?.ok === false) {
+      console.error('[airtable] clinic email failed', clinicEmail.reason || clinicEmail.value?.error);
+    }
+    if (formspree.status === 'rejected' || formspree.value?.ok === false) {
+      console.error('[airtable] formspree failed', formspree.reason || formspree.value?.status);
+    }
 
     return res.status(200).json({ ok: true });
   } catch (err) {
@@ -135,6 +151,15 @@ function formSubject(table) {
     Feedback: 'Feedback — VET STUFF',
     'Mesaje contact': 'Mesaj contact — VET STUFF',
   }[table] || `Formular ${table} — VET STUFF`;
+}
+
+function formHeading(table) {
+  return {
+    Programari: 'Cerere nouă de programare',
+    Newsletter: 'Abonare nouă la newsletter',
+    Feedback: 'Feedback nou de la un client',
+    'Mesaje contact': 'Mesaj nou din formularul de contact',
+  }[table] || 'Mesaj nou de pe website';
 }
 
 function sanitizeFields(table, fields) {
