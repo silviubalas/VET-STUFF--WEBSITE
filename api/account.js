@@ -10,6 +10,7 @@ import {
   cleanPhone,
   createClientAccount,
   loginClientAccount,
+  recoverClientAccount,
 } from './_accounts.js';
 
 export default async function handler(req, res) {
@@ -62,6 +63,23 @@ export default async function handler(req, res) {
       console.error('[account:login]', err?.message || err);
       return res.status(502).json({ ok: false, error: 'Conectarea a eșuat. Încearcă din nou.' });
     }
+  }
+
+  if (action === 'recover') {
+    if (!rateLimit(req, res, 'account-recover', { max: 5, windowMs: 15 * 60 * 1000 })) return;
+    const email = cleanEmail(req.body?.email);
+    if (!email) return res.status(400).json({ ok: false, error: 'Email invalid.' });
+
+    try {
+      await recoverClientAccount(env, { email });
+    } catch (err) {
+      console.error('[account:recover]', err?.message || err);
+    }
+
+    return res.status(200).json({
+      ok: true,
+      message: 'Dacă există un cont pentru acest email, vei primi un link de resetare.',
+    });
   }
 
   return res.status(400).json({ ok: false, error: 'Acțiune necunoscută.' });

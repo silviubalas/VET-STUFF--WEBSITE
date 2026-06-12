@@ -215,6 +215,8 @@
     .login-btn { margin-top:18px; border:0; background:var(--teal); color:#fff; border-radius:10px; min-height:52px; padding:0 28px; font-weight:900; font-size:1rem; cursor:pointer; }
     .login-btn:hover { background:var(--teal-dark); }
     .login-btn:disabled { opacity:.6; cursor:not-allowed; }
+    .forgot-link { display:inline-flex; margin-top:14px; border:0; background:transparent; color:var(--teal); font-weight:900; cursor:pointer; text-decoration:underline; padding:0; }
+    .forgot-link:disabled { opacity:.6; cursor:not-allowed; }
     .pet-grid { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:16px; }
     @media (max-width:640px) { .pet-grid { grid-template-columns:1fr; } }
     footer { background:#111827; color:#fff; padding:34px 16px 24px; }
@@ -405,6 +407,7 @@
       password: '', passwordConfirm: '',
       signupBusy: false, signupError: '', signupDone: false,
       loginBusy: false, loginError: '',
+      recoverBusy: false, recoverError: '', recoverDone: false,
       account: null,                 // { token, ownerName, phone, email, linked, pets:[] }
       accountToken: '',
       petMode: '',                   // '' | 'existing' | 'new'
@@ -525,7 +528,10 @@
               ${fieldHtml('password', 'Parolă *', 'Parola ta', state.password, 'password', 'full')}
             </div>
             ${state.loginError ? `<p class="id-error">${escapeHtml(state.loginError)}</p>` : ''}
-            <button type="button" class="login-btn" data-action="login" ${state.loginBusy ? 'disabled' : ''}>${state.loginBusy ? 'Se conectează...' : 'Conectează-te'}</button>`;
+            ${state.recoverDone ? '<p class="id-ok">✓ Dacă există un cont pentru acest email, vei primi un link de resetare.</p>' : ''}
+            ${state.recoverError ? `<p class="id-error">${escapeHtml(state.recoverError)}</p>` : ''}
+            <button type="button" class="login-btn" data-action="login" ${state.loginBusy ? 'disabled' : ''}>${state.loginBusy ? 'Se conectează...' : 'Conectează-te'}</button>
+            <button type="button" class="forgot-link" data-action="recover" ${state.recoverBusy ? 'disabled' : ''}>${state.recoverBusy ? 'Se trimite linkul...' : 'Ai uitat parola?'}</button>`;
         }
       }
       return tabs + body;
@@ -846,7 +852,7 @@
 
     async function doLogin() {
       if (!validEmail(state.email) || !state.password) { state.loginError = 'Introdu emailul și parola.'; render(); return; }
-      state.loginBusy = true; state.loginError = ''; render();
+      state.loginBusy = true; state.loginError = ''; state.recoverError = ''; state.recoverDone = false; render();
       try {
         const response = await fetch('/api/account', {
           method:'POST', headers:{ 'Content-Type':'application/json' },
@@ -867,6 +873,33 @@
         render();
       } catch {
         state.loginBusy = false; state.loginError = 'Eroare de rețea. Încearcă din nou.'; render();
+      }
+    }
+
+    async function doRecover() {
+      if (!validEmail(state.email)) {
+        state.recoverError = 'Introdu emailul contului pentru resetare.';
+        state.recoverDone = false;
+        render();
+        return;
+      }
+      state.recoverBusy = true; state.recoverError = ''; state.recoverDone = false; render();
+      try {
+        const response = await fetch('/api/account', {
+          method:'POST', headers:{ 'Content-Type':'application/json' },
+          body: JSON.stringify({ action:'recover', email: state.email.trim(), website: form.elements.website?.value || '' }),
+        });
+        const data = await response.json().catch(() => ({}));
+        state.recoverBusy = false;
+        if (!response.ok || !data.ok) {
+          state.recoverError = data.error || 'Nu am putut trimite linkul de resetare.';
+          render();
+          return;
+        }
+        state.recoverDone = true;
+        render();
+      } catch {
+        state.recoverBusy = false; state.recoverError = 'Eroare de rețea. Încearcă din nou.'; render();
       }
     }
 
@@ -995,13 +1028,14 @@
       if (action === 'next') nextStep();
       if (action === 'back') previousStep();
       if (action === 'login') doLogin();
-      if (action === 'logout') { state.account = null; state.accountToken = ''; state.petMode = ''; state.selectedPetId = ''; render(); }
+      if (action === 'recover') doRecover();
+      if (action === 'logout') { state.account = null; state.accountToken = ''; state.petMode = ''; state.selectedPetId = ''; state.recoverDone = false; state.recoverError = ''; render(); }
       if (action === 'toggle-services') { state.showAllServices = !state.showAllServices; render(); }
       if (action === 'prev-month') { state.selectedMonth = new Date(state.selectedMonth.getFullYear(), state.selectedMonth.getMonth() - 1, 1); render(); }
       if (action === 'next-month') { state.selectedMonth = new Date(state.selectedMonth.getFullYear(), state.selectedMonth.getMonth() + 1, 1); render(); }
 
       const accountMode = event.target.closest('[data-account-mode]')?.dataset.accountMode;
-      if (accountMode) { state.ownerMode = accountMode; state.error = ''; render(); }
+      if (accountMode) { state.ownerMode = accountMode; state.error = ''; state.recoverDone = false; state.recoverError = ''; render(); }
 
       const pet = event.target.closest('[data-pet]')?.dataset.pet;
       if (pet) {

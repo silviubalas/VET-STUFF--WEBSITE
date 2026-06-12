@@ -57,6 +57,12 @@ export function cleanPhone(value) {
   return /^(\+40|0)\d{9}$/.test(phone) ? phone : '';
 }
 
+function accountRedirectUrl() {
+  return process.env.CLIENT_ACCOUNT_RESET_REDIRECT_URL
+    || process.env.CLIENT_ACCOUNT_INVITE_REDIRECT_URL
+    || 'https://www.vet-stuff.ro/reset-parola.html';
+}
+
 async function authFetch(env, path, { method = 'POST', token, body } = {}) {
   const res = await fetch(`${env.url}/auth/v1/${path}`, {
     method,
@@ -115,10 +121,11 @@ export async function createClientAccount(env, { email, password, fullName, phon
   }
   const userId = signup.json?.id || signup.json?.user?.id;
   if (userId) {
+    const now = new Date().toISOString();
     await restFetch(env, 'client_accounts', {
       method: 'POST',
       prefer: 'resolution=merge-duplicates',
-      body: { id: userId, email, full_name: fullName, phone },
+      body: { id: userId, email, full_name: fullName, phone, status: 'invited', invited_at: now, updated_at: now },
     });
   }
   return { ok: true, needsConfirmation: !signup.json?.session };
@@ -136,6 +143,14 @@ export async function loginClientAccount(env, { email, password }) {
     return { ok: false, code: 'invalid', error: 'Email sau parolă incorecte.' };
   }
   const verifiedEmail = cleanEmail(login.json?.user?.email) || email;
+  const userId = login.json?.user?.id;
+  if (userId) {
+    await restFetch(env, 'client_accounts', {
+      method: 'POST',
+      prefer: 'resolution=merge-duplicates',
+      body: { id: userId, email: verifiedEmail, status: 'active', updated_at: new Date().toISOString() },
+    });
+  }
   const owners = await restFetch(env, `owners?select=id,full_name,phone&email=ilike.${encodeURIComponent(verifiedEmail)}`);
   const ownerList = Array.isArray(owners) ? owners : [];
   const ownerIds = ownerList.map(o => o.id).filter(Boolean);
@@ -155,6 +170,13 @@ export async function loginClientAccount(env, { email, password }) {
     linked: ownerIds.length > 0,
     pets,
   };
+}
+
+// Trimite emailul de recuperare parolă prin Supabase Auth.
+export async function recoverClientAccount(env, { email }) {
+  const redirect = encodeURIComponent(accountRedirectUrl());
+  const recover = await authFetch(env, `recover?redirect_to=${redirect}`, { body: { email } });
+  return { ok: recover.ok, status: recover.status };
 }
 
 // Validează că un patient ales aparține owner-ilor din token. Folosit la programare.
