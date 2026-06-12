@@ -53,8 +53,11 @@ export function cleanString(value, max = 200) {
   return String(value ?? '').replace(/\s+/g, ' ').trim().slice(0, max);
 }
 export function cleanPhone(value) {
-  const phone = String(value || '').replace(/[^\d+]/g, '');
-  return /^(\+40|0)\d{9}$/.test(phone) ? phone : '';
+  let phone = String(value || '').replace(/[^\d+]/g, '');
+  if (phone.startsWith('0040')) phone = `+40${phone.slice(4)}`; // 0040... -> +40...
+  if (phone.startsWith('+400')) phone = `+40${phone.slice(4)}`; // +40 0... (0 redundant) -> +40...
+  if (phone.startsWith('0')) phone = `+40${phone.slice(1)}`;    // 07... -> +407...
+  return /^\+40[0-9]{9}$/.test(phone) ? phone : '';
 }
 
 function accountRedirectUrl() {

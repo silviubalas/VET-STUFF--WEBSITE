@@ -1119,7 +1119,13 @@
       return speciesOptions.find(item => item.key === value)?.label || value || 'Animal';
     }
 
-    function validPhone(value) { return /^(\+40|0)[0-9]{9}$/.test(String(value || '').replace(/\s/g, '')); }
+    function validPhone(value) {
+      let phone = String(value || '').replace(/[^\d+]/g, '');
+      if (phone.startsWith('0040')) phone = `+40${phone.slice(4)}`;
+      if (phone.startsWith('+400')) phone = `+40${phone.slice(4)}`;
+      if (phone.startsWith('0')) phone = `+40${phone.slice(1)}`;
+      return /^\+40[0-9]{9}$/.test(phone);
+    }
     function validEmail(value) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || '').trim()); }
 
     const VALIDATED_FIELDS = ['patientName', 'ownerFirstName', 'ownerLastName', 'phone', 'email', 'password', 'passwordConfirm'];
