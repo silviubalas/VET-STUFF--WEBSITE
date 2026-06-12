@@ -1,5 +1,5 @@
 import { enforceOrigin, getClientIp, isHoneypotFilled, rateLimit, verifyTurnstile } from './_security.js';
-import { notifyFormspree } from './_notifications.js';
+import { notifyFormspree, sendClinicBookingEmail } from './_notifications.js';
 import { verifyAccountToken, patientBelongsToOwners, supabaseEnv } from './_accounts.js';
 
 const DEFAULT_TIMEZONE = 'Europe/Bucharest';
@@ -145,14 +145,25 @@ async function handlePost(req, res) {
       headers: { Prefer: 'return=representation' },
     });
     const request = Array.isArray(created) ? created[0] : created;
+    const notifyFields = { ...payload, request_id: request?.id };
 
-    notifyClinicLead({ ...payload, request_id: request?.id }).catch(err => {
-      console.error('[booking:notify]', err?.message || err);
-    });
-
-    syncAirtableLead({ ...payload, request_id: request?.id }).catch(err => {
-      console.error('[booking:airtable]', err?.message || err);
-    });
+    // IMPORTANT: pe Vercel, funcția se îngheață după ce returnează răspunsul.
+    // Așteptăm notificările (altfel fetch-urile pornite fără await nu se execută).
+    // allSettled = un canal picat nu blochează celelalte și nu pică cererea.
+    const [clinicEmail, formspree, airtable] = await Promise.allSettled([
+      sendClinicBookingEmail(notifyFields),
+      notifyClinicLead(notifyFields),
+      syncAirtableLead(notifyFields),
+    ]);
+    if (clinicEmail.status === 'rejected' || clinicEmail.value?.ok === false) {
+      console.error('[booking:clinic-email]', clinicEmail.reason || clinicEmail.value?.error);
+    }
+    if (formspree.status === 'rejected' || formspree.value?.ok === false) {
+      console.error('[booking:formspree]', formspree.reason || formspree.value?.status);
+    }
+    if (airtable.status === 'rejected' || airtable.value?.ok === false) {
+      console.error('[booking:airtable]', airtable.reason || airtable.value?.status);
+    }
 
     return res.status(200).json({
       ok: true,
