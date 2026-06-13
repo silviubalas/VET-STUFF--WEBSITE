@@ -1676,9 +1676,6 @@
 
         <!-- FORMSPREE: mzdkbdzb -->
         <form id="booking-form" novalidate>
-          <input type="hidden" name="_subject" value="Programare nouă — VET STUFF" />
-          <input type="hidden" name="_language" value="ro" />
-          <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;" />
 
           <div class="grid sm:grid-cols-2 gap-4 mb-4">
             <div>
@@ -1770,11 +1767,6 @@
             Trimite programarea
           </button>
 
-          <div id="form-success" class="mt-4 rounded-xl p-4 text-center hidden" style="background:#DCFCE7; border:1px solid #86EFAC;">
-            <div style="font-size:1.5rem; margin-bottom:6px;">✅</div>
-            <div class="font-semibold" style="color:#166534;">Programare trimisă cu succes!</div>
-            <div class="text-sm mt-1" style="color:#166534;">Te vom contacta în maxim 2 ore pentru confirmare.</div>
-          </div>
         </form>
       </div>
 
@@ -2132,51 +2124,27 @@ form.addEventListener('submit', e => {
   if (ok) {
     const btn = form.querySelector('button[type="submit"]');
     btn.disabled = true;
-    btn.textContent = 'Se trimite...';
+    btn.textContent = 'Se deschide calendarul...';
 
-    const payload = {
-      'Nume proprietar': document.getElementById('owner-name').value.trim(),
-      'Telefon':         document.getElementById('phone').value.trim(),
-      'Email':           document.getElementById('email').value.trim(),
-      'Nume animal':     document.getElementById('pet-name').value.trim(),
-      'Tip animal':      document.getElementById('pet-type').value,
-      'Serviciu':        document.getElementById('service').value,
-      'Data preferată':  document.getElementById('preferred-date').value,
-      'Descriere problemă': document.getElementById('message').value.trim()
-    };
-
-    fetch('/api/airtable', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        table: 'Programari',
-        fields: {
-          'Name':           payload['Nume proprietar'],
-          'Telefon':        payload['Telefon'],
-          'Email':          payload['Email'],
-          'Nume animal':    payload['Nume animal'],
-          'Tip animal':     payload['Tip animal'],
-          'Serviciu':       payload['Serviciu'],
-          'Data preferată': payload['Data preferată'],
-          'Descriere':      payload['Descriere problemă'],
-          'website':        form.elements.website?.value || ''
-        }
-      })
-    }).then(response => {
-      if (response.ok) {
-        document.getElementById('form-success').classList.remove('hidden');
-        form.querySelectorAll('input,select,textarea,button').forEach(el => { el.disabled = true; el.style.opacity = '0.5'; });
-        document.getElementById('form-success').scrollIntoView({ behavior: 'smooth', block: 'center' });
-      } else {
-        btn.disabled = false;
-        btn.textContent = 'Trimite programarea';
-        alert('A apărut o eroare. Te rugăm să ne scrii pe Messenger sau pe email.');
-      }
-    }).catch(() => {
-      btn.disabled = false;
-      btn.textContent = 'Trimite programarea';
-      alert('A apărut o eroare de rețea. Te rugăm să ne scrii pe Messenger sau pe email.');
+    const fullName = document.getElementById('owner-name').value.trim().replace(/\s+/g, ' ');
+    const parts = fullName.split(' ');
+    const firstName = parts.length > 1 ? parts.slice(0, -1).join(' ') : fullName;
+    const lastName = parts.length > 1 ? parts.slice(-1).join('') : '';
+    const params = new URLSearchParams({
+      prenume: firstName,
+      nume: lastName,
+      telefon: document.getElementById('phone').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      animal: document.getElementById('pet-name').value.trim(),
+      specie: document.getElementById('pet-type').value,
+      serviciu: document.getElementById('service').value,
+      data: document.getElementById('preferred-date').value,
+      note: document.getElementById('message').value.trim(),
     });
+    [...params.entries()].forEach(([key, value]) => {
+      if (!value) params.delete(key);
+    });
+    window.location.href = `programare.html?${params.toString()}`;
   }
 });
 

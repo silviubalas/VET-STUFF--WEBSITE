@@ -444,11 +444,49 @@
       consultatie:'consultatie_generala', vaccinare:'vaccinare', analize:'analize',
       imagistica:'ecografie_toracica', chirurgie:'consultatie_chirurgie', stomatologie:'stomatologie',
       ortopedie:'ortopedie', dermatologie:'dermatologie', oftalmologie:'oftalmologie',
+      preventie:'consultatie_generala', 'medicina-interna':'consultatie_generala',
+      cardiologie:'consultatie_generala', fizioterapie:'consultatie_generala',
+      geriatrie:'consultatie_generala', oncologie:'consultatie_generala',
+      urgenta:'consultatie_generala', altul:'consultatie_generala',
     };
+    const publicServiceKeys = new Set(fallbackServices.map(service => service.key));
+    const speciesMap = {
+      caine: 'caine',
+      câine: 'caine',
+      pisica: 'pisica',
+      pisică: 'pisica',
+      pasare: 'exotic',
+      pasăre: 'exotic',
+      iepure: 'exotic',
+      reptila: 'exotic',
+      reptilă: 'exotic',
+      altul: 'exotic',
+      exotic: 'exotic',
+    };
+    function prefillParam(key, maxLength = 140) {
+      return String(params.get(key) || '').trim().slice(0, maxLength);
+    }
     const serviceFromUrl = params.get('serviciu');
-    if (serviceFromUrl && serviceMap[serviceFromUrl]) {
-      state.serviceKey = serviceMap[serviceFromUrl];
+    const normalizedService = serviceMap[serviceFromUrl] || (publicServiceKeys.has(serviceFromUrl) ? serviceFromUrl : '');
+    if (normalizedService) {
+      state.serviceKey = normalizedService;
       state.serviceTouched = true;
+    }
+    const normalizedSpecies = speciesMap[prefillParam('specie', 40).toLowerCase()] || '';
+    state.ownerLastName = prefillParam('nume', 80);
+    state.ownerFirstName = prefillParam('prenume', 80);
+    state.phone = prefillParam('telefon', 32);
+    state.email = prefillParam('email', 120);
+    state.patientName = prefillParam('animal', 80);
+    state.species = normalizedSpecies;
+    state.patientNotes = prefillParam('note', 600);
+    const preferredDate = prefillParam('data', 10);
+    if (/^\d{4}-\d{2}-\d{2}$/.test(preferredDate)) {
+      const parsed = parseDateKey(preferredDate);
+      if (!Number.isNaN(parsed.getTime())) {
+        state.selectedDate = preferredDate;
+        state.selectedMonth = new Date(parsed.getFullYear(), parsed.getMonth(), 1);
+      }
     }
 
     function render() {
