@@ -187,9 +187,10 @@ async function loadBookingContext(query) {
   const doctors = await loadDoctors();
   const from = zonedDateTimeToUtc(dateKeys[0], 0, timezone).toISOString();
   const to = zonedDateTimeToUtc(addDays(dateKeys[dateKeys.length - 1], 1), 0, timezone).toISOString();
-  const [appointments, heldRequests] = await Promise.all([
+  const [appointments, heldRequests, blockingTasks] = await Promise.all([
     loadAppointments(from, to),
     loadHeldRequests(from, to),
+    loadBlockingTasks(from, to, clinic),
   ]);
 
   const days = dateKeys.map(dateKey => buildDayAvailability({
@@ -200,6 +201,7 @@ async function loadBookingContext(query) {
     service: selectedService,
     appointments,
     heldRequests,
+    blockingTasks,
   }));
 
   return {
@@ -289,7 +291,29 @@ async function loadHeldRequests(from, to) {
   ].join(''));
 }
 
-function buildDayAvailability({ dateKey, clinic, timezone, doctors, service, appointments, heldRequests }) {
+async function loadBlockingTasks(from, to, clinic) {
+  const path = [
+    'tasks',
+    '?select=id,start_at,end_at,clinic_id,status,metadata',
+    '&blocks_online_booking=eq.true',
+    `&start_at=lt.${encodeURIComponent(to)}`,
+    `&end_at=gt.${encodeURIComponent(from)}`,
+    '&status=not.in.(done,cancelled)',
+    clinic?.id ? `&or=${encodeURIComponent(`(clinic_id.is.null,clinic_id.eq.${clinic.id})`)}` : '',
+  ].join('');
+  const rows = await supabaseFetch(path);
+  return (Array.isArray(rows) ? rows : [])
+    .filter(row => row?.start_at && row?.end_at && row?.metadata?.assigned_staff_id)
+    .map(row => ({
+      id: row.id,
+      doctorId: String(row.metadata.assigned_staff_id),
+      start: new Date(row.start_at).getTime(),
+      end: new Date(row.end_at).getTime(),
+    }))
+    .filter(row => Number.isFinite(row.start) && Number.isFinite(row.end) && row.end > row.start);
+}
+
+function buildDayAvailability({ dateKey, clinic, timezone, doctors, service, appointments, heldRequests, blockingTasks }) {
   const intervals = daySchedule(clinic, dateKey);
   const leadMinutes = Math.max(0, Number(clinic.preferences?.firstAppointmentLeadMinutes) || 60);
   const step = normalizeStep(clinic.preferences?.bookingRoundMinutes);
@@ -310,6 +334,12 @@ function buildDayAvailability({ dateKey, clinic, timezone, doctors, service, app
           .map(item => ({
             start: new Date(item.preferred_at).getTime(),
             duration: Number(item.duration_minutes) || 30,
+          })),
+        ...(blockingTasks || [])
+          .filter(item => item.doctorId === String(doctor.id))
+          .map(item => ({
+            start: item.start,
+            duration: Math.ceil((item.end - item.start) / 60000),
           })),
       ];
 
