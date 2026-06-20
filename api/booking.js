@@ -3,6 +3,7 @@ import { notifyFormspree, sendClinicBookingEmail } from './_notifications.js';
 import { verifyAccountToken, patientBelongsToOwners, supabaseEnv } from './_accounts.js';
 
 const DEFAULT_TIMEZONE = 'Europe/Bucharest';
+const DEFAULT_CLINIC_ID = '00000000-0000-0000-0000-000000000001';
 const WEEKDAY_IDS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 const MAX_DAYS = 21;
 const DEFAULT_DAYS = 14;
@@ -73,7 +74,7 @@ async function handleGet(req, res) {
   }
 
   try {
-    const context = await loadBookingContext(req.query || {});
+    const context = await loadBookingContext(req.query || {}, req);
     return res.status(200).json({ ok: true, configured: true, ...context });
   } catch (err) {
     console.error('[booking:get]', err?.message || err);
@@ -96,7 +97,10 @@ async function handlePost(req, res) {
       date,
       days: '1',
       service: body.value.serviceKey,
-    });
+      clinicId: req.body?.clinicId || req.body?.clinic_id,
+      clinic: req.body?.clinic,
+      slug: req.body?.slug,
+    }, req);
     const matchingSlot = context.days
       .flatMap(day => day.slots)
       .find(slot => (
@@ -109,6 +113,7 @@ async function handlePost(req, res) {
     }
 
     const payload = {
+      clinic_id: context.clinic?.id || DEFAULT_CLINIC_ID,
       owner_name: body.value.ownerName,
       owner_phone: body.value.phone,
       owner_email: body.value.email || null,
@@ -176,20 +181,21 @@ async function handlePost(req, res) {
   }
 }
 
-async function loadBookingContext(query) {
-  const clinic = await loadClinicSettings();
+async function loadBookingContext(query, req) {
+  const clinicContext = await resolveClinicContext(query, req);
+  const clinic = await loadClinicSettings(clinicContext);
   const timezone = clinic.timezone || DEFAULT_TIMEZONE;
   const daysCount = clampInt(query.days, 1, MAX_DAYS, DEFAULT_DAYS);
   const startDate = validDateKey(query.date) || zonedDateKey(new Date(), timezone);
   const dateKeys = nextDateKeys(startDate, daysCount);
-  const services = await loadServices();
+  const services = await loadServices(clinic);
   const selectedService = services.find(service => service.key === query.service) || services[0] || DEFAULT_SERVICES[0];
-  const doctors = await loadDoctors();
+  const doctors = await loadDoctors(clinic);
   const from = zonedDateTimeToUtc(dateKeys[0], 0, timezone).toISOString();
   const to = zonedDateTimeToUtc(addDays(dateKeys[dateKeys.length - 1], 1), 0, timezone).toISOString();
   const [appointments, heldRequests, blockingTasks] = await Promise.all([
-    loadAppointments(from, to),
-    loadHeldRequests(from, to),
+    loadAppointments(from, to, clinic),
+    loadHeldRequests(from, to, clinic),
     loadBlockingTasks(from, to, clinic),
   ]);
 
@@ -205,6 +211,11 @@ async function loadBookingContext(query) {
   }));
 
   return {
+    clinic: {
+      id: clinic.id || clinic.clinic_id || DEFAULT_CLINIC_ID,
+      name: clinic.clinic_name || clinic.name || 'VET STUFF',
+      publicSlug: clinic.public_slug || clinic.slug || 'vet-stuff',
+    },
     timezone,
     services,
     selectedServiceKey: selectedService.key,
@@ -213,17 +224,54 @@ async function loadBookingContext(query) {
   };
 }
 
-async function loadClinicSettings() {
-  const rows = await supabaseFetch('clinic_settings?select=*&order=updated_at.desc&limit=1');
-  return Array.isArray(rows) && rows[0] ? rows[0] : {};
+async function resolveClinicContext(query = {}, req) {
+  const directId = cleanUuid(query.clinicId || query.clinic_id);
+  if (directId) return { id: directId };
+
+  const slug = cleanSlug(query.clinic || query.slug || query.publicSlug || query.public_slug);
+  const host = cleanHost(req?.headers?.host || req?.headers?.['x-forwarded-host']);
+
+  if (host) {
+    const rows = await supabaseFetch(`clinic_domains?select=clinic_id,public_slug&host=eq.${encodeURIComponent(host)}&limit=1`);
+    if (Array.isArray(rows) && rows[0]?.clinic_id) {
+      return { id: rows[0].clinic_id, publicSlug: rows[0].public_slug || slug };
+    }
+  }
+
+  if (slug) {
+    const domainRows = await supabaseFetch(`clinic_domains?select=clinic_id,public_slug&public_slug=eq.${encodeURIComponent(slug)}&limit=1`);
+    if (Array.isArray(domainRows) && domainRows[0]?.clinic_id) {
+      return { id: domainRows[0].clinic_id, publicSlug: domainRows[0].public_slug || slug };
+    }
+    const clinicRows = await supabaseFetch(`clinics?select=id,public_slug,slug&or=${encodeURIComponent(`(public_slug.eq.${slug},slug.eq.${slug})`)}&limit=1`);
+    if (Array.isArray(clinicRows) && clinicRows[0]?.id) {
+      return { id: clinicRows[0].id, publicSlug: clinicRows[0].public_slug || clinicRows[0].slug || slug };
+    }
+  }
+
+  return { id: DEFAULT_CLINIC_ID, publicSlug: 'vet-stuff' };
 }
 
-async function loadDoctors() {
+async function loadClinicSettings(clinicContext = {}) {
+  const clinicId = clinicContext.id || DEFAULT_CLINIC_ID;
+  const rows = await supabaseFetch(`clinic_settings?select=*&clinic_id=eq.${encodeURIComponent(clinicId)}&order=updated_at.desc&limit=1`);
+  const settings = Array.isArray(rows) && rows[0] ? rows[0] : {};
+  return {
+    ...settings,
+    id: clinicId,
+    clinic_id: clinicId,
+    public_slug: settings.public_slug || clinicContext.publicSlug || 'vet-stuff',
+  };
+}
+
+async function loadDoctors(clinic) {
+  const clinicFilter = clinic?.id ? `&clinic_id=eq.${encodeURIComponent(clinic.id)}` : '';
   let rows;
   try {
     rows = await supabaseFetch([
       'clinic_doctors',
       '?select=id,name,specialization,active,staff_bookable,online_booking,sort_order',
+      clinicFilter,
       '&active=eq.true',
       '&staff_bookable=eq.true',
       '&online_booking=eq.true',
@@ -236,6 +284,7 @@ async function loadDoctors() {
     rows = await supabaseFetch([
       'clinic_doctors',
       '?select=id,name,specialization,active,sort_order',
+      clinicFilter,
       '&active=eq.true',
       '&order=sort_order.asc',
       '&order=name.asc',
@@ -254,8 +303,9 @@ async function loadDoctors() {
   return doctors.length ? doctors : DEFAULT_DOCTORS;
 }
 
-async function loadServices() {
-  const rows = await supabaseFetch('clinic_visit_types?select=key,label,category,duration_minutes,hidden,sort_order&hidden=eq.false&order=sort_order.asc&order=label.asc');
+async function loadServices(clinic) {
+  const clinicFilter = clinic?.id ? `&clinic_id=eq.${encodeURIComponent(clinic.id)}` : '';
+  const rows = await supabaseFetch(`clinic_visit_types?select=key,label,category,duration_minutes,hidden,sort_order${clinicFilter}&hidden=eq.false&order=sort_order.asc&order=label.asc`);
   const mapped = (Array.isArray(rows) ? rows : [])
     .filter(row => row?.key && row?.label)
     .map(row => ({
@@ -271,20 +321,22 @@ async function loadServices() {
   return merged.length ? merged : DEFAULT_SERVICES;
 }
 
-async function loadAppointments(from, to) {
+async function loadAppointments(from, to, clinic) {
   return supabaseFetch([
     'appointments',
     '?select=id,doctor,scheduled_at,duration_minutes,status',
+    clinic?.id ? `&clinic_id=eq.${encodeURIComponent(clinic.id)}` : '',
     `&scheduled_at=gte.${encodeURIComponent(from)}`,
     `&scheduled_at=lt.${encodeURIComponent(to)}`,
     '&status=neq.cancelled',
   ].join(''));
 }
 
-async function loadHeldRequests(from, to) {
+async function loadHeldRequests(from, to, clinic) {
   return supabaseFetch([
     'appointment_requests',
     '?select=id,doctor_name,preferred_at,duration_minutes,status',
+    clinic?.id ? `&clinic_id=eq.${encodeURIComponent(clinic.id)}` : '',
     `&preferred_at=gte.${encodeURIComponent(from)}`,
     `&preferred_at=lt.${encodeURIComponent(to)}`,
     '&status=in.(new,in_review,accepted)',
@@ -721,6 +773,27 @@ function cleanEmail(value) {
 function cleanKey(value, max = 80) {
   const clean = String(value || '').trim().slice(0, max);
   return /^[a-zA-Z0-9_.:-]+$/.test(clean) ? clean : '';
+}
+
+function cleanUuid(value) {
+  const clean = String(value || '').trim();
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(clean)
+    ? clean
+    : '';
+}
+
+function cleanSlug(value) {
+  const clean = String(value || '').trim().toLowerCase().slice(0, 80);
+  return /^[a-z0-9-]+$/.test(clean) ? clean : '';
+}
+
+function cleanHost(value) {
+  return String(value || '')
+    .split(',')[0]
+    .trim()
+    .toLowerCase()
+    .replace(/:\d+$/, '')
+    .slice(0, 180);
 }
 
 function cleanIso(value) {
