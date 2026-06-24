@@ -196,11 +196,11 @@
         });
         var data = await res.json().catch(function () { return {}; });
         hideTyping();
-        var reply = cleanText(data.raspuns) || "Hmm, n-am putut răspunde acum. Te rog încearcă din nou sau sună-ne la 0742 870 000. 🐾";
+        var reply = cleanText(data.raspuns) || "Hmm, n-am putut răspunde acum. Te rog încearcă din nou sau scrie-ne pe vet-stuff.ro/contact. 🐾";
         addMsg(reply, "bot");
       } catch (e) {
         hideTyping();
-        addMsg("Momentan nu reușesc să mă conectez. Te rog sună-ne la 0742 870 000 sau încearcă din nou. 🐾", "bot");
+        addMsg("Momentan nu reușesc să mă conectez. Te rog scrie-ne pe vet-stuff.ro/contact sau încearcă din nou. 🐾", "bot");
       } finally {
         sendBtn.disabled = false;
         input.focus();
