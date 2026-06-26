@@ -4,9 +4,9 @@
    Integrare: adaugă în pagina ta, înainte de </body>:
 
      <script>
-       window.STUFFIE_CONFIG = {
-         webhookUrl: "https://stuffie.vet-stuff.ro/webhook/stuffie-brain"
-       };
+     window.STUFFIE_CONFIG = {
+       webhookUrl: "/api/stuffie-message"
+     };
      </script>
      <script src="stuffie-widget.js"></script>
 
@@ -17,7 +17,7 @@
 
   // ---- Config ----
   var CFG = window.STUFFIE_CONFIG || {};
-  var WEBHOOK_URL = CFG.webhookUrl || "https://stuffie.vet-stuff.ro/webhook/stuffie-brain";
+  var WEBHOOK_URL = CFG.webhookUrl || "/api/stuffie-message";
   var CANAL = "website";
 
   // Culori brand VET STUFF
@@ -31,7 +31,7 @@
     userBg: "#1B2A4A"
   };
 
-  // ---- user_id persistent (pentru memoria conversației) ----
+  // ---- user_id/device_id persistent (pentru memorie si anti-abuz anonim) ----
   function getUserId() {
     var k = "stuffie_user_id";
     var v = localStorage.getItem(k);
@@ -42,6 +42,7 @@
     return v;
   }
   var USER_ID = getUserId();
+  var DEVICE_ID = USER_ID;
 
   // ---- Ascunde marcajele interne de escaladare din textul către client ----
   function cleanText(t) {
@@ -192,7 +193,7 @@
         var res = await fetch(WEBHOOK_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ canal: CANAL, user_id: USER_ID, mesaj: text })
+          body: JSON.stringify({ canal: CANAL, user_id: USER_ID, deviceId: DEVICE_ID, mesaj: text })
         });
         var data = await res.json().catch(function () { return {}; });
         hideTyping();

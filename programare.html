@@ -428,6 +428,7 @@
     const progressTitle = document.getElementById('progress-title');
     const progressBar = document.getElementById('progress-bar');
     const form = document.getElementById('booking-wizard');
+    const DEVICE_ID = getPersistentId('vs_booking_device_id');
 
     (function initCookieBanner() {
       const banner = document.getElementById('cookie-banner');
@@ -1029,6 +1030,7 @@
             message: composeMessage(),
             accountToken: state.accountToken || '',
             patientId: usingExistingPet() ? state.selectedPetId : '',
+            deviceId: DEVICE_ID,
             website: form.elements.website?.value || '',
           }),
         });
@@ -1059,6 +1061,15 @@
         `Tip înregistrare: ${accountModeLabel(state.ownerMode)}`,
         usingExistingPet() ? 'Animal existent ales de client (cont).' : 'Animal nou — de înregistrat la cabinet.',
       ].filter(Boolean).join('\n');
+    }
+
+    function getPersistentId(key) {
+      let value = localStorage.getItem(key);
+      if (!value) {
+        value = `web-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+        localStorage.setItem(key, value);
+      }
+      return value;
     }
 
     document.addEventListener('click', event => {

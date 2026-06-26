@@ -1,4 +1,13 @@
 import { enforceOrigin, getClientIp, isHoneypotFilled, rateLimit, verifyTurnstile } from './_security.js';
+import {
+  applySecurityToPayload,
+  assessLeadRisk,
+  leadSecurityContext,
+  normalizePhone,
+  persistentRateLimit,
+  recordLeadSignal,
+  shouldSkipInsertForDuplicate,
+} from './_lead-security.js';
 import { notifyFormspree, sendClinicBookingEmail } from './_notifications.js';
 import { verifyAccountToken, patientBelongsToOwners, supabaseEnv } from './_accounts.js';
 
@@ -89,6 +98,16 @@ async function handlePost(req, res) {
 
   const body = sanitizeBookingRequest(req.body || {});
   if (!body.ok) return res.status(400).json({ ok: false, error: body.error });
+  const securityContext = leadSecurityContext(req, req.body || {});
+
+  const [ipLimit, deviceLimit, phoneLimit] = await Promise.all([
+    persistentRateLimit({ supabaseFetch, name: 'booking-post-ip', key: securityContext.ipPrefix, max: 5, windowMs: 60 * 60 * 1000 }),
+    persistentRateLimit({ supabaseFetch, name: 'booking-post-device', key: securityContext.deviceId || securityContext.sessionId, max: 3, windowMs: 15 * 60 * 1000 }),
+    persistentRateLimit({ supabaseFetch, name: 'booking-post-phone', key: normalizePhone(body.value.phone), max: 2, windowMs: 24 * 60 * 60 * 1000 }),
+  ]);
+  if (!ipLimit.ok || !deviceLimit.ok || !phoneLimit.ok) {
+    return res.status(429).json({ ok: false, error: 'Ai trimis prea multe cereri într-un interval scurt. Te rugăm să ne contactezi telefonic dacă este urgent.' });
+  }
 
   try {
     const date = zonedDateKey(new Date(body.value.preferredAt), DEFAULT_TIMEZONE);
@@ -108,7 +127,7 @@ async function handlePost(req, res) {
       return res.status(409).json({ ok: false, error: 'Slotul nu mai este disponibil. Alege alt interval.' });
     }
 
-    const payload = {
+    let payload = {
       owner_name: body.value.ownerName,
       owner_phone: body.value.phone,
       owner_email: body.value.email || null,
@@ -139,12 +158,59 @@ async function handlePost(req, res) {
       }
     }
 
+    const risk = await assessLeadRisk({
+      supabaseFetch,
+      payload,
+      context: securityContext,
+      intent: 'normal_booking',
+      source: 'website',
+    });
+
+    if (risk.action === 'soft_block') {
+      await recordLeadSignal({ supabaseFetch, payload, context: securityContext, risk, source: 'website', intent: 'normal_booking' });
+      return res.status(200).json({
+        ok: true,
+        held: true,
+        message: 'Cererea a fost primită. Dacă este nevoie, echipa VET STUFF te va contacta.',
+      });
+    }
+
+    if (shouldSkipInsertForDuplicate(risk, 'normal_booking')) {
+      await recordLeadSignal({
+        supabaseFetch,
+        payload,
+        context: securityContext,
+        risk,
+        source: 'website',
+        intent: 'normal_booking',
+        duplicateOfRequestId: risk.duplicate?.id || null,
+      });
+      return res.status(200).json({
+        ok: true,
+        duplicate: true,
+        requestId: risk.duplicate?.id || null,
+        message: 'Există deja o cerere activă cu aceste date. Echipa VET STUFF o va verifica din CRM.',
+      });
+    }
+
+    payload = applySecurityToPayload(payload, risk, securityContext);
+
     const created = await supabaseFetch('appointment_requests', {
       method: 'POST',
       body: payload,
       headers: { Prefer: 'return=representation' },
     });
     const request = Array.isArray(created) ? created[0] : created;
+    await recordLeadSignal({
+      supabaseFetch,
+      payload,
+      context: securityContext,
+      risk,
+      source: 'website',
+      intent: 'normal_booking',
+      appointmentRequestId: request?.id || null,
+      duplicateOfRequestId: risk.duplicate?.id || null,
+    });
     const notifyFields = { ...payload, request_id: request?.id };
 
     // IMPORTANT: pe Vercel, funcția se îngheață după ce returnează răspunsul.
