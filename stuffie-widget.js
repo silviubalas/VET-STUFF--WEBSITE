@@ -5,7 +5,7 @@
 
      <script>
      window.STUFFIE_CONFIG = {
-       webhookUrl: "/api/stuffie-message"
+       webhookUrl: "/api/booking?intent=stuffie"
      };
      </script>
      <script src="stuffie-widget.js"></script>
@@ -17,7 +17,7 @@
 
   // ---- Config ----
   var CFG = window.STUFFIE_CONFIG || {};
-  var WEBHOOK_URL = CFG.webhookUrl || "/api/stuffie-message";
+  var WEBHOOK_URL = CFG.webhookUrl || "/api/booking?intent=stuffie";
   var CANAL = "website";
 
   // Culori brand VET STUFF

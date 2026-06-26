@@ -11,7 +11,7 @@ import {
 
 const DEFAULT_N8N_URL = 'https://stuffie.vet-stuff.ro/webhook/stuffie-brain';
 
-export default async function handler(req, res) {
+export async function handleStuffieMessage(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   if (!enforceOrigin(req, res)) return;
   if (!rateLimit(req, res, 'stuffie-message', { max: 30, windowMs: 15 * 60 * 1000 })) return;

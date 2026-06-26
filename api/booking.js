@@ -8,6 +8,7 @@ import {
   recordLeadSignal,
   shouldSkipInsertForDuplicate,
 } from './_lead-security.js';
+import { handleStuffieMessage } from './_stuffie-message.js';
 import { notifyFormspree, sendClinicBookingEmail } from './_notifications.js';
 import { verifyAccountToken, patientBelongsToOwners, supabaseEnv } from './_accounts.js';
 
@@ -49,6 +50,10 @@ const DEFAULT_SCHEDULE_DAYS = [
 ];
 
 export default async function handler(req, res) {
+  if (req.method === 'POST' && ['stuffie', 'chatbot'].includes(String(req.query?.intent || req.query?.mode || '').toLowerCase())) {
+    return handleStuffieMessage(req, res);
+  }
+
   if (!['GET', 'POST'].includes(req.method)) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
