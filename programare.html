@@ -208,6 +208,7 @@
     .status-box { margin-top:18px; padding:16px; border-radius:12px; font-weight:900; text-align:center; display:none; }
     .status-box.success { display:block; background:#DCFCE7; color:#166534; }
     .status-box.error { display:block; background:#FEF2F2; color:#B91C1C; }
+    #turnstile-container { min-height:0; overflow:hidden; }
     .quick-help { margin-top:22px; border-radius:14px; background:#EEF8F9; border:1px solid #D9ECEE; padding:18px; color:#486067; line-height:1.55; }
     .id-help { color:var(--muted); font-size:1rem; margin-bottom:18px; line-height:1.55; }
     .id-error { color:var(--red); font-weight:800; margin-top:14px; }
@@ -418,6 +419,7 @@
       doctors: [], days: [],
       selectedDoctorId: 'any', selectedDate: '', selectedSlot: null,
       selectedMonth: new Date(), loadingAvailability: false,
+      turnstileSiteKey: '', turnstileRequired: false, turnstileReady: false, turnstileWidgetId: null,
       gdpr: false, submitting: false, success: false, error: '',
     };
 
@@ -429,6 +431,7 @@
     const progressBar = document.getElementById('progress-bar');
     const form = document.getElementById('booking-wizard');
     const DEVICE_ID = getPersistentId('vs_booking_device_id');
+    loadPublicConfig();
 
     (function initCookieBanner() {
       const banner = document.getElementById('cookie-banner');
@@ -724,6 +727,8 @@
           <input type="checkbox" ${state.gdpr ? 'checked' : ''} data-field="gdpr">
           <span>Am citit și sunt de acord cu <a href="terms.html">Termenii și condițiile</a>, <a href="privacy.html">Politica de confidențialitate</a> și <a href="gdpr.html">Nota GDPR</a>.</span>
         </label>
+        <div id="turnstile-container" aria-hidden="true"></div>
+        ${state.turnstileRequired && !state.turnstileSiteKey ? '<p class="id-error">Verificarea anti-abuz nu este configurată momentan. Te rugăm să contactezi clinica telefonic.</p>' : ''}
       `;
     }
 
@@ -1016,6 +1021,13 @@
       if (!state.selectedSlot) { state.error = 'Alege un interval.'; state.step = 4; render(); return; }
       state.submitting = true; state.error = ''; render();
       try {
+        const turnstileToken = await getTurnstileToken();
+        if (state.turnstileRequired && !turnstileToken) {
+          state.submitting = false;
+          state.error = 'Verificarea anti-abuz nu a putut fi finalizată. Reîncearcă sau contactează clinica telefonic.';
+          render();
+          return;
+        }
         const response = await fetch('/api/booking', {
           method:'POST', headers:{ 'Content-Type':'application/json' },
           body: JSON.stringify({
@@ -1031,6 +1043,7 @@
             accountToken: state.accountToken || '',
             patientId: usingExistingPet() ? state.selectedPetId : '',
             deviceId: DEVICE_ID,
+            turnstileToken,
             website: form.elements.website?.value || '',
           }),
         });
@@ -1070,6 +1083,66 @@
         localStorage.setItem(key, value);
       }
       return value;
+    }
+
+    async function loadPublicConfig() {
+      try {
+        const response = await fetch('/api/public-config', { cache: 'no-store' });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data.ok) return;
+        state.turnstileSiteKey = data.turnstileSiteKey || '';
+        state.turnstileRequired = Boolean(data.requireTurnstile);
+        if (state.turnstileSiteKey) loadTurnstileScript();
+      } catch (err) {
+        console.warn('[public config]', err);
+      }
+    }
+
+    function loadTurnstileScript() {
+      if (window.turnstile) { state.turnstileReady = true; return Promise.resolve(); }
+      if (window.__vsTurnstileLoading) return window.__vsTurnstileLoading;
+      window.__vsTurnstileLoading = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+        script.async = true;
+        script.defer = true;
+        script.onload = () => { state.turnstileReady = true; resolve(); };
+        script.onerror = () => reject(new Error('Turnstile failed to load'));
+        document.head.appendChild(script);
+      });
+      return window.__vsTurnstileLoading;
+    }
+
+    async function getTurnstileToken() {
+      if (!state.turnstileSiteKey) return '';
+      try {
+        await loadTurnstileScript();
+        const container = document.getElementById('turnstile-container') || document.body.appendChild(document.createElement('div'));
+        if (state.turnstileWidgetId == null) {
+          state.turnstileWidgetId = window.turnstile.render(container, {
+            sitekey: state.turnstileSiteKey,
+            size: 'invisible',
+            action: 'booking_request',
+            callback: token => window.__vsTurnstileResolve?.(token || ''),
+            'error-callback': () => window.__vsTurnstileResolve?.(''),
+            'timeout-callback': () => window.__vsTurnstileResolve?.(''),
+          });
+        } else {
+          window.turnstile.reset(state.turnstileWidgetId);
+        }
+        return await new Promise((resolve) => {
+          const timeout = setTimeout(() => resolve(''), 12000);
+          window.__vsTurnstileResolve = token => {
+            clearTimeout(timeout);
+            window.__vsTurnstileResolve = null;
+            resolve(token || '');
+          };
+          window.turnstile.execute(state.turnstileWidgetId);
+        });
+      } catch (err) {
+        console.warn('[turnstile]', err);
+        return '';
+      }
     }
 
     document.addEventListener('click', event => {

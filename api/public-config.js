@@ -8,5 +8,11 @@ export default function handler(req, res) {
   }
 
   res.setHeader('Cache-Control', 'no-store');
-  return res.status(200).json({ ok: true, url, anonKey });
+  return res.status(200).json({
+    ok: true,
+    url,
+    anonKey,
+    turnstileSiteKey: process.env.TURNSTILE_SITE_KEY || '',
+    requireTurnstile: process.env.REQUIRE_TURNSTILE === '1',
+  });
 }
