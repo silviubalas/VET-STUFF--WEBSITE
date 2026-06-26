@@ -103,6 +103,7 @@ export async function assessLeadRisk({ supabaseFetch, payload, context, intent =
     reasons: [],
     action: 'allow',
     duplicate: null,
+    activeBlocks: [],
     dedupeKey,
     phoneHash,
     emailHash,
@@ -112,6 +113,18 @@ export async function assessLeadRisk({ supabaseFetch, payload, context, intent =
   if (!phone || phone.length < 10) addRisk(risk, 10, 'telefon_invalid');
   if (!context.userAgent) addRisk(risk, 15, 'user_agent_lipsa');
   if (text && isLowInformationText(text)) addRisk(risk, 25, 'mesaj_repetitiv_sau_scurt');
+
+  const activeBlocks = await loadActiveBlocks(supabaseFetch, {
+    phoneHash,
+    deviceIdHash: context.deviceIdHash,
+    ipPrefixHash: context.ipPrefixHash,
+  });
+  if (activeBlocks.length) {
+    risk.activeBlocks = activeBlocks;
+    if (activeBlocks.some(block => block.subject_type === 'phone')) addRisk(risk, 100, 'telefon_blocat_activ');
+    if (activeBlocks.some(block => block.subject_type === 'device')) addRisk(risk, 90, 'device_blocat_activ');
+    if (activeBlocks.some(block => block.subject_type === 'ip')) addRisk(risk, 80, 'ip_blocat_activ');
+  }
 
   const since = new Date(Date.now() - DAY_MS).toISOString();
   const existing = await loadExistingRequests(supabaseFetch, { phone, phoneHash, deviceIdHash: context.deviceIdHash, ipPrefixHash: context.ipPrefixHash, since });
@@ -135,7 +148,8 @@ export async function assessLeadRisk({ supabaseFetch, payload, context, intent =
   ));
   if (differentNameSamePhone) addRisk(risk, 20, 'nume_diferit_acelasi_telefon');
 
-  if (risk.score >= 90) risk.action = intent === 'urgent' ? 'allow_flagged' : 'soft_block';
+  if (risk.activeBlocks.length && intent !== 'urgent') risk.action = 'soft_block';
+  else if (risk.score >= 90) risk.action = intent === 'urgent' ? 'allow_flagged' : 'soft_block';
   else if (risk.score >= 70 && risk.duplicate) risk.action = 'merge_duplicate';
   else if (risk.score >= 50) risk.action = intent === 'urgent' ? 'allow_flagged' : 'challenge';
   else if (risk.score >= 30) risk.action = 'allow_flagged';
@@ -185,6 +199,9 @@ export async function recordLeadSignal({ supabaseFetch, payload, context, risk, 
           visit_type_key: payload.visit_type_key || null,
           status: payload.status || null,
           has_message: Boolean(payload.message),
+          active_blocks: Array.isArray(risk.activeBlocks)
+            ? risk.activeBlocks.map(block => ({ id: block.id, type: block.subject_type, reason: block.reason, expires_at: block.expires_at }))
+            : [],
         },
       },
       headers: { Prefer: 'return=minimal' },
@@ -206,6 +223,9 @@ export function applySecurityToPayload(payload, risk, context) {
         action: risk.action,
         reasons: risk.reasons,
         duplicate_id: risk.duplicate?.id || null,
+        active_blocks: Array.isArray(risk.activeBlocks)
+          ? risk.activeBlocks.map(block => ({ id: block.id, type: block.subject_type, reason: block.reason, expires_at: block.expires_at }))
+          : [],
       },
     },
     website_payload_raw: {
@@ -214,6 +234,9 @@ export function applySecurityToPayload(payload, risk, context) {
         action: risk.action,
         score: risk.score,
         reasons: risk.reasons,
+        active_blocks: Array.isArray(risk.activeBlocks)
+          ? risk.activeBlocks.map(block => ({ id: block.id, type: block.subject_type, reason: block.reason, expires_at: block.expires_at }))
+          : [],
       },
     },
   };
@@ -254,6 +277,37 @@ async function loadExistingRequests(supabaseFetch, { phone, phoneHash, deviceIdH
     return Array.isArray(rows) ? rows : [];
   } catch (err) {
     console.error('[lead-security:existing]', err?.message || err);
+    return [];
+  }
+}
+
+async function loadActiveBlocks(supabaseFetch, { phoneHash, deviceIdHash, ipPrefixHash }) {
+  if (!supabaseFetch) return [];
+  const checks = [
+    ['phone', phoneHash],
+    ['device', deviceIdHash],
+    ['ip', ipPrefixHash],
+  ].filter(([, hash]) => Boolean(hash));
+
+  if (!checks.length) return [];
+
+  try {
+    const now = encodeURIComponent(new Date().toISOString());
+    const rows = await Promise.all(checks.map(async ([type, hash]) => {
+      const path = [
+        'lead_blocklist',
+        '?select=id,subject_type,reason,expires_at,source_request_id',
+        `&subject_type=eq.${encodeURIComponent(type)}`,
+        `&subject_hash=eq.${escapePostgrest(hash)}`,
+        `&expires_at=gt.${now}`,
+        '&order=expires_at.desc',
+        '&limit=3',
+      ].join('');
+      return supabaseFetch(path);
+    }));
+    return rows.flat().filter(Boolean);
+  } catch (err) {
+    console.error('[lead-security:blocklist]', err?.message || err);
     return [];
   }
 }
