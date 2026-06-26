@@ -221,6 +221,7 @@ export function applySecurityToPayload(payload, risk, context) {
 
 export function shouldSkipInsertForDuplicate(risk, intent) {
   if (!risk.duplicate) return false;
+  if (intent === 'callback') return true;
   if (intent === 'urgent') return risk.score >= 70;
   return risk.action === 'merge_duplicate' || risk.action === 'soft_block';
 }
