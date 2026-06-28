@@ -46,11 +46,11 @@
     el = document.createElement("div");
     el.id = "vs-turnstile-container";
     el.style.position = "fixed";
-    el.style.left = "-9999px";
-    el.style.bottom = "0";
-    el.style.width = "1px";
-    el.style.height = "1px";
-    el.setAttribute("aria-hidden", "true");
+    el.style.right = "24px";
+    el.style.bottom = "96px";
+    el.style.width = "300px";
+    el.style.minHeight = "65px";
+    el.style.zIndex = "2147483647";
     document.body.appendChild(el);
     return el;
   }
@@ -78,9 +78,10 @@
         if (state.widgetId == null) {
           state.widgetId = window.turnstile.render(container(), {
             sitekey: config.siteKey,
-            size: "invisible",
+            execution: "execute",
+            appearance: "interaction-only",
             callback: finish,
-            "error-callback": function () { finish(""); },
+            "error-callback": function () {},
             "expired-callback": function () { finish(""); },
           });
         } else {

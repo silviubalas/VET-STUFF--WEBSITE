@@ -190,9 +190,17 @@
 	      sendBtn.disabled = true;
 	      showTyping();
 	      try {
+	        var turnstileConfig = window.VSTurnstile && window.VSTurnstile.getConfig
+	          ? await window.VSTurnstile.getConfig()
+	          : { required: false };
 	        var turnstileToken = window.VSTurnstile && window.VSTurnstile.getToken
 	          ? await window.VSTurnstile.getToken()
 	          : "";
+	        if (turnstileConfig && turnstileConfig.required && !turnstileToken) {
+	          hideTyping();
+	          addMsg("Nu am putut finaliza verificarea anti-spam. Te rog reîncarcă pagina și încearcă din nou. 🐾", "bot");
+	          return;
+	        }
 	        var res = await fetch(WEBHOOK_URL, {
 	          method: "POST",
 	          headers: { "Content-Type": "application/json" },
