@@ -265,7 +265,7 @@ function detectPetName(raw = '') {
   return match?.[1]?.replace(/\s+(si|și|are|cu).*$/i, '').trim() || '';
 }
 
-function extractLeadDetails(raw = '') {
+export function extractLeadDetails(raw = '') {
   const text = String(raw || '');
   const details = {
     ownerName: validFullName(detectOwnerName(text)),
@@ -339,7 +339,7 @@ function detectPetAge(raw = '') {
 function detectReason(raw = '') {
   const match = String(raw || '').match(/(?:motiv|problema|problemă|pentru|deoarece|vreau|as dori|aș dori|am nevoie)\s*(?:este|:)?\s+([^\n.]{8,180})/iu);
   const reason = match?.[1]?.replace(/\s+/g, ' ').trim() || '';
-  if (!reason || /^(sa fiu contactat|să fiu contactat|contact|programare)$/iu.test(reason)) return '';
+  if (!reason || /\b(contact|contactat|contactata|contactată|contacteze|suna|sunati|sunați|programare)\b/iu.test(reason)) return '';
   return reason;
 }
 
