@@ -174,6 +174,9 @@ function fallbackPayload({ body, reply, phone, escalationType = 'OM' }) {
 }
 
 async function callStuffieBrain(payload) {
+  const internalToken = process.env.INTERNAL_API_TOKEN;
+  if (!internalToken) throw new Error('INTERNAL_API_TOKEN is required for STUFFIE gateway');
+
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 90 * 1000);
   try {
@@ -181,7 +184,7 @@ async function callStuffieBrain(payload) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        ...(process.env.INTERNAL_API_TOKEN ? { 'x-internal-token': process.env.INTERNAL_API_TOKEN } : {}),
+        'x-internal-token': internalToken,
       },
       body: JSON.stringify(payload),
       signal: controller.signal,
