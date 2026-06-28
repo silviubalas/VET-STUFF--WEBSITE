@@ -46,13 +46,20 @@
     el = document.createElement("div");
     el.id = "vs-turnstile-container";
     el.style.position = "fixed";
-    el.style.right = "24px";
-    el.style.bottom = "96px";
+    el.style.left = "50%";
+    el.style.bottom = "24px";
+    el.style.transform = "translateX(-50%)";
     el.style.width = "300px";
     el.style.minHeight = "65px";
     el.style.zIndex = "2147483647";
+    el.style.display = "none";
     document.body.appendChild(el);
     return el;
+  }
+
+  function setChallengeVisible(visible) {
+    var el = container();
+    el.style.display = visible ? "block" : "none";
   }
 
   async function getToken() {
@@ -64,17 +71,19 @@
     return new Promise(function (resolve) {
       var done = false;
       var timer = setTimeout(function () {
-        if (!done) resolve("");
+        if (!done) finish("");
       }, 10000);
 
       function finish(token) {
         if (done) return;
         done = true;
         clearTimeout(timer);
+        setChallengeVisible(false);
         resolve(token || "");
       }
 
       try {
+        setChallengeVisible(true);
         if (state.widgetId == null) {
           state.widgetId = window.turnstile.render(container(), {
             sitekey: config.siteKey,
