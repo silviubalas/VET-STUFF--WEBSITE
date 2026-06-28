@@ -820,13 +820,14 @@
     const errEl = document.getElementById('resend-error');
     const okEl = document.getElementById('resend-ok');
     errEl.style.display = 'none'; okEl.style.display = 'none';
-    btn.disabled = true; btn.textContent = 'Se trimite...';
-    try {
-      const r = await fetch('/api/resend-code', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      });
+	    btn.disabled = true; btn.textContent = 'Se trimite...';
+	    try {
+	      const turnstileToken = window.VSTurnstile?.getToken ? await window.VSTurnstile.getToken() : '';
+	      const r = await fetch('/api/resend-code', {
+	        method: 'POST',
+	        headers: { 'Content-Type': 'application/json' },
+	        body: JSON.stringify({ email, turnstileToken }),
+	      });
       if (r.ok) {
         okEl.textContent = '✅ Dacă emailul este în sistemul nostru, vei primi în câteva minute toate codurile + QR-urile abonamentelor tale. Verifică și spam-ul.';
         okEl.style.display = 'block';
@@ -850,13 +851,14 @@
     const errEl = document.getElementById('resend-error');
     const okEl = document.getElementById('resend-ok');
     errEl.style.display = 'none'; okEl.style.display = 'none';
-    btn.disabled = true; btn.textContent = 'Se trimite...';
-    try {
-      const r = await fetch('/api/resend-code-sms', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tel }),
-      });
+	    btn.disabled = true; btn.textContent = 'Se trimite...';
+	    try {
+	      const turnstileToken = window.VSTurnstile?.getToken ? await window.VSTurnstile.getToken() : '';
+	      const r = await fetch('/api/resend-code-sms', {
+	        method: 'POST',
+	        headers: { 'Content-Type': 'application/json' },
+	        body: JSON.stringify({ tel, turnstileToken }),
+	      });
       if (r.ok) {
         okEl.textContent = '✅ Dacă telefonul este în sistemul nostru, vei primi în câteva minute un SMS cu codurile abonamentelor tale.';
         okEl.style.display = 'block';
@@ -918,5 +920,6 @@
 <script>
   window.addEventListener('scroll', function() { var st = document.getElementById('scroll-top'); if(st) st.classList.toggle('show', window.scrollY > 400); });
 </script>
+<script src="/turnstile-client.js" defer></script>
 </body>
 </html>

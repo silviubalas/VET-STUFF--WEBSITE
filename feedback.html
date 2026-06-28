@@ -726,11 +726,12 @@ function closeMenu() {
   document.getElementById('hb3').style.transform = '';
 }
 
-function sendToAirtable(table, fields) {
+async function sendToAirtable(table, fields) {
+  const turnstileToken = window.VSTurnstile?.getToken ? await window.VSTurnstile.getToken() : '';
   return fetch('/api/airtable', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ table, fields })
+    body: JSON.stringify({ table, fields, turnstileToken })
   });
 }
 
@@ -921,6 +922,7 @@ document.getElementById('feedback-form').addEventListener('submit', async functi
 
   <!-- STUFFIE chat widget -->
   <script>window.STUFFIE_CONFIG = { webhookUrl: "/api/booking?intent=stuffie" };</script>
+  <script src="/turnstile-client.js" defer></script>
   <script src="/stuffie-widget.js" defer></script>
 </body>
 </html>

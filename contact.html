@@ -346,7 +346,7 @@
     ['name','email','message'].forEach(id => document.getElementById(id).addEventListener('input', () => clearFieldError(id)));
     document.getElementById('reason').addEventListener('change', () => clearFieldError('reason'));
 
-    document.getElementById('contact-form').addEventListener('submit', function(e) {
+    document.getElementById('contact-form').addEventListener('submit', async function(e) {
       e.preventDefault();
       let ok = true;
       const reason = document.getElementById('reason').value.trim();
@@ -367,9 +367,10 @@
       btn.textContent = 'Se trimite...';
       const phone = document.getElementById('phone').value.trim();
       const topic = document.getElementById('topic').value.trim();
-      const source = document.getElementById('source').value.trim();
-      // Mapăm în coloanele existente Airtable: Motivul → Subiect, Cum ai aflat → Sursa.
-      const subiect = topic ? `${reason} — ${topic}` : reason;
+	      const source = document.getElementById('source').value.trim();
+	      const turnstileToken = window.VSTurnstile?.getToken ? await window.VSTurnstile.getToken() : '';
+	      // Mapăm în coloanele existente Airtable: Motivul → Subiect, Cum ai aflat → Sursa.
+	      const subiect = topic ? `${reason} — ${topic}` : reason;
       fetch('/api/airtable', {
         method:'POST',
         headers:{ 'Content-Type':'application/json' },
@@ -378,14 +379,15 @@
           fields: {
             'Nume': name,
             'Email': email,
-            'Telefon': phone,
-            'Subiect': subiect,
-            'Mesaj': message,
-            'Sursa': source || 'contact.html',
-            'website': this.elements.website?.value || ''
-          }
-        })
-      }).then(response => {
+	            'Telefon': phone,
+	            'Subiect': subiect,
+	            'Mesaj': message,
+	            'Sursa': source || 'contact.html',
+	            'website': this.elements.website?.value || ''
+	          },
+	          turnstileToken
+	        })
+	      }).then(response => {
         if (response.ok) {
           document.getElementById('contact-success').style.display = 'block';
           document.querySelectorAll('#contact-form input, #contact-form textarea, #contact-form button').forEach(el => { el.disabled = true; el.style.opacity = '.58'; });
@@ -405,6 +407,7 @@
 
   <!-- STUFFIE chat widget -->
   <script>window.STUFFIE_CONFIG = { webhookUrl: "/api/booking?intent=stuffie" };</script>
+  <script src="/turnstile-client.js" defer></script>
   <script src="/stuffie-widget.js" defer></script>
 </body>
 </html>

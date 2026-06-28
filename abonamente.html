@@ -1055,14 +1055,15 @@ async function doSubmitForm() {
   const btn = form.querySelector('button[type="submit"]');
   const originalLabel = btn.innerHTML;
   btn.disabled = true;
-  btn.textContent = 'Se trimite...';
+	  btn.textContent = 'Se trimite...';
 
-  try {
-    const createRes = await fetch('/api/create-subscription', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ plan, nume, tel, email, animal, rasa, mesaj, website: document.getElementById('ab-website')?.value || '' })
-    });
+	  try {
+	    const turnstileToken = window.VSTurnstile?.getToken ? await window.VSTurnstile.getToken() : '';
+	    const createRes = await fetch('/api/create-subscription', {
+	      method: 'POST',
+	      headers: { 'Content-Type': 'application/json' },
+	      body: JSON.stringify({ plan, nume, tel, email, animal, rasa, mesaj, website: document.getElementById('ab-website')?.value || '', turnstileToken })
+	    });
     const createData = await createRes.json().catch(() => ({}));
     if (!createRes.ok || !createData.cod) {
       throw new Error(createData.error || 'Nu am putut salva abonamentul.');
@@ -1367,6 +1368,7 @@ document.getElementById('abonament-form').addEventListener('submit', function(e)
 
   <!-- STUFFIE chat widget -->
   <script>window.STUFFIE_CONFIG = { webhookUrl: "/api/booking?intent=stuffie" };</script>
+  <script src="/turnstile-client.js" defer></script>
   <script src="/stuffie-widget.js" defer></script>
 </body>
 </html>

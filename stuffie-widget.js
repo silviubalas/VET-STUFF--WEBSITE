@@ -187,14 +187,17 @@
       if (!text) return;
       input.value = ""; input.style.height = "auto";
       addMsg(text, "user");
-      sendBtn.disabled = true;
-      showTyping();
-      try {
-        var res = await fetch(WEBHOOK_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ canal: CANAL, user_id: USER_ID, deviceId: DEVICE_ID, mesaj: text })
-        });
+	      sendBtn.disabled = true;
+	      showTyping();
+	      try {
+	        var turnstileToken = window.VSTurnstile && window.VSTurnstile.getToken
+	          ? await window.VSTurnstile.getToken()
+	          : "";
+	        var res = await fetch(WEBHOOK_URL, {
+	          method: "POST",
+	          headers: { "Content-Type": "application/json" },
+	          body: JSON.stringify({ canal: CANAL, user_id: USER_ID, deviceId: DEVICE_ID, mesaj: text, turnstileToken: turnstileToken })
+	        });
         var data = await res.json().catch(function () { return {}; });
         hideTyping();
         var reply = cleanText(data.raspuns) || "Hmm, n-am putut răspunde acum. Te rog încearcă din nou sau scrie-ne pe vet-stuff.ro/contact. 🐾";

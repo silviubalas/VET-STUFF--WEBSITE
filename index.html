@@ -1926,7 +1926,7 @@ const statsObs = new IntersectionObserver(entries => {
 document.querySelectorAll('.stat-val[data-val]').forEach(el => statsObs.observe(el));
 
 /* ── Newsletter form ─────────────────────────────── */
-document.getElementById('newsletter-form')?.addEventListener('submit', function(e) {
+document.getElementById('newsletter-form')?.addEventListener('submit', async function(e) {
   e.preventDefault();
   const email = document.getElementById('nl-email').value.trim();
   const name  = document.getElementById('nl-name').value.trim();
@@ -1941,12 +1941,14 @@ document.getElementById('newsletter-form')?.addEventListener('submit', function(
   btn.disabled = true;
   btn.textContent = 'Se trimite...';
 
+  const turnstileToken = window.VSTurnstile?.getToken ? await window.VSTurnstile.getToken() : '';
   fetch('/api/airtable', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       table: 'Newsletter',
-      fields: { 'Name': name, 'Email': email, 'website': document.getElementById('nl-website')?.value || '' }
+      fields: { 'Name': name, 'Email': email, 'website': document.getElementById('nl-website')?.value || '' },
+      turnstileToken
     })
   }).then(response => {
     if (response.ok) {
@@ -2033,6 +2035,7 @@ if (quickNav && quickWrap && window.innerWidth < 768) {
 
   <!-- STUFFIE chat widget -->
   <script>window.STUFFIE_CONFIG = { webhookUrl: "/api/booking?intent=stuffie" };</script>
+  <script src="/turnstile-client.js" defer></script>
   <script src="/stuffie-widget.js" defer></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 const directUrl = process.env.STUFFIE_DIRECT_URL || 'https://stuffie.vet-stuff.ro/webhook/stuffie-brain';
 const gatewayUrl = process.env.STUFFIE_GATEWAY_URL || 'https://www.vet-stuff.ro/api/booking?intent=stuffie';
+const publicConfigUrl = process.env.PUBLIC_CONFIG_URL || 'https://www.vet-stuff.ro/api/public-config';
 
 const direct = await fetch(directUrl, {
   method: 'POST',
@@ -10,6 +11,8 @@ const direct = await fetch(directUrl, {
 if (direct.status !== 404) {
   throw new Error(`Expected direct n8n call without token to return 404, got ${direct.status}`);
 }
+
+const config = await fetch(publicConfigUrl).then(response => response.json()).catch(() => ({}));
 
 const gateway = await fetch(gatewayUrl, {
   method: 'POST',
@@ -23,10 +26,16 @@ const gateway = await fetch(gatewayUrl, {
 });
 
 const body = await gateway.json().catch(() => null);
-if (gateway.status !== 200 || body?.ok !== true || !body?.raspuns) {
+
+if (config.requireTurnstile) {
+  if (gateway.status !== 400 || body?.error !== 'Captcha missing') {
+    throw new Error(`Expected gateway without Turnstile token to be rejected, got ${gateway.status}: ${JSON.stringify(body)}`);
+  }
+} else if (gateway.status !== 200 || body?.ok !== true || !body?.raspuns) {
   throw new Error(`Expected gateway STUFFIE response to be OK, got ${gateway.status}: ${JSON.stringify(body)}`);
 }
 
 console.log('STUFFIE security smoke passed');
 console.log(`- direct without token: ${direct.status}`);
-console.log(`- gateway response: ${gateway.status}`);
+console.log(`- Turnstile required: ${Boolean(config.requireTurnstile)}`);
+console.log(`- gateway without browser token: ${gateway.status}`);
