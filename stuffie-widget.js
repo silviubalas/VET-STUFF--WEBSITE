@@ -193,10 +193,16 @@
 	        var turnstileConfig = window.VSTurnstile && window.VSTurnstile.getConfig
 	          ? await window.VSTurnstile.getConfig()
 	          : { required: false };
-	        var turnstileToken = window.VSTurnstile && window.VSTurnstile.getToken
-	          ? await window.VSTurnstile.getToken()
+	        var turnstileSession = window.VSTurnstile && window.VSTurnstile.getSession
+	          ? window.VSTurnstile.getSession("stuffie-message")
 	          : "";
-	        if (turnstileConfig && turnstileConfig.required && !turnstileToken) {
+	        var turnstileToken = "";
+	        if (!turnstileSession) {
+	          turnstileToken = window.VSTurnstile && window.VSTurnstile.getToken
+	            ? await window.VSTurnstile.getToken()
+	            : "";
+	        }
+	        if (turnstileConfig && turnstileConfig.required && !turnstileSession && !turnstileToken) {
 	          hideTyping();
 	          addMsg("Nu am putut finaliza verificarea anti-spam. Te rog reîncarcă pagina și încearcă din nou. 🐾", "bot");
 	          return;
@@ -204,10 +210,25 @@
 	        var res = await fetch(WEBHOOK_URL, {
 	          method: "POST",
 	          headers: { "Content-Type": "application/json" },
-	          body: JSON.stringify({ canal: CANAL, user_id: USER_ID, deviceId: DEVICE_ID, mesaj: text, turnstileToken: turnstileToken })
+	          body: JSON.stringify({
+	            canal: CANAL,
+	            user_id: USER_ID,
+	            deviceId: DEVICE_ID,
+	            mesaj: text,
+	            turnstileToken: turnstileToken,
+	            turnstileSession: turnstileSession
+	          })
 	        });
         var data = await res.json().catch(function () { return {}; });
         hideTyping();
+        if (data.turnstileSession && data.turnstileSessionExpiresAt && window.VSTurnstile && window.VSTurnstile.rememberSession) {
+          window.VSTurnstile.rememberSession("stuffie-message", data.turnstileSession, data.turnstileSessionExpiresAt);
+        }
+        if (!res.ok && data.error && /^Captcha/i.test(data.error)) {
+          if (window.VSTurnstile && window.VSTurnstile.clearSession) window.VSTurnstile.clearSession("stuffie-message");
+          addMsg("Verificarea anti-spam a expirat. Te rog trimite mesajul încă o dată. 🐾", "bot");
+          return;
+        }
         var reply = cleanText(data.raspuns) || "Hmm, n-am putut răspunde acum. Te rog încearcă din nou sau scrie-ne pe vet-stuff.ro/contact. 🐾";
         addMsg(reply, "bot");
       } catch (e) {

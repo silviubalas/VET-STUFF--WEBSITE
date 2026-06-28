@@ -7,6 +7,7 @@
     config: null,
     widgetId: null,
   };
+  var SESSION_PREFIX = "vs_turnstile_session:";
 
   function loadConfig() {
     if (state.config) return Promise.resolve(state.config);
@@ -103,8 +104,43 @@
     });
   }
 
+  function getSession(scope) {
+    try {
+      var raw = localStorage.getItem(SESSION_PREFIX + (scope || "default"));
+      if (!raw) return "";
+      var session = JSON.parse(raw);
+      if (!session.token || !session.expiresAt || Number(session.expiresAt) <= Date.now() + 15000) {
+        clearSession(scope);
+        return "";
+      }
+      return session.token;
+    } catch {
+      clearSession(scope);
+      return "";
+    }
+  }
+
+  function rememberSession(scope, token, expiresAt) {
+    if (!token || !expiresAt) return;
+    try {
+      localStorage.setItem(SESSION_PREFIX + (scope || "default"), JSON.stringify({
+        token: token,
+        expiresAt: Number(expiresAt),
+      }));
+    } catch {}
+  }
+
+  function clearSession(scope) {
+    try {
+      localStorage.removeItem(SESSION_PREFIX + (scope || "default"));
+    } catch {}
+  }
+
   window.VSTurnstile = {
     getToken: getToken,
     getConfig: loadConfig,
+    getSession: getSession,
+    rememberSession: rememberSession,
+    clearSession: clearSession,
   };
 })();

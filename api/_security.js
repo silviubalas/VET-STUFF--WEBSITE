@@ -1,4 +1,7 @@
+import crypto from 'node:crypto';
+
 const rateBuckets = new Map();
+const DEFAULT_TURNSTILE_SESSION_TTL_MS = 30 * 60 * 1000;
 
 const DEFAULT_ORIGINS = [
   'https://vet-stuff.ro',
@@ -113,6 +116,50 @@ export async function verifyTurnstile(token, ip) {
   }
 }
 
+export function createTurnstileSession({ scope = 'public', subject = 'anonymous', ip = 'unknown', ttlMs } = {}) {
+  const secret = turnstileSessionSecret();
+  if (!secret) return null;
+
+  const now = Date.now();
+  const expiresAt = now + normalizeSessionTtl(ttlMs);
+  const payload = {
+    v: 1,
+    scope: cleanSessionValue(scope),
+    subject: hashSessionValue(subject),
+    ip: hashSessionValue(ipPrefix(ip)),
+    exp: expiresAt,
+  };
+  const encodedPayload = Buffer.from(JSON.stringify(payload)).toString('base64url');
+  const signature = signTurnstileSession(encodedPayload, secret);
+  return {
+    token: `${encodedPayload}.${signature}`,
+    expiresAt,
+  };
+}
+
+export function verifyTurnstileSession(sessionToken, { scope = 'public', subject = 'anonymous', ip = 'unknown' } = {}) {
+  const secret = turnstileSessionSecret();
+  if (!secret || !sessionToken) return { ok: false, error: 'Captcha session missing' };
+
+  const [encodedPayload, signature] = String(sessionToken).split('.');
+  if (!encodedPayload || !signature) return { ok: false, error: 'Captcha session invalid' };
+
+  const expected = signTurnstileSession(encodedPayload, secret);
+  if (!timingSafeEqual(signature, expected)) return { ok: false, error: 'Captcha session invalid' };
+
+  try {
+    const payload = JSON.parse(Buffer.from(encodedPayload, 'base64url').toString('utf8'));
+    if (payload.v !== 1) return { ok: false, error: 'Captcha session invalid' };
+    if (payload.exp <= Date.now()) return { ok: false, error: 'Captcha session expired' };
+    if (payload.scope !== cleanSessionValue(scope)) return { ok: false, error: 'Captcha session invalid' };
+    if (payload.subject !== hashSessionValue(subject)) return { ok: false, error: 'Captcha session invalid' };
+    if (payload.ip !== hashSessionValue(ipPrefix(ip))) return { ok: false, error: 'Captcha session invalid' };
+    return { ok: true, expiresAt: payload.exp };
+  } catch {
+    return { ok: false, error: 'Captcha session invalid' };
+  }
+}
+
 export function requireInternalRequest(req, res) {
   if (process.env.ALLOW_PUBLIC_NOTIFICATION_ENDPOINTS === '1') return true;
   const expected = process.env.INTERNAL_API_TOKEN;
@@ -127,4 +174,45 @@ function setRateHeaders(res, limit, remaining, reset) {
   res.setHeader('X-RateLimit-Limit', String(limit));
   res.setHeader('X-RateLimit-Remaining', String(remaining));
   res.setHeader('X-RateLimit-Reset', String(reset));
+}
+
+function turnstileSessionSecret() {
+  return process.env.TURNSTILE_SESSION_SECRET ||
+    process.env.INTERNAL_API_TOKEN ||
+    process.env.TURNSTILE_SECRET_KEY ||
+    '';
+}
+
+function normalizeSessionTtl(ttlMs) {
+  const envSeconds = Number(process.env.TURNSTILE_SESSION_TTL_SECONDS || 0);
+  const envTtl = Number.isFinite(envSeconds) && envSeconds > 0 ? envSeconds * 1000 : 0;
+  const requested = Number(ttlMs || envTtl || DEFAULT_TURNSTILE_SESSION_TTL_MS);
+  return Math.min(Math.max(requested, 60 * 1000), 60 * 60 * 1000);
+}
+
+function cleanSessionValue(value) {
+  return String(value || 'anonymous').slice(0, 160);
+}
+
+function hashSessionValue(value) {
+  return crypto.createHash('sha256').update(cleanSessionValue(value)).digest('base64url');
+}
+
+function signTurnstileSession(encodedPayload, secret) {
+  return crypto.createHmac('sha256', secret).update(encodedPayload).digest('base64url');
+}
+
+function timingSafeEqual(left, right) {
+  const leftBuffer = Buffer.from(String(left));
+  const rightBuffer = Buffer.from(String(right));
+  if (leftBuffer.length !== rightBuffer.length) return false;
+  return crypto.timingSafeEqual(leftBuffer, rightBuffer);
+}
+
+function ipPrefix(ip) {
+  const value = String(ip || 'unknown').trim();
+  const ipv4 = value.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.\d{1,3}$/);
+  if (ipv4) return `${ipv4[1]}.${ipv4[2]}.${ipv4[3]}.0`;
+  const ipv6 = value.includes(':') ? value.split(':').slice(0, 4).join(':') : value;
+  return ipv6 || 'unknown';
 }

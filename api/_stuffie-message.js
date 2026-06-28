@@ -1,4 +1,14 @@
-import { enforceBodySize, enforceOrigin, getClientIp, isHoneypotFilled, rateLimit, setNoStore, verifyTurnstile } from './_security.js';
+import {
+  createTurnstileSession,
+  enforceBodySize,
+  enforceOrigin,
+  getClientIp,
+  isHoneypotFilled,
+  rateLimit,
+  setNoStore,
+  verifyTurnstile,
+  verifyTurnstileSession,
+} from './_security.js';
 import {
   applySecurityToPayload,
   assessLeadRisk,
@@ -39,7 +49,7 @@ export async function handleStuffieMessage(req, res) {
     return res.status(429).json({ error: 'Prea multe mesaje într-un interval scurt.' });
   }
 
-  const captcha = await verifyTurnstile(req.body?.turnstileToken, getClientIp(req));
+  const captcha = await verifyStuffieCaptcha(req, body.value);
   if (!captcha.ok) return res.status(400).json({ error: captcha.error || 'Captcha failed' });
 
   try {
@@ -63,6 +73,8 @@ export async function handleStuffieMessage(req, res) {
       canal: body.value.canal,
       user_id: body.value.userId,
       lead: leadResult,
+      turnstileSession: captcha.session?.token || req.body?.turnstileSession || null,
+      turnstileSessionExpiresAt: captcha.session?.expiresAt || captcha.expiresAt || null,
     });
   } catch (err) {
     console.error('[stuffie-message]', err?.message || err);
@@ -71,6 +83,29 @@ export async function handleStuffieMessage(req, res) {
       raspuns: 'Momentan nu reușesc să mă conectez. Te rog scrie-ne pe vet-stuff.ro/contact sau încearcă din nou. 🐾',
     });
   }
+}
+
+async function verifyStuffieCaptcha(req, body) {
+  const ip = getClientIp(req);
+  const subject = req.body?.deviceId || body.userId;
+  const session = verifyTurnstileSession(req.body?.turnstileSession, {
+    scope: 'stuffie-message',
+    subject,
+    ip,
+  });
+  if (session.ok) return session;
+
+  const captcha = await verifyTurnstile(req.body?.turnstileToken, ip);
+  if (!captcha.ok) return captcha;
+
+  return {
+    ok: true,
+    session: createTurnstileSession({
+      scope: 'stuffie-message',
+      subject,
+      ip,
+    }),
+  };
 }
 
 async function maybeCreateStuffieLead({ body, reply, escalationType, context }) {
