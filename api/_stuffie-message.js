@@ -19,6 +19,7 @@ import {
 } from './_lead-security.js';
 
 const DEFAULT_N8N_URL = 'https://stuffie.vet-stuff.ro/webhook/stuffie-brain';
+const DEFAULT_CLINIC_ID = '00000000-0000-0000-0000-000000000001';
 const REQUIRED_LEAD_FIELDS = [
   'nume complet',
   'telefon valid',
@@ -53,10 +54,26 @@ export async function handleStuffieMessage(req, res) {
   if (!captcha.ok) return res.status(400).json({ error: captcha.error || 'Captcha failed' });
 
   try {
+    const clinicId = resolveClinicId();
+    await recordStuffieChatMessage({
+      clinicId,
+      canal: body.value.canal,
+      userId: body.value.userId,
+      role: 'user',
+      content: body.value.mesaj,
+      metadata: { gateway: 'website', deviceId: context.deviceId || null },
+    });
+    const recentHistory = await loadStuffieChatHistory({
+      clinicId,
+      canal: body.value.canal,
+      userId: body.value.userId,
+    });
     const n8n = await callStuffieBrain({
+      clinic_id: clinicId,
       canal: body.value.canal,
       user_id: body.value.userId,
       mesaj: body.value.mesaj,
+      conversation_history: formatStuffieHistory(recentHistory),
       create_crm_lead: false,
       security_gateway: 'website',
     });
@@ -66,6 +83,19 @@ export async function handleStuffieMessage(req, res) {
     if (leadResult.needs_more_info) {
       cleanReply = buildMissingLeadInfoReply(leadResult);
     }
+    await recordStuffieChatMessage({
+      clinicId,
+      canal: body.value.canal,
+      userId: body.value.userId,
+      role: 'assistant',
+      content: cleanReply,
+      escalationType,
+      appointmentRequestId: leadResult.requestId || null,
+      metadata: {
+        gateway: 'website',
+        lead: leadResult,
+      },
+    });
 
     return res.status(200).json({
       ok: true,
@@ -199,7 +229,7 @@ function fallbackPayload({ body, reply, details = {}, escalationType = 'OM' }) {
   const reasonLine = details.reason ? `\nMotiv validat: ${details.reason}` : '';
 
   return {
-    clinic_id: process.env.CLINIC_ID || '00000000-0000-0000-0000-000000000001',
+    clinic_id: resolveClinicId(),
     owner_name: ownerName,
     owner_phone: details.phone || '',
     owner_email: details.email || null,
@@ -233,6 +263,62 @@ function fallbackPayload({ body, reply, details = {}, escalationType = 'OM' }) {
       gateway: 'website',
     },
   };
+}
+
+async function recordStuffieChatMessage({ clinicId, canal, userId, role, content, escalationType = null, appointmentRequestId = null, metadata = {} }) {
+  if (!content || !userId) return null;
+  try {
+    const rows = await supabaseFetch('chat_conversations', {
+      method: 'POST',
+      body: {
+        clinic_id: clinicId,
+        canal,
+        user_id: userId,
+        role,
+        content: String(content).slice(0, 8000),
+        escalation_type: escalationType || null,
+        appointment_request_id: appointmentRequestId || null,
+        metadata,
+      },
+      headers: { Prefer: 'return=representation' },
+    });
+    return Array.isArray(rows) ? rows[0] : rows;
+  } catch (err) {
+    console.error('[stuffie-chat:record]', err?.message || err);
+    return null;
+  }
+}
+
+async function loadStuffieChatHistory({ clinicId, canal, userId, limit = 12 }) {
+  if (!userId) return [];
+  try {
+    const path = [
+      'chat_conversations',
+      '?select=role,content,created_at',
+      `&clinic_id=eq.${encodeURIComponent(clinicId)}`,
+      `&canal=eq.${encodeURIComponent(canal)}`,
+      `&user_id=eq.${encodeURIComponent(userId)}`,
+      '&order=created_at.desc',
+      `&limit=${Math.min(Math.max(Number(limit) || 12, 1), 20)}`,
+    ].join('');
+    const rows = await supabaseFetch(path);
+    return Array.isArray(rows) ? rows.reverse() : [];
+  } catch (err) {
+    console.error('[stuffie-chat:history]', err?.message || err);
+    return [];
+  }
+}
+
+function formatStuffieHistory(rows = []) {
+  return rows
+    .filter(row => row?.content)
+    .map(row => `${row.role === 'assistant' ? 'STUFFIE' : 'Client'}: ${String(row.content).replace(/\s+/g, ' ').trim()}`)
+    .join('\n')
+    .slice(-5000);
+}
+
+function resolveClinicId() {
+  return process.env.CLINIC_ID || DEFAULT_CLINIC_ID;
 }
 
 async function callStuffieBrain(payload) {
