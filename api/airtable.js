@@ -1,7 +1,7 @@
 // Vercel Serverless Function — proxy spre Airtable
 // Tokenul Airtable este pastrat ca variabila de mediu AIRTABLE_TOKEN si nu ajunge niciodata in browser.
 
-import { enforceOrigin, getClientIp, isHoneypotFilled, rateLimit, verifyTurnstile } from './_security.js';
+import { enforceBodySize, enforceOrigin, getClientIp, isHoneypotFilled, rateLimit, setNoStore, verifyTurnstile } from './_security.js';
 import { notifyFormspree, sendClinicFormEmail } from './_notifications.js';
 
 const AIRTABLE_BASE = 'appGhcW1B4iDA4cUY';
@@ -55,10 +55,12 @@ const REQUIRED_FIELDS = {
 };
 
 export default async function handler(req, res) {
+  setNoStore(res);
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
   if (!enforceOrigin(req, res)) return;
+  if (!enforceBodySize(req, res, 16 * 1024)) return;
   if (!rateLimit(req, res, 'airtable', { max: 12, windowMs: 15 * 60 * 1000 })) return;
 
   if (isHoneypotFilled(req.body || {})) {

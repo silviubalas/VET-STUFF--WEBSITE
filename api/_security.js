@@ -57,6 +57,19 @@ export function rateLimit(req, res, name, options = {}) {
   return true;
 }
 
+export function setNoStore(res) {
+  if (typeof res.setHeader !== 'function') return;
+  res.setHeader('Cache-Control', 'no-store, max-age=0');
+  res.setHeader('Pragma', 'no-cache');
+}
+
+export function enforceBodySize(req, res, maxBytes = 32 * 1024) {
+  const contentLength = Number(req.headers?.['content-length'] || 0);
+  if (!contentLength || contentLength <= maxBytes) return true;
+  res.status(413).json({ error: 'Payload too large' });
+  return false;
+}
+
 export function isHoneypotFilled(body = {}) {
   const candidates = [
     body.website,

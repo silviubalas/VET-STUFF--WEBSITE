@@ -39,12 +39,13 @@
 //   - Anestezie detartraj folosita (Checkbox)
 //   - Data anestezie detartraj (Date)
 
-import { rateLimit } from './_security.js';
+import { rateLimit, setNoStore } from './_security.js';
 
 const AIRTABLE_BASE = 'appGhcW1B4iDA4cUY';
 const TABLE = 'UtilizareAbonamente';
 
 export default async function handler(req, res) {
+  setNoStore(res);
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }

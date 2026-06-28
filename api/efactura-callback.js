@@ -10,6 +10,7 @@
 //   EFACTURA_CLIENT_SECRET                   (de setat — valoarea din portalul ANAF)
 
 import { supabaseEnv } from './_accounts.js';
+import { setNoStore } from './_security.js';
 
 const OAUTH_TOKEN_URL = 'https://logincert.anaf.ro/anaf-oauth2/v1/token';
 const CALLBACK_URL = process.env.EFACTURA_CALLBACK_URL || 'https://www.vet-stuff.ro/api/efactura-callback';
@@ -35,6 +36,7 @@ async function sb(path, init, env) {
 }
 
 export default async function handler(req, res) {
+  setNoStore(res);
   try {
     const code = req.query?.code;
     const oauthError = req.query?.error;

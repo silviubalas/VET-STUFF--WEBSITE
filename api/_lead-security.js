@@ -339,7 +339,8 @@ function normalizeIpPrefix(ip = '') {
 function hashValue(value = '') {
   const clean = String(value || '').trim();
   if (!clean) return null;
-  const pepper = process.env.LEAD_SECURITY_PEPPER || process.env.INTERNAL_API_TOKEN || process.env.SUPABASE_SERVICE_ROLE_KEY || 'dev-lead-security-pepper';
+  const pepper = process.env.LEAD_SECURITY_PEPPER || process.env.INTERNAL_API_TOKEN || process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!pepper) throw new Error('Lead security pepper is not configured');
   return crypto.createHmac('sha256', pepper).update(clean).digest('hex');
 }
 

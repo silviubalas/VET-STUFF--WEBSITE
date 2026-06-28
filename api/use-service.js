@@ -3,7 +3,7 @@
 // Endpoint apelat din u.html dupa ce medicul scaneaza QR-ul si introduce PIN-ul.
 
 import { timingSafeEqual } from 'node:crypto';
-import { enforceOrigin, rateLimit } from './_security.js';
+import { enforceBodySize, enforceOrigin, rateLimit, setNoStore } from './_security.js';
 
 const AIRTABLE_BASE = 'appGhcW1B4iDA4cUY';
 const TABLE = 'UtilizareAbonamente';
@@ -21,10 +21,12 @@ function timingSafeEqualStr(a, b) {
 }
 
 export default async function handler(req, res) {
+  setNoStore(res);
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
   if (!enforceOrigin(req, res)) return;
+  if (!enforceBodySize(req, res, 16 * 1024)) return;
   if (!rateLimit(req, res, 'use-service', { max: 20, windowMs: 15 * 60 * 1000 })) return;
 
   const token = process.env.AIRTABLE_TOKEN;

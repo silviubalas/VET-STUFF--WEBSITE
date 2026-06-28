@@ -2,13 +2,15 @@
 // Foloseste SMSlink.ro REST API. Credentialele sunt in variabile de mediu.
 
 import { sendSubscriptionSms } from './_notifications.js';
-import { rateLimit, requireInternalRequest } from './_security.js';
+import { enforceBodySize, rateLimit, requireInternalRequest, setNoStore } from './_security.js';
 
 export default async function handler(req, res) {
+  setNoStore(res);
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
   if (!requireInternalRequest(req, res)) return;
+  if (!enforceBodySize(req, res, 16 * 1024)) return;
   if (!rateLimit(req, res, 'send-sms', { max: 4, windowMs: 60 * 60 * 1000 })) return;
 
   try {

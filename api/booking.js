@@ -1,4 +1,4 @@
-import { enforceOrigin, getClientIp, isHoneypotFilled, rateLimit, verifyTurnstile } from './_security.js';
+import { enforceBodySize, enforceOrigin, getClientIp, isHoneypotFilled, rateLimit, setNoStore, verifyTurnstile } from './_security.js';
 import {
   applySecurityToPayload,
   assessLeadRisk,
@@ -50,6 +50,7 @@ const DEFAULT_SCHEDULE_DAYS = [
 ];
 
 export default async function handler(req, res) {
+  setNoStore(res);
   if (req.method === 'POST' && ['stuffie', 'chatbot'].includes(String(req.query?.intent || req.query?.mode || '').toLowerCase())) {
     return handleStuffieMessage(req, res);
   }
@@ -65,6 +66,7 @@ export default async function handler(req, res) {
   }
 
   if (!rateLimit(req, res, 'booking-request', { max: 8, windowMs: 15 * 60 * 1000 })) return;
+  if (!enforceBodySize(req, res, 32 * 1024)) return;
   if (isHoneypotFilled(req.body || {})) return res.status(200).json({ ok: true });
 
   const captcha = await verifyTurnstile(req.body?.turnstileToken, getClientIp(req));

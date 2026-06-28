@@ -1,4 +1,4 @@
-import { enforceOrigin, getClientIp, isHoneypotFilled, rateLimit, verifyTurnstile } from './_security.js';
+import { enforceBodySize, enforceOrigin, getClientIp, isHoneypotFilled, rateLimit, setNoStore, verifyTurnstile } from './_security.js';
 import {
   applySecurityToPayload,
   assessLeadRisk,
@@ -12,13 +12,12 @@ import {
 const DEFAULT_N8N_URL = 'https://stuffie.vet-stuff.ro/webhook/stuffie-brain';
 
 export async function handleStuffieMessage(req, res) {
+  setNoStore(res);
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   if (!enforceOrigin(req, res)) return;
   if (!rateLimit(req, res, 'stuffie-message', { max: 30, windowMs: 15 * 60 * 1000 })) return;
   if (isHoneypotFilled(req.body || {})) return res.status(200).json({ ok: true, raspuns: '' });
-
-  const contentLength = Number(req.headers?.['content-length'] || 0);
-  if (contentLength > 32 * 1024) return res.status(413).json({ error: 'Payload too large' });
+  if (!enforceBodySize(req, res, 32 * 1024)) return;
 
   const body = sanitizeMessage(req.body || {});
   if (!body.ok) return res.status(400).json({ error: body.error });

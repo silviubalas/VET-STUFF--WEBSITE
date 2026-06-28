@@ -6,6 +6,7 @@
   "scripts": {
     "build:css": "tailwindcss -i ./assets/css/tailwind.css -o ./assets/css/tailwind.generated.css --minify",
     "check:links": "node ./scripts/check-links.mjs",
+    "smoke:stuffie-security": "node ./scripts/smoke-stuffie-security.mjs",
     "screenshot": "node ./screenshot.mjs http://localhost:3000"
   },
   "devDependencies": {

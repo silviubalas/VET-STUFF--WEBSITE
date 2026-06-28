@@ -1,6 +1,6 @@
 import { randomInt } from 'node:crypto';
 import { notifySubscriptionLead, sendSubscriptionConfirmationEmail, sendSubscriptionSms } from './_notifications.js';
-import { enforceOrigin, getClientIp, isHoneypotFilled, rateLimit, verifyTurnstile } from './_security.js';
+import { enforceBodySize, enforceOrigin, getClientIp, isHoneypotFilled, rateLimit, setNoStore, verifyTurnstile } from './_security.js';
 
 const AIRTABLE_BASE = 'appGhcW1B4iDA4cUY';
 const TABLE_SUBSCRIPTIONS = 'Abonamente';
@@ -9,10 +9,12 @@ const PLANS = new Set(['Silver', 'Gold', 'Platinum']);
 const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
 export default async function handler(req, res) {
+  setNoStore(res);
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
   if (!enforceOrigin(req, res)) return;
+  if (!enforceBodySize(req, res, 32 * 1024)) return;
   if (!rateLimit(req, res, 'create-subscription', { max: 6, windowMs: 30 * 60 * 1000 })) return;
 
   if (isHoneypotFilled(req.body || {})) {

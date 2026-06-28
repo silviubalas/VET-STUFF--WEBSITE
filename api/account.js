@@ -2,7 +2,7 @@
 // NU creează owner/patient — doar contul de login + (la login) întoarce animalele
 // deja înregistrate în CRM pentru emailul verificat.
 
-import { enforceOrigin, getClientIp, isHoneypotFilled, rateLimit } from './_security.js';
+import { enforceBodySize, enforceOrigin, isHoneypotFilled, rateLimit, setNoStore } from './_security.js';
 import {
   supabaseEnv,
   cleanEmail,
@@ -14,8 +14,10 @@ import {
 } from './_accounts.js';
 
 export default async function handler(req, res) {
+  setNoStore(res);
   if (req.method !== 'POST') return res.status(405).json({ ok: false, error: 'Method not allowed' });
   if (!enforceOrigin(req, res)) return;
+  if (!enforceBodySize(req, res, 16 * 1024)) return;
   if (isHoneypotFilled(req.body || {})) return res.status(200).json({ ok: true });
 
   const env = supabaseEnv();
