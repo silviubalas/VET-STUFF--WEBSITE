@@ -248,7 +248,7 @@ function normalizeEscalationType(value = '') {
 }
 
 function detectOwnerName(raw = '') {
-  const match = String(raw || '').match(/(?:numele meu este|numele este|nume(?:le)?[:\s]+|ma numesc|mă numesc|sunt|ma cheama|mă cheamă)\s*([A-ZĂÂÎȘȚ][\p{L}' -]{1,60})/iu);
+  const match = String(raw || '').match(/(?:numele meu este|numele este|nume complet[:\s]+|nume(?:le)?[:\s]+|ma numesc|mă numesc|sunt|ma cheama|mă cheamă)\s*([A-ZĂÂÎȘȚ][\p{L}' -]{1,60})/iu);
   return match?.[1]?.replace(/\s+(si|și|telefon|tel).*$/i, '').trim() || '';
 }
 
@@ -261,7 +261,7 @@ function detectSpecies(raw = '') {
 }
 
 function detectPetName(raw = '') {
-  const match = String(raw || '').match(/(?:animalul|câinele|cainele|cățelul|catelul|pisica|motanul|pacientul|nume animal|animal)(?: meu| mea)?\s*(?:se numește|se numeste|îl cheamă|il cheama|o cheamă|o cheama|:)?\s+([A-ZĂÂÎȘȚ][\p{L}' -]{1,35})/iu);
+  const match = String(raw || '').match(/(?:animalul|câinele|cainele|cățelul|catelul|pisica|motanul|pacientul|numele animalului|nume animal|animal)(?: meu| mea)?\s*(?:se numește|se numeste|îl cheamă|il cheama|o cheamă|o cheama|:)?\s+([A-ZĂÂÎȘȚ][\p{L}' -]{1,35})/iu);
   return match?.[1]?.replace(/\s+(si|și|are|cu).*$/i, '').trim() || '';
 }
 
