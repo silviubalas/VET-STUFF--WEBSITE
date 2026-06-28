@@ -2,7 +2,6 @@ import { enforceBodySize, enforceOrigin, getClientIp, isHoneypotFilled, rateLimi
 import {
   applySecurityToPayload,
   assessLeadRisk,
-  extractRomanianPhone,
   leadSecurityContext,
   persistentRateLimit,
   recordLeadSignal,
@@ -10,6 +9,15 @@ import {
 } from './_lead-security.js';
 
 const DEFAULT_N8N_URL = 'https://stuffie.vet-stuff.ro/webhook/stuffie-brain';
+const REQUIRED_LEAD_FIELDS = [
+  'nume complet',
+  'telefon valid',
+  'email',
+  'specie',
+  'numele animalului',
+  'varsta animalului',
+  'motivul solicitarii',
+];
 
 export async function handleStuffieMessage(req, res) {
   setNoStore(res);
@@ -42,9 +50,12 @@ export async function handleStuffieMessage(req, res) {
       create_crm_lead: false,
       security_gateway: 'website',
     });
-    const cleanReply = cleanEscalationMarker(n8n.raspuns || '');
+    let cleanReply = cleanEscalationMarker(n8n.raspuns || '');
     const escalationType = normalizeEscalationType(n8n.escalation_type || detectEscalationMarker(n8n.raspuns));
     const leadResult = await maybeCreateStuffieLead({ body: body.value, reply: cleanReply, escalationType, context });
+    if (leadResult.needs_more_info) {
+      cleanReply = buildMissingLeadInfoReply(leadResult);
+    }
 
     return res.status(200).json({
       ok: true,
@@ -66,21 +77,30 @@ async function maybeCreateStuffieLead({ body, reply, escalationType, context }) 
   if (!['OM', 'URGENTA'].includes(escalationType)) return { created: false, reason: 'no_escalation' };
 
   const raw = [body.mesaj, reply].filter(Boolean).join('\n');
-  const phone = extractRomanianPhone(raw);
+  const leadDetails = extractLeadDetails(raw);
   const intent = escalationType === 'URGENTA' ? 'urgent' : 'callback';
-  if (!phone) {
+  if (!leadDetails.ok) {
+    const payload = fallbackPayload({ body, reply, details: leadDetails, escalationType });
     const risk = await assessLeadRisk({
       supabaseFetch,
-      payload: fallbackPayload({ body, reply, phone: '' }),
+      payload,
       context,
       intent,
       source: `chatbot_${body.canal}`,
     });
-    await recordLeadSignal({ supabaseFetch, payload: fallbackPayload({ body, reply, phone: '' }), context, risk, source: `chatbot_${body.canal}`, intent });
-    return { created: false, reason: 'missing_phone', escalation_type: escalationType };
+    await recordLeadSignal({ supabaseFetch, payload, context, risk, source: `chatbot_${body.canal}`, intent });
+    return {
+      created: false,
+      needs_more_info: true,
+      reason: 'missing_required_fields',
+      escalation_type: escalationType,
+      missing: leadDetails.missing,
+      invalid: leadDetails.invalid,
+      required: REQUIRED_LEAD_FIELDS,
+    };
   }
 
-  let payload = fallbackPayload({ body, reply, phone, escalationType });
+  let payload = fallbackPayload({ body, reply, details: leadDetails, escalationType });
   const risk = await assessLeadRisk({
     supabaseFetch,
     payload,
@@ -133,19 +153,21 @@ async function maybeCreateStuffieLead({ body, reply, escalationType, context }) 
   return { created: true, requestId: request?.id || null, risk_score: risk.score, risk_reasons: risk.reasons };
 }
 
-function fallbackPayload({ body, reply, phone, escalationType = 'OM' }) {
+function fallbackPayload({ body, reply, details = {}, escalationType = 'OM' }) {
   const raw = [body.mesaj, reply].filter(Boolean).join('\n');
   const urgent = escalationType === 'URGENTA';
-  const species = detectSpecies(raw);
-  const ownerName = detectOwnerName(raw) || 'Client STUFFIE';
-  const patientName = detectPetName(raw) || (species ? species.toUpperCase() : 'Pacient STUFFIE');
+  const species = details.species || detectSpecies(raw);
+  const ownerName = details.ownerName || detectOwnerName(raw) || 'Client STUFFIE';
+  const patientName = details.petName || detectPetName(raw) || (species ? species.toUpperCase() : 'Pacient STUFFIE');
   const cleanReply = cleanEscalationMarker(reply || '');
+  const ageLine = details.petAge ? `\nVarsta animal: ${details.petAge}` : '';
+  const reasonLine = details.reason ? `\nMotiv validat: ${details.reason}` : '';
 
   return {
     clinic_id: process.env.CLINIC_ID || '00000000-0000-0000-0000-000000000001',
     owner_name: ownerName,
-    owner_phone: phone,
-    owner_email: null,
+    owner_phone: details.phone || '',
+    owner_email: details.email || null,
     patient_name: patientName,
     patient_species: species || null,
     visit_type_key: urgent ? 'urgenta' : 'callback_stuffie',
@@ -155,6 +177,8 @@ function fallbackPayload({ body, reply, phone, escalationType = 'OM' }) {
     duration_minutes: 30,
     message: (urgent ? 'Lead URGENT creat prin gateway STUFFIE.' : 'Lead callback creat prin gateway STUFFIE.') +
       '\n\nMesaj client:\n' + (body.mesaj || '-') +
+      ageLine +
+      reasonLine +
       '\n\nRaspuns STUFFIE:\n' + cleanReply,
     source: `chatbot_${body.canal || 'website'}`,
     status: 'new',
@@ -166,7 +190,11 @@ function fallbackPayload({ body, reply, phone, escalationType = 'OM' }) {
       mesaj_client: body.mesaj || null,
       raspuns_stuffie: cleanReply,
       escalation_type: escalationType,
-      phone_detected: phone || null,
+      phone_detected: details.phone || null,
+      email_detected: details.email || null,
+      required_fields_validated: Boolean(details.ok),
+      pet_age: details.petAge || null,
+      lead_reason: details.reason || null,
       gateway: 'website',
     },
   };
@@ -220,7 +248,7 @@ function normalizeEscalationType(value = '') {
 }
 
 function detectOwnerName(raw = '') {
-  const match = String(raw || '').match(/(?:numele meu este|numele este|ma numesc|mă numesc|sunt|ma cheama|mă cheamă)\s+([A-ZĂÂÎȘȚ][\p{L}' -]{1,45})/iu);
+  const match = String(raw || '').match(/(?:numele meu este|numele este|nume(?:le)?[:\s]+|ma numesc|mă numesc|sunt|ma cheama|mă cheamă)\s*([A-ZĂÂÎȘȚ][\p{L}' -]{1,60})/iu);
   return match?.[1]?.replace(/\s+(si|și|telefon|tel).*$/i, '').trim() || '';
 }
 
@@ -233,8 +261,101 @@ function detectSpecies(raw = '') {
 }
 
 function detectPetName(raw = '') {
-  const match = String(raw || '').match(/(?:animalul|câinele|cainele|cățelul|catelul|pisica|motanul|pacientul)(?: meu| mea)?\s+(?:se numește|se numeste|îl cheamă|il cheama|o cheamă|o cheama)\s+([A-ZĂÂÎȘȚ][\p{L}' -]{1,35})/iu);
+  const match = String(raw || '').match(/(?:animalul|câinele|cainele|cățelul|catelul|pisica|motanul|pacientul|nume animal|animal)(?: meu| mea)?\s*(?:se numește|se numeste|îl cheamă|il cheama|o cheamă|o cheama|:)?\s+([A-ZĂÂÎȘȚ][\p{L}' -]{1,35})/iu);
   return match?.[1]?.replace(/\s+(si|și|are|cu).*$/i, '').trim() || '';
+}
+
+function extractLeadDetails(raw = '') {
+  const text = String(raw || '');
+  const details = {
+    ownerName: validFullName(detectOwnerName(text)),
+    phone: detectValidPhone(text),
+    email: detectEmail(text),
+    species: detectSpecies(text),
+    petName: detectPetName(text),
+    petAge: detectPetAge(text),
+    reason: detectReason(text),
+  };
+  const missing = [];
+  const invalid = [];
+
+  if (!details.ownerName) missing.push('nume complet (prenume si nume)');
+  const phoneCandidate = detectAnyPhoneCandidate(text);
+  if (!details.phone) {
+    (phoneCandidate ? invalid : missing).push('telefon valid in format international sau romanesc');
+  }
+  if (!details.email) missing.push('adresa de email valida');
+  if (!details.species) missing.push('specia animalului (caine sau pisica)');
+  if (!details.petName) missing.push('numele animalului');
+  if (!details.petAge) missing.push('varsta animalului');
+  if (!details.reason) missing.push('motivul solicitarii');
+
+  return { ...details, missing, invalid, ok: missing.length === 0 && invalid.length === 0 };
+}
+
+function validFullName(value = '') {
+  const clean = String(value || '').replace(/[^\p{L}' -]/gu, ' ').replace(/\s+/g, ' ').trim();
+  const parts = clean.split(' ').filter(part => part.replace(/[-']/g, '').length >= 2);
+  return parts.length >= 2 ? parts.slice(0, 4).join(' ') : '';
+}
+
+function detectValidPhone(raw = '') {
+  const text = String(raw || '');
+  const candidates = text.match(/(?:\+\d[\d\s().-]{7,20}|00\d[\d\s().-]{7,20}|\b0\d[\d\s().-]{8,13}\b)/g) || [];
+  for (const candidate of candidates) {
+    const normalized = normalizePhone(candidate);
+    if (normalized) return normalized;
+  }
+  return '';
+}
+
+function detectAnyPhoneCandidate(raw = '') {
+  return String(raw || '').match(/\+?\d[\d\s().-]{5,20}/)?.[0] || '';
+}
+
+function normalizePhone(value = '') {
+  let clean = String(value || '').trim().replace(/[^\d+]/g, '');
+  if (clean.startsWith('00')) clean = `+${clean.slice(2)}`;
+  if (clean.startsWith('0') && clean.length === 10) clean = `+40${clean.slice(1)}`;
+  if (clean.startsWith('+400') && clean.length === 13) clean = `+40${clean.slice(4)}`;
+  if (/^\+40[2-8]\d{8}$/.test(clean)) return clean;
+  if (/^\+[1-9]\d{7,14}$/.test(clean)) return clean;
+  return '';
+}
+
+function detectEmail(raw = '') {
+  return String(raw || '').match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i)?.[0].toLowerCase() || '';
+}
+
+function detectPetAge(raw = '') {
+  const match = String(raw || '').match(/\b(?:varsta|vârsta|are)\s*(?:este|:)?\s*(\d{1,2})\s*(ani|an|luni|luna|lună|saptamani|săptămâni|saptamana|săptămână)\b/iu)
+    || String(raw || '').match(/\b(\d{1,2})\s*(ani|an|luni|luna|lună|saptamani|săptămâni|saptamana|săptămână)\b/iu);
+  if (!match) return '';
+  const number = Number(match[1]);
+  if (!Number.isFinite(number) || number <= 0 || number > 40) return '';
+  return `${number} ${match[2].toLowerCase()}`;
+}
+
+function detectReason(raw = '') {
+  const match = String(raw || '').match(/(?:motiv|problema|problemă|pentru|deoarece|vreau|as dori|aș dori|am nevoie)\s*(?:este|:)?\s+([^\n.]{8,180})/iu);
+  const reason = match?.[1]?.replace(/\s+/g, ' ').trim() || '';
+  if (!reason || /^(sa fiu contactat|să fiu contactat|contact|programare)$/iu.test(reason)) return '';
+  return reason;
+}
+
+function buildMissingLeadInfoReply(result) {
+  const items = [...new Set([...(result.missing || []), ...(result.invalid || [])])];
+  const list = items.map(item => `- ${item}`).join('\n');
+  return [
+    '🐾 MEDICUL TĂU DE FAMILIE EXTINSĂ',
+    '',
+    'Pot transmite solicitarea către clinică doar după ce am datele complete și valide, ca echipa să te poată contacta corect.',
+    '',
+    'Te rog trimite într-un singur mesaj:',
+    list,
+    '',
+    'Telefonul trebuie să fie valid, de exemplu +407xxxxxxxx sau 07xxxxxxxx. Nu am transmis încă solicitarea către clinică.',
+  ].join('\n');
 }
 
 function cleanKey(value, max = 80) {
