@@ -43,4 +43,14 @@ assert.equal(intl.ok, true);
 assert.equal(intl.phone, '+4915112345678');
 assert.equal(intl.species, 'pisică');
 
+const compact = extractLeadDetails('Silviu Balas 0752273839 silviu@example.com, câine, zorita, 9 zile, consult');
+assert.equal(compact.ok, true);
+assert.equal(compact.ownerName, 'Silviu Balas');
+assert.equal(compact.phone, '+40752273839');
+assert.equal(compact.email, 'silviu@example.com');
+assert.equal(compact.species, 'câine');
+assert.equal(compact.petName, 'zorita');
+assert.equal(compact.petAge, '9 zile');
+assert.equal(compact.reason, 'consult');
+
 console.log('STUFFIE lead validation tests passed');

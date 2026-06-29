@@ -68,18 +68,20 @@ export async function handleStuffieMessage(req, res) {
       canal: body.value.canal,
       userId: body.value.userId,
     });
+    const historyText = formatStuffieHistory(recentHistory);
     const n8n = await callStuffieBrain({
       clinic_id: clinicId,
       canal: body.value.canal,
       user_id: body.value.userId,
       mesaj: body.value.mesaj,
-      conversation_history: formatStuffieHistory(recentHistory),
+      conversation_history: historyText,
       create_crm_lead: false,
       security_gateway: 'website',
     });
     let cleanReply = cleanEscalationMarker(n8n.raspuns || '');
     const escalationType = normalizeEscalationType(n8n.escalation_type || detectEscalationMarker(n8n.raspuns));
-    const leadResult = await maybeCreateStuffieLead({ body: body.value, reply: cleanReply, escalationType, context });
+    const leadResult = await maybeCreateStuffieLead({ body: body.value, reply: cleanReply, escalationType, context, historyText });
+    const storedEscalationType = leadResult.escalation_type || escalationType;
     if (leadResult.needs_more_info) {
       cleanReply = buildMissingLeadInfoReply(leadResult);
     }
@@ -89,7 +91,7 @@ export async function handleStuffieMessage(req, res) {
       userId: body.value.userId,
       role: 'assistant',
       content: cleanReply,
-      escalationType,
+      escalationType: storedEscalationType,
       appointmentRequestId: leadResult.requestId || null,
       metadata: {
         gateway: 'website',
@@ -138,14 +140,17 @@ async function verifyStuffieCaptcha(req, body) {
   };
 }
 
-async function maybeCreateStuffieLead({ body, reply, escalationType, context }) {
-  if (!['OM', 'URGENTA'].includes(escalationType)) return { created: false, reason: 'no_escalation' };
-
-  const raw = [body.mesaj, reply].filter(Boolean).join('\n');
+async function maybeCreateStuffieLead({ body, reply, escalationType, context, historyText = '' }) {
+  const raw = [historyText, body.mesaj, reply].filter(Boolean).join('\n');
   const leadDetails = extractLeadDetails(raw);
-  const intent = escalationType === 'URGENTA' ? 'urgent' : 'callback';
+  const effectiveEscalationType = ['OM', 'URGENTA'].includes(escalationType)
+    ? escalationType
+    : inferEscalationType({ raw, details: leadDetails });
+  if (!['OM', 'URGENTA'].includes(effectiveEscalationType)) return { created: false, reason: 'no_escalation' };
+
+  const intent = effectiveEscalationType === 'URGENTA' ? 'urgent' : 'callback';
   if (!leadDetails.ok) {
-    const payload = fallbackPayload({ body, reply, details: leadDetails, escalationType });
+    const payload = fallbackPayload({ body, reply, details: leadDetails, escalationType: effectiveEscalationType });
     const risk = await assessLeadRisk({
       supabaseFetch,
       payload,
@@ -158,14 +163,14 @@ async function maybeCreateStuffieLead({ body, reply, escalationType, context }) 
       created: false,
       needs_more_info: true,
       reason: 'missing_required_fields',
-      escalation_type: escalationType,
+      escalation_type: effectiveEscalationType,
       missing: leadDetails.missing,
       invalid: leadDetails.invalid,
       required: REQUIRED_LEAD_FIELDS,
     };
   }
 
-  let payload = fallbackPayload({ body, reply, details: leadDetails, escalationType });
+  let payload = fallbackPayload({ body, reply, details: leadDetails, escalationType: effectiveEscalationType });
   const risk = await assessLeadRisk({
     supabaseFetch,
     payload,
@@ -176,7 +181,7 @@ async function maybeCreateStuffieLead({ body, reply, escalationType, context }) 
 
   if (risk.action === 'soft_block') {
     await recordLeadSignal({ supabaseFetch, payload, context, risk, source: `chatbot_${body.canal}`, intent });
-    return { created: false, reason: 'soft_block', risk_score: risk.score };
+    return { created: false, reason: 'soft_block', risk_score: risk.score, escalation_type: effectiveEscalationType };
   }
 
   if (shouldSkipInsertForDuplicate(risk, intent)) {
@@ -195,6 +200,7 @@ async function maybeCreateStuffieLead({ body, reply, escalationType, context }) 
       requestId: risk.duplicate?.id || null,
       risk_score: risk.score,
       risk_reasons: risk.reasons,
+      escalation_type: effectiveEscalationType,
     };
   }
 
@@ -215,7 +221,7 @@ async function maybeCreateStuffieLead({ body, reply, escalationType, context }) 
     appointmentRequestId: request?.id || null,
     duplicateOfRequestId: risk.duplicate?.id || null,
   });
-  return { created: true, requestId: request?.id || null, risk_score: risk.score, risk_reasons: risk.reasons };
+  return { created: true, requestId: request?.id || null, risk_score: risk.score, risk_reasons: risk.reasons, escalation_type: effectiveEscalationType };
 }
 
 function fallbackPayload({ body, reply, details = {}, escalationType = 'OM' }) {
@@ -368,9 +374,21 @@ function normalizeEscalationType(value = '') {
   return ['OM', 'URGENTA'].includes(clean) ? clean : '';
 }
 
+function inferEscalationType({ raw = '', details = {} } = {}) {
+  const text = String(raw || '').toLowerCase();
+  if (!details.ok) return '';
+  if (/\b(urgenta|urgență|urgent|nu se ridica|nu se ridică|sangereaza|sângerează|respira greu|respiră greu|convulsii|otravit|otrăvit)\b/i.test(text)) {
+    return 'URGENTA';
+  }
+  if (/\b(programare|programa|consult|consulta|consultație|consultatie|contact|suna|sună|sunati|sunați|clinica|solicitare|vreau|doresc|am nevoie)\b/i.test(text)) {
+    return 'OM';
+  }
+  return '';
+}
+
 function detectOwnerName(raw = '') {
   const match = String(raw || '').match(/(?:numele meu este|numele este|nume complet[:\s]+|nume(?:le)?[:\s]+|ma numesc|mă numesc|sunt|ma cheama|mă cheamă)\s*([A-ZĂÂÎȘȚ][\p{L}' -]{1,60})/iu);
-  return match?.[1]?.replace(/\s+(si|și|telefon|tel).*$/i, '').trim() || '';
+  return match?.[1]?.replace(/\s+(si|și|telefon|tel).*$/i, '').trim() || detectLeadingFullName(raw);
 }
 
 function detectSpecies(raw = '') {
@@ -382,7 +400,8 @@ function detectSpecies(raw = '') {
 }
 
 function detectPetName(raw = '') {
-  const match = String(raw || '').match(/(?:animalul|câinele|cainele|cățelul|catelul|pisica|motanul|pacientul|numele animalului|nume animal|animal)(?: meu| mea)?\s*(?:se numește|se numeste|îl cheamă|il cheama|o cheamă|o cheama|:)?\s+([A-ZĂÂÎȘȚ][\p{L}' -]{1,35})/iu);
+  const match = String(raw || '').match(/(?:animalul|câinele|cainele|cățelul|catelul|pisica|motanul|pacientul|numele animalului|nume animal|animal)(?: meu| mea)?\s*(?:se numește|se numeste|îl cheamă|il cheama|o cheamă|o cheama|:)?\s+([\p{L}' -]{2,35})/iu)
+    || String(raw || '').match(/\b(?:caine|câine|catel|cățel|pisica|pisică|motan|pisoi)\b\s*[,;:-]\s*([\p{L}' -]{2,35})/iu);
   return match?.[1]?.replace(/\s+(si|și|are|cu).*$/i, '').trim() || '';
 }
 
@@ -420,6 +439,23 @@ function validFullName(value = '') {
   return parts.length >= 2 ? parts.slice(0, 4).join(' ') : '';
 }
 
+function detectLeadingFullName(raw = '') {
+  const lines = String(raw || '').split(/\n+/);
+  for (const line of lines) {
+    const clean = line
+      .replace(/^\s*(Client|Utilizator|User)\s*:\s*/i, '')
+      .replace(/[+0-9][\d\s().-]{7,20}.*$/u, '')
+      .replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}.*$/iu, '')
+      .split(/[,;|]/)[0]
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (/^(medicul|buna|bună|te rog|telefon|email|specie|motiv|varsta|vârsta)\b/iu.test(clean)) continue;
+    const match = clean.match(/^([A-ZĂÂÎȘȚ][\p{L}'-]{1,30}\s+[A-ZĂÂÎȘȚ][\p{L}'-]{1,30}(?:\s+[A-ZĂÂÎȘȚ][\p{L}'-]{1,30})?)/u);
+    if (match) return match[1].trim();
+  }
+  return '';
+}
+
 function detectValidPhone(raw = '') {
   const text = String(raw || '');
   const candidates = text.match(/(?:\+\d[\d\s().-]{7,20}|00\d[\d\s().-]{7,20}|\b0\d[\d\s().-]{8,13}\b)/g) || [];
@@ -449,8 +485,8 @@ function detectEmail(raw = '') {
 }
 
 function detectPetAge(raw = '') {
-  const match = String(raw || '').match(/\b(?:varsta|vârsta|are)\s*(?:este|:)?\s*(\d{1,2})\s*(ani|an|luni|luna|lună|saptamani|săptămâni|saptamana|săptămână)\b/iu)
-    || String(raw || '').match(/\b(\d{1,2})\s*(ani|an|luni|luna|lună|saptamani|săptămâni|saptamana|săptămână)\b/iu);
+  const match = String(raw || '').match(/\b(?:varsta|vârsta|are)\s*(?:este|:)?\s*(\d{1,2})\s*(ani|an|luni|luna|lună|saptamani|săptămâni|saptamana|săptămână|zile|zi)\b/iu)
+    || String(raw || '').match(/\b(\d{1,2})\s*(ani|an|luni|luna|lună|saptamani|săptămâni|saptamana|săptămână|zile|zi)\b/iu);
   if (!match) return '';
   const number = Number(match[1]);
   if (!Number.isFinite(number) || number <= 0 || number > 40) return '';
@@ -460,7 +496,11 @@ function detectPetAge(raw = '') {
 function detectReason(raw = '') {
   const match = String(raw || '').match(/(?:motiv|problema|problemă|pentru|deoarece|vreau|as dori|aș dori|am nevoie)\s*(?:este|:)?\s+([^\n.]{8,180})/iu);
   const reason = match?.[1]?.replace(/\s+/g, ' ').trim() || '';
-  if (!reason || /\b(contact|contactat|contactata|contactată|contacteze|suna|sunati|sunați|programare)\b/iu.test(reason)) return '';
+  const common = String(raw || '').match(/\b(consult|consultație|consultatie|vaccinare|vaccin|deparazitare|control|urgență|urgenta|sterilizare|analize)\b/iu)?.[1] || '';
+  if (!reason) return common ? common.toLowerCase() : '';
+  if (/\b(contact|contactat|contactata|contactată|contacteze|suna|sunati|sunați|programare)\b/iu.test(reason)) {
+    return common ? common.toLowerCase() : '';
+  }
   return reason;
 }
 

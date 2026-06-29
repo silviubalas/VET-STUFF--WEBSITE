@@ -13,6 +13,7 @@ import { notifyFormspree, sendClinicBookingEmail } from './_notifications.js';
 import { verifyAccountToken, patientBelongsToOwners, supabaseEnv } from './_accounts.js';
 
 const DEFAULT_TIMEZONE = 'Europe/Bucharest';
+const DEFAULT_CLINIC_ID = '00000000-0000-0000-0000-000000000001';
 const WEEKDAY_IDS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 const MAX_DAYS = 21;
 const DEFAULT_DAYS = 14;
@@ -135,6 +136,7 @@ async function handlePost(req, res) {
     }
 
     let payload = {
+      clinic_id: resolveClinicId(),
       owner_name: body.value.ownerName,
       owner_phone: body.value.phone,
       owner_email: body.value.email || null,
@@ -247,6 +249,10 @@ async function handlePost(req, res) {
     console.error('[booking:post]', err?.message || err);
     return res.status(502).json({ ok: false, error: 'Cererea nu a putut fi trimisă.' });
   }
+}
+
+function resolveClinicId() {
+  return process.env.CLINIC_ID || DEFAULT_CLINIC_ID;
 }
 
 async function loadBookingContext(query) {
