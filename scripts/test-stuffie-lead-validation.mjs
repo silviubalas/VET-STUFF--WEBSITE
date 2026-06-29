@@ -53,4 +53,14 @@ assert.equal(compact.petName, 'zorita');
 assert.equal(compact.petAge, '9 zile');
 assert.equal(compact.reason, 'consult');
 
+const withAssistantHistory = extractLeadDetails(`
+Client: Vreau sa ma sune clinica. Alex, 0837484, Bobita
+Client: Nume complet: Andrei Testescu. Telefon: +40722123456. Email: codex.stuffie.test@example.com. Specie: caine. Numele animalului: Rex. Varsta: 4 ani. Motiv: consult general si verificare stare de sanatate.
+`);
+assert.equal(withAssistantHistory.ok, true);
+assert.equal(withAssistantHistory.ownerName, 'Andrei Testescu');
+assert.equal(withAssistantHistory.phone, '+40722123456');
+assert.equal(withAssistantHistory.email, 'codex.stuffie.test@example.com');
+assert.equal(withAssistantHistory.petName, 'Rex');
+
 console.log('STUFFIE lead validation tests passed');

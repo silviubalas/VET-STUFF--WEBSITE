@@ -141,11 +141,12 @@ async function verifyStuffieCaptcha(req, body) {
 }
 
 async function maybeCreateStuffieLead({ body, reply, escalationType, context, historyText = '' }) {
-  const raw = [historyText, body.mesaj, reply].filter(Boolean).join('\n');
-  const leadDetails = extractLeadDetails(raw);
+  const leadRaw = clientOnlyLeadText(historyText, body.mesaj);
+  const inferenceRaw = [leadRaw, reply].filter(Boolean).join('\n');
+  const leadDetails = extractLeadDetails(leadRaw);
   const effectiveEscalationType = ['OM', 'URGENTA'].includes(escalationType)
     ? escalationType
-    : inferEscalationType({ raw, details: leadDetails });
+    : inferEscalationType({ raw: inferenceRaw, details: leadDetails });
   if (!['OM', 'URGENTA'].includes(effectiveEscalationType)) return { created: false, reason: 'no_escalation' };
 
   const intent = effectiveEscalationType === 'URGENTA' ? 'urgent' : 'callback';
@@ -225,11 +226,12 @@ async function maybeCreateStuffieLead({ body, reply, escalationType, context, hi
 }
 
 function fallbackPayload({ body, reply, details = {}, escalationType = 'OM' }) {
-  const raw = [body.mesaj, reply].filter(Boolean).join('\n');
+  const clientRaw = String(body.mesaj || '');
+  const raw = [clientRaw, reply].filter(Boolean).join('\n');
   const urgent = escalationType === 'URGENTA';
-  const species = details.species || detectSpecies(raw);
-  const ownerName = details.ownerName || detectOwnerName(raw) || 'Client STUFFIE';
-  const patientName = details.petName || detectPetName(raw) || (species ? species.toUpperCase() : 'Pacient STUFFIE');
+  const species = details.species || detectSpecies(clientRaw) || detectSpecies(raw);
+  const ownerName = details.ownerName || detectOwnerName(clientRaw) || 'Client STUFFIE';
+  const patientName = details.petName || detectPetName(clientRaw) || (species ? species.toUpperCase() : 'Pacient STUFFIE');
   const cleanReply = cleanEscalationMarker(reply || '');
   const ageLine = details.petAge ? `\nVarsta animal: ${details.petAge}` : '';
   const reasonLine = details.reason ? `\nMotiv validat: ${details.reason}` : '';
@@ -321,6 +323,17 @@ function formatStuffieHistory(rows = []) {
     .map(row => `${row.role === 'assistant' ? 'STUFFIE' : 'Client'}: ${String(row.content).replace(/\s+/g, ' ').trim()}`)
     .join('\n')
     .slice(-5000);
+}
+
+function clientOnlyLeadText(historyText = '', currentMessage = '') {
+  const clientHistory = String(historyText || '')
+    .split(/\n+/)
+    .map(line => line.trim())
+    .filter(line => /^Client\s*:/i.test(line))
+    .map(line => line.replace(/^Client\s*:\s*/i, '').trim())
+    .filter(Boolean)
+    .join('\n');
+  return [clientHistory, currentMessage].filter(Boolean).join('\n');
 }
 
 function resolveClinicId() {
