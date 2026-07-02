@@ -952,7 +952,7 @@
       render();
       try {
         const service = state.serviceKey ? `&service=${encodeURIComponent(state.serviceKey)}` : '';
-        const response = await fetch(`/api/booking?days=21${service}`);
+        const response = await fetch(`/api/booking?days=60${service}`);
         const data = await response.json().catch(() => ({}));
         if (!response.ok || !data.ok) throw new Error(data.error || 'Calendar indisponibil');
         state.services = normalizeServices(data.services);

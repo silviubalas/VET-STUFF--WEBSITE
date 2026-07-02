@@ -15,8 +15,14 @@ import { verifyAccountToken, patientBelongsToOwners, supabaseEnv } from './_acco
 const DEFAULT_TIMEZONE = 'Europe/Bucharest';
 const DEFAULT_CLINIC_ID = '00000000-0000-0000-0000-000000000001';
 const WEEKDAY_IDS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-const MAX_DAYS = 21;
-const DEFAULT_DAYS = 14;
+const MAX_DAYS = 60;
+const DEFAULT_DAYS = 30;
+
+// Plafon de siguranță pe interogările de ocupare: previne trunchierea tăcută a
+// PostgREST la ferestre lungi (60 zile) sau volume mari per clinică (o ocupare
+// pierdută = slot afișat greșit ca liber). La scară SaaS mare, o clinică ce se
+// apropie de plafon va necesita ferestre mai scurte / paginare.
+const BUSY_QUERY_LIMIT = 2000;
 
 const DEFAULT_DOCTORS = [
   { id: 'doc-balas', name: 'Dr. Balaș Silviu-Constantin', specialization: 'Ortopedie + Chirurgie' },
@@ -90,12 +96,42 @@ async function handleGet(req, res) {
   }
 
   try {
-    const context = await loadBookingContext(req.query || {});
-    return res.status(200).json({ ok: true, configured: true, ...context });
+    const clinic = await resolveBookingClinic(req);
+    if (bookingDisabledForClinic(clinic)) {
+      return res.status(200).json({
+        ok: true,
+        configured: true,
+        bookingEnabled: false,
+        clinicId: clinic.clinicId,
+        timezone: DEFAULT_TIMEZONE,
+        services: [],
+        selectedServiceKey: null,
+        doctors: [],
+        days: [],
+      });
+    }
+    const context = await loadBookingContext(req.query || {}, clinic.clinicId);
+    setBookingCacheHeaders(res);
+    return res.status(200).json({ ok: true, configured: true, clinicId: clinic.clinicId, ...context });
   } catch (err) {
     console.error('[booking:get]', err?.message || err);
     return res.status(502).json({ ok: false, error: 'Calendar unavailable' });
   }
+}
+
+// Cache scurt la nivel de edge/CDN pentru sloturile publice (GET). Cheia de
+// cache pe Vercel include host-ul + query-ul (days/service/date), iar `Vary`
+// declară explicit dependența de host pentru orice alt CDN — deci fiecare
+// clinică și fereastră au intrare separată (sigur multi-tenant, fără scurgere
+// de disponibilitate între clinici). Browserul revalidează mereu (max-age=0);
+// doar edge-ul servește ~30s. Dacă între timp se ocupă un slot, POST-ul
+// re-verifică disponibilitatea (→409), deci un cache ușor „învechit" nu poate
+// produce dublă-programare. Suprascrie no-store setat global în handler().
+function setBookingCacheHeaders(res) {
+  if (typeof res.setHeader !== 'function') return;
+  res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=30, stale-while-revalidate=60');
+  res.setHeader('Vary', 'X-Forwarded-Host');
+  if (typeof res.removeHeader === 'function') res.removeHeader('Pragma');
 }
 
 async function handlePost(req, res) {
@@ -118,12 +154,16 @@ async function handlePost(req, res) {
   }
 
   try {
+    const clinic = await resolveBookingClinic(req);
+    if (bookingDisabledForClinic(clinic)) {
+      return res.status(200).json({ ok: false, error: 'Programările online sunt momentan indisponibile pentru această clinică.' });
+    }
     const date = zonedDateKey(new Date(body.value.preferredAt), DEFAULT_TIMEZONE);
     const context = await loadBookingContext({
       date,
       days: '1',
       service: body.value.serviceKey,
-    });
+    }, clinic.clinicId);
     const matchingSlot = context.days
       .flatMap(day => day.slots)
       .find(slot => (
@@ -136,7 +176,7 @@ async function handlePost(req, res) {
     }
 
     let payload = {
-      clinic_id: resolveClinicId(),
+      clinic_id: clinic.clinicId,
       owner_name: body.value.ownerName,
       owner_phone: body.value.phone,
       owner_email: body.value.email || null,
@@ -255,21 +295,69 @@ function resolveClinicId() {
   return process.env.CLINIC_ID || DEFAULT_CLINIC_ID;
 }
 
-async function loadBookingContext(query) {
-  const clinic = await loadClinicSettings();
+function pickRequestHost(req) {
+  const forwarded = req.headers?.['x-forwarded-host'];
+  const host = (typeof forwarded === 'string' && forwarded.trim())
+    ? forwarded.split(',')[0].trim()
+    : String(req.headers?.host || '').trim();
+  return host;
+}
+
+// Rezolvă clinica pentru booking după Host (prioritar) sau ?clinic=/?slug=, prin
+// RPC-ul multi-tenant din CRM (resolve_booking_clinic). Fallback pe clinica
+// default (VET STUFF) dacă nu există match — păstrează comportamentul actual
+// single-clinic intact. Toate datele existente sunt pe UUID-ul default, deci
+// pentru VET STUFF rezultatul este identic cu înainte.
+async function resolveBookingClinic(req) {
+  const fallback = { clinicId: resolveClinicId(), bookingEnabled: true, resolved: false, name: '' };
+  if (!supabaseConfig().configured) return fallback;
+
+  const host = pickRequestHost(req);
+  const slug = cleanKey(req.query?.clinic || req.query?.slug || '', 80);
+  if (!host && !slug) return fallback;
+
+  try {
+    const rows = await supabaseFetch('rpc/resolve_booking_clinic', {
+      method: 'POST',
+      body: { p_host: host || null, p_slug: slug || null },
+    });
+    const row = Array.isArray(rows) ? rows[0] : rows;
+    if (row?.clinic_id) {
+      return {
+        clinicId: row.clinic_id,
+        bookingEnabled: row.booking_enabled !== false,
+        resolved: true,
+        name: row.name || '',
+      };
+    }
+  } catch (err) {
+    console.error('[booking:resolve-clinic]', err?.message || err);
+  }
+  return fallback;
+}
+
+// Blocăm booking-ul doar pentru o clinică rezolvată explicit, alta decât default,
+// cu booking_enabled=false. Clinica default (VET STUFF) nu e blocată niciodată
+// aici, ca să nu riscăm să oprim programările live pe baza unui flag neverificat.
+function bookingDisabledForClinic(clinic) {
+  return Boolean(clinic?.resolved && clinic.clinicId !== DEFAULT_CLINIC_ID && clinic.bookingEnabled === false);
+}
+
+async function loadBookingContext(query, clinicId = resolveClinicId()) {
+  const clinic = await loadClinicSettings(clinicId);
   const timezone = clinic.timezone || DEFAULT_TIMEZONE;
   const daysCount = clampInt(query.days, 1, MAX_DAYS, DEFAULT_DAYS);
   const startDate = validDateKey(query.date) || zonedDateKey(new Date(), timezone);
   const dateKeys = nextDateKeys(startDate, daysCount);
-  const services = await loadServices();
+  const services = await loadServices(clinicId);
   const selectedService = services.find(service => service.key === query.service) || services[0] || DEFAULT_SERVICES[0];
-  const doctors = await loadDoctors();
+  const doctors = await loadDoctors(clinicId);
   const from = zonedDateTimeToUtc(dateKeys[0], 0, timezone).toISOString();
   const to = zonedDateTimeToUtc(addDays(dateKeys[dateKeys.length - 1], 1), 0, timezone).toISOString();
   const [appointments, heldRequests, blockingTasks] = await Promise.all([
-    loadAppointments(from, to),
-    loadHeldRequests(from, to),
-    loadBlockingTasks(from, to, clinic),
+    loadAppointments(from, to, clinicId),
+    loadHeldRequests(from, to, clinicId),
+    loadBlockingTasks(from, to, clinicId),
   ]);
 
   const days = dateKeys.map(dateKey => buildDayAvailability({
@@ -292,17 +380,19 @@ async function loadBookingContext(query) {
   };
 }
 
-async function loadClinicSettings() {
-  const rows = await supabaseFetch('clinic_settings?select=*&order=updated_at.desc&limit=1');
+async function loadClinicSettings(clinicId = resolveClinicId()) {
+  const rows = await supabaseFetch(`clinic_settings?select=*&clinic_id=eq.${encodeURIComponent(clinicId)}&order=updated_at.desc&limit=1`);
   return Array.isArray(rows) && rows[0] ? rows[0] : {};
 }
 
-async function loadDoctors() {
+async function loadDoctors(clinicId = resolveClinicId()) {
+  const clinicFilter = `&clinic_id=eq.${encodeURIComponent(clinicId)}`;
   let rows;
   try {
     rows = await supabaseFetch([
       'clinic_doctors',
       '?select=id,name,specialization,active,staff_bookable,online_booking,sort_order',
+      clinicFilter,
       '&active=eq.true',
       '&staff_bookable=eq.true',
       '&online_booking=eq.true',
@@ -315,6 +405,7 @@ async function loadDoctors() {
     rows = await supabaseFetch([
       'clinic_doctors',
       '?select=id,name,specialization,active,sort_order',
+      clinicFilter,
       '&active=eq.true',
       '&order=sort_order.asc',
       '&order=name.asc',
@@ -333,8 +424,8 @@ async function loadDoctors() {
   return doctors.length ? doctors : DEFAULT_DOCTORS;
 }
 
-async function loadServices() {
-  const rows = await supabaseFetch('clinic_visit_types?select=key,label,category,duration_minutes,hidden,sort_order&hidden=eq.false&order=sort_order.asc&order=label.asc');
+async function loadServices(clinicId = resolveClinicId()) {
+  const rows = await supabaseFetch(`clinic_visit_types?select=key,label,category,duration_minutes,hidden,sort_order&clinic_id=eq.${encodeURIComponent(clinicId)}&hidden=eq.false&order=sort_order.asc&order=label.asc`);
   const mapped = (Array.isArray(rows) ? rows : [])
     .filter(row => row?.key && row?.label)
     .map(row => ({
@@ -350,27 +441,33 @@ async function loadServices() {
   return merged.length ? merged : DEFAULT_SERVICES;
 }
 
-async function loadAppointments(from, to) {
+async function loadAppointments(from, to, clinicId = resolveClinicId()) {
   return supabaseFetch([
     'appointments',
     '?select=id,doctor,scheduled_at,duration_minutes,status',
+    `&clinic_id=eq.${encodeURIComponent(clinicId)}`,
     `&scheduled_at=gte.${encodeURIComponent(from)}`,
     `&scheduled_at=lt.${encodeURIComponent(to)}`,
     '&status=neq.cancelled',
+    '&order=scheduled_at.asc',
+    `&limit=${BUSY_QUERY_LIMIT}`,
   ].join(''));
 }
 
-async function loadHeldRequests(from, to) {
+async function loadHeldRequests(from, to, clinicId = resolveClinicId()) {
   return supabaseFetch([
     'appointment_requests',
     '?select=id,doctor_name,preferred_at,duration_minutes,status',
+    `&clinic_id=eq.${encodeURIComponent(clinicId)}`,
     `&preferred_at=gte.${encodeURIComponent(from)}`,
     `&preferred_at=lt.${encodeURIComponent(to)}`,
     '&status=in.(new,in_review,accepted)',
+    '&order=preferred_at.asc',
+    `&limit=${BUSY_QUERY_LIMIT}`,
   ].join(''));
 }
 
-async function loadBlockingTasks(from, to, clinic) {
+async function loadBlockingTasks(from, to, clinicId = resolveClinicId()) {
   const path = [
     'tasks',
     '?select=id,start_at,end_at,clinic_id,status,metadata',
@@ -378,7 +475,9 @@ async function loadBlockingTasks(from, to, clinic) {
     `&start_at=lt.${encodeURIComponent(to)}`,
     `&end_at=gt.${encodeURIComponent(from)}`,
     '&status=not.in.(done,cancelled)',
-    clinic?.id ? `&or=${encodeURIComponent(`(clinic_id.is.null,clinic_id.eq.${clinic.id})`)}` : '',
+    '&order=start_at.asc',
+    `&limit=${BUSY_QUERY_LIMIT}`,
+    clinicId ? `&or=${encodeURIComponent(`(clinic_id.is.null,clinic_id.eq.${clinicId})`)}` : '',
   ].join('');
   const rows = await supabaseFetch(path);
   return (Array.isArray(rows) ? rows : [])
@@ -642,25 +741,12 @@ function sameDoctor(a, b) {
   return normalizeName(a) === normalizeName(b);
 }
 
-function asList(value) {
-  if (Array.isArray(value)) return value;
-  return value ? [value] : [];
-}
-
 function normalizeName(value) {
   return String(value || '')
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '');
-}
-
-function normalizePhoneLoose(value) {
-  return String(value || '').replace(/\D/g, '').replace(/^40/, '0');
-}
-
-function normalizeEmailLoose(value) {
-  return String(value || '').trim().toLowerCase();
 }
 
 function rangesOverlap(aStart, aDuration, bStart, bDuration) {
