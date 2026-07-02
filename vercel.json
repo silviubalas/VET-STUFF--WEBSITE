@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/booking.js": { "maxDuration": 60 },
+    "api/create-subscription.js": { "maxDuration": 30 }
+  }
+}

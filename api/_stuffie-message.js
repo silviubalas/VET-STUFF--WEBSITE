@@ -344,8 +344,11 @@ async function callStuffieBrain(payload) {
   const internalToken = process.env.INTERNAL_API_TOKEN;
   if (!internalToken) throw new Error('INTERNAL_API_TOKEN is required for STUFFIE gateway');
 
+  // Sub maxDuration (60s din vercel.json): lăsăm ~10s pentru scrierea în DB și
+  // răspuns după ce n8n întoarce. La depășire, abort → catch → mesaj prietenos,
+  // în loc ca platforma să taie funcția brutal (client fără răspuns).
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 90 * 1000);
+  const timer = setTimeout(() => controller.abort(), 50 * 1000);
   try {
     const response = await fetch(process.env.STUFFIE_BRAIN_URL || DEFAULT_N8N_URL, {
       method: 'POST',
