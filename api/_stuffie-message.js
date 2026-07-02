@@ -140,7 +140,7 @@ async function verifyStuffieCaptcha(req, body) {
   };
 }
 
-async function maybeCreateStuffieLead({ body, reply, escalationType, context, historyText = '' }) {
+export async function maybeCreateStuffieLead({ body, reply, escalationType, context, historyText = '' }) {
   const leadRaw = clientOnlyLeadText(historyText, body.mesaj);
   const inferenceRaw = [leadRaw, reply].filter(Boolean).join('\n');
   const leadDetails = extractLeadDetails(leadRaw);
@@ -545,7 +545,7 @@ function supabaseConfig() {
   return { url, key, configured: Boolean(url && key) };
 }
 
-async function supabaseFetch(path, options = {}) {
+export async function supabaseFetch(path, options = {}) {
   const config = supabaseConfig();
   if (!config.configured) throw new Error('Supabase is not configured');
   const response = await fetch(`${config.url}/rest/v1/${path}`, {
