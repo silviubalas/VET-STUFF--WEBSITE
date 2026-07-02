@@ -119,18 +119,19 @@ async function handleGet(req, res) {
   }
 }
 
-// Cache scurt la nivel de edge/CDN pentru sloturile publice (GET). Cheia de
-// cache pe Vercel include host-ul + query-ul (days/service/date), iar `Vary`
-// declară explicit dependența de host pentru orice alt CDN — deci fiecare
-// clinică și fereastră au intrare separată (sigur multi-tenant, fără scurgere
-// de disponibilitate între clinici). Browserul revalidează mereu (max-age=0);
-// doar edge-ul servește ~30s. Dacă între timp se ocupă un slot, POST-ul
+// Cache scurt la nivel de edge/CDN pentru sloturile publice (GET).
+// `CDN-Cache-Control` controlează exclusiv edge-ul Vercel (nu e consumat/rescris
+// ca `s-maxage` din Cache-Control) → cache real de ~30s. Cheia de cache Vercel
+// include deja host-ul + query-ul (days/service/date), deci fiecare clinică și
+// fereastră au intrare separată — sigur multi-tenant, fără `Vary` pe un header
+// de proxy (care dezactiva caching-ul). Browserul revalidează mereu
+// (Cache-Control: max-age=0). Dacă între timp se ocupă un slot, POST-ul
 // re-verifică disponibilitatea (→409), deci un cache ușor „învechit" nu poate
 // produce dublă-programare. Suprascrie no-store setat global în handler().
 function setBookingCacheHeaders(res) {
   if (typeof res.setHeader !== 'function') return;
-  res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=30, stale-while-revalidate=60');
-  res.setHeader('Vary', 'X-Forwarded-Host');
+  res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+  res.setHeader('CDN-Cache-Control', 'public, s-maxage=30, stale-while-revalidate=60');
   if (typeof res.removeHeader === 'function') res.removeHeader('Pragma');
 }
 
