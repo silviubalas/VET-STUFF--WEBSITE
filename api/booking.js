@@ -9,6 +9,7 @@ import {
   shouldSkipInsertForDuplicate,
 } from './_lead-security.js';
 import { handleStuffieMessage } from './_stuffie-message.js';
+import { handleStuffieSocialLead } from './_stuffie-social-lead.js';
 import { notifyFormspree, sendClinicBookingEmail } from './_notifications.js';
 import { verifyAccountToken, patientBelongsToOwners, supabaseEnv } from './_accounts.js';
 
@@ -58,8 +59,12 @@ const DEFAULT_SCHEDULE_DAYS = [
 
 export default async function handler(req, res) {
   setNoStore(res);
-  if (req.method === 'POST' && ['stuffie', 'chatbot'].includes(String(req.query?.intent || req.query?.mode || '').toLowerCase())) {
+  const intent = String(req.query?.intent || req.query?.mode || '').toLowerCase();
+  if (req.method === 'POST' && ['stuffie', 'chatbot'].includes(intent)) {
     return handleStuffieMessage(req, res);
+  }
+  if (req.method === 'POST' && intent === 'social-lead') {
+    return handleStuffieSocialLead(req, res);
   }
 
   if (!['GET', 'POST'].includes(req.method)) {

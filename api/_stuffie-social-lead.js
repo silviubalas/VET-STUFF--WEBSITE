@@ -1,4 +1,8 @@
-// Vercel Serverless Function — creare lead securizat din STUFFIE Social (Messenger/IG).
+// Handler pentru creare lead securizat din STUFFIE Social (Messenger/IG).
+//
+// Rulează prin gateway-ul /api/booking?intent=social-lead (NU e funcție separată,
+// ca să nu depășim limita de funcții serverless a planului Vercel — vezi cum
+// booking.js multiplexează și ?intent=stuffie).
 //
 // Apelat SERVER-TO-SERVER de workflow-ul n8n `stuffie-social` cu `x-internal-token`,
 // DUPĂ ce brain-ul a răspuns. Închide bypass-ul anti-abuz: workflow-ul social
@@ -14,7 +18,7 @@ import { enforceBodySize, rateLimit, requireInternalRequest, setNoStore } from '
 import { leadSecurityContext, persistentRateLimit } from './_lead-security.js';
 import { maybeCreateStuffieLead, supabaseFetch } from './_stuffie-message.js';
 
-export default async function handler(req, res) {
+export async function handleStuffieSocialLead(req, res) {
   setNoStore(res);
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   if (!requireInternalRequest(req, res)) return; // 404 dacă tokenul intern lipsește/greșit
