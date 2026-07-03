@@ -17,6 +17,7 @@ import {
   recordLeadSignal,
   shouldSkipInsertForDuplicate,
 } from './_lead-security.js';
+import { sendLeadTelegramAlert } from './_notifications.js';
 
 const DEFAULT_N8N_URL = 'https://stuffie.vet-stuff.ro/webhook/stuffie-brain';
 const DEFAULT_CLINIC_ID = '00000000-0000-0000-0000-000000000001';
@@ -318,6 +319,16 @@ export async function maybeCreateStuffieLead({ body, reply, escalationType, cont
     appointmentRequestId: request?.id || null,
     duplicateOfRequestId: risk.duplicate?.id || null,
   });
+  try {
+    await sendLeadTelegramAlert({
+      details: leadDetails,
+      escalationType: effectiveEscalationType,
+      requestId: request?.id || null,
+      source: `chatbot_${body.canal}`,
+    });
+  } catch (err) {
+    console.error('[stuffie-telegram-alert]', err?.message || err);
+  }
   return { created: true, requestId: request?.id || null, risk_score: risk.score, risk_reasons: risk.reasons, escalation_type: effectiveEscalationType };
 }
 

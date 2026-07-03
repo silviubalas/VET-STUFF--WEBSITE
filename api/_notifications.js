@@ -250,6 +250,55 @@ export async function sendClinicBookingEmail(fields) {
   }
 }
 
+export async function sendLeadTelegramAlert({ details = {}, escalationType = '', requestId = '', source = '' } = {}) {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
+  if (!token || !chatId) {
+    return { ok: false, skipped: true, reason: 'Telegram not configured' };
+  }
+
+  const title = escalationType === 'URGENTA' ? '🚨 URGENȚĂ STUFFIE' : '📞 CALLBACK STUFFIE';
+  const text = [
+    title,
+    '',
+    `Sursă: ${safeTelegramValue(source)}`,
+    `Request ID: ${safeTelegramValue(requestId)}`,
+    '',
+    'Date validate:',
+    `- Proprietar: ${safeTelegramValue(details.ownerName)}`,
+    `- Telefon: ${safeTelegramValue(details.phone)}`,
+    `- Email: ${safeTelegramValue(details.email)}`,
+    `- Specie: ${safeTelegramValue(details.species)}`,
+    `- Animal: ${safeTelegramValue(details.petName)}`,
+    `- Vârstă: ${safeTelegramValue(details.petAge)}`,
+    `- Motiv: ${safeTelegramValue(details.reason)}`,
+  ].join('\n');
+
+  try {
+    const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text,
+      }),
+    });
+
+    if (!response.ok) {
+      const body = await response.text();
+      return { ok: false, status: response.status, error: body.slice(0, 500) };
+    }
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, error: String(err?.message || err) };
+  }
+}
+
+function safeTelegramValue(value) {
+  const clean = String(value ?? '').replace(/\s+/g, ' ').trim();
+  return clean || '-';
+}
+
 export async function notifyFormspree(subject, fields) {
   const endpoint = process.env.FORMSPREE_ENDPOINT || 'https://formspree.io/f/mzdkbdzb';
   if (!endpoint) return { ok: false, skipped: true };
