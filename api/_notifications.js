@@ -284,13 +284,32 @@ export async function sendLeadTelegramAlert({ details = {}, escalationType = '',
       }),
     });
 
-    if (!response.ok) {
-      const body = await response.text();
-      return { ok: false, status: response.status, error: body.slice(0, 500) };
+    const responseText = await response.text();
+    const telegram = parseTelegramResponse(responseText);
+    if (!response.ok || telegram?.ok === false) {
+      return {
+        ok: false,
+        status: response.status,
+        errorCode: telegram?.error_code || null,
+        description: telegram?.description || responseText.slice(0, 500),
+      };
     }
-    return { ok: true };
+    return {
+      ok: true,
+      status: response.status,
+      messageId: telegram?.result?.message_id || null,
+      chatType: telegram?.result?.chat?.type || null,
+    };
   } catch (err) {
     return { ok: false, error: String(err?.message || err) };
+  }
+}
+
+function parseTelegramResponse(value = '') {
+  try {
+    return value ? JSON.parse(value) : null;
+  } catch {
+    return null;
   }
 }
 

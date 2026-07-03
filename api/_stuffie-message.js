@@ -320,12 +320,31 @@ export async function maybeCreateStuffieLead({ body, reply, escalationType, cont
     duplicateOfRequestId: risk.duplicate?.id || null,
   });
   try {
-    await sendLeadTelegramAlert({
+    const telegramAlert = await sendLeadTelegramAlert({
       details: leadDetails,
       escalationType: effectiveEscalationType,
       requestId: request?.id || null,
       source: `chatbot_${body.canal}`,
     });
+    if (telegramAlert?.ok) {
+      console.info('[stuffie-telegram-alert]', {
+        ok: true,
+        requestId: request?.id || null,
+        source: `chatbot_${body.canal}`,
+        messageId: telegramAlert.messageId || null,
+        chatType: telegramAlert.chatType || null,
+      });
+    } else {
+      console.error('[stuffie-telegram-alert]', {
+        ok: false,
+        requestId: request?.id || null,
+        source: `chatbot_${body.canal}`,
+        skipped: Boolean(telegramAlert?.skipped),
+        status: telegramAlert?.status || null,
+        errorCode: telegramAlert?.errorCode || null,
+        description: telegramAlert?.description || telegramAlert?.error || telegramAlert?.reason || 'Unknown Telegram alert failure',
+      });
+    }
   } catch (err) {
     console.error('[stuffie-telegram-alert]', err?.message || err);
   }
