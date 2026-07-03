@@ -117,7 +117,10 @@ async function handleGet(req, res) {
     }
     const context = await loadBookingContext(req.query || {}, clinic.clinicId);
     setBookingCacheHeaders(res);
-    return res.status(200).json({ ok: true, configured: true, clinicId: clinic.clinicId, ...context });
+    // clinicResolved: true = resolverul RPC (migrația 0064) a mapat efectiv clinica
+    // după Host/slug; false = a căzut pe clinica default (RPC neaplicat sau domeniu
+    // nemapat în clinic_domains). Diagnostic pentru pregătirea multi-tenant.
+    return res.status(200).json({ ok: true, configured: true, clinicId: clinic.clinicId, clinicResolved: clinic.resolved, ...context });
   } catch (err) {
     console.error('[booking:get]', err?.message || err);
     return res.status(502).json({ ok: false, error: 'Calendar unavailable' });
