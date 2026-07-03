@@ -69,6 +69,32 @@ export async function handleStuffieMessage(req, res) {
       userId: body.value.userId,
     });
     const historyText = formatStuffieHistory(recentHistory);
+    const localLead = await maybeResolveStuffieLeadLocally({ body: body.value, context, historyText });
+    if (localLead.handled) {
+      await recordStuffieChatMessage({
+        clinicId,
+        canal: body.value.canal,
+        userId: body.value.userId,
+        role: 'assistant',
+        content: localLead.reply,
+        escalationType: localLead.leadResult?.escalation_type || null,
+        appointmentRequestId: localLead.leadResult?.requestId || null,
+        metadata: {
+          gateway: 'website',
+          lead: localLead.leadResult || {},
+        },
+      });
+
+      return res.status(200).json({
+        ok: true,
+        raspuns: localLead.reply,
+        canal: body.value.canal,
+        user_id: body.value.userId,
+        lead: localLead.leadResult || {},
+        turnstileSession: captcha.session?.token || req.body?.turnstileSession || null,
+        turnstileSessionExpiresAt: captcha.session?.expiresAt || captcha.expiresAt || null,
+      });
+    }
     const n8n = await callStuffieBrain({
       clinic_id: clinicId,
       canal: body.value.canal,
@@ -84,6 +110,16 @@ export async function handleStuffieMessage(req, res) {
     const storedEscalationType = leadResult.escalation_type || escalationType;
     if (leadResult.needs_more_info) {
       cleanReply = buildMissingLeadInfoReply(leadResult);
+    } else if (leadResult.needs_confirmation) {
+      cleanReply = buildLeadConfirmationReply(leadResult);
+    } else if (leadResult.confirmation_declined) {
+      cleanReply = buildLeadCorrectionReply();
+    } else if (leadResult.created) {
+      cleanReply = buildLeadCreatedReply(leadResult);
+    } else if (leadResult.duplicate) {
+      cleanReply = buildDuplicateLeadReply(leadResult);
+    } else if (leadResult.reason === 'soft_block') {
+      cleanReply = buildLeadHeldReply();
     }
     await recordStuffieChatMessage({
       clinicId,
@@ -140,14 +176,64 @@ async function verifyStuffieCaptcha(req, body) {
   };
 }
 
-export async function maybeCreateStuffieLead({ body, reply, escalationType, context, historyText = '' }) {
+async function maybeResolveStuffieLeadLocally({ body, context, historyText = '' }) {
+  const leadRaw = clientOnlyLeadText(historyText, body.mesaj);
+  const details = extractLeadDetails(leadRaw);
+  const pendingConfirmation = hasPendingLeadConfirmation(historyText);
+  const leadIntent = pendingConfirmation || hasLeadCollectionSignal({ raw: leadRaw, details });
+  if (!leadIntent) return { handled: false };
+
+  const leadResult = await maybeCreateStuffieLead({
+    body,
+    reply: '',
+    escalationType: inferEscalationType({ raw: leadRaw, details }) || 'OM',
+    context,
+    historyText,
+    requireConfirmation: true,
+  });
+
+  if (leadResult.needs_more_info) {
+    return { handled: true, reply: buildMissingLeadInfoReply(leadResult), leadResult };
+  }
+  if (leadResult.needs_confirmation) {
+    return { handled: true, reply: buildLeadConfirmationReply(leadResult), leadResult };
+  }
+  if (leadResult.confirmation_declined) {
+    return { handled: true, reply: buildLeadCorrectionReply(), leadResult };
+  }
+  if (leadResult.created) {
+    return { handled: true, reply: buildLeadCreatedReply(leadResult), leadResult };
+  }
+  if (leadResult.duplicate) {
+    return { handled: true, reply: buildDuplicateLeadReply(leadResult), leadResult };
+  }
+  if (leadResult.reason === 'soft_block') {
+    return { handled: true, reply: buildLeadHeldReply(), leadResult };
+  }
+
+  return { handled: false };
+}
+
+export async function maybeCreateStuffieLead({ body, reply, escalationType, context, historyText = '', requireConfirmation = false }) {
   const leadRaw = clientOnlyLeadText(historyText, body.mesaj);
   const inferenceRaw = [leadRaw, reply].filter(Boolean).join('\n');
-  const leadDetails = extractLeadDetails(leadRaw);
+  const leadDetails = { ...extractLeadDetails(leadRaw), rawClientText: leadRaw };
   const effectiveEscalationType = ['OM', 'URGENTA'].includes(escalationType)
     ? escalationType
     : inferEscalationType({ raw: inferenceRaw, details: leadDetails });
   if (!['OM', 'URGENTA'].includes(effectiveEscalationType)) return { created: false, reason: 'no_escalation' };
+
+  const pendingConfirmation = hasPendingLeadConfirmation(historyText);
+  const confirmation = detectLeadConfirmation(body.mesaj);
+  if (pendingConfirmation && confirmation === false) {
+    return {
+      created: false,
+      confirmation_declined: true,
+      reason: 'confirmation_declined',
+      escalation_type: effectiveEscalationType,
+      details: leadDetails,
+    };
+  }
 
   const intent = effectiveEscalationType === 'URGENTA' ? 'urgent' : 'callback';
   if (!leadDetails.ok) {
@@ -168,6 +254,16 @@ export async function maybeCreateStuffieLead({ body, reply, escalationType, cont
       missing: leadDetails.missing,
       invalid: leadDetails.invalid,
       required: REQUIRED_LEAD_FIELDS,
+    };
+  }
+
+  if (requireConfirmation && (!pendingConfirmation || confirmation !== true)) {
+    return {
+      created: false,
+      needs_confirmation: true,
+      reason: 'awaiting_client_confirmation',
+      escalation_type: effectiveEscalationType,
+      details: leadDetails,
     };
   }
 
@@ -226,7 +322,7 @@ export async function maybeCreateStuffieLead({ body, reply, escalationType, cont
 }
 
 function fallbackPayload({ body, reply, details = {}, escalationType = 'OM' }) {
-  const clientRaw = String(body.mesaj || '');
+  const clientRaw = String(details.rawClientText || body.mesaj || '');
   const raw = [clientRaw, reply].filter(Boolean).join('\n');
   const urgent = escalationType === 'URGENTA';
   const species = details.species || detectSpecies(clientRaw) || detectSpecies(raw);
@@ -249,7 +345,8 @@ function fallbackPayload({ body, reply, details = {}, escalationType = 'OM' }) {
     doctor_name: urgent ? 'Dr. Marinescu' : null,
     duration_minutes: 30,
     message: (urgent ? 'Lead URGENT creat prin gateway STUFFIE.' : 'Lead callback creat prin gateway STUFFIE.') +
-      '\n\nMesaj client:\n' + (body.mesaj || '-') +
+      '\n\nDate validate din conversație:\n' + formatLeadDetailsSummary(details) +
+      '\n\nMesaje client folosite pentru validare:\n' + (clientRaw || '-') +
       ageLine +
       reasonLine +
       '\n\nRaspuns STUFFIE:\n' + cleanReply,
@@ -260,7 +357,7 @@ function fallbackPayload({ body, reply, details = {}, escalationType = 'OM' }) {
     website_payload_raw: {
       canal: body.canal || null,
       user_id: body.userId || null,
-      mesaj_client: body.mesaj || null,
+      mesaj_client: clientRaw || null,
       raspuns_stuffie: cleanReply,
       escalation_type: escalationType,
       phone_detected: details.phone || null,
@@ -402,6 +499,38 @@ function inferEscalationType({ raw = '', details = {} } = {}) {
   return '';
 }
 
+function hasLeadCollectionSignal({ raw = '', details = {} } = {}) {
+  const text = String(raw || '').toLowerCase();
+  const hasContact = Boolean(details.phone || details.email || detectAnyPhoneCandidate(text) || detectEmail(text));
+  const hasAppointmentIntent = /\b(programare|programa|consult|consulta|consultație|consultatie|contact|suna|sună|sunati|sunați|clinica|solicitare|vreau|doresc|am nevoie)\b/i.test(text);
+  const hasMultipleLeadFields = [
+    details.ownerName,
+    details.phone,
+    details.email,
+    details.species,
+    details.petName,
+    details.petAge,
+    details.reason,
+  ].filter(Boolean).length >= 3;
+  return (hasAppointmentIntent && (hasContact || hasMultipleLeadFields)) || (hasContact && hasMultipleLeadFields);
+}
+
+function hasPendingLeadConfirmation(historyText = '') {
+  return /\bConfirmi\s+c[ăa]\s+transmit\s+exact\s+aceste\s+date\s+c[ăa]tre\s+clinic[ăa]\?/iu.test(String(historyText || ''));
+}
+
+function detectLeadConfirmation(message = '') {
+  const text = String(message || '').trim().toLowerCase();
+  if (!text) return null;
+  if (/^(da|da confirm|confirm|confirm da|corect|este corect|e corect|ok|okay|sigur|trimite|transmite|sunt de acord|de acord)[.! ]*$/iu.test(text)) {
+    return true;
+  }
+  if (/^(nu|nu confirm|gresit|greșit|nu e corect|nu este corect|stai|stop|anuleaza|anulează|modific|vreau sa modific|vreau să modific)[.! ]*$/iu.test(text)) {
+    return false;
+  }
+  return null;
+}
+
 function detectOwnerName(raw = '') {
   const match = String(raw || '').match(/(?:numele meu este|numele este|nume complet[:\s]+|nume(?:le)?[:\s]+|ma numesc|mă numesc|sunt|ma cheama|mă cheamă)\s*([A-ZĂÂÎȘȚ][\p{L}' -]{1,60})/iu);
   return match?.[1]?.replace(/\s+(si|și|telefon|tel).*$/i, '').trim() || detectLeadingFullName(raw);
@@ -418,7 +547,7 @@ function detectSpecies(raw = '') {
 function detectPetName(raw = '') {
   const match = String(raw || '').match(/(?:animalul|câinele|cainele|cățelul|catelul|pisica|motanul|pacientul|numele animalului|nume animal|animal)(?: meu| mea)?\s*(?:se numește|se numeste|îl cheamă|il cheama|o cheamă|o cheama|:)?\s+([\p{L}' -]{2,35})/iu)
     || String(raw || '').match(/\b(?:caine|câine|catel|cățel|pisica|pisică|motan|pisoi)\b\s*[,;:-]\s*([\p{L}' -]{2,35})/iu);
-  return match?.[1]?.replace(/\s+(si|și|are|cu).*$/i, '').trim() || '';
+  return match?.[1]?.replace(/\s+(si|și|are|cu).*$/i, '').trim() || detectCompactPetName(raw);
 }
 
 export function extractLeadDetails(raw = '') {
@@ -465,9 +594,27 @@ function detectLeadingFullName(raw = '') {
       .split(/[,;|]/)[0]
       .replace(/\s+/g, ' ')
       .trim();
-    if (/^(medicul|buna|bună|te rog|telefon|email|specie|motiv|varsta|vârsta)\b/iu.test(clean)) continue;
-    const match = clean.match(/^([A-ZĂÂÎȘȚ][\p{L}'-]{1,30}\s+[A-ZĂÂÎȘȚ][\p{L}'-]{1,30}(?:\s+[A-ZĂÂÎȘȚ][\p{L}'-]{1,30})?)/u);
+    if (/^(medicul|buna|bună|salut|te rog|vreau|doresc|as dori|aș dori|am nevoie|telefon|email|specie|motiv|varsta|vârsta)\b/iu.test(clean)) continue;
+    const match = clean.match(/^([\p{L}][\p{L}'-]{1,30}\s+[\p{L}][\p{L}'-]{1,30}(?:\s+[\p{L}][\p{L}'-]{1,30})?)/u);
     if (match) return match[1].trim();
+  }
+  return '';
+}
+
+function detectCompactPetName(raw = '') {
+  const tokens = String(raw || '')
+    .split(/[\n,;|]+/)
+    .map(token => token.replace(/^\s*(Client|Utilizator|User)\s*:\s*/i, '').replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
+
+  for (const token of tokens) {
+    const clean = token.replace(/^nume(?:le)? animal(?:ului)?\s*:?\s*/iu, '').trim();
+    if (!clean || clean.length > 35) continue;
+    if (detectValidPhone(clean) || detectAnyPhoneCandidate(clean) || detectEmail(clean)) continue;
+    if (detectSpecies(clean) || detectPetAge(clean) || detectReason(clean)) continue;
+    if (validFullName(clean)) continue;
+    if (/^(nume|telefon|email|specie|motiv|varsta|vârsta|consult|consultație|consultatie|vaccin|vaccinare|control|urgență|urgenta)\b/iu.test(clean)) continue;
+    if (/^[\p{L}' -]{2,35}$/u.test(clean)) return clean;
   }
   return '';
 }
@@ -532,6 +679,68 @@ function buildMissingLeadInfoReply(result) {
     list,
     '',
     'Telefonul trebuie să fie valid, de exemplu +407xxxxxxxx sau 07xxxxxxxx. Nu am transmis încă solicitarea către clinică.',
+  ].join('\n');
+}
+
+function buildLeadConfirmationReply(result) {
+  return [
+    '🐾 MEDICUL TĂU DE FAMILIE EXTINSĂ',
+    '',
+    'Am găsit toate datele necesare. Înainte să transmit solicitarea către clinica VET STUFF, te rog verifică rezumatul:',
+    '',
+    formatLeadDetailsSummary(result.details || {}),
+    '',
+    'Confirmi că transmit exact aceste date către clinică? Răspunde cu „Da” pentru transmitere sau „Nu” dacă vrei să modifici ceva.',
+  ].join('\n');
+}
+
+function buildLeadCorrectionReply() {
+  return [
+    '🐾 MEDICUL TĂU DE FAMILIE EXTINSĂ',
+    '',
+    'Nu am transmis solicitarea către clinică.',
+    '',
+    'Trimite, te rog, datele corectate într-un singur mesaj: nume complet, telefon, email, specia, numele și vârsta animalului, plus motivul vizitei.',
+  ].join('\n');
+}
+
+function buildLeadCreatedReply(result) {
+  const requestLine = result.requestId ? `\n\nCod cerere: ${result.requestId}` : '';
+  return [
+    '🐾 MEDICUL TĂU DE FAMILIE EXTINSĂ',
+    '',
+    'Am transmis solicitarea către clinica VET STUFF. Echipa o vede acum în CRM și te va contacta telefonic sau pe email pentru confirmare.',
+    '',
+    'Dacă starea animalului se agravează sau pare urgentă, sună direct clinica pentru ajutor imediat.' + requestLine,
+  ].join('\n');
+}
+
+function buildDuplicateLeadReply(result) {
+  const requestLine = result.requestId ? `\n\nCod cerere existent: ${result.requestId}` : '';
+  return [
+    '🐾 MEDICUL TĂU DE FAMILIE EXTINSĂ',
+    '',
+    'Există deja o solicitare activă cu aceste date. Nu mai cer datele încă o dată; echipa VET STUFF o va verifica din CRM și te va contacta pentru confirmare.' + requestLine,
+  ].join('\n');
+}
+
+function buildLeadHeldReply() {
+  return [
+    '🐾 MEDICUL TĂU DE FAMILIE EXTINSĂ',
+    '',
+    'Am primit detaliile. Solicitarea intră în verificare înainte să fie preluată de echipa VET STUFF.',
+    '',
+    'Dacă este o urgență, sună direct clinica.',
+  ].join('\n');
+}
+
+function formatLeadDetailsSummary(details = {}) {
+  return [
+    `- Proprietar: ${details.ownerName || 'necompletat'}`,
+    `- Telefon: ${details.phone || 'necompletat'}`,
+    `- Email: ${details.email || 'necompletat'}`,
+    `- Animal: ${[details.petName, details.species, details.petAge].filter(Boolean).join(', ') || 'necompletat'}`,
+    `- Motiv: ${details.reason || 'necompletat'}`,
   ].join('\n');
 }
 
