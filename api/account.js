@@ -11,6 +11,7 @@ import {
   createClientAccount,
   loginClientAccount,
   recoverClientAccount,
+  resolveClinicIdByHost,
 } from './_accounts.js';
 
 export default async function handler(req, res) {
@@ -22,6 +23,12 @@ export default async function handler(req, res) {
 
   const env = supabaseEnv();
   if (!env.configured) return res.status(503).json({ ok: false, error: 'Conturile nu sunt configurate momentan.' });
+
+  // F-11: clinica se rezolvă din host, ca fiecare portal client să vadă doar
+  // animalele clinicii lui (owners/patients scoped + clinicId în token).
+  const forwardedHost = req.headers?.['x-forwarded-host'];
+  const rawHost = (Array.isArray(forwardedHost) ? forwardedHost[0] : forwardedHost) || req.headers?.host || '';
+  const clinicId = await resolveClinicIdByHost(env, String(rawHost).split(',')[0]);
 
   const action = String(req.body?.action || '');
 
@@ -37,7 +44,7 @@ export default async function handler(req, res) {
     if (!phone) return res.status(400).json({ ok: false, error: 'Telefon invalid.' });
 
     try {
-      const result = await createClientAccount(env, { email, password, fullName, phone });
+      const result = await createClientAccount(env, { email, password, fullName, phone, clinicId });
       if (!result.ok) return res.status(result.code === 'exists' ? 409 : 400).json(result);
       return res.status(200).json({
         ok: true,
@@ -58,7 +65,7 @@ export default async function handler(req, res) {
     if (!email || !password) return res.status(400).json({ ok: false, error: 'Email sau parolă incorecte.' });
 
     try {
-      const result = await loginClientAccount(env, { email, password });
+      const result = await loginClientAccount(env, { email, password, clinicId });
       if (!result.ok) return res.status(result.code === 'unconfirmed' ? 403 : 401).json(result);
       return res.status(200).json(result);
     } catch (err) {

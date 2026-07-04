@@ -11,6 +11,7 @@
 import crypto from 'node:crypto';
 
 const TOKEN_TTL_MS = 30 * 60 * 1000; // 30 min
+const DEFAULT_CLINIC_ID = '00000000-0000-0000-0000-000000000001';
 
 export function supabaseEnv() {
   const url = (process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || '').replace(/\/+$/, '');
@@ -99,6 +100,30 @@ async function restFetch(env, path, { method = 'GET', body, prefer } = {}) {
   try { return text ? JSON.parse(text) : null; } catch { return null; }
 }
 
+// F-11: rezolvă clinica din host (același contract ca booking-ul, resolve_booking_clinic),
+// ca portalul client să vadă DOAR animalele clinicii curente. Fallback la clinica
+// default (comportament single-clinic) când host-ul nu mapează.
+export async function resolveClinicIdByHost(env, host) {
+  const clean = String(host || '')
+    .replace(/^https?:\/\//, '')
+    .split('/')[0]
+    .split(':')[0]
+    .replace(/^www\./, '')
+    .trim()
+    .toLowerCase();
+  if (!clean) return DEFAULT_CLINIC_ID;
+  try {
+    const rows = await restFetch(env, 'rpc/resolve_booking_clinic', {
+      method: 'POST',
+      body: { p_host: clean, p_slug: null },
+    });
+    const row = Array.isArray(rows) ? rows[0] : rows;
+    return row?.clinic_id || DEFAULT_CLINIC_ID;
+  } catch {
+    return DEFAULT_CLINIC_ID;
+  }
+}
+
 // Verifică dacă există deja un cont (după client_accounts).
 export async function accountExists(env, email) {
   const rows = await restFetch(env, `client_accounts?select=id&email=ilike.${encodeURIComponent(email)}&limit=1`);
@@ -106,7 +131,7 @@ export async function accountExists(env, email) {
 }
 
 // Creează cont nou (Supabase Auth + client_accounts). NU creează owner/patient.
-export async function createClientAccount(env, { email, password, fullName, phone }) {
+export async function createClientAccount(env, { email, password, fullName, phone, clinicId = DEFAULT_CLINIC_ID }) {
   if (await accountExists(env, email)) {
     return { ok: false, code: 'exists', error: 'Există deja un cont cu acest email. Folosește „Client existent".' };
   }
@@ -128,14 +153,14 @@ export async function createClientAccount(env, { email, password, fullName, phon
     await restFetch(env, 'client_accounts', {
       method: 'POST',
       prefer: 'resolution=merge-duplicates',
-      body: { id: userId, email, full_name: fullName, phone, status: 'invited', invited_at: now, updated_at: now },
+      body: { id: userId, clinic_id: clinicId, email, full_name: fullName, phone, status: 'invited', invited_at: now, updated_at: now },
     });
   }
   return { ok: true, needsConfirmation: !signup.json?.session };
 }
 
 // Login + încărcare animale ale clientului (după email verificat). Întoarce token semnat.
-export async function loginClientAccount(env, { email, password }) {
+export async function loginClientAccount(env, { email, password, clinicId = DEFAULT_CLINIC_ID }) {
   const login = await authFetch(env, 'token?grant_type=password', { body: { email, password } });
   if (!login.ok) {
     const code = String(login.json?.error_code || login.json?.error || '');
@@ -151,19 +176,21 @@ export async function loginClientAccount(env, { email, password }) {
     await restFetch(env, 'client_accounts', {
       method: 'POST',
       prefer: 'resolution=merge-duplicates',
-      body: { id: userId, email: verifiedEmail, status: 'active', updated_at: new Date().toISOString() },
+      body: { id: userId, clinic_id: clinicId, email: verifiedEmail, status: 'active', updated_at: new Date().toISOString() },
     });
   }
-  const owners = await restFetch(env, `owners?select=id,full_name,phone&email=ilike.${encodeURIComponent(verifiedEmail)}`);
+  // F-11: owners/patients STRICT în clinica rezolvată din host. Un email poate fi
+  // client în mai multe clinici; portalul acestei clinici vede doar animalele ei.
+  const owners = await restFetch(env, `owners?select=id,full_name,phone&clinic_id=eq.${encodeURIComponent(clinicId)}&email=ilike.${encodeURIComponent(verifiedEmail)}`);
   const ownerList = Array.isArray(owners) ? owners : [];
   const ownerIds = ownerList.map(o => o.id).filter(Boolean);
 
   let pets = [];
   if (ownerIds.length) {
-    const rows = await restFetch(env, `patients?select=id,name,species,breed&owner_id=in.(${ownerIds.join(',')})&order=name.asc`);
+    const rows = await restFetch(env, `patients?select=id,name,species,breed&clinic_id=eq.${encodeURIComponent(clinicId)}&owner_id=in.(${ownerIds.join(',')})&order=name.asc`);
     pets = (Array.isArray(rows) ? rows : []).map(p => ({ id: p.id, name: p.name, species: p.species, breed: p.breed }));
   }
-  const token = signAccountToken({ ownerIds, email: verifiedEmail });
+  const token = signAccountToken({ ownerIds, email: verifiedEmail, clinicId });
   return {
     ok: true,
     token,
@@ -182,11 +209,13 @@ export async function recoverClientAccount(env, { email }) {
   return { ok: recover.ok, status: recover.status };
 }
 
-// Validează că un patient ales aparține owner-ilor din token. Folosit la programare.
-export async function patientBelongsToOwners(env, patientId, ownerIds) {
+// Validează că un patient ales aparține owner-ilor din token ȘI clinicii curente.
+// Folosit la programare (F-11: nu se poate atașa un pacient din altă clinică).
+export async function patientBelongsToOwners(env, patientId, ownerIds, clinicId = null) {
   if (!patientId || !Array.isArray(ownerIds) || !ownerIds.length) return null;
   const safeIds = ownerIds.filter(id => /^[0-9a-f-]{36}$/i.test(id));
   if (!safeIds.length || !/^[0-9a-f-]{36}$/i.test(patientId)) return null;
-  const rows = await restFetch(env, `patients?select=id,owner_id&id=eq.${patientId}&owner_id=in.(${safeIds.join(',')})&limit=1`);
+  const clinicFilter = clinicId ? `&clinic_id=eq.${encodeURIComponent(clinicId)}` : '';
+  const rows = await restFetch(env, `patients?select=id,owner_id&id=eq.${patientId}${clinicFilter}&owner_id=in.(${safeIds.join(',')})&limit=1`);
   return Array.isArray(rows) && rows[0] ? rows[0] : null;
 }
