@@ -180,11 +180,16 @@ export function securityFields({ risk, context }) {
 
 export async function recordLeadSignal({ supabaseFetch, payload, context, risk, source, intent, appointmentRequestId = null, duplicateOfRequestId = null }) {
   if (!supabaseFetch) return;
+  const clinicId = payload.clinic_id || null;
+  if (!clinicId) {
+    console.error('[lead-security:signal] missing clinic_id; skipped insert');
+    return;
+  }
   try {
     await supabaseFetch('lead_abuse_signals', {
       method: 'POST',
       body: {
-        clinic_id: payload.clinic_id || null,
+        clinic_id: clinicId,
         source,
         intent,
         phone_hash: risk.phoneHash || null,
