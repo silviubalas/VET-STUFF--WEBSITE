@@ -208,8 +208,10 @@ async function handlePost(req, res) {
     // owner_id/patient_id doar după verificarea token-ului semnat + apartenența animalului
     // (nu se creează nimic, doar se leagă de fișe care există deja în CRM).
     const account = verifyAccountToken(req.body?.accountToken);
-    if (account?.ownerIds?.length && req.body?.patientId) {
-      const owned = await patientBelongsToOwners(supabaseEnv(), req.body.patientId, account.ownerIds);
+    // F-11: atașăm un animal existent DOAR dacă token-ul e emis pentru aceeași
+    // clinică cu cea rezolvată din host (nu se poate lega un pacient din altă clinică).
+    if (account?.ownerIds?.length && req.body?.patientId && account.clinicId === clinic.clinicId) {
+      const owned = await patientBelongsToOwners(supabaseEnv(), req.body.patientId, account.ownerIds, clinic.clinicId);
       if (owned) {
         payload.owner_id = owned.owner_id;
         payload.patient_id = owned.id;

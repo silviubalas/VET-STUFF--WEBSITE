@@ -84,6 +84,9 @@ export async function persistentRateLimit({ supabaseFetch, name, key, max, windo
 }
 
 export async function assessLeadRisk({ supabaseFetch, payload, context, intent = 'normal_booking', source = 'website' }) {
+  // F-7: dedup-ul și blocklist-ul se evaluează STRICT în clinica rezolvată (din host),
+  // altfel un lead pentru clinica A ar citi PII / s-ar ciocni cu date din altă clinică.
+  const clinicId = payload.clinic_id || null;
   const phone = normalizePhone(payload.owner_phone);
   const email = normalizeEmail(payload.owner_email);
   const phoneHash = hashValue(phone);
@@ -118,6 +121,7 @@ export async function assessLeadRisk({ supabaseFetch, payload, context, intent =
     phoneHash,
     deviceIdHash: context.deviceIdHash,
     ipPrefixHash: context.ipPrefixHash,
+    clinicId,
   });
   if (activeBlocks.length) {
     risk.activeBlocks = activeBlocks;
@@ -127,7 +131,7 @@ export async function assessLeadRisk({ supabaseFetch, payload, context, intent =
   }
 
   const since = new Date(Date.now() - DAY_MS).toISOString();
-  const existing = await loadExistingRequests(supabaseFetch, { phone, phoneHash, deviceIdHash: context.deviceIdHash, ipPrefixHash: context.ipPrefixHash, since });
+  const existing = await loadExistingRequests(supabaseFetch, { phone, phoneHash, deviceIdHash: context.deviceIdHash, ipPrefixHash: context.ipPrefixHash, since, clinicId });
 
   const activeByPhone = existing.filter(item => samePhone(item, phone, phoneHash));
   if (activeByPhone.length) {
@@ -176,11 +180,16 @@ export function securityFields({ risk, context }) {
 
 export async function recordLeadSignal({ supabaseFetch, payload, context, risk, source, intent, appointmentRequestId = null, duplicateOfRequestId = null }) {
   if (!supabaseFetch) return;
+  const clinicId = payload.clinic_id || null;
+  if (!clinicId) {
+    console.error('[lead-security:signal] missing clinic_id; skipped insert');
+    return;
+  }
   try {
     await supabaseFetch('lead_abuse_signals', {
       method: 'POST',
       body: {
-        clinic_id: payload.clinic_id || null,
+        clinic_id: clinicId,
         source,
         intent,
         phone_hash: risk.phoneHash || null,
@@ -254,7 +263,7 @@ function addRisk(risk, points, reason) {
   if (!risk.reasons.includes(reason)) risk.reasons.push(reason);
 }
 
-async function loadExistingRequests(supabaseFetch, { phone, phoneHash, deviceIdHash, ipPrefixHash, since }) {
+async function loadExistingRequests(supabaseFetch, { phone, phoneHash, deviceIdHash, ipPrefixHash, since, clinicId = null }) {
   if (!supabaseFetch) return [];
   const clauses = [];
   if (phone) clauses.push(`owner_phone.eq.${escapePostgrest(phone)}`);
@@ -267,6 +276,7 @@ async function loadExistingRequests(supabaseFetch, { phone, phoneHash, deviceIdH
     const path = [
       'appointment_requests',
       '?select=id,owner_name,owner_phone,phone_hash,device_id_hash,ip_prefix_hash,patient_name,visit_type_key,preferred_at,status,created_at',
+      clinicId ? `&clinic_id=eq.${encodeURIComponent(clinicId)}` : '',
       `&created_at=gte.${encodeURIComponent(since)}`,
       `&status=in.(${ACTIVE_STATUSES})`,
       `&or=${encodeURIComponent(`(${clauses.join(',')})`)}`,
@@ -281,7 +291,7 @@ async function loadExistingRequests(supabaseFetch, { phone, phoneHash, deviceIdH
   }
 }
 
-async function loadActiveBlocks(supabaseFetch, { phoneHash, deviceIdHash, ipPrefixHash }) {
+async function loadActiveBlocks(supabaseFetch, { phoneHash, deviceIdHash, ipPrefixHash, clinicId = null }) {
   if (!supabaseFetch) return [];
   const checks = [
     ['phone', phoneHash],
@@ -297,6 +307,7 @@ async function loadActiveBlocks(supabaseFetch, { phoneHash, deviceIdHash, ipPref
       const path = [
         'lead_blocklist',
         '?select=id,subject_type,reason,expires_at,source_request_id',
+        clinicId ? `&clinic_id=eq.${encodeURIComponent(clinicId)}` : '',
         `&subject_type=eq.${encodeURIComponent(type)}`,
         `&subject_hash=eq.${escapePostgrest(hash)}`,
         `&expires_at=gt.${now}`,
