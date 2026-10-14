@@ -135,7 +135,11 @@ export async function createClientAccount(env, { email, password, fullName, phon
   if (await accountExists(env, email)) {
     return { ok: false, code: 'exists', error: 'Există deja un cont cu acest email. Folosește „Client existent".' };
   }
-  const signup = await authFetch(env, 'signup', {
+  // Fără `redirect_to`, linkul de confirmare ducea clientul la Site URL-ul din
+  // Supabase, adică în aplicația personalului clinicii. Tot după domeniul ăsta
+  // hook-ul de email din CRM recunoaște clinica și trimite emailul pe numele ei.
+  const redirect = encodeURIComponent(accountRedirectUrl());
+  const signup = await authFetch(env, `signup?redirect_to=${redirect}`, {
     body: { email, password, data: { full_name: fullName, phone } },
   });
   if (!signup.ok) {

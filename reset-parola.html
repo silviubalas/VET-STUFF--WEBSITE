@@ -155,6 +155,14 @@
     if (!accessToken) {
       setStatus('error', 'Linkul este invalid sau a expirat. Solicită un link nou din pagina de programări.');
       form.style.display = 'none';
+    } else if (resetType === 'signup') {
+      // Linkul de confirmare al unui cont nou: parola e aleasă deja la creare,
+      // deci nu cerem alta. Scoatem tokenul din adresă, nu mai e nevoie de el.
+      history.replaceState(null, '', window.location.pathname);
+      document.querySelector('.card h1').textContent = 'Cont confirmat';
+      lead.textContent = 'Adresa de email e confirmată.';
+      form.style.display = 'none';
+      setStatus('success', 'Te poți conecta acum ca „Client existent” în pagina de programări.');
     } else if (resetType === 'invite') {
       lead.textContent = 'Invitația este validă. Setează parola pentru contul tău de programări online.';
     }
