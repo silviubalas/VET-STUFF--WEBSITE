@@ -125,14 +125,22 @@ export async function resolveClinicIdByHost(env, host) {
 }
 
 // Verifică dacă există deja un cont (după client_accounts).
-export async function accountExists(env, email) {
-  const rows = await restFetch(env, `client_accounts?select=id&email=ilike.${encodeURIComponent(email)}&limit=1`);
+// AUD-P1-06: verificarea era globală pe email, fără clinică. Cu două clinici,
+// un client care are cont la clinica A primea „există deja un cont" când
+// încerca să-şi facă unul la clinica B — iar mesajul confirma, pentru oricine,
+// că adresa aceea are cont undeva în sistem.
+export async function accountExists(env, email, clinicId) {
+  const clinic = clinicId || DEFAULT_CLINIC_ID;
+  const rows = await restFetch(
+    env,
+    `client_accounts?select=id&clinic_id=eq.${encodeURIComponent(clinic)}&email=ilike.${encodeURIComponent(email)}&limit=1`,
+  );
   return Array.isArray(rows) && rows.length > 0;
 }
 
 // Creează cont nou (Supabase Auth + client_accounts). NU creează owner/patient.
 export async function createClientAccount(env, { email, password, fullName, phone, clinicId = DEFAULT_CLINIC_ID }) {
-  if (await accountExists(env, email)) {
+  if (await accountExists(env, email, clinicId)) {
     return { ok: false, code: 'exists', error: 'Există deja un cont cu acest email. Folosește „Client existent".' };
   }
   // Fără `redirect_to`, linkul de confirmare ducea clientul la Site URL-ul din
@@ -157,7 +165,11 @@ export async function createClientAccount(env, { email, password, fullName, phon
     await restFetch(env, 'client_accounts', {
       method: 'POST',
       prefer: 'resolution=merge-duplicates',
-      body: { id: userId, clinic_id: clinicId, email, full_name: fullName, phone, status: 'invited', invited_at: now, updated_at: now },
+      // AUD-P1-06: `auth_user_id` este contractul din 0092 — toate funcţiile de
+      // identitate (`current_client_owner_ids`, `current_client_patient_ids`)
+      // filtrează pe el. Se scria doar `id`, deci conturile noi rămâneau cu
+      // `auth_user_id` null şi clientul nu vedea nimic prin RLS.
+      body: { id: userId, auth_user_id: userId, clinic_id: clinicId, email, full_name: fullName, phone, status: 'invited', invited_at: now, updated_at: now },
     });
   }
   return { ok: true, needsConfirmation: !signup.json?.session };
@@ -180,13 +192,25 @@ export async function loginClientAccount(env, { email, password, clinicId = DEFA
     await restFetch(env, 'client_accounts', {
       method: 'POST',
       prefer: 'resolution=merge-duplicates',
-      body: { id: userId, clinic_id: clinicId, email: verifiedEmail, status: 'active', updated_at: new Date().toISOString() },
+      body: { id: userId, auth_user_id: userId, clinic_id: clinicId, email: verifiedEmail, status: 'active', updated_at: new Date().toISOString() },
     });
   }
   // F-11: owners/patients STRICT în clinica rezolvată din host. Un email poate fi
   // client în mai multe clinici; portalul acestei clinici vede doar animalele ei.
   const owners = await restFetch(env, `owners?select=id,full_name,phone&clinic_id=eq.${encodeURIComponent(clinicId)}&email=ilike.${encodeURIComponent(verifiedEmail)}`);
-  const ownerList = Array.isArray(owners) ? owners : [];
+  const allOwners = Array.isArray(owners) ? owners : [];
+
+  // AUD-P1-06: dacă adresa se potriveşte cu mai multe fişe de proprietar din
+  // aceeaşi clinică — un cuplu cu email comun, sau o fişă duplicată — nu legăm
+  // contul de niciuna. Altfel clientul ar vedea şi animalele celuilalt.
+  //
+  // Aceeaşi regulă ca în `current_client_owner_ids()` după 0106. Dacă portalul
+  // ar fi mai permisiv decât RLS-ul, cele două ar arăta lucruri diferite: lista
+  // de animale de la login ar conţine ce fişa nu poate afişa.
+  //
+  // Clinica rezolvă legând explicit `client_accounts.owner_id`.
+  const ambiguu = allOwners.length > 1;
+  const ownerList = ambiguu ? [] : allOwners;
   const ownerIds = ownerList.map(o => o.id).filter(Boolean);
 
   let pets = [];
@@ -202,6 +226,8 @@ export async function loginClientAccount(env, { email, password, clinicId = DEFA
     ownerName: ownerList[0]?.full_name || '',
     ownerPhone: ownerList[0]?.phone || '',
     linked: ownerIds.length > 0,
+    // Distinge „nu am găsit fişă" de „am găsit mai multe şi nu ştiu care e a ta".
+    ambiguous: ambiguu,
     pets,
   };
 }
